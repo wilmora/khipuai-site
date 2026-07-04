@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--
+  KHIPUAI articles listing (khipuai.co/blog/).
+  Self-contained like the rest of the site: no build step, no external dependencies.
+  Same palette and chrome as index.html (navy #12263A + terracotta #D8743B).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Articles | KHIPUAI</title>
+<meta name="description" content="Practical writing on back-office automation, finance-grade AI, and removing repetitive manual work, from KHIPUAI founder and operator Wil Mora.">
+<link rel="canonical" href="https://khipuai.co/blog/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2312263A'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23D8743B' font-family='Arial' font-weight='bold'>K</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Articles | KHIPUAI">
+<meta property="og:description" content="Practical writing on back-office automation, finance-grade AI, and removing repetitive manual work.">
+<meta property="og:url" content="https://khipuai.co/blog/">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Articles | KHIPUAI">
+<meta name="twitter:description" content="Practical writing on back-office automation, finance-grade AI, and removing repetitive manual work.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+<style>
+  :root{
+    --ink:#12263A; --ink2:#1E3A57; --accent:#D8743B; --accent-dark:#B85C2A;
+    --bg:#FFFFFF; --soft:#F6F4F1; --muted:#566472; --line:#E6E2DC; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  a{color:var(--accent-dark);}
+  h1,h2,h3{line-height:1.2;margin:0 0 .5em;font-weight:750;letter-spacing:-.01em;}
+  h1{font-size:2.7rem;}
+  h2{font-size:1.9rem;margin-top:0;}
+  h3{font-size:1.3rem;}
+  p{margin:0 0 1em;}
+  .muted{color:var(--muted);}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;color:var(--ink);text-decoration:none;}
+  .logo .dot{color:var(--accent);}
+  .navlinks{display:flex;gap:20px;align-items:center;font-size:.95rem;}
+  .navlinks a{color:var(--ink);text-decoration:none;font-weight:600;}
+  .navlinks a:hover{color:var(--accent-dark);}
+  .navlinks a.here{color:var(--accent-dark);}
+  .navlinks a.btn{color:#fff;}
+  .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+    font-weight:650;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;
+    transition:background .15s ease;font-size:1rem;}
+  .btn:hover{background:var(--accent-dark);}
+  .hero{background:linear-gradient(180deg,#12263A 0%,#1A3552 100%);color:#fff;padding:64px 0 56px;}
+  .hero h1{color:#fff;max-width:18ch;}
+  .hero p.sub{font-size:1.2rem;max-width:62ch;color:#D9E2EC;margin-bottom:0;}
+  section{padding:56px 0;border-bottom:1px solid var(--line);}
+  .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;font-weight:700;color:var(--accent-dark);margin-bottom:10px;}
+  .postlist{max-width:820px;}
+  .post{background:#fff;border:1px solid var(--line);border-radius:12px;padding:28px 30px;margin-bottom:22px;transition:box-shadow .15s ease,border-color .15s ease;}
+  .post:hover{box-shadow:0 10px 30px rgba(18,38,58,.08);border-color:#D8C7B6;}
+  .post h3{margin-bottom:.35em;}
+  .post h3 a{color:var(--ink);text-decoration:none;}
+  .post h3 a:hover{color:var(--accent-dark);}
+  .post p{margin-bottom:.8em;}
+  .readmore{font-weight:650;text-decoration:none;color:var(--accent-dark);}
+  .readmore:hover{text-decoration:underline;}
+  footer{background:#0D1F31;color:#8FA3B5;padding:34px 0;font-size:.92rem;}
+  footer a{color:#C9D6E2;}
+  .disclaimer{font-size:.82rem;color:#7488;margin-top:10px;}
+  @media (max-width:820px){
+    h1{font-size:2.1rem;} h2{font-size:1.6rem;}
+    .hero{padding:52px 0 44px;}
+  }
+  @media (max-width:560px){
+    .navlinks a:not(.here):not(.btn){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="../">KHIPU<span class="dot">A</span>I</a>
+    <nav class="navlinks">
+      <a href="../">Home</a>
+      <a href="../audit/">The Audit</a>
+      <a href="../about/">About</a>
+      <a class="here" href="./">Articles</a>
+      <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <h1>Articles</h1>
+    <p class="sub">Practical writing on back-office automation, finance-grade AI, and finding the repetitive work worth removing. Written by an operator, not an agency.</p>
+  </div>
+</div>
+
+<!-- LISTING -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Latest</div>
+    <div class="postlist">
+
+      <article class="post">
+        <h3><a href="hidden-cost-of-manual-work/">The hidden cost of manual work: how to find the hours your back office is quietly losing</a></h3>
+        <p class="muted">Most teams do not have a budget problem. They have a clarity problem. Here is the simple counting exercise that surfaces the repetitive hours your back office is quietly losing, and how to tell which of them are worth automating.</p>
+        <a class="readmore" href="hidden-cost-of-manual-work/">Read the article &rarr;</a>
+      </article>
+
+      <article class="post">
+        <h3><a href="ai-you-can-trust-with-your-books/">AI you can actually trust with your books: the draft-not-auto-post standard</a></h3>
+        <p class="muted">If the idea of AI touching your financial records makes you nervous, keep that instinct. Here is the draft-not-auto-post standard that makes back-office automation genuinely safe: the machine prepares the work, a person approves every entry that matters.</p>
+        <a class="readmore" href="ai-you-can-trust-with-your-books/">Read the article &rarr;</a>
+      </article>
+
+      <article class="post">
+        <h3><a href="automate-accounts-payable/">How to automate accounts payable without a six-month software project</a></h3>
+        <p class="muted">You do not need a six-month platform migration to automate accounts payable. Here is how to remove the reading, coding, and data entry while keeping approval with your people, using the systems you already run.</p>
+        <a class="readmore" href="automate-accounts-payable/">Read the article &rarr;</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:#fff;letter-spacing:.12em;">KHIPUAI</strong> &nbsp; | &nbsp; <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> &nbsp; | &nbsp; <a href="../">Home</a> &nbsp; | &nbsp; <a href="../audit/">The Audit</a> &nbsp; | &nbsp; <a href="../about/">About</a> &nbsp; | &nbsp; <a href="../privacy.html">Privacy</a></div>
+    <div class="disclaimer">KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada (Net 15) and carries professional-liability (E&O) insurance. Results described are one firm's outcome and are not a typical or guaranteed result. Automations are designed to run inside enterprise security controls and create draft records that a person reviews and approves.</div>
+  </div>
+</footer>
+
+</body>
+</html>

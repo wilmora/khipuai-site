@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+  KHIPUAI about + methodology page (khipuai.co/about/).
+  Self-contained like index.html: no build step, no external dependencies.
+  Purpose: E-E-A-T signals (real operator career, named founder, method) for search
+  engines and for buyers doing diligence before booking.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About KHIPUAI | Wil Mora, the Operator Behind the Audit</title>
+<meta name="description" content="KHIPUAI is run by Wil Mora, an operator with 15 years across operations, logistics, and digital transformation in Peru, the US, and Canada. Here is how the method works and why it is finance-grade.">
+<link rel="canonical" href="https://khipuai.co/about/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2312263A'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23D8743B' font-family='Arial' font-weight='bold'>K</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="About KHIPUAI | Wil Mora">
+<meta property="og:description" content="The operator behind the AI Automation Audit: 15 years of operations, logistics, and digital transformation across Peru, the US, and Canada.">
+<meta property="og:url" content="https://khipuai.co/about/">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About KHIPUAI | Wil Mora">
+<meta name="twitter:description" content="The operator behind the AI Automation Audit.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Wil Mora",
+  "jobTitle": "Founder",
+  "image": "https://khipuai.co/founder.jpg",
+  "url": "https://khipuai.co/about/",
+  "worksFor": {
+    "@type": "ProfessionalService",
+    "name": "KHIPUAI",
+    "url": "https://khipuai.co",
+    "description": "AI automation studio for back-office and professional-services teams. Lead offer: the fixed-fee AI Automation Audit.",
+    "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}]
+  },
+  "alumniOf": {"@type": "CollegeOrUniversity", "name": "Toronto Metropolitan University"},
+  "knowsLanguage": ["en", "es"],
+  "knowsAbout": ["business process automation", "AI workflow automation", "operations management", "logistics", "digital transformation", "finance operations"]
+}
+</script>
+<style>
+  :root{
+    --ink:#12263A; --ink2:#1E3A57; --accent:#D8743B; --accent-dark:#B85C2A;
+    --bg:#FFFFFF; --soft:#F6F4F1; --muted:#566472; --line:#E6E2DC; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  a{color:var(--accent-dark);}
+  h1,h2,h3{line-height:1.2;margin:0 0 .5em;font-weight:750;letter-spacing:-.01em;}
+  h1{font-size:2.7rem;}
+  h2{font-size:1.9rem;margin-top:0;}
+  h3{font-size:1.15rem;}
+  p{margin:0 0 1em;}
+  .muted{color:var(--muted);}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;color:var(--ink);text-decoration:none;}
+  .logo .dot{color:var(--accent);}
+  .navlinks{display:flex;gap:20px;align-items:center;font-size:.95rem;}
+  .navlinks a{color:var(--ink);text-decoration:none;font-weight:600;}
+  .navlinks a:hover{color:var(--accent-dark);}
+  .navlinks a.here{color:var(--accent-dark);}
+  .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+    font-weight:650;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;
+    transition:background .15s ease;font-size:1rem;}
+  .btn:hover{background:var(--accent-dark);}
+  .btn.lg{padding:16px 30px;font-size:1.08rem;}
+  .hero{background:linear-gradient(180deg,#12263A 0%,#1A3552 100%);color:#fff;padding:72px 0 60px;}
+  .hero h1{color:#fff;max-width:18ch;}
+  .hero p.sub{font-size:1.2rem;max-width:62ch;color:#D9E2EC;margin-bottom:0;}
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  section.soft{background:var(--soft);}
+  .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;font-weight:700;color:var(--accent-dark);margin-bottom:10px;}
+  ul.clean{list-style:none;padding:0;margin:0;}
+  ul.clean li{position:relative;padding-left:30px;margin-bottom:12px;}
+  ul.clean li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:9px;border-radius:2px;background:var(--accent);}
+  .grid{display:grid;gap:26px;}
+  .cols-2{grid-template-columns:repeat(2,1fr);}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;}
+  .step{counter-increment:step;position:relative;padding-left:60px;margin-bottom:24px;}
+  .step:before{content:counter(step);position:absolute;left:0;top:-4px;width:40px;height:40px;border-radius:50%;
+    background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .steps{counter-reset:step;}
+  .founder{display:flex;gap:28px;align-items:flex-start;}
+  .avatar{flex:0 0 120px;width:120px;height:120px;border-radius:50%;background:var(--ink2);color:#fff;object-fit:cover;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.04em;border:3px solid #fff;box-shadow:0 4px 14px rgba(18,38,58,.18);}
+  .credit{background:#FBF1E9;border:1px solid #F0D8C6;border-radius:10px;padding:16px 18px;margin-top:22px;font-weight:600;}
+  .final{background:linear-gradient(180deg,#1A3552 0%,#12263A 100%);color:#fff;text-align:center;}
+  .final h2{color:#fff;}
+  .final p{color:#D9E2EC;}
+  footer{background:#0D1F31;color:#8FA3B5;padding:34px 0;font-size:.92rem;}
+  footer a{color:#C9D6E2;}
+  .disclaimer{font-size:.82rem;color:#7488;margin-top:10px;}
+  @media (max-width:820px){
+    h1{font-size:2.1rem;} h2{font-size:1.6rem;}
+    .cols-2{grid-template-columns:1fr;}
+    .founder{flex-direction:column;}
+    .hero{padding:56px 0 48px;}
+  }
+  @media (max-width:560px){
+    .navlinks a:not(.here){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="../">KHIPU<span class="dot">A</span>I</a>
+    <nav class="navlinks">
+      <a href="../">Home</a>
+      <a href="../audit/">The Audit</a>
+      <a class="here" href="./">About</a>
+      <a href="../blog/">Articles</a>
+      <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <h1>An operator, not an agency.</h1>
+    <p class="sub">KHIPUAI exists because most automation advice comes from people who have never run the operation they are automating. This page is who is behind it, how the work is done, and what "finance-grade" actually means.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section>
+  <div class="wrap">
+    <div class="kicker">The founder</div>
+    <div class="founder">
+      <img class="avatar" src="../founder.jpg" alt="Wil Mora, Founder of KHIPUAI">
+      <div style="max-width:66ch;">
+      <h2>Wil Mora</h2>
+      <p>I have spent 15 years on the operating side of real businesses in Peru, the US, and Canada, with a finance degree (B.Comm, Toronto Metropolitan University) underneath it. Bilingual, English and Spanish.</p>
+      <p>The first decade was running operations directly: supervising high-volume production plants, then leading logistics and customer service across 20 plants and 280-plus trucks moving over a million cubic meters of product a year, with a team of more than 20 people. That work taught me what manual processes cost, because I paid that cost every day in overtime, errors, and missed handoffs.</p>
+      <p>Then I moved to the other side of the same problem: digital transformation. At a North American building-materials enterprise I led the projects that introduced AI tooling into core workflows. One AI-assisted review system cut a core process by up to 80% and saved around $150K a year. I also built executive dashboards on SQL, Qlik, and AWS Redshift, and redesigned a sales process that added roughly $1M in revenue.</p>
+      <p>Today, through KHIPUAI, I build production AI automation for back-office teams. The flagship build runs daily at a North American back-office services firm: a pipeline that reads documents and posts ready-to-approve draft records into the firm's own ERP, with a confidence grader that ran a monthly close at about 95% match to manual work. One firm's result, not a promise, but it is real, in production, and used by non-technical staff.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Methodology</div>
+    <h2>How the work is done.</h2>
+    <p class="muted" style="max-width:62ch;">Every KHIPUAI engagement, starting with the <a href="../audit/">AI Automation Audit</a>, follows the same four moves:</p>
+    <div class="steps" style="margin-top:30px;max-width:70ch;">
+      <div class="step"><h3>Map the real workflow</h3><p class="muted">Not the org chart version. The actual steps, systems, handoffs, and workarounds your team uses, observed in working sessions.</p></div>
+      <div class="step"><h3>Measure it</h3><p class="muted">Hours per month and dollars per year on every manual step, using your team's real volumes and conservative assumptions, so the numbers survive scrutiny.</p></div>
+      <div class="step"><h3>Rank by value against effort</h3><p class="muted">Quick wins first, big builds only when the math earns them. The output is a sequence, not a wish list.</p></div>
+      <div class="step"><h3>Build with a human in the loop</h3><p class="muted">Anything that matters is draft-not-auto-post: the system prepares the work, a person reviews and approves. Nothing runs on its own.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCE-GRADE -->
+<section>
+  <div class="wrap">
+    <div class="kicker">The standard</div>
+    <h2>What "finance-grade" means here.</h2>
+    <p class="muted" style="max-width:62ch;">It is a working standard, not a certification. Four commitments, kept on every build:</p>
+    <div class="grid cols-2" style="margin-top:26px;">
+      <div class="card"><h3>Accuracy-checked</h3><p class="muted">Machine output is graded for confidence (GREEN / YELLOW / RED) so reviewers know exactly where to look, instead of trusting a black box.</p></div>
+      <div class="card"><h3>Human-approved</h3><p class="muted">Automations create draft records in your own systems. A person approves every post that matters. That is a design principle, not a limitation.</p></div>
+      <div class="card"><h3>Auditable</h3><p class="muted">Every record traces back to its source document, so your accountant, auditor, or client can follow the trail.</p></div>
+      <div class="card"><h3>Survives your IT review</h3><p class="muted">Built to run inside enterprise security controls: application allowlisting, Microsoft Entra identity, Azure Key Vault, least-privilege access. Your IT team gets a security one-pager.</p></div>
+    </div>
+    <div class="credit" style="max-width:760px;">KHIPUAI is insured (professional liability / E&O) and works under written scopes with fixed fees. No open-ended consulting meter.</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Start with the audit.</h2>
+    <p style="margin-bottom:24px;">Fixed fee, about two weeks, and the roadmap is yours either way.</p>
+    <a class="btn lg" href="https://calendly.com/wmorapal/30min">Book a free 30-minute call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:#fff;letter-spacing:.12em;">KHIPUAI</strong> &nbsp; | &nbsp; <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> &nbsp; | &nbsp; <a href="../">Home</a> &nbsp; | &nbsp; <a href="../audit/">The Audit</a> &nbsp; | &nbsp; <a href="../blog/">Articles</a> &nbsp; | &nbsp; <a href="../privacy.html">Privacy</a></div>
+    <div class="disclaimer">KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada (Net 15) and carries professional-liability (E&O) insurance. Results described are one firm's outcome and are not a typical or guaranteed result. Automations are designed to run inside enterprise security controls and create draft records that a person reviews and approves.</div>
+  </div>
+</footer>
+
+</body>
+</html>

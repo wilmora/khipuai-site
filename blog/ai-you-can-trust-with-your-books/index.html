@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--
+  KHIPUAI article: AI you can trust with your books (khipuai.co/blog/ai-you-can-trust-with-your-books/).
+  Self-contained, no build step. Same palette as the rest of the site (navy #12263A + terracotta #D8743B).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI You Can Actually Trust With Your Books | KHIPUAI</title>
+<meta name="description" content="The draft-not-auto-post standard for back-office AI: the machine drafts, a person approves every entry that matters, and every number traces to its source.">
+<link rel="canonical" href="https://khipuai.co/blog/ai-you-can-trust-with-your-books/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2312263A'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23D8743B' font-family='Arial' font-weight='bold'>K</text></svg>">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI You Can Actually Trust With Your Books">
+<meta property="og:description" content="The draft-not-auto-post standard for back-office AI: the machine drafts, a person approves every entry that matters, and every number traces to its source.">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta property="og:url" content="https://khipuai.co/blog/ai-you-can-trust-with-your-books/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI You Can Actually Trust With Your Books">
+<meta name="twitter:description" content="The draft-not-auto-post standard: the machine drafts, a person approves every entry that matters.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI you can actually trust with your books: the draft-not-auto-post standard",
+  "description": "The draft-not-auto-post standard for back-office AI: the machine drafts, a person approves every entry that matters, and every number traces back to its source document.",
+  "image": "https://khipuai.co/og-image.png",
+  "datePublished": "2026-06-27",
+  "dateModified": "2026-06-27",
+  "author": {"@type": "Person", "name": "Wil Mora", "url": "https://khipuai.co/about/"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "KHIPUAI",
+    "url": "https://khipuai.co",
+    "logo": {"@type": "ImageObject", "url": "https://khipuai.co/og-image.png"}
+  },
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://khipuai.co/blog/ai-you-can-trust-with-your-books/"}
+}
+</script>
+<style>
+  :root{
+    --ink:#12263A; --ink2:#1E3A57; --accent:#D8743B; --accent-dark:#B85C2A;
+    --bg:#FFFFFF; --soft:#F6F4F1; --muted:#566472; --line:#E6E2DC; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:18px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  a{color:var(--accent-dark);}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;color:var(--ink);text-decoration:none;}
+  .logo .dot{color:var(--accent);}
+  .navlinks{display:flex;gap:20px;align-items:center;font-size:.95rem;}
+  .navlinks a{color:var(--ink);text-decoration:none;font-weight:600;}
+  .navlinks a:hover{color:var(--accent-dark);}
+  .navlinks a.here{color:var(--accent-dark);}
+  .navlinks a.btn{color:#fff;}
+  .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+    font-weight:650;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;
+    transition:background .15s ease;font-size:1rem;}
+  .btn:hover{background:var(--accent-dark);}
+  .btn.lg{padding:15px 28px;font-size:1.05rem;}
+  .article{max-width:720px;margin:0 auto;padding:0 24px;}
+  .eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:700;margin:40px 0 14px;}
+  .eyebrow a{color:var(--accent-dark);text-decoration:none;}
+  .article h1{font-size:2.3rem;line-height:1.15;margin:0 0 .35em;font-weight:780;letter-spacing:-.01em;}
+  .byline{color:var(--muted);font-size:.97rem;margin:0;padding-bottom:24px;border-bottom:1px solid var(--line);}
+  .article-body{margin-top:30px;}
+  .article-body h2{font-size:1.5rem;line-height:1.25;margin:1.8em 0 .5em;font-weight:760;letter-spacing:-.01em;}
+  .article-body h3{font-size:1.18rem;margin:1.5em 0 .4em;font-weight:740;}
+  .article-body p{margin:0 0 1.15em;}
+  .article-body ul,.article-body ol{margin:0 0 1.3em;padding-left:1.35em;}
+  .article-body li{margin-bottom:.55em;}
+  .article-body li::marker{color:var(--accent-dark);font-weight:700;}
+  .article-body strong{font-weight:700;color:var(--ink);}
+  .article-body em{font-style:italic;}
+  .cta-box{background:linear-gradient(180deg,#1A3552 0%,#12263A 100%);color:#fff;border-radius:14px;padding:32px 30px;margin:44px 0 8px;text-align:center;}
+  .cta-box h3{color:#fff;font-size:1.4rem;margin:0 0 8px;font-weight:760;}
+  .cta-box p{color:#D9E2EC;margin:0 auto 18px;max-width:52ch;}
+  .author-note{margin:40px 0 0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem;font-style:italic;}
+  .backlink{margin:28px 0 64px;}
+  .backlink a{font-weight:650;text-decoration:none;}
+  footer{background:#0D1F31;color:#8FA3B5;padding:34px 0;font-size:.92rem;}
+  footer a{color:#C9D6E2;}
+  .disclaimer{font-size:.82rem;color:#7488;margin-top:10px;}
+  @media (max-width:820px){
+    .article h1{font-size:1.85rem;} .article-body h2{font-size:1.35rem;} body{font-size:17px;}
+  }
+  @media (max-width:560px){
+    .navlinks a:not(.btn){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="../../">KHIPU<span class="dot">A</span>I</a>
+    <nav class="navlinks">
+      <a href="../../">Home</a>
+      <a href="../../audit/">The Audit</a>
+      <a href="../../about/">About</a>
+      <a class="here" href="../">Articles</a>
+      <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+    </nav>
+  </div>
+</header>
+
+<main class="article">
+  <p class="eyebrow"><a href="../">&larr; Articles</a></p>
+  <h1>AI you can actually trust with your books: the draft-not-auto-post standard</h1>
+  <p class="byline">By Wil Mora, Founder, KHIPUAI</p>
+
+  <div class="article-body">
+    <p>If the idea of AI touching your financial records makes you nervous, good instinct. Keep it.</p>
+    <p>In a 2026 benchmark of leading AI models asked to work from incomplete financial documents, several of them did not stop and ask. They filled in the gaps and produced confident, clean, completely fabricated numbers. No warning. No flag. Just an answer that looked right.</p>
+    <p>That is exactly the behavior you cannot have anywhere near a general ledger. And it is the reason a lot of capable finance and operations leaders have quietly decided to wait on automation. They are not wrong to be cautious. They are wrong about the conclusion.</p>
+    <p>The problem is not that AI is in the building. The problem is <em>how</em> most people let it work. There is a way to build automation for the back office that is genuinely safe, and it comes down to a single principle.</p>
+
+    <h2>The principle: it drafts, a human approves</h2>
+    <p>Nothing the automation produces goes live on its own. It reads the document, prepares the entry, codes it to the right account, attaches the source, and places it where a person can see it. Then it stops. A human reviews and clicks approve. Always.</p>
+    <p>People hear that and think it sounds like a limitation, as if the automation is only half-finished. It is the opposite. "Draft, then a human approves" is the feature. It is what separates AI you would actually trust with your money from AI that is merely impressive in a demo.</p>
+    <p>Here is why it works. The expensive, error-prone, soul-draining part of back-office work is not the deciding. It is everything before the deciding: finding the number, reading the document, mapping it to the right account, formatting it, getting it into the system. That is the part a machine does tirelessly and a person does badly after the fortieth one. Let the machine do the preparation. Keep the human on the judgment. You remove the busywork without ever removing the control.</p>
+
+    <h2>Three things that make it real, not theater</h2>
+    <p>Saying "a human is in the loop" is easy. Building it so the human loop actually means something takes three more things.</p>
+    <p><strong>1. Confidence, made visible.</strong> A good automation does not hand you fifty drafts that all look equally certain. It grades its own work and flags the ones it is unsure about. Your team reviews the exceptions, not the entire batch. This is what makes review sustainable instead of a second full-time job. For one North American back-office services firm, a confidence grader I built ran their monthly close at about 95% match to the prior manual process, so the team only had to look closely at the small share that did not line up. That is one firm's result, not a guarantee, but it shows what "human in the loop" can mean when it is built properly: humans on the hard 5%, not the easy 95%.</p>
+    <p><strong>2. It ends in your real system, with the source attached.</strong> A draft that lives in a chatbot window is useless and untraceable. A draft that lands in your actual accounting system or ERP, coded correctly, with the original document attached so anyone can check it later, is auditable. If you cannot trace a number back to where it came from, you do not have finance-grade automation. You have a guess with good production values.</p>
+    <p><strong>3. It survives your security review.</strong> This is where most automation dies, and rightly so. If a tool needs to send your data to some outside platform you have never vetted, your IT team should block it, and a good one will. Real back-office automation runs inside your own security controls: your identity system, your access rules, your secrets management. It should pass the same review any other piece of business software has to pass. When I build, "will IT approve this" is a design constraint from day one, not a problem discovered at the end.</p>
+
+    <h2>Why this matters more in finance than anywhere else</h2>
+    <p>In a lot of domains, an AI that is right most of the time is good enough. A draft email, a first-pass summary, a brainstorm. If it is off, you notice and you fix it, and nothing breaks.</p>
+    <p>Finance does not work like that. A confidently wrong number that nobody catches does not just waste time. It flows downstream into a report, a decision, a filing. The cost of a silent error is not the error, it is everything built on top of it before anyone notices. That is precisely why the fabrication behavior in that 2026 benchmark is so dangerous, and precisely why the draft-not-auto-post standard is not optional in the back office. The whole design has to assume the model can be wrong, and make sure a person and a flag and a source document stand between "the AI produced this" and "this is now true in our books."</p>
+    <p>Boring, careful, traceable. When it is your money, boring is exactly what you want.</p>
+
+    <h2>The takeaway</h2>
+    <p>AI in the back office is not about handing your judgment to a machine. It is about deleting the typing that happens before the judgment, and keeping a person on every decision that matters.</p>
+    <p>If a vendor cannot tell you, in plain language, how their automation drafts rather than acts, how it flags what it is unsure about, where the output lands in your own systems, and how it passes your security review, that is your answer. Caution is the right starting point. The fix is not to wait. It is to insist on the standard.</p>
+    <p>If you want to see where automation could safely take work off your team, I run a fixed-fee <a href="../../audit/">AI Automation Audit</a> that maps your top opportunities with the hours and dollars attached, and nothing is touched or automated during it. It is diagnosis first.</p>
+
+    <p class="author-note">Wil Mora is the founder of KHIPUAI, an AI automation studio for back-office and professional-services teams across North America. Everything is built draft-not-auto-post, human-approved, and designed to pass your IT and security review.</p>
+  </div>
+
+  <div class="cta-box">
+    <h3>Find out what AI can safely take off your team.</h3>
+    <p>The AI Automation Audit maps your top opportunities with the hours and dollars attached. Nothing is touched or automated during it. Diagnosis first, fixed fee.</p>
+    <a class="btn lg" href="https://calendly.com/wmorapal/30min">Book a free 30-minute call</a>
+  </div>
+
+  <p class="backlink"><a href="../">&larr; Back to all articles</a></p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:#fff;letter-spacing:.12em;">KHIPUAI</strong> &nbsp; | &nbsp; <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> &nbsp; | &nbsp; <a href="../../">Home</a> &nbsp; | &nbsp; <a href="../../audit/">The Audit</a> &nbsp; | &nbsp; <a href="../../about/">About</a> &nbsp; | &nbsp; <a href="../">Articles</a> &nbsp; | &nbsp; <a href="../../privacy.html">Privacy</a></div>
+    <div class="disclaimer">KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada (Net 15) and carries professional-liability (E&O) insurance. Results described are one firm's outcome and are not a typical or guaranteed result. Automations are designed to run inside enterprise security controls and create draft records that a person reviews and approves.</div>
+  </div>
+</footer>
+
+</body>
+</html>

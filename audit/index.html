@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--
+  KHIPUAI service page: The AI Automation Audit (khipuai.co/audit/).
+  Self-contained like index.html: no build step, no external dependencies.
+  Target query: "automation audit" (plus "ai automation audit").
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI Automation Audit | Fixed-Fee Automation Roadmap | KHIPUAI</title>
+<meta name="description" content="An automation audit is a short, fixed-fee diagnostic that maps your team's manual work and shows exactly what to automate first, with hours and dollars on each item. $2,500 fixed, about two weeks.">
+<link rel="canonical" href="https://khipuai.co/audit/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2312263A'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23D8743B' font-family='Arial' font-weight='bold'>K</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The AI Automation Audit | KHIPUAI">
+<meta property="og:description" content="A fixed-fee diagnostic that maps your team's manual work and shows exactly what to automate first, with hours and dollars on each item.">
+<meta property="og:url" content="https://khipuai.co/audit/">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The AI Automation Audit | KHIPUAI">
+<meta name="twitter:description" content="Find out exactly what your team should automate, what it is worth, and what to do first.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "The AI Automation Audit",
+  "serviceType": "Automation audit and AI process roadmap",
+  "description": "A fixed-fee, one-to-two-week diagnostic that maps a team's repetitive manual work, quantifies the hours and dollars behind each item, and delivers a prioritized automation roadmap.",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "KHIPUAI",
+    "url": "https://khipuai.co",
+    "founder": {"@type": "Person", "name": "Wil Mora"}
+  },
+  "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
+  "offers": [
+    {"@type": "Offer", "name": "Standard", "price": "2500", "priceCurrency": "USD", "description": "Most small and mid-size firms; one or two departments."},
+    {"@type": "Offer", "name": "Plus", "price": "5000", "priceCurrency": "USD", "description": "Larger or multi-department firms; several workflows."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How long does an automation audit take?", "acceptedAnswer": {"@type": "Answer", "text": "About two weeks. Week one is a few working sessions to see the real workflows. Week two you get the written roadmap and a live readout call. Your team's total time commitment is a couple of hours."}},
+    {"@type": "Question", "name": "What access do you need from us?", "acceptedAnswer": {"@type": "Answer", "text": "A couple of hours of your team's time across a week, and a look at the workflows and systems involved, usually over screen shares. Access is read-only and nothing is automated or changed during the audit. It is diagnosis first."}},
+    {"@type": "Question", "name": "Is the audit just a pitch to buy automation work?", "acceptedAnswer": {"@type": "Answer", "text": "No. The roadmap is yours to act on with anyone, including your own team. If you do build with KHIPUAI within 30 days, the full audit fee credits toward the build. And if there is not much worth automating, the audit says so plainly."}},
+    {"@type": "Question", "name": "What kinds of work usually get automated?", "acceptedAnswer": {"@type": "Answer", "text": "The recurring offenders are document intake and data entry, hand-built reports, reconciliations between systems that do not talk, approval chasing across inboxes, and copying the same data into multiple tools. The audit puts hours and dollars on each one before recommending anything."}},
+    {"@type": "Question", "name": "Do you guarantee the savings numbers?", "acceptedAnswer": {"@type": "Answer", "text": "No, and you should be wary of anyone who does. The audit uses conservative estimates built from your team's actual volumes and time, so you can judge each opportunity on evidence. Results described on this site are one firm's outcome, not a typical or guaranteed result."}},
+    {"@type": "Question", "name": "Can the audit be done remotely?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The audit runs fully remote over video calls and screen shares, on US time zones. On-site can be arranged for Plus engagements when it genuinely helps."}}
+  ]
+}
+</script>
+<style>
+  :root{
+    --ink:#12263A; --ink2:#1E3A57; --accent:#D8743B; --accent-dark:#B85C2A;
+    --bg:#FFFFFF; --soft:#F6F4F1; --muted:#566472; --line:#E6E2DC; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  a{color:var(--accent-dark);}
+  h1,h2,h3{line-height:1.2;margin:0 0 .5em;font-weight:750;letter-spacing:-.01em;}
+  h1{font-size:2.7rem;}
+  h2{font-size:1.9rem;margin-top:0;}
+  h3{font-size:1.15rem;}
+  p{margin:0 0 1em;}
+  .muted{color:var(--muted);}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;color:var(--ink);text-decoration:none;}
+  .logo .dot{color:var(--accent);}
+  .navlinks{display:flex;gap:20px;align-items:center;font-size:.95rem;}
+  .navlinks a{color:var(--ink);text-decoration:none;font-weight:600;}
+  .navlinks a:hover{color:var(--accent-dark);}
+  .navlinks a.here{color:var(--accent-dark);}
+  .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+    font-weight:650;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;
+    transition:background .15s ease;font-size:1rem;}
+  .btn:hover{background:var(--accent-dark);}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);background:transparent;}
+  .btn.lg{padding:16px 30px;font-size:1.08rem;}
+  .hero{background:linear-gradient(180deg,#12263A 0%,#1A3552 100%);color:#fff;padding:72px 0 60px;}
+  .hero h1{color:#fff;max-width:18ch;}
+  .hero p.sub{font-size:1.2rem;max-width:62ch;color:#D9E2EC;margin-bottom:1.6em;}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .cta-row a.link{color:#F4D9C6;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(244,217,198,.5);}
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  section.soft{background:var(--soft);}
+  .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;font-weight:700;color:var(--accent-dark);margin-bottom:10px;}
+  ul.clean{list-style:none;padding:0;margin:0;}
+  ul.clean li{position:relative;padding-left:30px;margin-bottom:12px;}
+  ul.clean li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:9px;border-radius:2px;background:var(--accent);}
+  .grid{display:grid;gap:26px;}
+  .cols-3{grid-template-columns:repeat(3,1fr);}
+  .cols-2{grid-template-columns:repeat(2,1fr);}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;}
+  .step{counter-increment:step;position:relative;padding-left:60px;margin-bottom:24px;}
+  .step:before{content:counter(step);position:absolute;left:0;top:-4px;width:40px;height:40px;border-radius:50%;
+    background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .steps{counter-reset:step;}
+  .price{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;max-width:760px;}
+  .price .card{display:flex;flex-direction:column;}
+  .price .card.feat{border:2px solid var(--accent);box-shadow:0 10px 30px rgba(18,38,58,.08);}
+  .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+  .amt{font-size:2.4rem;font-weight:800;color:var(--ink);}
+  .amt small{font-size:1rem;font-weight:600;color:var(--muted);}
+  .credit{background:#FBF1E9;border:1px solid #F0D8C6;border-radius:10px;padding:16px 18px;margin-top:22px;font-weight:600;}
+  .founder{display:flex;gap:24px;align-items:flex-start;}
+  .avatar{flex:0 0 96px;width:96px;height:96px;border-radius:50%;background:var(--ink2);color:#fff;object-fit:cover;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.04em;border:3px solid #fff;box-shadow:0 4px 14px rgba(18,38,58,.18);}
+  details{border-bottom:1px solid var(--line);padding:18px 0;}
+  details summary{font-weight:700;cursor:pointer;font-size:1.08rem;list-style:none;display:flex;justify-content:space-between;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary:after{content:"+";color:var(--accent);font-weight:700;margin-left:16px;}
+  details[open] summary:after{content:"\2013";}
+  details p{margin-top:12px;}
+  .final{background:linear-gradient(180deg,#1A3552 0%,#12263A 100%);color:#fff;text-align:center;}
+  .final h2{color:#fff;}
+  .final p{color:#D9E2EC;}
+  footer{background:#0D1F31;color:#8FA3B5;padding:34px 0;font-size:.92rem;}
+  footer a{color:#C9D6E2;}
+  .disclaimer{font-size:.82rem;color:#7488;margin-top:10px;}
+  @media (max-width:820px){
+    h1{font-size:2.1rem;} h2{font-size:1.6rem;}
+    .cols-3,.cols-2,.price{grid-template-columns:1fr;}
+    .founder{flex-direction:column;}
+    .hero{padding:56px 0 48px;}
+  }
+  @media (max-width:560px){
+    .navlinks a:not(.here){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="../">KHIPU<span class="dot">A</span>I</a>
+    <nav class="navlinks">
+      <a href="../">Home</a>
+      <a class="here" href="./">The Audit</a>
+      <a href="../about/">About</a>
+      <a href="../blog/">Articles</a>
+      <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <h1>The AI Automation Audit</h1>
+    <p class="sub">An automation audit is a short, fixed-fee diagnostic of how your team actually works. It maps the repetitive manual work inside your operation, puts hours and dollars on every item, and hands you a ranked plan of what to automate first. KHIPUAI runs it in about two weeks, from $2,500 fixed.</p>
+    <div class="cta-row">
+      <a class="btn lg" href="https://calendly.com/wmorapal/30min">Book a free 30-minute call</a>
+      <a class="link" href="../self_assessment.html">Or take the 5-minute self-assessment first &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Definition</div>
+    <h2>What is an automation audit?</h2>
+    <p style="max-width:64ch;">An automation audit answers three questions about your business with evidence instead of opinions: where your team's hours actually go, which of that work a machine could do reliably, and what each fix is worth in saved hours and dollars. The output is a written roadmap, not a software demo.</p>
+    <p style="max-width:64ch;">It is different from hiring a consultancy (open-ended meter, long discovery) and different from a vendor pitch (the answer is always their platform). The audit is fixed-fee, fixed-timeline, and tool-neutral: recommendations build into the systems you already run, like your existing ERP, ticketing, and Microsoft 365 stack.</p>
+    <p style="max-width:64ch;font-weight:650;">If there is not much worth automating, the audit says so. That honesty is the product.</p>
+  </div>
+</section>
+
+<!-- WHEN -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Timing</div>
+    <h2>When does your team need one?</h2>
+    <p class="muted" style="max-width:62ch;">You do not need a transformation program. You need an audit when several of these sound familiar:</p>
+    <ul class="clean" style="max-width:62ch;">
+      <li>People retype data from PDFs and emails into your systems every week</li>
+      <li>The same report gets rebuilt by hand every week or month</li>
+      <li>Approvals crawl across inboxes and spreadsheets with no owner</li>
+      <li>Headcount in admin roles grows with revenue instead of staying flat</li>
+      <li>Leadership keeps saying "we should be using AI" but nobody can say where</li>
+    </ul>
+    <p style="max-width:62ch;margin-top:18px;">Each of those is a measurable cost. The audit counts it before you spend anything fixing it.</p>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Deliverables</div>
+    <h2>What you get.</h2>
+    <div class="grid cols-3" style="margin-top:28px;">
+      <div class="card"><h3>A prioritized opportunity map</h3><p class="muted">The top 5 to 10 things worth automating, ranked by value against effort.</p></div>
+      <div class="card"><h3>The numbers</h3><p class="muted">For each item: what is manual today, the proposed approach, hours saved per month, dollar value per year, and effort to build.</p></div>
+      <div class="card"><h3>One or two quick wins</h3><p class="muted">Things you can act on right away, no project required.</p></div>
+      <div class="card"><h3>A recommended sequence</h3><p class="muted">What to do first, second, third, with rough investment for each build.</p></div>
+      <div class="card"><h3>A live readout call</h3><p class="muted">A plain-language walkthrough of the top moves with you and your team.</p></div>
+      <div class="card"><h3>A document you own</h3><p class="muted">The roadmap is yours. Build it with KHIPUAI, your own team, or anyone else.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Pricing</div>
+    <h2>What it costs.</h2>
+    <div class="price" style="margin-top:28px;">
+      <div class="card feat">
+        <span class="tag">Recommended</span>
+        <h3>Standard</h3>
+        <div class="amt">$2,500 <small>fixed</small></div>
+        <p class="muted" style="margin-top:10px;">Most small and mid-size firms; one or two departments.</p>
+        <a class="btn" style="margin-top:auto;" href="https://calendly.com/wmorapal/30min">Book a call</a>
+      </div>
+      <div class="card">
+        <h3>Plus</h3>
+        <div class="amt">$5,000 <small>fixed</small></div>
+        <p class="muted" style="margin-top:10px;">Larger or multi-department firms; several workflows.</p>
+        <a class="btn ghost" style="margin-top:auto;" href="https://calendly.com/wmorapal/30min">Book a call</a>
+      </div>
+    </div>
+    <div class="credit" style="max-width:760px;">The full fee credits toward your build if you hire KHIPUAI to implement within 30 days. Move forward, and the audit is effectively free.</div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Process</div>
+    <h2>How the two weeks run.</h2>
+    <div class="steps" style="margin-top:30px;max-width:70ch;">
+      <div class="step"><h3>Discovery call (free, 20 to 30 minutes)</h3><p class="muted">We confirm there is a fit and pick the areas worth looking at. No preparation needed on your side.</p></div>
+      <div class="step"><h3>Walkthrough (about one week)</h3><p class="muted">A few working sessions with you and your team to see the real workflows: the systems, the handoffs, the manual steps. Read-only; nothing changes during the audit.</p></div>
+      <div class="step"><h3>Roadmap and readout (week 2)</h3><p class="muted">You get the written roadmap and a live call to walk through the top opportunities and the recommended first move.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO RUNS IT -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Who runs it</div>
+    <div class="founder">
+      <img class="avatar" src="../founder.jpg" alt="Wil Mora, Founder of KHIPUAI">
+      <div>
+        <p style="max-width:64ch;">The audit is run personally by Wil Mora, an operator with 15 years across operations, logistics, and digital transformation in Peru, the US, and Canada, and a finance degree behind it. Every recommendation comes from someone who has run the kind of operation being audited, and has built these automations in production.</p>
+        <p><a href="../about/">More about Wil and how KHIPUAI works &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Questions</div>
+    <h2>Common questions about the audit.</h2>
+    <div style="max-width:80ch;margin-top:18px;">
+      <details open><summary>How long does an automation audit take?</summary><p class="muted">About two weeks. Week one is a few working sessions to see the real workflows. Week two you get the written roadmap and a live readout call. Your team's total time commitment is a couple of hours.</p></details>
+      <details><summary>What access do you need from us?</summary><p class="muted">A couple of hours of your team's time across a week, and a look at the workflows and systems involved, usually over screen shares. Access is read-only and nothing is automated or changed during the audit. It is diagnosis first.</p></details>
+      <details><summary>Is the audit just a pitch to buy automation work?</summary><p class="muted">No. The roadmap is yours to act on with anyone, including your own team. If you do build with KHIPUAI within 30 days, the full audit fee credits toward the build. And if there is not much worth automating, the audit says so plainly.</p></details>
+      <details><summary>What kinds of work usually get automated?</summary><p class="muted">The recurring offenders are document intake and data entry, hand-built reports, reconciliations between systems that do not talk, approval chasing across inboxes, and copying the same data into multiple tools. The audit puts hours and dollars on each one before recommending anything.</p></details>
+      <details><summary>Do you guarantee the savings numbers?</summary><p class="muted">No, and you should be wary of anyone who does. The audit uses conservative estimates built from your team's actual volumes and time, so you can judge each opportunity on evidence. Results described on this site are one firm's outcome, not a typical or guaranteed result.</p></details>
+      <details><summary>Can the audit be done remotely?</summary><p class="muted">Yes. The audit runs fully remote over video calls and screen shares, on US time zones. On-site can be arranged for Plus engagements when it genuinely helps.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>See what your business should automate.</h2>
+    <p style="margin-bottom:24px;">Fixed fee, fixed timeline, no obligation.</p>
+    <a class="btn lg" href="https://calendly.com/wmorapal/30min">Book a free 30-minute call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:#fff;letter-spacing:.12em;">KHIPUAI</strong> &nbsp; | &nbsp; <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> &nbsp; | &nbsp; <a href="../">Home</a> &nbsp; | &nbsp; <a href="../about/">About</a> &nbsp; | &nbsp; <a href="../blog/">Articles</a> &nbsp; | &nbsp; <a href="../privacy.html">Privacy</a></div>
+    <div class="disclaimer">KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada (Net 15) and carries professional-liability (E&O) insurance. Results described are one firm's outcome and are not a typical or guaranteed result. Automations are designed to run inside enterprise security controls and create draft records that a person reviews and approves.</div>
+  </div>
+</footer>
+
+</body>
+</html>
