@@ -1,0 +1,33 @@
+# KHIPUAI
+
+> KHIPUAI is an AI automation studio for back-office and professional-services teams across the United States and Canada. Founded by Wil Mora.
+
+KHIPUAI finds the repetitive, rules-based work inside a business that does not need human judgment - the re-keying, the reconciling, the chasing approvals by email - puts real hours and dollars on it, and builds automations into the systems the client already runs. A human approves every step. Nothing posts or executes on its own.
+
+## Lead offer
+
+- [The AI Automation Audit](https://khipuai.co/audit/): A fixed-fee, one-to-two-week diagnostic. Maps where manual hours are going, prices each item in hours and dollars, and delivers a prioritized automation roadmap. Price: USD $2,500 (entry) to $5,000 (full scope). The roadmap is the client's to keep either way.
+
+## Key pages
+
+- [Home](https://khipuai.co/): Overview of services and the lead offer.
+- [The Audit](https://khipuai.co/audit/): Full description of the AI Automation Audit - what it covers, what the deliverable looks like, and how to book.
+- [About](https://khipuai.co/about/): Wil Mora's background - 15 years in operations leadership (logistics, 20 plants, 280+ trucks, ~1M cubic metres/year), transition to AI automation, and the founding of KHIPUAI.
+- [Self-Assessment](https://khipuai.co/self_assessment.html): A free 5-minute exercise that walks a business through counting where their team's hours go and identifying automation candidates.
+- [Articles](https://khipuai.co/blog/): Long-form practical content on back-office automation.
+
+## Articles
+
+- [The hidden cost of manual work](https://khipuai.co/blog/hidden-cost-of-manual-work/): How to find the hours a back office is quietly losing - a counting exercise any operations team can run without a consultant.
+- [AI you can trust with your books](https://khipuai.co/blog/ai-you-can-trust-with-your-books/): How to apply AI to financial back-office work without losing control of your records.
+- [How to automate accounts payable](https://khipuai.co/blog/automate-accounts-payable/): A practical walkthrough of automating invoice intake, coding, and approval without replacing your accounting system.
+
+## Contact
+
+- Email: wil@khipuai.co
+- Book a free 30-minute call: https://calendly.com/wmorapal/30min
+- Geography: United States and Canada (Ontario, Canada registered studio)
+
+## What KHIPUAI is not
+
+KHIPUAI does not sell software licenses, replace existing systems, or build fully autonomous automations that run without human oversight. All automations create draft records that a person reviews and approves before anything is committed.
