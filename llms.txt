@@ -6,13 +6,14 @@ KHIPUAI finds the repetitive, rules-based work inside a business that does not n
 
 ## Lead offer
 
-- [The AI Automation Audit](https://khipuai.co/audit/): A fixed-fee, one-to-two-week diagnostic. Maps where manual hours are going, prices each item in hours and dollars, and delivers a prioritized automation roadmap. Price: USD $2,500 (entry) to $5,000 (full scope). The roadmap is the client's to keep either way.
+- [The AI Automation Audit](https://khipuai.co/audit/): A fixed-fee, one-to-two-week diagnostic. Maps where manual hours are going, prices each item in hours and dollars, and delivers a prioritized automation roadmap. Fixed-fee, scoped per engagement after a short discovery call. The roadmap is the client's to keep either way.
 
 ## Key pages
 
 - [Home](https://khipuai.co/): Overview of services and the lead offer.
 - [The Audit](https://khipuai.co/audit/): Full description of the AI Automation Audit - what it covers, what the deliverable looks like, and how to book.
 - [About](https://khipuai.co/about/): Wil Mora's background - 15 years in operations leadership (logistics, 20 plants, 280+ trucks, ~1M cubic metres/year), transition to AI automation, and the founding of KHIPUAI.
+- [Work](https://khipuai.co/work/): Selected case studies - client automations (anonymized) and independent builds.
 - [Self-Assessment](https://khipuai.co/self_assessment.html): A free 5-minute exercise that walks a business through counting where their team's hours go and identifying automation candidates.
 - [Articles](https://khipuai.co/blog/): Long-form practical content on back-office automation.
 
