@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<!--
+  KHIPUAI - Version en espanol (es) de la pagina de inicio.
+  Traducida de la pagina en ingles (https://khipuai.co/). Misma estructura, CSS, fuentes, GA4 y SVG.
+  Todas las URLs son absolutas a https://khipuai.co/... para evitar errores de rutas relativas.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KHIPUAI | La Auditoría de Automatización con IA</title>
+<meta name="description" content="Por una tarifa fija y única, descubre exactamente qué debería automatizar tu equipo administrativo, cuánto vale y por dónde empezar. Nivel financiero, aprobado por personas e integrado en los sistemas que ya usas.">
+<link rel="canonical" href="https://khipuai.co/es/">
+<link rel="alternate" hreflang="en" href="https://khipuai.co/">
+<link rel="alternate" hreflang="es" href="https://khipuai.co/es/">
+<link rel="alternate" hreflang="x-default" href="https://khipuai.co/">
+<!-- Favicon (inline, no file needed) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2312263A'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23D8743B' font-family='Arial' font-weight='bold'>K</text></svg>">
+<!-- Social share cards (LinkedIn / X / Facebook). -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="KHIPUAI | La Auditoría de Automatización con IA">
+<meta property="og:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar. Una tarifa fija. Nivel financiero, aprobado por personas.">
+<meta property="og:url" content="https://khipuai.co/es/">
+<meta property="og:locale" content="es_PE">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KHIPUAI | La Auditoría de Automatización con IA">
+<meta name="twitter:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0ENQ1NBS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8M0ENQ1NBS');
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "KHIPUAI",
+  "url": "https://khipuai.co/es/",
+  "logo": "https://khipuai.co/og-image.png",
+  "image": "https://khipuai.co/og-image.png",
+  "description": "Estudio de automatización con IA para equipos administrativos (back-office) y de servicios profesionales. Propuesta principal: la Auditoría de Automatización con IA de tarifa fija, un diagnóstico de dos semanas que mapea el trabajo manual y entrega una hoja de ruta de automatización priorizada, con las horas y los dólares de cada tarea.",
+  "founder": {"@type": "Person", "name": "Wil Mora", "url": "https://khipuai.co/es/about/"},
+  "email": "wil@khipuai.co",
+  "areaServed": [{"@type": "Country", "name": "Estados Unidos"}, {"@type": "Country", "name": "Canadá"}],
+  "knowsAbout": ["automatización administrativa", "automatización de flujos de trabajo con IA", "auditoría de automatización", "automatización de procesos de negocio"],
+  "makesOffer": {
+    "@type": "Offer",
+    "itemOffered": {"@type": "Service", "name": "La Auditoría de Automatización con IA", "url": "https://khipuai.co/es/audit/"}
+  }
+}
+</script>
+<style>
+  :root{
+    --ink:#12263A; --ink2:#1E3A57; --accent:#D8743B; --accent-dark:#B85C2A;
+    --bg:#FFFFFF; --soft:#F6F4F1; --muted:#566472; --line:#E6E2DC; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
+  a{color:var(--accent-dark);}
+  h1,h2,h3{line-height:1.2;margin:0 0 .5em;font-weight:750;letter-spacing:-.01em;}
+  h1{font-size:2.7rem;}
+  h2{font-size:1.9rem;margin-top:0;}
+  h3{font-size:1.15rem;}
+  p{margin:0 0 1em;}
+  .muted{color:var(--muted);}
+  /* top bar */
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;color:var(--ink);text-decoration:none;}
+  .logo .dot{color:var(--accent);}
+  .navlinks{display:flex;gap:20px;align-items:center;font-size:.95rem;margin-left:auto;}
+  .navcta{white-space:nowrap;margin-left:20px;}
+  .navlinks a{color:var(--ink);text-decoration:none;font-weight:600;}
+  .navlinks a:hover{color:var(--accent-dark);}
+  .navtoggle{display:none;}
+  .hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;padding:9px;margin:0;cursor:pointer;background:transparent;border:0;}
+  .hamburger span{display:block;height:2px;width:100%;background:var(--ink);border-radius:2px;transition:transform .2s ease,opacity .2s ease;}
+  .navlinks a.btn{color:#fff;}
+  .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+    font-weight:650;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;
+    transition:background .15s ease;font-size:1rem;}
+  .btn:hover{background:var(--accent-dark);}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);background:transparent;}
+  .btn.lg{padding:16px 30px;font-size:1.08rem;}
+  /* hero */
+  .hero{background:linear-gradient(180deg,#12263A 0%,#1A3552 100%);color:#fff;padding:84px 0 72px;}
+  .hero h1{color:#fff;max-width:16ch;}
+  .hero p.sub{font-size:1.25rem;max-width:60ch;color:#D9E2EC;margin-bottom:1.6em;}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .cta-row a.link{color:#F4D9C6;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(244,217,198,.5);}
+  .trust{margin-top:30px;color:#9FB2C4;font-size:.95rem;letter-spacing:.02em;}
+  .trust span{white-space:nowrap;}
+  /* sections */
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  section.soft{background:var(--soft);}
+  .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;font-weight:700;color:var(--accent-dark);margin-bottom:10px;}
+  ul.clean{list-style:none;padding:0;margin:0;}
+  ul.clean li{position:relative;padding-left:30px;margin-bottom:12px;}
+  ul.clean li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:9px;border-radius:2px;background:var(--accent);}
+  .grid{display:grid;gap:26px;}
+  .cols-3{grid-template-columns:repeat(3,1fr);}
+  .cols-2{grid-template-columns:repeat(2,1fr);}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;}
+  .step{counter-increment:step;position:relative;padding-left:60px;margin-bottom:24px;}
+  .step:before{content:counter(step);position:absolute;left:0;top:-4px;width:40px;height:40px;border-radius:50%;
+    background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .steps{counter-reset:step;}
+  /* stat strip */
+  .statband{background:var(--soft);border-bottom:1px solid var(--line);padding:40px 0;}
+  .statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .stat{text-align:center;padding:6px 14px;}
+  .stat .num{font-size:2.3rem;font-weight:800;color:var(--accent);line-height:1.1;letter-spacing:-.02em;}
+  .stat .lab{color:var(--ink);font-weight:600;font-size:1rem;margin-top:4px;line-height:1.35;}
+  .statnote{text-align:center;color:var(--muted);font-size:.82rem;margin:22px 0 0;}
+  /* pricing */
+  .price{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;max-width:760px;}
+  .price .card{display:flex;flex-direction:column;}
+  .price .card.feat{border:2px solid var(--accent);box-shadow:0 10px 30px rgba(18,38,58,.08);}
+  .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+  .amt{font-size:2.4rem;font-weight:800;color:var(--ink);}
+  .amt small{font-size:1rem;font-weight:600;color:var(--muted);}
+  .credit{background:#FBF1E9;border:1px solid #F0D8C6;border-radius:10px;padding:16px 18px;margin-top:22px;font-weight:600;}
+  /* founder */
+  .founder{display:flex;gap:24px;align-items:flex-start;}
+  .avatar{flex:0 0 96px;width:96px;height:96px;border-radius:50%;background:var(--ink2);color:#fff;object-fit:cover;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.04em;border:3px solid #fff;box-shadow:0 4px 14px rgba(18,38,58,.18);}
+  blockquote{margin:0;font-size:1.2rem;line-height:1.5;color:var(--ink);font-style:italic;}
+  /* faq */
+  details{border-bottom:1px solid var(--line);padding:18px 0;}
+  details summary{font-weight:700;cursor:pointer;font-size:1.08rem;list-style:none;display:flex;justify-content:space-between;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary:after{content:"+";color:var(--accent);font-weight:700;margin-left:16px;}
+  details[open] summary:after{content:"\2013";}
+  details p{margin-top:12px;}
+  /* final + footer */
+  .final{background:linear-gradient(180deg,#1A3552 0%,#12263A 100%);color:#fff;text-align:center;}
+  .final h2{color:#fff;}
+  .final p{color:#D9E2EC;}
+  footer{background:#0D1F31;color:#8FA3B5;padding:34px 0;font-size:.92rem;}
+  footer a{color:#C9D6E2;}
+  .disclaimer{font-size:.82rem;color:#7488;margin-top:10px;}
+  @media (max-width:820px){
+    h1{font-size:2.1rem;} h2{font-size:1.6rem;}
+    .cols-3,.cols-2,.price,.statrow{grid-template-columns:1fr;}
+    .founder{flex-direction:column;}
+    .hero{padding:60px 0 52px;}
+  }
+  @media (max-width:560px){
+    .hamburger{display:flex;margin-left:6px;}
+    .navcta{margin-left:auto;padding:10px 15px;font-size:.9rem;}
+    .navlinks{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+      background:#fff;border-bottom:1px solid var(--line);box-shadow:0 10px 24px rgba(18,38,58,.12);
+      padding:6px 24px 14px;display:none;}
+    .navtoggle:checked ~ .navlinks{display:flex;}
+    .navlinks a{width:100%;padding:13px 2px;border-top:1px solid var(--line);}
+    .navtoggle:checked ~ .hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .navtoggle:checked ~ .hamburger span:nth-child(2){opacity:0;}
+    .navtoggle:checked ~ .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  }
+</style>
+<!-- KHIPUAI type + accessibility polish (after base styles, wins the cascade) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Source Sans 3',-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  h1,h2,h3,.logo{font-family:'Lexend','Source Sans 3',-apple-system,"Segoe UI",sans-serif;}
+  a:focus-visible,button:focus-visible,summary:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
+</style>
+<!-- Hero two-column layout + inline story diagram, and upgraded founder-photo framing. Scoped, last in cascade. -->
+<style>
+  /* Hero: copy left, story diagram right (stacks on mobile) */
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:52px;align-items:center;}
+  .hero-copy{min-width:0;}
+  .hero-visual{min-width:0;display:flex;align-items:center;justify-content:center;}
+  .hero-visual svg{width:100%;height:auto;max-width:480px;display:block;}
+  /* dashed "flow" connectors from tools into the AI hub */
+  .flow-line{stroke-dasharray:5 7;}
+  @keyframes khpFlow{to{stroke-dashoffset:-48;}}
+  @keyframes khpPulse{0%,100%{opacity:.28;}50%{opacity:.6;}}
+  @media (prefers-reduced-motion: no-preference){
+    .flow-line{animation:khpFlow 2.6s linear infinite;}
+    .hub-glow{animation:khpPulse 3.6s ease-in-out infinite;}
+  }
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:34px;}
+    .hero-visual{order:2;}
+    .hero-visual svg{max-width:420px;margin:0 auto;}
+  }
+  @media (max-width:480px){ .hero-visual{display:none;} }
+  /* Founder photo: clean rounded frame, subtle shadow, consistent size */
+  .founder-photo{flex:0 0 132px;width:132px;height:132px;border-radius:20px;object-fit:cover;object-position:center top;
+    border:1px solid var(--line);box-shadow:0 14px 34px rgba(18,38,58,.16);background:var(--soft);display:block;}
+  @media (max-width:820px){ .founder-photo{width:120px;height:120px;flex-basis:120px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="https://khipuai.co/es/">KHIPU<span class="dot">A</span>I</a>
+    <input type="checkbox" id="navtoggle" class="navtoggle" aria-hidden="true">
+    <nav class="navlinks">
+      <a href="https://khipuai.co/es/">Inicio</a>
+      <a href="https://khipuai.co/es/audit/">La Auditoría</a>
+      <a href="https://khipuai.co/es/about/">Acerca</a>
+      <a href="https://khipuai.co/es/work/">Proyectos</a>
+      <a href="https://khipuai.co/blog/">Artículos</a>
+      <a href="https://khipuai.co/" hreflang="en" lang="en" aria-label="Ver esta página en inglés">EN</a>
+    </nav>
+    <a class="btn navcta" href="https://calendly.com/wmorapal/30min">Agenda una llamada</a>
+    <label for="navtoggle" class="hamburger" aria-label="Menú"><span></span><span></span><span></span></label>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Descubre exactamente qué debería automatizar tu equipo.</h1>
+      <p class="sub">La Auditoría de Automatización con IA: una tarifa fija, alrededor de dos semanas. Mapeo el trabajo manual, le pongo cifras de horas y dólares a cada tarea, y te entrego un primer paso claro. Pensada para equipos administrativos (back-office) y de servicios profesionales.</p>
+      <div class="cta-row">
+        <a class="btn lg" href="https://calendly.com/wmorapal/30min">Agenda una llamada gratuita de 30 minutos</a>
+        <a class="link" href="https://khipuai.co/self_assessment.html">O primero haz la autoevaluación de 5 minutos &rarr;</a>
+      </div>
+      <div class="trust"><span>Nivel financiero.</span> &nbsp; <span>Aprobado por personas.</span> &nbsp; <span>Integrado en los sistemas que ya usas.</span> &nbsp; <span>Asegurado.</span></div>
+    </div>
+    <!-- Hero story diagram: separate tools flow into one AI hub, out to a human-approved step. Pure inline SVG, no external assets. -->
+    <div class="hero-visual">
+      <svg viewBox="0 0 480 420" role="img" aria-labelledby="heroDiagTitle heroDiagDesc" xmlns="http://www.w3.org/2000/svg">
+        <title id="heroDiagTitle">Cómo funciona KHIPUAI</title>
+        <desc id="heroDiagDesc">Las distintas herramientas que tu equipo ya usa se conectan en un solo centro de IA, que produce trabajo que una persona revisa y aprueba antes de que algo sea definitivo.</desc>
+        <defs>
+          <linearGradient id="hubGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#E68A4E"/>
+            <stop offset="1" stop-color="#B85C2A"/>
+          </linearGradient>
+          <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#4C86C6" stop-opacity="0.42"/>
+            <stop offset="1" stop-color="#4C86C6" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- soft tech glow behind the hub (restrained electric-blue) -->
+        <circle class="hub-glow" cx="258" cy="210" r="92" fill="url(#glowGrad)"/>
+
+        <!-- section labels -->
+        <text x="34" y="18" fill="#9FB2C4" font-family="Lexend,sans-serif" font-size="12" font-weight="600" letter-spacing="1.6">TUS HERRAMIENTAS</text>
+
+        <!-- flow connectors: tools -> hub -->
+        <path class="flow-line" d="M122 70 C 168 70, 176 192, 210 206" fill="none" stroke="#9FB2C4" stroke-width="2" stroke-linecap="round"/>
+        <path class="flow-line" d="M122 210 C 160 210, 176 210, 210 210" fill="none" stroke="#9FB2C4" stroke-width="2" stroke-linecap="round"/>
+        <path class="flow-line" d="M122 350 C 168 350, 176 228, 210 214" fill="none" stroke="#9FB2C4" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- output: hub -> approved -->
+        <path d="M308 210 L382 210" fill="none" stroke="#C9D6E2" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="374,204 384,210 374,216" fill="none" stroke="#C9D6E2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- tool tiles (disconnected) -->
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <!-- document -->
+          <rect x="34" y="36" width="88" height="68" rx="14" fill="#1E3A57" stroke="#46658A" stroke-width="1.5"/>
+          <rect x="67" y="53" width="22" height="30" rx="3" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+          <line x1="72" y1="62" x2="84" y2="62" stroke="#C9D6E2" stroke-width="2"/>
+          <line x1="72" y1="69" x2="84" y2="69" stroke="#C9D6E2" stroke-width="2"/>
+          <line x1="72" y1="76" x2="80" y2="76" stroke="#C9D6E2" stroke-width="2"/>
+          <!-- spreadsheet / grid -->
+          <rect x="34" y="176" width="88" height="68" rx="14" fill="#1E3A57" stroke="#46658A" stroke-width="1.5"/>
+          <rect x="65" y="196" width="26" height="26" rx="3" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+          <line x1="78" y1="196" x2="78" y2="222" stroke="#C9D6E2" stroke-width="2"/>
+          <line x1="65" y1="209" x2="91" y2="209" stroke="#C9D6E2" stroke-width="2"/>
+          <!-- message / envelope -->
+          <rect x="34" y="316" width="88" height="68" rx="14" fill="#1E3A57" stroke="#46658A" stroke-width="1.5"/>
+          <rect x="65" y="339" width="26" height="20" rx="3" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+          <path d="M65 341 L78 351 L91 341" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+        </g>
+
+        <!-- AI hub -->
+        <circle cx="258" cy="210" r="54" fill="none" stroke="#D8743B" stroke-opacity="0.35" stroke-width="1.5"/>
+        <circle cx="258" cy="210" r="46" fill="url(#hubGrad)"/>
+        <text x="258" y="210" text-anchor="middle" dominant-baseline="central" fill="#FFFFFF" font-family="Lexend,sans-serif" font-size="27" font-weight="700" letter-spacing="0.5">IA</text>
+
+        <!-- human-approved step -->
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="418" cy="152" r="7" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+          <path d="M404 174 C 404 163, 432 163, 432 174" fill="none" stroke="#C9D6E2" stroke-width="2"/>
+          <circle cx="418" cy="210" r="30" fill="#17352A" stroke="#55C596" stroke-width="2"/>
+          <polyline points="405,210 414,220 432,198" fill="none" stroke="#6FD8AA" stroke-width="3.5"/>
+        </g>
+        <text x="418" y="258" text-anchor="middle" fill="#A9E0C6" font-family="Lexend,sans-serif" font-size="12" font-weight="600" letter-spacing="1.6">APROBADO</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="statband">
+  <div class="wrap">
+    <div class="statrow">
+      <div class="stat"><div class="num">hasta 80%</div><div class="lab">más rápida la revisión de especificaciones</div></div>
+      <div class="stat"><div class="num">~$150K</div><div class="lab">ahorrados al año</div></div>
+      <div class="stat"><div class="num">95%</div><div class="lab">de coincidencia con el cierre manual</div></div>
+    </div>
+    <p class="statnote">Los resultados descritos corresponden al desempeño de una sola empresa y no son un resultado típico ni garantizado.</p>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section>
+  <div class="wrap">
+    <div class="kicker">El problema</div>
+    <h2>Tu equipo pierde decenas de horas al mes, y nadie las ha contado.</h2>
+    <p class="muted" style="max-width:62ch;">En algún lugar de tu negocio, ahora mismo, una persona capaz está:</p>
+    <ul class="clean" style="max-width:62ch;">
+      <li>Volviendo a escribir datos de PDFs y correos en tus sistemas</li>
+      <li>Persiguiendo aprobaciones entre bandejas de entrada y hojas de cálculo</li>
+      <li>Rehaciendo el mismo reporte cada semana a mano</li>
+      <li>Copiando los mismos datos de clientes o proveedores en tres herramientas distintas</li>
+      <li>Conciliando cifras línea por línea porque los sistemas no se comunican entre sí</li>
+    </ul>
+    <p style="max-width:62ch;margin-top:18px;">No es un problema de presupuesto. Es un problema de claridad. Nadie ha mapeado a dónde se van las horas ni qué es realista automatizar, así que el trabajo manual simplemente continúa, cada semana, en silencio.</p>
+  </div>
+</section>
+
+<!-- WHAT IT IS -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">La propuesta</div>
+    <h2>La Auditoría de Automatización con IA</h2>
+    <p style="max-width:64ch;">Un trabajo puntual, de tarifa fija, de una a dos semanas. Aprendo cómo funciona de verdad tu negocio y luego te entrego una hoja de ruta priorizada de qué automatizar, con las horas y los dólares al lado de cada tarea, y un primer paso claro. Puedes hacerlo por tu cuenta, o pedirme que lo construya.</p>
+    <p style="max-width:64ch;font-weight:650;">Sin grandes proyectos de software. Sin plataformas a las que atarte. Sin una consultoría por horas que nunca termina.</p>
+    <p style="max-width:64ch;"><a href="https://khipuai.co/es/audit/">Lee el desglose completo de la auditoría: qué es, qué recibes y cómo se cobra &rarr;</a></p>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Qué recibes</div>
+    <h2>Un plan corto y concreto sobre el que puedes actuar.</h2>
+    <div class="grid cols-3" style="margin-top:28px;">
+      <div class="card"><h3>Un mapa de oportunidades priorizado</h3><p class="muted">Las 5 a 10 cosas que más vale la pena automatizar, en orden de prioridad.</p></div>
+      <div class="card"><h3>Las cifras</h3><p class="muted">Para cada tarea: qué es manual hoy, el enfoque, las horas ahorradas al mes, el valor en dólares al año y el esfuerzo de construcción.</p></div>
+      <div class="card"><h3>Una o dos victorias rápidas</h3><p class="muted">Cosas sobre las que puedes actuar de inmediato, sin necesidad de un proyecto.</p></div>
+      <div class="card"><h3>Una secuencia recomendada</h3><p class="muted">Qué hacer primero, segundo y tercero, con una inversión aproximada para cada construcción.</p></div>
+      <div class="card"><h3>Una llamada de presentación en vivo</h3><p class="muted">Un recorrido en lenguaje sencillo por las principales acciones, contigo y tu equipo.</p></div>
+      <div class="card"><h3>Construido por un operador</h3><p class="muted">15 años dirigiendo operaciones detrás de cada recomendación, no exageraciones sobre la IA.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Cómo funciona</div>
+    <h2>Tres pasos, alrededor de dos semanas.</h2>
+    <div class="steps" style="margin-top:30px;max-width:70ch;">
+      <div class="step"><h3>Llamada de descubrimiento (gratis, de 20 a 30 minutos)</h3><p class="muted">Confirmamos que encajamos y elegimos las áreas que vale la pena revisar.</p></div>
+      <div class="step"><h3>Recorrido (alrededor de una semana)</h3><p class="muted">Unas cuantas sesiones de trabajo contigo y tu equipo para ver los flujos de trabajo reales: los sistemas, los traspasos y los pasos manuales.</p></div>
+      <div class="step"><h3>Hoja de ruta y presentación (semana 2)</h3><p class="muted">Recibes la hoja de ruta por escrito y una llamada en vivo para repasar las principales oportunidades y el primer paso recomendado.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Tarifa</div>
+    <h2>Una tarifa fija, adaptada a tu negocio.</h2>
+    <div class="card" style="margin-top:28px;max-width:760px;">
+      <p style="margin-top:0;">La auditoría es una sola tarifa fija, no un cobro por hora. La cotizo después de una breve llamada de descubrimiento, ajustada a tu operación: la cantidad de flujos de trabajo y las áreas involucradas. Sabes la cifra antes de empezar.</p>
+      <p class="muted" style="margin-bottom:0;">La mayoría de los trabajos toman de una a dos semanas de principio a fin.</p>
+      <a class="btn" style="margin-top:20px;" href="https://calendly.com/wmorapal/30min">Agenda una llamada</a>
+    </div>
+    <div class="credit" style="max-width:760px;">La tarifa completa se acredita a tu construcción si contratas a KHIPUAI para implementarla dentro de los 30 días. Si avanzas, la auditoría resulta prácticamente gratis.</div>
+  </div>
+</section>
+
+<!-- WHO IT IS FOR -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Para quién es</div>
+    <div class="grid cols-2" style="margin-top:8px;">
+      <div>
+        <h3>Esto es para ti si</h3>
+        <ul class="clean">
+          <li>Diriges una firma administrativa o de servicios profesionales (servicios de RR. HH. y back-office, servicios de TI y MSP, consultoría o contabilidad), de aproximadamente 20 a 300 personas.</li>
+          <li>Tu equipo tiene trabajo manual real y repetitivo, y operas con relaciones recurrentes con clientes.</li>
+          <li>Quieres un plan honesto de alguien que ya lo ha construido, no el discurso de venta de un proveedor.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Probablemente no es para ti si</h3>
+        <ul class="clean">
+          <li>Eres una empresa de software puro con operaciones limpias y de autoservicio.</li>
+          <li>Eres un negocio muy pequeño con pocos procesos.</li>
+          <li>No tienes trabajo administrativo repetitivo que eliminar.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER / WHY ME -->
+<section>
+  <div class="wrap">
+    <div class="kicker">Por qué yo</div>
+    <div class="founder">
+      <img class="founder-photo" src="https://khipuai.co/founder.jpg" width="132" height="132" alt="Wil Mora, fundador de KHIPUAI">
+      <div>
+        <blockquote>Creé esta propuesta porque veía lo mismo en cada empresa donde trabajé: buenas personas atrapadas haciendo un trabajo que debería hacer una computadora. La auditoría es la forma honesta y de bajo riesgo de descubrir cuánto te está costando eso y qué hacer al respecto. Si no vale la pena, te lo diré.</blockquote>
+        <p style="margin-top:16px;">Soy Wil Mora. He pasado más de una década liderando operaciones, logística y transformación digital para empresas en Perú, Estados Unidos y Canadá, respaldado por una formación en finanzas.</p>
+        <p>Durante años eso significó dirigir operaciones de verdad: despacho y logística en 20 plantas y cientos de camiones, equipos de más de 20 personas y los presupuestos que vienen con ellos. Luego pasé a la transformación y lideré los proyectos que introdujeron herramientas de IA, tableros ejecutivos y flujos de trabajo rediseñados. Uno de ellos, un sistema de revisión asistido por IA, redujo un proceso clave hasta en un 80% y ahorró alrededor de $150K al año.</p>
+        <p>Ahora hago eso para otras empresas a través de KHIPUAI. También he construido, en producción para una firma norteamericana de servicios administrativos (back-office), un flujo de IA que convierte documentos en registros listos para contabilizar en el propio ERP de la firma, usado a diario por personal no técnico, con un calificador de confianza que llevó su cierre mensual a cerca del 95% de coincidencia con el proceso manual. Ese es el resultado de una sola empresa, no una garantía, pero es el tipo de tiempo y dinero que se esconde en el trabajo manual.</p>
+        <p style="font-weight:600;">Todo lo que construyo es de nivel financiero: una persona revisa y aprueba todo lo que importa, nada corre por su cuenta, y está diseñado para pasar la revisión de tu equipo de TI y seguridad.</p>
+        <p><a href="https://khipuai.co/es/about/">Más sobre mi trayectoria y cómo funciona KHIPUAI &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Proyectos</div>
+    <h2>Proyectos en los que he trabajado.</h2>
+    <p class="muted" style="max-width:64ch;">Una selección de proyectos en operaciones, logística, analítica y automatización con IA, de más de una década con empresas en Perú, Estados Unidos y Canadá. Anonimizados cuando aplica la confidencialidad con el cliente.</p>
+    <div class="grid cols-2" style="margin-top:26px;">
+      <div class="card"><h3>Revisión de especificaciones asistida por IA</h3><p class="muted">Construí e implementé un sistema asistido por IA para revisar especificaciones técnicas en una empresa norteamericana de materiales de construcción. Redujo el tiempo de revisión hasta en un 80%, ahorró alrededor de $150K al año, y el flujo de contratos se rediseñó en torno a él.</p></div>
+      <div class="card"><h3>Tableros de analítica ejecutiva</h3><p class="muted">Diseñé un tablero ejecutivo de ventas sobre SQL, Qlik Sense y AWS Redshift que reportaba los KPI que la dirección realmente usaba, con cerca del 95% de exactitud en los datos, reemplazando reportes manuales lentos.</p></div>
+      <div class="card"><h3>Optimización de logística y despacho</h3><p class="muted">Optimicé la programación y las rutas en 20 plantas y más de 280 camiones (más de un millón de metros cúbicos de producción al año) en un productor de concreto premezclado, con sistemas de despacho, procedimientos estándar (SOP) y capacitación, reduciendo los costos de distribución cerca de un 15%.</p></div>
+      <div class="card"><h3>Entran documentos, salen registros en el ERP</h3><p class="muted">Para una firma norteamericana de servicios administrativos (back-office), un flujo de IA que lee PDFs de facturas de proveedores y crea borradores de registros listos para aprobar en el propio ERP de la empresa (Microsoft Dynamics 365 Business Central), con el documento fuente adjunto. El personal no técnico lo usa a diario, y una persona aprueba cada asiento.</p></div>
+      <div class="card"><h3>Control de calidad y conciliación de nivel financiero</h3><p class="muted">Un calificador de confianza VERDE/AMARILLO/ROJO sobre registros contables generados por máquina que llevó un cierre mensual a cerca del 95% de coincidencia con el manual, más un motor de contratos contra montos reales que descubrió una fuga recurrente de seis dígitos en una empresa.</p></div>
+      <div class="card"><h3>Rediseño del proceso de ventas</h3><p class="muted">Rediseñé un proceso de ventas y control de calidad con pasos claros y herramientas digitales en una empresa de materiales de construcción, aumentando en un 20% la cantidad de proyectos revisados y sumando alrededor de $1M en ventas.</p></div>
+    </div>
+    <p class="muted" style="margin-top:16px;font-size:.9rem;">Los resultados descritos corresponden al desempeño de una sola empresa y no son un resultado típico ni garantizado.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="soft">
+  <div class="wrap">
+    <div class="kicker">Preguntas</div>
+    <h2>Respuestas directas.</h2>
+    <div style="max-width:80ch;margin-top:18px;">
+      <details open><summary>¿Qué necesitas de nosotros?</summary><p class="muted">Un par de horas del tiempo de tu equipo a lo largo de una semana, y una mirada a los flujos de trabajo y sistemas involucrados. Nada se automatiza ni se cambia durante la auditoría; primero es el diagnóstico.</p></details>
+      <details><summary>¿Están seguros nuestros datos?</summary><p class="muted">Sí. Miro cómo fluye el trabajo, no tus secretos. Cualquier cosa que construya después corre dentro de tus propios controles de seguridad (listas de aplicaciones permitidas, Microsoft Entra, Azure Key Vault), con acceso de mínimo privilegio. Recibes un resumen de seguridad de una página para tu equipo de TI.</p></details>
+      <details><summary>¿La IA hará cambios por su cuenta?</summary><p class="muted">No. Todo funciona como borrador, no como asiento automático: el sistema prepara el trabajo, y una persona revisa y aprueba. Es algo deliberado, y es la salvaguarda.</p></details>
+      <details><summary>¿En qué se diferencia esto de una agencia de automatización barata?</summary><p class="muted">Ellas te entregan un flujo de Zapier y una hoja de cálculo. Yo soy un operador de finanzas que construye automatizaciones que asientan registros reales en los sistemas que ya usas y que sobreviven a tu revisión de seguridad.</p></details>
+      <details><summary>¿Y si no encuentras mucho?</summary><p class="muted">Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa fija para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.</p></details>
+      <details><summary>¿Tenemos que construir contigo?</summary><p class="muted">No. La hoja de ruta es tuya. Si construyes con KHIPUAI dentro de los 30 días, la tarifa de la auditoría se acredita a ese trabajo.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Descubre qué debería automatizar tu negocio.</h2>
+    <p style="margin-bottom:24px;">Tarifa fija, plazo fijo, sin compromiso.</p>
+    <a class="btn lg" href="https://calendly.com/wmorapal/30min">Agenda una llamada gratuita de 30 minutos</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:#fff;letter-spacing:.12em;">KHIPUAI</strong> &nbsp; | &nbsp; <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> &nbsp; | &nbsp; <a href="https://khipuai.co/es/audit/">La Auditoría</a> &nbsp; | &nbsp; <a href="https://khipuai.co/es/about/">Acerca</a> &nbsp; | &nbsp; <a href="https://khipuai.co/blog/">Artículos</a> &nbsp; | &nbsp; <a href="https://khipuai.co/privacy.html">Privacidad</a></div>
+    <div class="disclaimer">KHIPUAI es un estudio de Ontario, Canadá, que atiende a clientes en Estados Unidos y Canadá (Net 15) y cuenta con seguro de responsabilidad profesional (E&O). Los resultados descritos corresponden al desempeño de una sola empresa y no son un resultado típico ni garantizado. Las automatizaciones están diseñadas para correr dentro de los controles de seguridad de la empresa y crear borradores de registros que una persona revisa y aprueba.</div>
+  </div>
+</footer>
+
+</body>
+</html>
