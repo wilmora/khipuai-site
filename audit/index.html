@@ -47,8 +47,10 @@
   },
   "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
   "offers": [
-    {"@type": "Offer", "name": "Standard", "description": "Most small and mid-size firms; one or two departments."},
-    {"@type": "Offer", "name": "Plus", "description": "Larger or multi-department firms; several workflows."}
+    {"@type": "Offer", "name": "Standard", "description": "Most small and mid-size firms; one or two departments.",
+     "price": "2500", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://khipuai.co/audit/"},
+    {"@type": "Offer", "name": "Plus", "description": "Larger or multi-department firms; several workflows.",
+     "price": "5000", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://khipuai.co/audit/"}
   ]
 }
 </script>
@@ -175,6 +177,20 @@
   a:focus-visible,button:focus-visible,summary:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
   @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
 </style>
+<!-- Published pricing. Scoped, last in cascade. -->
+<style>
+  /* The tier cards are flex columns of different text lengths, so without this
+     the two Book buttons sit at different heights and the block looks sloppy. */
+  .price .card .btn{margin-top:auto;align-self:flex-start;}
+  .price .card .amt{margin:2px 0 10px;}
+  .price .card p{margin-bottom:22px;}
+  /* A flex column stretches its children, which overrides the pill's
+     inline-block and smears the tag across the whole card. */
+  .price .card .tag{align-self:flex-start;}
+  /* The block was capped at 760px when the shell was 1060px. The shell is now
+     1120px, so it was sitting well left of centre with dead space beside it. */
+  .price{max-width:900px;}
+</style>
 </head>
 <body>
 
@@ -254,13 +270,24 @@
 <!-- PRICING -->
 <section class="soft">
   <div class="wrap">
-    <div class="kicker">Pricing</div>
+    <div class="kicker" id="pricing">Pricing</div>
     <h2>One fixed fee. Scoped to your business.</h2>
-    <div class="card" style="margin-top:28px;max-width:760px;">
-      <p style="margin-top:0;">The audit is a single fixed fee, not an hourly meter. I quote it after a short discovery call, sized to your operation: the number of workflows and the departments involved. You know the fee before we start.</p>
-      <p class="muted" style="margin-bottom:0;">Most engagements run about two weeks end to end.</p>
-      <a class="btn" style="margin-top:20px;" href="https://calendly.com/wmorapal/30min">Book a call</a>
+    <p style="max-width:70ch;margin-top:10px;">The audit is a single fixed fee, not an hourly meter. Which tier you need depends on your operation: the number of workflows and the departments involved. We confirm it on the discovery call, and you know the fee before we start.</p>
+    <div class="price" style="margin-top:28px;">
+      <div class="card feat">
+        <div class="tag">Standard</div>
+        <div class="amt">$2,500 <small>USD, fixed</small></div>
+        <p class="muted">Most small and mid-size firms; one or two departments.</p>
+        <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+      </div>
+      <div class="card">
+        <div class="tag">Plus</div>
+        <div class="amt">$5,000 <small>USD, fixed</small></div>
+        <p class="muted">Larger or multi-department firms; several workflows.</p>
+        <a class="btn" href="https://calendly.com/wmorapal/30min">Book a free call</a>
+      </div>
     </div>
+    <p class="muted" style="max-width:70ch;margin-top:20px;">Most engagements run about two weeks end to end. No hourly billing, and no change to the fee once it is agreed.</p>
     <div class="credit" style="max-width:760px;">The full fee credits toward your build if you hire KHIPUAI to implement within 30 days. Move forward, and the audit is effectively free.</div>
   </div>
 </section>

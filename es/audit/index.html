@@ -48,8 +48,10 @@
   },
   "areaServed": [{"@type": "Country", "name": "Estados Unidos"}, {"@type": "Country", "name": "Canadá"}],
   "offers": [
-    {"@type": "Offer", "name": "Estándar", "description": "La mayoría de las firmas pequeñas y medianas; uno o dos departamentos."},
-    {"@type": "Offer", "name": "Plus", "description": "Firmas más grandes o de varios departamentos; varios flujos de trabajo."}
+    {"@type": "Offer", "name": "Estándar", "description": "La mayoría de las firmas pequeñas y medianas; uno o dos departamentos.",
+     "price": "2500", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://khipuai.co/es/audit/"},
+    {"@type": "Offer", "name": "Plus", "description": "Firmas más grandes o de varios departamentos; varios flujos de trabajo.",
+     "price": "5000", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://khipuai.co/es/audit/"}
   ]
 }
 </script>
@@ -176,6 +178,20 @@
   a:focus-visible,button:focus-visible,summary:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
   @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
 </style>
+<!-- Published pricing. Scoped, last in cascade. -->
+<style>
+  /* The tier cards are flex columns of different text lengths, so without this
+     the two Book buttons sit at different heights and the block looks sloppy. */
+  .price .card .btn{margin-top:auto;align-self:flex-start;}
+  .price .card .amt{margin:2px 0 10px;}
+  .price .card p{margin-bottom:22px;}
+  /* A flex column stretches its children, which overrides the pill's
+     inline-block and smears the tag across the whole card. */
+  .price .card .tag{align-self:flex-start;}
+  /* The block was capped at 760px when the shell was 1060px. The shell is now
+     1120px, so it was sitting well left of centre with dead space beside it. */
+  .price{max-width:900px;}
+</style>
 </head>
 <body>
 
@@ -255,13 +271,24 @@
 <!-- PRICING -->
 <section class="soft">
   <div class="wrap">
-    <div class="kicker">Tarifa</div>
+    <div class="kicker" id="pricing">Tarifa</div>
     <h2>Una tarifa fija, adaptada a tu negocio.</h2>
-    <div class="card" style="margin-top:28px;max-width:760px;">
-      <p style="margin-top:0;">La auditoría es una sola tarifa fija, no un cobro por hora. La cotizo después de una breve llamada de descubrimiento, ajustada a tu operación: la cantidad de flujos de trabajo y las áreas involucradas. Sabes la tarifa antes de empezar.</p>
-      <p class="muted" style="margin-bottom:0;">La mayoría de los trabajos toman alrededor de dos semanas de principio a fin.</p>
-      <a class="btn" style="margin-top:20px;" href="https://calendly.com/wmorapal/30min">Agenda una llamada</a>
+    <p style="max-width:70ch;margin-top:10px;">La auditoría es una sola tarifa fija, no un cobro por hora. El nivel que necesitas depende de tu operación: la cantidad de flujos de trabajo y las áreas involucradas. Lo confirmamos en la llamada de descubrimiento, y sabes la tarifa antes de empezar.</p>
+    <div class="price" style="margin-top:28px;">
+      <div class="card feat">
+        <div class="tag">Estándar</div>
+        <div class="amt">$2,500 <small>USD, fija</small></div>
+        <p class="muted">La mayoría de las firmas pequeñas y medianas; uno o dos departamentos.</p>
+        <a class="btn" href="https://calendly.com/wmorapal/30min">Agenda una llamada</a>
+      </div>
+      <div class="card">
+        <div class="tag">Plus</div>
+        <div class="amt">$5,000 <small>USD, fija</small></div>
+        <p class="muted">Firmas más grandes o de varios departamentos; varios flujos de trabajo.</p>
+        <a class="btn" href="https://calendly.com/wmorapal/30min">Agenda una llamada</a>
+      </div>
     </div>
+    <p class="muted" style="max-width:70ch;margin-top:20px;">La mayoría de los trabajos toman alrededor de dos semanas de principio a fin. Sin cobro por hora, y la tarifa no cambia una vez acordada.</p>
     <div class="credit" style="max-width:760px;">La tarifa completa se acredita a tu construcción si contratas a KHIPUAI para implementarla dentro de los 30 días. Si avanzas, la auditoría resulta prácticamente gratis.</div>
   </div>
 </section>
