@@ -271,6 +271,19 @@
     .trustbar ul{flex-direction:column;gap:9px;}
   }
 
+  /* ---- Project cards lead with their number --------------------------------
+     These cards carried real figures ($150K a year, $1M in sales, six figures
+     of leakage) buried mid-paragraph, where they read as prose and scan as
+     nothing. The work page already solved this with .leadnum, so this reuses
+     that component rather than inventing a second one. Scaled down: 2.9rem is
+     sized for a full-width case study, not a half-width card. */
+  .leadnum{margin:14px 0 10px;line-height:1;}
+  .leadnum .big{font-family:'Lexend','Source Sans 3',sans-serif;font-size:2.05rem;
+    font-weight:800;color:var(--accent-dark);letter-spacing:-.025em;display:block;}
+  .leadnum .lab{color:var(--ink);font-weight:600;font-size:.94rem;margin-top:7px;
+    line-height:1.4;display:block;}
+  @media (max-width:820px){ .leadnum .big{font-size:1.9rem;} }
+
   /* ---- Published pricing ---------------------------------------------------
      The tier cards were styled in the original CSS and never filled in, so the
      site promised "you know the fee before we start" without printing a number
@@ -566,12 +579,24 @@
     <h2>Proyectos en los que he trabajado.</h2>
     <p class="muted" style="max-width:64ch;">Una selección de proyectos en operaciones, logística, analítica y automatización con IA, de más de una década con empresas en Perú, Estados Unidos y Canadá. Anonimizados cuando aplica la confidencialidad con el cliente.</p>
     <div class="grid cols-2" style="margin-top:26px;">
-      <div class="card"><h3>Revisión de especificaciones asistida por IA</h3><p class="muted">Construí e implementé un sistema asistido por IA para revisar especificaciones técnicas en una empresa norteamericana de materiales de construcción. Redujo el tiempo de revisión hasta en un 80%, ahorró alrededor de $150K al año, y el flujo de contratos se rediseñó en torno a él.</p></div>
-      <div class="card"><h3>Tableros de analítica ejecutiva</h3><p class="muted">Diseñé un tablero ejecutivo de ventas sobre SQL, Qlik Sense y AWS Redshift que reportaba los KPI que la dirección realmente usaba, con cerca del 95% de exactitud en los datos, reemplazando reportes manuales lentos.</p></div>
-      <div class="card"><h3>Optimización de logística y despacho</h3><p class="muted">Optimicé la programación y las rutas en 20 plantas y más de 280 camiones (más de un millón de metros cúbicos de producción al año) en un productor de concreto premezclado, con sistemas de despacho, procedimientos estándar (SOP) y capacitación, reduciendo los costos de distribución cerca de un 15%.</p></div>
-      <div class="card"><h3>Entran documentos, salen registros en el ERP</h3><p class="muted">Para una firma norteamericana de servicios administrativos (back-office), un flujo de IA que lee PDFs de facturas de proveedores y crea borradores de registros listos para aprobar en el propio ERP de la empresa (Microsoft Dynamics 365 Business Central), con el documento fuente adjunto. El personal no técnico lo usa a diario, y una persona aprueba cada asiento.</p></div>
-      <div class="card"><h3>Control de calidad y conciliación de nivel financiero</h3><p class="muted">Un calificador de confianza VERDE/AMARILLO/ROJO sobre registros contables generados por máquina que llevó un cierre mensual a cerca del 95% de coincidencia con el manual, más un motor de contratos contra montos reales que descubrió una fuga recurrente de seis dígitos en una empresa.</p></div>
-      <div class="card"><h3>Rediseño del proceso de ventas</h3><p class="muted">Rediseñé un proceso de ventas y control de calidad con pasos claros y herramientas digitales en una empresa de materiales de construcción, aumentando en un 20% la cantidad de proyectos revisados y sumando alrededor de $1M en ventas.</p></div>
+      <div class="card"><h3>Revisión de especificaciones asistida por IA</h3>
+        <div class="leadnum"><span class="big">~$150K / año</span><span class="lab">ahorrados, con la revisión de especificaciones hasta un 80% más rápida</span></div>
+        <p class="muted">Construí e implementé un sistema asistido por IA para revisar especificaciones técnicas en una empresa norteamericana de materiales de construcción. El flujo de contratos se rediseñó en torno a él.</p></div>
+      <div class="card"><h3>Tableros de analítica ejecutiva</h3>
+        <div class="leadnum"><span class="big">~95%</span><span class="lab">de exactitud en los datos, sobre los KPI que la dirección realmente usaba</span></div>
+        <p class="muted">Diseñé un tablero ejecutivo de ventas sobre SQL, Qlik Sense y AWS Redshift, reemplazando reportes manuales lentos.</p></div>
+      <div class="card"><h3>Optimización de logística y despacho</h3>
+        <div class="leadnum"><span class="big">~15%</span><span class="lab">menos en costos de distribución, en 20 plantas y más de 280 camiones</span></div>
+        <p class="muted">Optimicé la programación y las rutas en un productor de concreto premezclado que mueve más de un millón de metros cúbicos al año, con sistemas de despacho, procedimientos estándar (SOP) y capacitación.</p></div>
+      <div class="card"><h3>Entran documentos, salen registros en el ERP</h3>
+        <div class="leadnum"><span class="big">0</span><span class="lab">asientos creados sin que una persona los apruebe</span></div>
+        <p class="muted">Para una firma norteamericana de servicios administrativos (back-office), un flujo de IA que lee PDFs de facturas de proveedores y crea borradores de registros listos para aprobar en el propio ERP de la empresa (Microsoft Dynamics 365 Business Central), con el documento fuente adjunto. El personal no técnico lo usa a diario.</p></div>
+      <div class="card"><h3>Control de calidad y conciliación de nivel financiero</h3>
+        <div class="leadnum"><span class="big">6 dígitos</span><span class="lab">de fuga recurrente descubierta, con cerca del 95% de coincidencia con el cierre manual</span></div>
+        <p class="muted">Un calificador de confianza VERDE/AMARILLO/ROJO sobre registros contables generados por máquina, más un motor de contratos contra montos reales, en una empresa.</p></div>
+      <div class="card"><h3>Rediseño del proceso de ventas</h3>
+        <div class="leadnum"><span class="big">~$1M</span><span class="lab">en ventas sumadas, con un 20% más de proyectos revisados</span></div>
+        <p class="muted">Rediseñé un proceso de ventas y control de calidad con pasos claros y herramientas digitales en una empresa de materiales de construcción.</p></div>
     </div>
     <p class="muted" style="margin-top:16px;font-size:.9rem;">Los resultados descritos corresponden al desempeño de una sola empresa y no son un resultado típico ni garantizado.</p>
   </div>

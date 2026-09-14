@@ -273,6 +273,19 @@
     .trustbar ul{flex-direction:column;gap:9px;}
   }
 
+  /* ---- Project cards lead with their number --------------------------------
+     These cards carried real figures ($150K a year, $1M in sales, six figures
+     of leakage) buried mid-paragraph, where they read as prose and scan as
+     nothing. The work page already solved this with .leadnum, so this reuses
+     that component rather than inventing a second one. Scaled down: 2.9rem is
+     sized for a full-width case study, not a half-width card. */
+  .leadnum{margin:14px 0 10px;line-height:1;}
+  .leadnum .big{font-family:'Lexend','Source Sans 3',sans-serif;font-size:2.05rem;
+    font-weight:800;color:var(--accent-dark);letter-spacing:-.025em;display:block;}
+  .leadnum .lab{color:var(--ink);font-weight:600;font-size:.94rem;margin-top:7px;
+    line-height:1.4;display:block;}
+  @media (max-width:820px){ .leadnum .big{font-size:1.9rem;} }
+
   /* ---- Published pricing ---------------------------------------------------
      The tier cards were styled in the original CSS and never filled in, so the
      site promised "you know the fee before we start" without printing a number
@@ -567,12 +580,24 @@
     <h2>Projects I've worked on.</h2>
     <p class="muted" style="max-width:64ch;">A selection of projects across operations, logistics, analytics, and AI automation, from more than a decade with companies in Peru, the US, and Canada. Anonymized where client confidentiality applies.</p>
     <div class="grid cols-2" style="margin-top:26px;">
-      <div class="card"><h3>AI-assisted spec review</h3><p class="muted">Built and rolled out an AI-assisted system to review technical specifications at a North American building-materials enterprise. It cut review time by up to 80%, saved roughly $150K a year, and the contract workflow was rebuilt around it.</p></div>
-      <div class="card"><h3>Executive analytics dashboards</h3><p class="muted">Designed an executive sales dashboard on SQL, Qlik Sense, and AWS Redshift that reported the KPIs leadership actually used, at about 95% data accuracy, replacing slow manual reporting.</p></div>
-      <div class="card"><h3>Logistics and dispatch optimization</h3><p class="muted">Optimized scheduling and routing across 20 plants and 280-plus trucks (over a million cubic meters of output a year) at a ready-mix concrete producer, using dispatch systems, SOPs, and training, cutting distribution costs about 15%.</p></div>
-      <div class="card"><h3>Documents in, ERP records out</h3><p class="muted">For a North American back-office services firm, an AI pipeline that reads vendor-invoice PDFs and posts ready-to-approve draft records into the company's own ERP (Microsoft Dynamics 365 Business Central) with the source attached. Non-technical staff use it daily, and a person approves every post.</p></div>
-      <div class="card"><h3>Finance-grade QA and reconciliation</h3><p class="muted">A GREEN/YELLOW/RED confidence grader over machine-generated accounting records that ran a monthly close at about 95% match to manual, plus a contracts-vs-actuals engine that surfaced six figures of recurring leakage for one firm.</p></div>
-      <div class="card"><h3>Sales-process redesign</h3><p class="muted">Redesigned a sales and quality-control process with clear steps and digital tools at a building-materials company, lifting the number of projects reviewed by 20% and adding roughly $1M in sales.</p></div>
+      <div class="card"><h3>AI-assisted spec review</h3>
+        <div class="leadnum"><span class="big">~$150K / yr</span><span class="lab">saved, with technical spec review up to 80% faster</span></div>
+        <p class="muted">Built and rolled out an AI-assisted system to review technical specifications at a North American building-materials enterprise. The contract workflow was rebuilt around it.</p></div>
+      <div class="card"><h3>Executive analytics dashboards</h3>
+        <div class="leadnum"><span class="big">~95%</span><span class="lab">data accuracy on the KPIs leadership actually used</span></div>
+        <p class="muted">Designed an executive sales dashboard on SQL, Qlik Sense, and AWS Redshift, replacing slow manual reporting.</p></div>
+      <div class="card"><h3>Logistics and dispatch optimization</h3>
+        <div class="leadnum"><span class="big">~15%</span><span class="lab">lower distribution costs, across 20 plants and 280-plus trucks</span></div>
+        <p class="muted">Optimized scheduling and routing at a ready-mix concrete producer moving over a million cubic meters of output a year, using dispatch systems, SOPs, and training.</p></div>
+      <div class="card"><h3>Documents in, ERP records out</h3>
+        <div class="leadnum"><span class="big">0</span><span class="lab">records posted without a person approving them</span></div>
+        <p class="muted">For a North American back-office services firm, an AI pipeline that reads vendor-invoice PDFs and posts ready-to-approve draft records into the company's own ERP (Microsoft Dynamics 365 Business Central) with the source attached. Non-technical staff use it daily.</p></div>
+      <div class="card"><h3>Finance-grade QA and reconciliation</h3>
+        <div class="leadnum"><span class="big">6 figures</span><span class="lab">of recurring leakage surfaced, at about 95% match to the manual close</span></div>
+        <p class="muted">A GREEN/YELLOW/RED confidence grader over machine-generated accounting records, plus a contracts-vs-actuals engine, for one firm.</p></div>
+      <div class="card"><h3>Sales-process redesign</h3>
+        <div class="leadnum"><span class="big">~$1M</span><span class="lab">in added sales, with 20% more projects reviewed</span></div>
+        <p class="muted">Redesigned a sales and quality-control process with clear steps and digital tools at a building-materials company.</p></div>
     </div>
     <p class="muted" style="margin-top:16px;font-size:.9rem;">Results described are one firm's outcome and are not a typical or guaranteed result.</p>
   </div>
