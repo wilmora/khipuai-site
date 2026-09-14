@@ -52,6 +52,25 @@
   a:focus-visible,button:focus-visible,summary:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
   @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
 </style>
+<!-- Gated PDF request. Scoped, last in cascade. -->
+<style>
+  /* Light card on purpose: the booking CTA below it is dark navy, so the two
+     asks read as two different steps rather than one wall. */
+  .grab{background:var(--soft);border:1px solid var(--line);border-radius:12px;
+    padding:26px;margin:28px 0;}
+  .grab h3{margin:0 0 6px;}
+  .grab > p{margin:0 0 18px;color:var(--muted);}
+  .grabform{display:grid;gap:15px;max-width:430px;}
+  .grabform .field{display:grid;gap:5px;}
+  .grabform label{font-weight:700;font-size:.9rem;}
+  .grabform input{font:inherit;padding:11px 13px;border:1px solid var(--line);
+    border-radius:8px;background:#fff;color:var(--ink);width:100%;}
+  .grabform button{justify-self:start;cursor:pointer;}
+  .grabform .fineprint{font-size:.86rem;color:var(--muted);margin:0;}
+  /* Off-screen rather than display:none, so bots still fill it in. */
+  .grabform .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+  @media print{ .grab{display:none;} }
+</style>
 </head>
 <body>
 <div class="top"><div class="wrap">
@@ -99,6 +118,36 @@
     <div class="band"><strong>15+: Bleeding.</strong> Manual work is a structural drag, costing real money and risk (errors, key-person dependency). The first few fixes usually pay back in weeks.</div>
   </div>
 
+  <!-- LEAD MAGNET. self-assessment.pdf has shipped in this repo since launch
+       but was linked from no page at all. This is the form the privacy policy
+       already describes ("if you book a call or request the self-assessment,
+       we collect ... name, email, company"), which was written and then never
+       built. Placed before the booking CTA on purpose: it is the lower
+       commitment step for someone not ready to give up 30 minutes. -->
+  <div class="grab">
+    <h3>Take this to your team</h3>
+    <p>The same exercise as a PDF, so you can score it with the people who actually do the work.</p>
+    <form class="grabform" action="FORM_ENDPOINT_NOT_SET" method="POST">
+      <div class="field">
+        <label for="ga-name">Name</label>
+        <input id="ga-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="ga-email">Work email</label>
+        <input id="ga-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="ga-company">Company</label>
+        <input id="ga-company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <input type="hidden" name="_subject" value="Self-assessment PDF request">
+      <!-- Spam trap: a real person never fills a field they cannot see. -->
+      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Send me the PDF</button>
+      <p class="fineprint">No spam, and your details are not shared. <a href="privacy.html">How we handle your data</a>.</p>
+    </form>
+  </div>
+
   <div class="cta">
     <h3>Scored 7 or higher?</h3>
     <p>The next step is to put real numbers on it: how many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does, for a one-time fixed fee that credits toward the build.</p>
@@ -110,5 +159,27 @@
     wil@khipuai.co &nbsp;|&nbsp; khipuai.co &nbsp;|&nbsp; <a href="index.html">khipuai.co</a>
   </footer>
 </div>
+<script>
+  // Safety net. The form cannot work until someone puts a real provider URL in
+  // the action. Without this, a form that shipped half-configured would POST
+  // into nowhere and lose real leads silently, which is worse than not being
+  // there at all. The whole block disables itself once the endpoint is set.
+  (function () {
+    var form = document.querySelector('.grabform');
+    if (!form) return;
+    if (form.getAttribute('action').indexOf('FORM_ENDPOINT') === -1) return;
+
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Not connected yet'; btn.style.opacity = '.55'; }
+    form.querySelectorAll('input:not(.hp)').forEach(function (i) { i.disabled = true; });
+
+    var note = document.createElement('p');
+    note.className = 'fineprint';
+    note.setAttribute('role', 'status');
+    note.textContent = 'This form is built and styled but not yet wired to a form provider, so it is switched off.';
+    form.appendChild(note);
+  })();
+</script>
 </body>
 </html>

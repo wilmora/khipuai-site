@@ -12,6 +12,35 @@ Easiest: create a Calendly event ("20-minute Automation Discovery call"), copy t
 
 (The self-assessment link already works; it points to `self_assessment.html`.)
 
+## One thing left to set: the PDF request form
+
+`self_assessment.html` has a form that asks for name, email and company and, in
+return, sends the visitor to `thank-you.html` to download `self-assessment.pdf`.
+It is fully built and styled, but its `action` is the placeholder
+**`FORM_ENDPOINT_NOT_SET`**, so it is switched off: the page disables the fields
+and shows a short "not connected yet" note rather than quietly losing a real
+enquiry.
+
+To turn it on:
+
+1. Create a form on a provider that accepts a plain HTML POST (Formspree's free
+   tier is 50 submissions a month and needs no JavaScript).
+2. Replace `FORM_ENDPOINT_NOT_SET` in `self_assessment.html` with the URL it
+   gives you. The "switched off" behaviour removes itself automatically.
+3. Point the provider's post-submit redirect at `https://khipuai.co/thank-you.html`
+   (on Formspree that is the `_next` setting).
+
+Two things worth knowing before it goes live:
+
+- **The gate is soft.** This is a static site, so `self-assessment.pdf` stays
+  reachable at its own URL to anyone who types it. The form captures the people
+  who go through the front door; it cannot stop anyone going round it. That is
+  normal for a lead magnet, but do not treat the PDF as private.
+- **The privacy policy already covers this.** It says KHIPUAI collects "name,
+  email, company" when someone requests the self-assessment, and names "an email
+  or form provider" as a third-party tool, so no policy change is needed for a
+  form of this shape. Adding a different kind of tracking would need a revisit.
+
 ## Publish on your PERSONAL GitHub (free, ~10 minutes)
 
 1. Go to github.com, sign in to your personal account, click **New repository**.
