@@ -86,7 +86,7 @@ body{background:
 .cordwrap{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none;}
 .cord{position:absolute;left:0;top:0;height:100%;will-change:transform;}
 
-.panel{position:relative;z-index:1;height:100vh;
+.panel{position:relative;z-index:1;height:100vh;width:100vw;
   padding:128px 5vw 104px;display:flex;flex-direction:column;flex:0 0 auto;}
 /* Content sits at a different height in each section. A deck centres
    everything; this is what stops the eye settling into a rhythm. */
@@ -145,7 +145,6 @@ body{background:
 @keyframes nudge{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
 
 /* ---- opening ---- */
-.p-start{width:100vw;}
 .p-start h1{font-size:min(8vw,10.6vh,8.4rem);}
 .p-start h1 em{color:var(--copper);display:block;}
 .lede{max-width:44ch;color:var(--muted);font-size:clamp(1rem,1.25vw,1.16rem);margin:22px 0 26px;}
@@ -244,13 +243,10 @@ body{background:
    of the next. Every section is now exactly one screen, which is the only way
    a section can fill the screen on its own with nothing of its neighbours
    showing. */
-.p-problem{width:100vw;}
-.p-get{width:100vw;}
-.p-process{width:100vw;}
-.p-work{width:100vw;}
-.p-fee{width:100vw;}
-.p-questions{width:100vw;}
-.p-operator{width:100vw;}
+/* Width lives on .panel above, not here. These were one rule per section id
+   from when this was a single page, which meant a new page's sections had no
+   width rule at all and fell through to auto - growing as wide as their
+   content instead of filling one screen. */
 
 .cols{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px;}
 .c3{grid-template-columns:repeat(3,minmax(0,1fr));}
