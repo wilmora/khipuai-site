@@ -3,8 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KHIPUAI — Kinetic concept</title>
+
+<!-- Title and description carried over from the live landing page rather than
+     rewritten: same business, same offer, and the current wording is what the
+     site already ranks on. Changing the copy is a separate decision from
+     changing the design. -->
+<title>KHIPUAI | The AI Automation Audit</title>
+<meta name="description" content="For a one-time fixed fee, find out exactly what your back-office team should automate, what it is worth, and what to do first. Finance-grade, human-approved, built into the systems you already run.">
+
+<!-- STAYS UNTIL THE SWITCH.
+     This page lives at /v2/kinetic/ while it is being built. If the branch were
+     ever published with this removed, Google would index a second copy of the
+     homepage at a staging path - duplicate content competing with the real
+     site. The canonical below already points at the destination URL, so the
+     moment this becomes the site, delete this one line and nothing else. -->
 <meta name="robots" content="noindex">
+
+<!-- Canonical and hreflang describe where this page will LIVE, not where the
+     file currently sits. That is deliberate: it is the same page, at a
+     temporary path. -->
+<link rel="canonical" href="https://khipuai.co/">
+<link rel="alternate" hreflang="en" href="https://khipuai.co/">
+<link rel="alternate" hreflang="es" href="https://khipuai.co/es/">
+<link rel="alternate" hreflang="x-default" href="https://khipuai.co/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="KHIPUAI | The AI Automation Audit">
+<meta property="og:description" content="Find out exactly what your team should automate, what it is worth, and what to do first. One fixed fee. Finance-grade, human-approved.">
+<meta property="og:url" content="https://khipuai.co">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KHIPUAI | The AI Automation Audit">
+<meta name="twitter:description" content="Find out exactly what your team should automate, what it is worth, and what to do first.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "KHIPUAI",
+  "url": "https://khipuai.co",
+  "logo": "https://khipuai.co/og-image.png",
+  "image": "https://khipuai.co/og-image.png",
+  "description": "AI automation studio for back-office and professional-services teams. Lead offer: the fixed-fee AI Automation Audit, a two-week diagnostic that maps manual work and delivers a prioritized automation roadmap with hours and dollars on each item.",
+  "founder": {"@type": "Person", "name": "Wil Mora", "url": "https://khipuai.co/about/"},
+  "email": "wil@khipuai.co",
+  "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
+  "knowsAbout": ["back office automation", "AI workflow automation", "automation audit", "business process automation"],
+  "makesOffer": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "2500",
+    "highPrice": "5000",
+    "offerCount": 2,
+    "itemOffered": {"@type": "Service", "name": "The AI Automation Audit", "url": "https://khipuai.co/audit/"}
+  }
+}
+</script>
+
 <link rel="stylesheet" href="../shared/assets/fonts.css">
 <link rel="icon" href="../shared/assets/mark.svg">
 <style>
