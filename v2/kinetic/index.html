@@ -141,19 +141,31 @@ const P = [
     <h2 class="say" data-rv style="max-width:18ch;">The things <em>people actually ask.</em></h2>
     <div class="qa" data-rv>${C.faq.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>` },
 
-  { id:'operator', n:'Founder', at:'at-low', html:`
-    <div class="face" data-rv>
-      <img src="../shared/assets/founder.jpg" alt="${esc(C.founder.name)}">
-      <div>
-        <div class="kick">Who runs it</div>
-        <h2 class="say" style="font-size:min(2.8vw,4.4vh,2.2rem);max-width:24ch;">
-          <em>&ldquo;${esc(C.founder.quote)}&rdquo;</em></h2>
-        <p class="sub">${esc(C.founder.bio)}</p>
-        <div class="row" style="margin-top:24px;">
-          <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-          <a class="btn line" href="mailto:${C.brand.email}">${esc(C.brand.email)}</a>
+  { id:'operator', n:'Team', at:'at-low', html:`
+    <div class="kick" data-rv>Who runs it</div>
+    <h2 class="say quote" data-rv>
+      <em>&ldquo;${esc(C.founder.quote)}&rdquo;</em></h2>
+    <div class="team" data-rv>
+      <div class="member">
+        <img src="../shared/assets/founder.jpg" alt="${esc(C.founder.name)}, Founder of KHIPUAI">
+        <div>
+          <h3>${esc(C.founder.name)}</h3>
+          <span class="cap">Founder</span>
+          <p>${esc(C.founder.bio)}</p>
         </div>
       </div>
+      <div class="member">
+        <img src="../shared/assets/alex.jpg" alt="Alex Pena, Developer at KHIPUAI">
+        <div>
+          <h3>Alex Pena</h3>
+          <span class="cap">Developer</span>
+          <p>Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-rv style="margin-top:26px;">
+      <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+      <a class="btn line" href="mailto:${C.brand.email}">${esc(C.brand.email)}</a>
     </div>` },
 ];
 
