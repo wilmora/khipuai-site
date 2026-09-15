@@ -1,0 +1,392 @@
+/* =========================================================================
+   The Kinetic shell: every page of v2 shares this file.
+
+   It was inline in kinetic/index.html, which was fine for one page and wrong
+   for fifteen: 48KB of shell per page, copied, and fifteen copies to keep in
+   step. The live site works that way and it is exactly why its Spanish mirror
+   drifts from the English one. One file, linked, no build step.
+   ========================================================================= */
+/* =========================================================================
+   CONCEPT: "Kinetic"  -  a site that moves sideways.
+
+   Third pass. The note was that it read like a PowerPoint deck, which it did,
+   and for structural reasons rather than cosmetic ones: eight sealed boxes of
+   identical size, hard-snapped so you could never rest between them, each
+   opening with the same kicker-then-headline beat.
+
+   What changed, in order of how much it matters:
+
+   1. ONE SCREEN PER SECTION, EXACTLY. Every section is 100vw and all of its
+      content fits in one screen - nothing is scrolled through twice, and at
+      rest you never see part of the next section alongside the one you are
+      reading. Uneven widths were tried (74vw to 138vw) to stop the viewport
+      edge reading as a frame; the cost was that the track almost never lined
+      up, so every resting position showed two half-sections.
+   2. THE TRAVEL IS REAL, EVEN THOUGH IT LANDS SQUARE. A gesture scrolls the
+      track continuously and it decelerates - you watch the sections move past
+      rather than cutting between them - and it finishes by settling onto a
+      section. The settle uses the same easing as the gesture, so it reads as
+      the movement completing, not as the page correcting you. What a deck
+      does, and this does not, is teleport between fixed states with the travel
+      removed.
+   3. ONE CONTINUOUS GROUND. A single background across the whole track and a
+      khipu cord running its entire length, knotting at each section. The cord
+      is the thing that makes it one canvas instead of eight cards, and it is
+      on the nose for a company named after knotted Andean record-keeping.
+   4. CONTENT SITS AT DIFFERENT HEIGHTS. Top, middle, bottom, offset. A deck
+      centres everything; a page does not.
+   5. LAYERS MOVE AT DIFFERENT RATES, so the composition rearranges as you go
+      rather than cutting between fixed states.
+   ========================================================================= */
+:root{
+  /* --dim was #6D8294, which cleared 4.76:1 on the old flat background but
+     only 4.29:1 once the ground became a gradient with lighter passages. It
+     carries the legal line and the results caveat, so it has to clear on the
+     LIGHTEST tone, not the average. */
+  --bg:#0A1119; --ink:#F4EFE7; --muted:#93A7B4; --dim:#7A94A6;
+  --line:#22323E; --copper:#E39767; --hot:#FF7A3D; --green:#4FBF95;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;overflow:hidden;}
+body{background:var(--bg);color:var(--ink);
+  font-family:'DM Sans',-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;}
+h1,h2,h3{margin:0;font-family:'Manrope','DM Sans',sans-serif;line-height:.94;
+  letter-spacing:-.045em;font-weight:800;text-transform:uppercase;}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;text-transform:none;
+  letter-spacing:-.01em;font-weight:400;}
+a{color:inherit;text-decoration:none;}
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px;}
+
+/* The ground sits on the body so the scrolling track can stay transparent. */
+body{background:
+  radial-gradient(120% 90% at 20% 0%, #0E1A24 0%, transparent 60%),
+  radial-gradient(120% 90% at 85% 100%, #101D28 0%, transparent 55%),
+  #0A1119;}
+
+/* ---- the track is one long canvas, not a stack of cards ---- */
+.track{position:relative;z-index:1;display:flex;height:100vh;overflow-x:auto;overflow-y:hidden;
+  /* CSS snapping and smooth scroll-behavior are both off on purpose. The settle
+     is done in JS so it can be directional - a deliberate gesture advances
+     rather than being pulled back to where it started - and CSS snap would
+     fight that by re-pulling the position the moment the easing slows.
+     scroll-behavior:smooth would animate every scrollLeft write, turning the JS
+     easing into a rubber band and a drag into a lag. */
+  cursor:grab;background:transparent;}
+.track.dragging{cursor:grabbing;}
+.track::-webkit-scrollbar{display:none;}
+.track{scrollbar-width:none;}
+
+/* The cord: one continuous line through the entire site, drifting slower than
+   the content so the two never feel locked together.
+   It lives in a FIXED layer, deliberately outside the scroll container. Inside
+   it, the parallax transform extended the track's scrollable area, so the
+   scrollWidth grew as you scrolled (12,028px to 12,894px) and the end of the
+   site kept receding as you approached it. */
+.cordwrap{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none;}
+.cord{position:absolute;left:0;top:0;height:100%;will-change:transform;}
+
+.panel{position:relative;z-index:1;height:100vh;
+  padding:128px 5vw 104px;display:flex;flex-direction:column;flex:0 0 auto;}
+/* Content sits at a different height in each section. A deck centres
+   everything; this is what stops the eye settling into a rhythm. */
+.panel.at-top{justify-content:flex-start;padding-top:158px;}
+.panel.at-mid{justify-content:center;}
+.panel.at-low{justify-content:flex-end;padding-bottom:150px;}
+
+/* ---- reveal: content arrives as its section comes into view ---- */
+[data-rv]{opacity:0;transform:translateY(20px);
+  transition:opacity .66s cubic-bezier(.16,.8,.28,1),transform .66s cubic-bezier(.16,.8,.28,1);}
+.live [data-rv]{opacity:1;transform:none;}
+.live [data-rv]:nth-child(1){transition-delay:.02s;}
+.live [data-rv]:nth-child(2){transition-delay:.08s;}
+.live [data-rv]:nth-child(3){transition-delay:.14s;}
+.live [data-rv]:nth-child(4){transition-delay:.20s;}
+.live [data-rv]:nth-child(5){transition-delay:.26s;}
+.live [data-rv]:nth-child(6){transition-delay:.32s;}
+
+/* ---- fixed chrome ---- */
+.hd{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;gap:18px;
+  padding:22px 5vw;mix-blend-mode:difference;}
+.hd .bd{display:flex;align-items:center;gap:10px;font-family:'Manrope',sans-serif;
+  font-weight:800;letter-spacing:.16em;font-size:.86rem;}
+.hd .bd img{width:24px;height:24px;border-radius:6px;}
+.hd nav{margin-left:auto;display:flex;gap:19px;font-size:.75rem;letter-spacing:.15em;
+  text-transform:uppercase;font-weight:700;}
+.hd nav button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;opacity:.45;
+  padding:2px 0;transition:opacity .2s;position:relative;}
+.hd nav button:hover,.hd nav button[aria-current="true"]{opacity:1;}
+.hd nav button[aria-current="true"]:after{content:"";position:absolute;left:0;right:0;bottom:-5px;
+  height:1.5px;background:currentColor;}
+
+/* Wayfinding without deck furniture.
+   A numbered corner ("05 / 08") and a row of segments along the bottom are
+   exactly how a slide deck tells you where you are, so both are gone. What
+   replaces them is a single unbroken hairline that fills as you move: the
+   reading-progress convention from long-form web pages, which says "you are
+   partway through a page" rather than "you are on slide five". The header nav
+   keeps its underline, and that is the real wayfinding. */
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:flex;align-items:flex-end;justify-content:flex-end;padding:0 5vw 20px;
+  pointer-events:none;}
+.rail{position:fixed;left:0;right:0;bottom:0;height:2px;z-index:61;
+  background:rgba(255,255,255,.07);}
+/* Driven by transform, not width. The fill is updated on every animation frame
+   now, and animating `width` relayouts the element each time, which is exactly
+   the kind of per-frame layout work that shows up as stutter. scaleX is handled
+   on the compositor. The old .18s transition is gone with it - with a value
+   arriving every frame, a transition only adds lag. */
+.rail i{display:block;height:100%;width:100%;background:var(--hot);
+  transform:scaleX(0);transform-origin:0 50%;will-change:transform;}
+.hint{flex:0 0 auto;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+  display:flex;align-items:center;gap:9px;transition:opacity .5s;}
+.hint.gone{opacity:0;}
+.hint .ar{animation:nudge 1.7s ease-in-out infinite;}
+@keyframes nudge{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+
+/* ---- opening ---- */
+.p-start{width:100vw;}
+.p-start h1{font-size:min(8vw,10.6vh,8.4rem);}
+.p-start h1 em{color:var(--copper);display:block;}
+.lede{max-width:44ch;color:var(--muted);font-size:clamp(1rem,1.25vw,1.16rem);margin:22px 0 26px;}
+/* The knot is an ATMOSPHERE layer, not a picture: full height, bleeding off the
+   top and bottom, with the headline sitting on its dark left side. Two earlier
+   passes both failed, in opposite directions.
+
+   Pass 1 (original) put it in a 742x900 PORTRAIT box with object-fit:cover. The
+   source is 1536x1024 - landscape, 3:2 - so cover threw away 45% of the image's
+   width and you saw rope, never the knot. It was also anchored to the panel's
+   right edge (right:-4vw on a 112vw panel), so the remainder ran past the first
+   screen and came back sliced down the left of section two.
+
+   Pass 2 fixed the cropping by shrinking it to its own aspect ratio, which is
+   correct and looks like a stock photo dropped on the page. Wrong trade.
+
+   What actually resolves it: the source is 3:2 and a screen is wider than 3:2,
+   so an image scaled to FULL VIEWPORT HEIGHT is only 1.5x900 = 1350px wide -
+   narrower than a 1440px screen. It can be full-bleed vertically, uncropped,
+   and still fit inside the first screen horizontally. Nothing is cut, nothing
+   crosses into section two, and it reads as ground rather than as a photo.
+
+   min(150vh, 94vw) is the cap that keeps that true on a squarer monitor, where
+   1.5x the height would be wider than the screen: there it sizes off width
+   instead and simply bleeds less. */
+.knot{position:absolute;right:15vw;left:auto;       /* 112vw panel - 15vw, so its
+                                                       right edge lands at 97vw:
+                                                       inside the first screen on
+                                                       every viewport, which is
+                                                       what stops the slicing */
+  width:min(150vh,94vw);aspect-ratio:3/2;height:auto;
+  top:50%;margin-top:calc(-1 * min(50vh,31.333vw));  /* half the computed height;
+                                                        no transform, the
+                                                        parallax owns that */
+  /* At full size it is the brightest thing on the page, and the fixed chrome
+     has to survive crossing it: the nav sits over the top-right rope and the
+     ticker runs straight through the bottom ropes. Both were illegible at .92.
+     Dropped to .72 and the vertical fades widened to 15%, which is deeper than
+     the header (~60px) and than the ticker band (91px up from the bottom), so
+     the image is already near-transparent everywhere the chrome lands. */
+  opacity:.72;
+  /* Horizontally: cleared entirely over the text column, then ramping to solid
+     across the gap between the end of the headline and the knot itself, so the
+     rope emerges from the dark rather than starting at an edge. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,transparent 38%,#000 60%,#000 90%,transparent 100%),
+                     linear-gradient(180deg,transparent 0%,#000 15%,#000 85%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0%,transparent 38%,#000 60%,#000 90%,transparent 100%),
+             linear-gradient(180deg,transparent 0%,#000 15%,#000 85%,transparent 100%);
+  mask-composite:intersect;
+  will-change:transform;z-index:0;}
+.knot img{display:block;width:100%;height:100%;object-fit:cover;}
+
+.p-start .inner{position:relative;z-index:2;max-width:52vw;}
+
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--hot);color:#0A1119;
+  font-weight:800;letter-spacing:.04em;padding:15px 26px;border-radius:2px;text-transform:uppercase;
+  font-size:.82rem;border:0;cursor:pointer;font-family:inherit;
+  transition:transform .16s,background .16s,box-shadow .16s;}
+.btn:hover{background:var(--copper);transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(227,151,103,.34);}
+.btn.line{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+.btn.line:hover{border-color:var(--hot);box-shadow:none;transform:none;background:transparent;}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+
+/* The ticker used to live inside the opening section at width:150%, so it ran
+   out 806px into the SECOND section and stopped dead - a hard vertical edge
+   with the text sliced mid-word, which is what made the page look unfinished.
+   It is now a track-level band: one horizon line running the entire length of
+   the site, the same move the cord makes, so it never terminates on screen.
+   Its width is set in JS from track.scrollWidth (see fillTicker).
+   It sits at bottom:44px, clear of the 104px floor the panels pad to, so it
+   cannot collide with the lowest content in any section. */
+.mq{position:absolute;left:0;bottom:44px;overflow:hidden;white-space:nowrap;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:11px 0;z-index:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 2%,#000 98%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 2%,#000 98%,transparent);}
+.mq div{display:inline-block;animation:slide 44s linear infinite;font-size:.75rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--dim);font-weight:700;}
+.mq b{color:var(--ink);}
+@keyframes slide{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ---- shared type ---- */
+.kick{font-size:.71rem;letter-spacing:.26em;text-transform:uppercase;color:var(--hot);
+  font-weight:800;margin-bottom:20px;}
+.say{font-size:min(5.2vw,8vh,4.3rem);max-width:15ch;}
+.say em{color:var(--copper);}
+.sub{color:var(--muted);max-width:56ch;font-size:1.01rem;margin-top:20px;}
+.fine{color:var(--dim);font-size:.75rem;margin-top:20px;max-width:74ch;}
+
+
+/* ---- one screen per section, exactly ----
+   These ran from 74vw to 138vw so the viewport edge would stop reading as a
+   frame. That is a real effect, but it has a cost that outweighs it here: with
+   sections of uneven width the track almost never lines up with the screen, so
+   at rest you are nearly always looking at the tail of one section and the head
+   of the next. Every section is now exactly one screen, which is the only way
+   a section can fill the screen on its own with nothing of its neighbours
+   showing. */
+.p-problem{width:100vw;}
+.p-get{width:100vw;}
+.p-process{width:100vw;}
+.p-work{width:100vw;}
+.p-fee{width:100vw;}
+.p-questions{width:100vw;}
+.p-operator{width:100vw;}
+
+.cols{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px;}
+.c3{grid-template-columns:repeat(3,minmax(0,1fr));}
+/* Three across, two rows - not six across.
+   The six-up row is why Deliverables and Work were 132vw and 138vw: six cards
+   need that much width to stay readable, and the sections were sized to fit
+   them. That is what produced a section you had to scroll twice to see, which
+   is the thing being removed. At one screen wide, six columns would be 216px
+   each - narrower than the "~$150K / yr" figure that has to sit in one - so the
+   row wraps to two instead and the cards keep their proportions. */
+.c6{grid-template-columns:repeat(3,minmax(0,1fr));}
+.cols > div{background:#0B1520;padding:22px 20px;transition:background .2s;}
+.cols > div:hover{background:#10202C;}
+.cols b{display:block;font-family:'Manrope',sans-serif;font-size:min(2.9vw,4.2vh,2.5rem);
+  letter-spacing:-.04em;color:var(--copper);line-height:1;}
+.cols span.cap{display:block;margin-top:7px;font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);font-weight:700;}
+.cols p{color:var(--muted);font-size:.86rem;margin:7px 0 0;}
+.cols h3{font-size:.95rem;text-transform:none;letter-spacing:-.01em;margin-bottom:5px;}
+
+/* The problem list runs as a wide single row: a different shape again. */
+.runlist{list-style:none;padding:0;margin:28px 0 0;display:flex;gap:0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.runlist li{flex:1;padding:18px 20px 18px 0;border-right:1px solid var(--line);
+  font-size:.96rem;display:flex;gap:12px;align-items:flex-start;}
+.runlist li:last-child{border-right:0;}
+.runlist i{font-style:normal;color:var(--hot);font-family:'Manrope',sans-serif;
+  font-weight:800;font-size:.76rem;padding-left:20px;}
+
+.tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);max-width:720px;margin-top:30px;}
+.tiers > div{background:#0B1520;padding:26px;}
+.tiers .f{background:rgba(255,122,61,.1);}
+.tiers .amt{font-family:'Manrope',sans-serif;font-size:2.8rem;letter-spacing:-.045em;}
+.tiers .amt small{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.tiers .nm{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--hot);font-weight:800;}
+.tiers p{color:var(--muted);font-size:.89rem;margin:10px 0 18px;}
+
+.qa{margin-top:22px;max-width:76ch;}
+.qa details{border-top:1px solid var(--line);padding:12px 0;}
+.qa details:last-of-type{border-bottom:1px solid var(--line);}
+.qa summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:18px;
+  font-weight:700;font-size:1rem;}
+.qa summary::-webkit-details-marker{display:none;}
+.qa summary:after{content:"+";color:var(--hot);font-weight:800;}
+.qa details[open] summary:after{content:"\2013";}
+.qa p{color:var(--muted);margin:8px 0 0;font-size:.93rem;}
+
+.face{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:end;}
+.face img{width:200px;height:258px;object-fit:cover;object-position:center top;
+  filter:grayscale(1) contrast(1.06);}
+
+.swipe-note{display:none;color:var(--dim);font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;margin-top:10px;}
+
+/* ---- short viewports ----------------------------------------------------
+   Now that every section has to fit one screen, height is as much of a
+   constraint as width, and a 1366x768 laptop is the common case that fails.
+   At 768 the standard frame leaves ~490px of room and Work's two rows of cards
+   need ~590px. Because the low sections use justify-content:flex-end, that
+   overflow goes UPWARDS - the "Selected work" kicker was printing on top of the
+   KHIPUAI logo in the fixed header.
+
+   So the frame tightens instead of the content colliding with the chrome. The
+   bottom padding stays at 100px on purpose: the ticker band occupies 44px to
+   91px up from the bottom, so anything less would push content into it. */
+@media (min-width:901px) and (max-height:860px){
+  .panel{padding:96px 5vw 100px;}
+  .panel.at-top{padding-top:112px;}
+  .panel.at-low{padding-bottom:100px;}
+  .cols,.tiers,.runlist{margin-top:20px;}
+  .cols > div{padding:15px 16px;}
+  .tiers > div{padding:20px;}
+  .sub,.fine{margin-top:13px;}
+  .qa{margin-top:14px;}
+  .lede{margin:16px 0 20px;}
+  /* The founder portrait is the tallest fixed element on the page; at 258px it
+     pushed the Founder section 11px into the ticker band. */
+  .face img{width:168px;height:214px;}
+}
+
+/* A second, tighter tier. At 1280x720 the frame above still leaves only 524px
+   and Work's two card rows need 554, so its kicker clipped under the header
+   again. The card padding and the gaps give up the difference; the bottom stays
+   at 100px for the ticker band, as above. */
+@media (min-width:901px) and (max-height:740px){
+  .panel{padding:76px 5vw 100px;}
+  .panel.at-top{padding-top:88px;}
+  .panel.at-low{padding-bottom:100px;}
+  .cols,.tiers,.runlist{margin-top:16px;}
+  .cols > div{padding:12px 14px;}
+  .cols h3{margin-bottom:3px;}
+  .cols p{font-size:.82rem;}
+  .cols span.cap{margin-top:5px;}
+  .face img{width:150px;height:192px;}
+}
+
+@media (max-width:900px){
+  html,body{overflow:auto;height:auto;}
+  .track{display:block;height:auto;overflow:visible;scroll-snap-type:none;cursor:auto;
+    background:var(--bg);}
+  .cord{display:none;}
+  .panel,.p-start,.p-problem,.p-get,.p-process,.p-work,.p-fee,.p-questions,.p-operator{
+    width:100%;height:auto;min-height:0;padding:88px 22px 38px;justify-content:flex-start;}
+  .panel:last-child{padding-bottom:74px;}
+  .p-start h1{font-size:clamp(2.3rem,10vw,3.4rem);}
+  .p-start .inner{max-width:none;}
+  .say{font-size:clamp(1.9rem,8vw,2.6rem);}
+  /* The desktop rule now positions with left/top/aspect-ratio, so the stacked
+     layout has to unset all three - left:50vw on a position:relative element
+     would shove the image half a screen to the right. */
+  .knot{position:relative;left:auto;right:auto;top:auto;margin-top:20px;
+    width:100%;aspect-ratio:auto;height:180px;
+    -webkit-mask-image:none;mask-image:none;}
+  .mq,.hint,.rail{display:none;}
+  .foot{position:static;padding:0;}
+  .hd nav{display:none;}
+  .runlist{flex-direction:column;}
+  .runlist li{border-right:0;border-bottom:1px solid var(--line);padding:14px 0;}
+  .runlist li:last-child{border-bottom:0;}
+  .runlist i{padding-left:0;}
+  /* Stacked, the six-up grids ran to 1,579px on their own. Swiping them keeps
+     the concept's horizontal idea alive on a phone and roughly halves it. */
+  .cols.c3,.cols.c6{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;}
+  .cols.c3 > div,.cols.c6 > div{flex:0 0 76%;scroll-snap-align:start;}
+  .cols.c3::-webkit-scrollbar,.cols.c6::-webkit-scrollbar{height:5px;}
+  .cols.c3::-webkit-scrollbar-thumb,.cols.c6::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;}
+  .swipe-note{display:block;}
+  .tiers{grid-template-columns:minmax(0,1fr);}
+  .face{grid-template-columns:1fr;gap:18px;align-items:start;}
+  .face img{width:148px;height:178px;}
+  [data-rv]{opacity:1;transform:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  .track{scroll-behavior:auto;}
+  [data-rv]{opacity:1;transform:none;}
+}
