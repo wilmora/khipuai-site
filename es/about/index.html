@@ -47,7 +47,8 @@
     "name": "KHIPUAI",
     "url": "https://khipuai.co",
     "description": "Estudio de automatización con IA para equipos administrativos (back-office) y de servicios profesionales. Oferta principal: la Auditoría de Automatización con IA de tarifa fija.",
-    "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}]
+    "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
+    "employee": {"@type": "Person", "name": "Alex Pena", "jobTitle": "Desarrollador", "image": "https://khipuai.co/alex.jpg"}
   },
   "alumniOf": {"@type": "CollegeOrUniversity", "name": "Toronto Metropolitan University"},
   "knowsLanguage": ["en", "es"],
@@ -107,6 +108,10 @@
     background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
   .steps{counter-reset:step;}
   .founder{display:flex;gap:28px;align-items:flex-start;}
+  /* Va debajo del nombre, encima de la biografía. Apagado y en mayúsculas
+     para que se lea como etiqueta y no como la primera línea del párrafo. */
+  .role{margin:-.35em 0 .9em;color:var(--muted);font-weight:700;font-size:.82rem;
+    letter-spacing:.09em;text-transform:uppercase;}
   .avatar{flex:0 0 120px;width:120px;height:120px;border-radius:50%;background:var(--ink2);color:#fff;object-fit:cover;
     display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.04em;border:3px solid #fff;box-shadow:0 4px 14px rgba(18,38,58,.18);}
   .credit{background:#FBF1E9;border:1px solid #F0D8C6;border-radius:10px;padding:16px 18px;margin-top:22px;font-weight:600;}
@@ -176,15 +181,25 @@
 <!-- STORY -->
 <section>
   <div class="wrap">
-    <div class="kicker">El fundador</div>
+    <div class="kicker">El equipo</div>
     <div class="founder">
       <img class="avatar" src="https://khipuai.co/founder.jpg" alt="Wil Mora, fundador de KHIPUAI">
       <div style="max-width:66ch;">
       <h2>Wil Mora</h2>
+      <p class="role">Fundador</p>
       <p>He pasado 15 años del lado operativo de empresas reales en Perú, Estados Unidos y Canadá, con una carrera en finanzas (B.Comm, Toronto Metropolitan University) como base. Bilingüe, inglés y español.</p>
       <p>La primera década la pasé dirigiendo operaciones directamente: supervisando plantas de producción de alto volumen y luego liderando la logística y el servicio al cliente en 20 plantas y más de 280 camiones que movían más de un millón de metros cúbicos de producto al año, con un equipo de más de 20 personas. Ese trabajo me enseñó cuánto cuestan los procesos manuales, porque yo pagaba ese costo todos los días en horas extra, errores y traspasos que se caían.</p>
       <p>Después pasé al otro lado del mismo problema: la transformación digital. En una empresa norteamericana de materiales de construcción lideré los proyectos que introdujeron herramientas de IA en los flujos de trabajo centrales. Un sistema de revisión asistido por IA redujo un proceso clave hasta en un 80% y ahorró alrededor de $150K al año. También construí tableros ejecutivos sobre SQL, Qlik y AWS Redshift, y rediseñé un proceso de ventas que sumó cerca de $1M en ingresos.</p>
       <p>Hoy, a través de KHIPUAI, construyo automatización con IA en producción para equipos administrativos (back-office). La construcción insignia corre a diario en una firma norteamericana de servicios administrativos (back-office): un flujo que lee documentos y deja registros en borrador listos para aprobar dentro del propio ERP de la firma, con un evaluador de confianza que llevó un cierre mensual a cerca de un 95% de coincidencia con el trabajo manual. Es el resultado de una sola empresa, no una promesa, pero es real, está en producción y lo usa personal no técnico.</p>
+      </div>
+    </div>
+
+    <div class="founder" style="margin-top:44px;">
+      <img class="avatar" src="../../alex.jpg" alt="Alex Pena, desarrollador en KHIPUAI">
+      <div style="max-width:66ch;">
+      <h2>Alex Pena</h2>
+      <p class="role">Desarrollador</p>
+      <p>Alex construye y prueba los sistemas detrás del trabajo: el sitio web de KHIPUAI y las herramientas internas con las que se entrega la automatización. Trabaja a lo largo de toda la construcción, desde la interfaz que ve el cliente hasta las verificaciones que se ejecutan antes de publicar cualquier cambio.</p>
       </div>
     </div>
   </div>

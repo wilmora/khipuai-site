@@ -46,7 +46,8 @@
     "name": "KHIPUAI",
     "url": "https://khipuai.co",
     "description": "AI automation studio for back-office and professional-services teams. Lead offer: the fixed-fee AI Automation Audit.",
-    "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}]
+    "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
+    "employee": {"@type": "Person", "name": "Alex Pena", "jobTitle": "Developer", "image": "https://khipuai.co/alex.jpg"}
   },
   "alumniOf": {"@type": "CollegeOrUniversity", "name": "Toronto Metropolitan University"},
   "knowsLanguage": ["en", "es"],
@@ -106,6 +107,10 @@
     background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
   .steps{counter-reset:step;}
   .founder{display:flex;gap:28px;align-items:flex-start;}
+  /* Sits under the name, above the bio. Muted and uppercase so it reads as a
+     label rather than as the first line of the paragraph. */
+  .role{margin:-.35em 0 .9em;color:var(--muted);font-weight:700;font-size:.82rem;
+    letter-spacing:.09em;text-transform:uppercase;}
   .avatar{flex:0 0 120px;width:120px;height:120px;border-radius:50%;background:var(--ink2);color:#fff;object-fit:cover;
     display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.04em;border:3px solid #fff;box-shadow:0 4px 14px rgba(18,38,58,.18);}
   .credit{background:#FBF1E9;border:1px solid #F0D8C6;border-radius:10px;padding:16px 18px;margin-top:22px;font-weight:600;}
@@ -175,15 +180,25 @@
 <!-- STORY -->
 <section>
   <div class="wrap">
-    <div class="kicker">The founder</div>
+    <div class="kicker">The team</div>
     <div class="founder">
       <img class="avatar" src="../founder.jpg" alt="Wil Mora, Founder of KHIPUAI">
       <div style="max-width:66ch;">
       <h2>Wil Mora</h2>
+      <p class="role">Founder</p>
       <p>I have spent 15 years on the operating side of real businesses in Peru, the US, and Canada, with a finance degree (B.Comm, Toronto Metropolitan University) underneath it. Bilingual, English and Spanish.</p>
       <p>The first decade was running operations directly: supervising high-volume production plants, then leading logistics and customer service across 20 plants and 280-plus trucks moving over a million cubic meters of product a year, with a team of more than 20 people. That work taught me what manual processes cost, because I paid that cost every day in overtime, errors, and missed handoffs.</p>
       <p>Then I moved to the other side of the same problem: digital transformation. At a North American building-materials enterprise I led the projects that introduced AI tooling into core workflows. One AI-assisted review system cut a core process by up to 80% and saved around $150K a year. I also built executive dashboards on SQL, Qlik, and AWS Redshift, and redesigned a sales process that added roughly $1M in revenue.</p>
       <p>Today, through KHIPUAI, I build production AI automation for back-office teams. The flagship build runs daily at a North American back-office services firm: a pipeline that reads documents and posts ready-to-approve draft records into the firm's own ERP, with a confidence grader that ran a monthly close at about 95% match to manual work. One firm's result, not a promise, but it is real, in production, and used by non-technical staff.</p>
+      </div>
+    </div>
+
+    <div class="founder" style="margin-top:44px;">
+      <img class="avatar" src="../alex.jpg" alt="Alex Pena, Developer at KHIPUAI">
+      <div style="max-width:66ch;">
+      <h2>Alex Pena</h2>
+      <p class="role">Developer</p>
+      <p>Alex builds and tests the systems behind the work: KHIPUAI's website and the internal tools the automation is delivered through. He works across the build, from the interface a client sees to the checks that run before anything ships.</p>
       </div>
     </div>
   </div>
