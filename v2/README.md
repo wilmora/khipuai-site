@@ -1,4 +1,4 @@
-# v2 — the candidate next website
+# v2: the candidate next website
 
 This is the "Kinetic" design: a landing page that runs sideways. One screen per
 section, free scrolling that settles onto a section, and a light in the khipu
@@ -73,7 +73,7 @@ is not:
 **Do not merge this branch wholesale into `main`.** `main` is production:
 GitHub Pages publishes it to khipuai.co with no build step and no review gate,
 so anything that lands there is public immediately. When the time comes, the
-switch should be a deliberate, reviewed change, with Wil's sign-off — not a
+switch should be a deliberate, reviewed change, with Wil's sign-off, not a
 branch merge that happens to carry this folder with it.
 
 ## Viewing it

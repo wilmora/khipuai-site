@@ -34,7 +34,7 @@ asks four questions and returns a price range for that situation and region.
 ## What works today
 
 Everything except the conversation. The questions, the regional rate table, both
-languages, the estimate, the fallbacks — all of it runs in the page with no
+languages, the estimate, the fallbacks: all of it runs in the page with no
 backend and no cost.
 
 ## What the conversational AI needs, and why I could not just build it
@@ -42,7 +42,7 @@ backend and no cost.
 An LLM needs an API key. **A key cannot go in this page.** Everything here is
 static and public: a key in the JavaScript is readable from view-source the
 moment the site ships, and anyone who finds it can spend against Wil's account
-until it is revoked. There is no way to hide it client-side — not in a variable,
+until it is revoked. There is no way to hide it client-side. Not in a variable,
 not obfuscated, not in a separate .js file.
 
 So the AI needs somewhere server-side to run. Three options, cheapest first:
@@ -66,7 +66,7 @@ endpoint receives:
   "lang": "en" }
 ```
 
-and must return `{ "low": 4250, "high": 5400 }` — optionally with `note`.
+and must return `{ "low": 4250, "high": 5400 }`, optionally with `note`.
 
 ### Guardrails already in place
 
@@ -91,7 +91,7 @@ and must return `{ "low": 4250, "high": 5400 }` — optionally with `note`.
 ## The prices are placeholders
 
 North America is set to the $2,500 the site has been charging. **Every other
-region is a multiplier Wil has to set** — `REGIONS` in `shared/quote.js`. They
+region is a multiplier Wil has to set**, in `REGIONS` in `shared/quote.js`. They
 are flagged in the UI as not final so nobody treats them as real yet.
 
 Current spread, North America:
@@ -112,7 +112,7 @@ where it bites. Worth a lawyer's eye before Europe goes live rather than after.
 ## What changed elsewhere
 
 "One fixed fee, no meter" was the site's positioning and appeared throughout.
-Every instance inside `v2` has been reworded — the hero sub, the meta and og
+Every instance inside `v2` has been reworded: the hero sub, the meta and og
 descriptions, the FAQ answer, the pricing note, in both languages. **The live
 site still says it in 21 places**, which is correct while it is still the live
 site, and goes away when v2 replaces it.

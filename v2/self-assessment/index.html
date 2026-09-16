@@ -130,7 +130,7 @@ const P = [
     <div class="inner">
       <div class="kick" data-rv>Five minutes, fifteen questions</div>
       <h1 data-rv>Where is your team <em>losing hours?</em></h1>
-      <p class="lede" data-rv>Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it &mdash; the manual work grew one workaround at a time until it became invisible.</p>
+      <p class="lede" data-rv>Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it, because the manual work grew one workaround at a time until it became invisible.</p>
       <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer honestly. If you are not sure, the answer is usually yes.</p>
       <div class="row" data-rv>
         <button class="btn" data-to="reentry">Start the assessment</button>
@@ -187,7 +187,7 @@ const P = [
   { id:'audit', n:'Audit', at:'at-mid', html:`
     <div class="kick" data-rv>If you scored 7 or higher</div>
     <h2 class="say" data-rv style="max-width:19ch;">Put real numbers <em>on it.</em></h2>
-    <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does &mdash; about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
+    <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does: about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
     <div class="row" data-rv style="margin-top:26px;">
       <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
       <a class="btn line" href="../kinetic/#fee">See what it costs</a>
@@ -223,7 +223,7 @@ function render(){
   [...bands.children].forEach((li,i) => li.classList.toggle('on', i === hit));
 
   scorenote.textContent = started
-    ? `${answered.length} of ${buttons.length} answered. Nothing is stored or sent — this runs entirely in your browser.`
+    ? `${answered.length} of ${buttons.length} answered. Nothing is stored or sent. This runs entirely in your browser.`
     : 'Answer the questions and the bands light up.';
 }
 
