@@ -93,6 +93,23 @@ export const C = {
       d: 'Un proceso de ventas y control de calidad reconstruido con pasos claros y herramientas digitales en una empresa de materiales de construcción.' },
   ],
 
+  fit: {
+    forTitle: 'Esto es para ti si',
+    notTitle: 'Probablemente no es para ti si',
+    forYou: [
+      'Diriges una firma administrativa o de servicios profesionales (servicios de RR. HH. y back-office, servicios de TI y MSP, consultoría o contabilidad), de aproximadamente 20 a 300 personas.',
+      'Tu equipo tiene trabajo manual real y repetitivo, y operas con relaciones recurrentes con clientes.',
+      'Quieres un plan honesto de alguien que ya lo ha construido, no el discurso de venta de un proveedor.',
+    ],
+    notForYou: [
+      'Eres una empresa de software puro con operaciones limpias y de autoservicio.',
+      'Eres un negocio muy pequeño con pocos procesos.',
+      'No tienes trabajo administrativo repetitivo que eliminar.',
+    ],
+  },
+
+  noLines: ['Sin gran proyecto de software.', 'Sin plataforma a la que comprometerte.', 'Sin contador de consultoría abierto.'],
+
   founder: {
     name: 'Wil Mora',
     role: 'Fundador, KHIPUAI',

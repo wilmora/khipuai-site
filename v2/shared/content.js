@@ -83,6 +83,28 @@ export const C = {
       d: 'A sales and quality-control process rebuilt with clear steps and digital tools at a building-materials company.' },
   ],
 
+  /* Brought over from the live landing page, where it qualified leads. The
+     "probably not for you" half is the point: a page that says who it is not
+     for is read as honest, and it keeps unfit enquiries off the calendar. */
+  fit: {
+    forTitle: 'This is built for you if',
+    notTitle: 'It is probably not for you if',
+    forYou: [
+      'You run a back-office or professional-services firm (HR and back-office services, MSP and IT services, consulting, or accounting), roughly 20 to 300 people.',
+      'Your team has real, repetitive manual work and you run on recurring client relationships.',
+      'You want an honest plan from someone who has built this, not a vendor pitch.',
+    ],
+    notForYou: [
+      'You are a pure-product software company with clean self-serve operations.',
+      'You are a very small shop with little process.',
+      'You have no repetitive back-office work to remove.',
+    ],
+  },
+
+  /* The objection handling from the live "offer" section. Folded into
+     Deliverables rather than given a screen of its own. */
+  noLines: ['No big software project.', 'No platform to commit to.', 'No open-ended consulting meter.'],
+
   founder: {
     name: 'Wil Mora',
     role: 'Founder, KHIPUAI',

@@ -109,6 +109,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+        <a class="btn line" href="/self_assessment.html">${esc(C.hero.ctaAlt)}</a> <!-- English page: the live Spanish site links here too, there is no Spanish version -->
         <button class="btn line" data-to="fee">Ver el precio</button>
       </div>
     </div>` },
@@ -122,6 +123,7 @@ const P = [
     <div class="kick" data-rv>Qué recibes</div>
     <h2 class="say" data-rv style="max-width:20ch;">Un plan corto y concreto <em>sobre el que puedes actuar.</em></h2>
     <div class="cols c6" data-rv>${C.deliverables.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <div class="nolines" data-rv>${C.noLines.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
     <span class="swipe-note">Desliza la fila &rarr;</span>` },
 
   { id:'process', n:'Proceso', at:'at-mid', html:`
@@ -142,6 +144,20 @@ const P = [
     <div class="kick" data-rv>Cuánto cuesta</div>
     <h2 class="say" data-rv style="max-width:20ch;">Ajustado a <em>tu situación.</em></h2>
     <div class="quote-wrap" id="quote" data-rv></div>` },
+
+{ id:'fit', n:'Encaje', at:'at-mid', html:`
+    <div class="kick" data-rv>Para quién es</div>
+    <h2 class="say" data-rv style="max-width:22ch;">Vale la pena hacerlo, <em>o vale la pena decir que no.</em></h2>
+    <div class="fit" data-rv>
+      <div class="yes">
+        <h3>${esc(C.fit.forTitle)}</h3>
+        <ul>${C.fit.forYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+      <div class="no">
+        <h3>${esc(C.fit.notTitle)}</h3>
+        <ul>${C.fit.notForYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+    </div>` },
 
   { id:'questions', n:'Preguntas', at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:18ch;">Lo que <em>la gente realmente pregunta.</em></h2>

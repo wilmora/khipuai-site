@@ -555,3 +555,34 @@ html[lang="es"] .lede{max-width:40ch;}
   .q-opts button{border-right:0;width:100%;padding:14px 0;}
   .q-ask{font-size:1.15rem;}
 }
+
+/* ---- fit: for you / not for you ----
+   Two columns that have to read as opposed, not as a pair of equal lists. The
+   left keeps the page's ink; the right is muted and marked, so the contrast is
+   legible before a word is read. Same hairline language as everything else. */
+.fit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:30px;max-width:1120px;}
+.fit > div{padding:0 40px;}
+.fit > div:first-child{padding-left:0;}
+.fit > div:last-child{border-left:1px solid var(--line);}
+.fit h3{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;
+  margin:0 0 18px;}
+.fit .yes h3{color:var(--hot);}
+.fit .no h3{color:var(--dim);}
+.fit ul{list-style:none;padding:0;margin:0;}
+.fit li{position:relative;padding-left:24px;margin-bottom:16px;font-size:.95rem;line-height:1.5;}
+.fit li:before{position:absolute;left:0;top:0;font-family:'Manrope',sans-serif;font-weight:800;}
+.fit .yes li:before{content:"+";color:var(--hot);}
+.fit .no li{color:var(--muted);}
+.fit .no li:before{content:"\2013";color:var(--dim);}
+
+/* The objection lines, folded into Deliverables rather than given a screen. */
+.nolines{display:flex;flex-wrap:wrap;gap:0 34px;margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--line);}
+.nolines span{font-family:'Manrope',sans-serif;font-weight:800;font-size:.8rem;
+  letter-spacing:.02em;color:var(--dim);}
+@media (max-width:900px){
+  .fit{grid-template-columns:minmax(0,1fr);}
+  .fit > div{padding:0;}
+  .fit > div:last-child{border-left:0;border-top:1px solid var(--line);margin-top:24px;padding-top:24px;}
+  .nolines{flex-direction:column;gap:8px;}
+}

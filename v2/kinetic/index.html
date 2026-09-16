@@ -105,6 +105,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+        <a class="btn line" href="/self_assessment.html">${esc(C.hero.ctaAlt)}</a>
         <button class="btn line" data-to="fee">Get a price</button>
       </div>
     </div>` },
@@ -118,6 +119,7 @@ const P = [
     <div class="kick" data-rv>The deliverable</div>
     <h2 class="say" data-rv style="max-width:20ch;">A short, concrete plan <em>you can act on.</em></h2>
     <div class="cols c6" data-rv>${C.deliverables.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <div class="nolines" data-rv>${C.noLines.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
     <span class="swipe-note">Swipe the row &rarr;</span>` },
 
   { id:'process', n:'Process', at:'at-mid', html:`
@@ -138,6 +140,20 @@ const P = [
     <div class="kick" data-rv>What it costs</div>
     <h2 class="say" data-rv style="max-width:18ch;">Priced to <em>your situation.</em></h2>
     <div class="quote-wrap" id="quote" data-rv></div>` },
+
+{ id:'fit', n:'Fit', at:'at-mid', html:`
+    <div class="kick" data-rv>Who it is for</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Worth doing, <em>or worth saying no to.</em></h2>
+    <div class="fit" data-rv>
+      <div class="yes">
+        <h3>${esc(C.fit.forTitle)}</h3>
+        <ul>${C.fit.forYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+      <div class="no">
+        <h3>${esc(C.fit.notTitle)}</h3>
+        <ul>${C.fit.notForYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+    </div>` },
 
   { id:'questions', n:'Questions', at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:18ch;">The things <em>people actually ask.</em></h2>
