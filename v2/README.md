@@ -10,36 +10,63 @@ called `concepts` any more.
 
 ## Where it is up to
 
-It is **one page, in English.** The site it would replace is **15 pages across
-two languages**:
+Four pages now, across two languages. The site it would replace is **15 pages**:
 
 | | v2 (here) | The live site |
 |---|---|---|
-| Pages | 1 | 15 |
-| Languages | English | English + Spanish |
-| SEO metadata | none | on every page |
+| Pages | 4 | 15 |
+| Languages | English + Spanish (landing only) | English + Spanish |
+| SEO metadata | on every page here | on every page |
+| Analytics | **none** | GA4 on every page |
 
-The live site's pages are `index`, `about`, `work`, `audit`, `blog` plus three
-posts, `privacy`, `self_assessment`, `thank-you`, and the Spanish mirror
-`es/index`, `es/about`, `es/work`, `es/audit`.
+Here: `kinetic/` (landing, EN), `es/` (landing, ES), `about/`,
+`self-assessment/`.
 
-So switching is a build project, not a swap. Until the rest exists, this cannot
-replace anything.
+Still to port: `audit`, `work`, `blog` plus three posts, `privacy`,
+`thank-you`, and the Spanish mirror of `about`, `work` and `audit`. `audit`
+and `work` also have to absorb the homepage copy that moved off the landing
+page.
 
-## What has to change before it could go live
+So switching is still a build project, not a swap.
 
-- **`<meta name="robots" content="noindex">` must come out.** It is in the page
-  right now, correctly, because a concept must not be indexed. Ship it as-is and
-  the new site is invisible to search.
-- **The SEO head is missing entirely**: no description, no canonical, no
-  Open Graph tags, no JSON-LD, no hreflang. The current pages carry all of it,
-  and it is a large part of why the site ranks. Losing it is not a cosmetic
-  regression.
-- **`shared/content.js`** is the single source of truth for every fact this page
-  shows. The live site has its copy written into each page instead. One of those
-  two approaches has to win.
-- **The Spanish mirror has no equivalent here.** The live site's Spanish pages
-  drift from the English ones silently; a replacement needs a story for that.
+## Known gaps
+
+- **There is no navigation between these pages.** `about/` and
+  `self-assessment/` are reachable only by typing the URL or, for the
+  assessment, the hero button on the landing page. The shell's nav is
+  within-page section links; nothing yet is a site menu. This is the biggest
+  single hole.
+- **No analytics.** Every live page carries GA4 (`G-8M0ENQ1NBS`); no v2 page
+  does. Left off deliberately while these pages are `noindex` staging -
+  adding it now would fill the real property with development traffic - but it
+  has to go on at the switch or the new site reports nothing.
+- **The PDF request form has never been wired to a provider.** It is carried
+  over from the live page in the same state, with the same safety net that
+  disables it rather than letting it POST into nowhere and lose leads silently.
+  Setting a real `action` switches that block off by itself.
+- **Spanish has no self-assessment.** The live Spanish site links to the
+  English one; this does the same. A Spanish version needs translated questions
+  from Wil, not machine-translated ones - the wording is the scoring
+  instrument, and a reworded question does not score the same.
+
+## Switch-day checklist
+
+Everything that is correct *because* this is staging, and wrong the moment it
+is not:
+
+- [ ] **Delete `<meta name="robots" content="noindex">`** from every page in
+      `v2/`. Ship with it and the new site is invisible to search.
+- [ ] **Redirect `/self_assessment.html` to `/self-assessment/`.** The path
+      was renamed to a hyphen and a directory, matching every other URL on the
+      site. The old one is in the shipped PDF, in LinkedIn posts and in
+      anything already shared, so without a redirect those all 404.
+- [ ] **Make the hero self-assessment links absolute.** Both `kinetic/` and
+      `es/` use `../self-assessment/`, which is right while this sits under
+      `/v2/` and wrong once it is the root.
+- [ ] **Add GA4** to every page.
+- [ ] **Set the quote regions.** Everything outside North America is a
+      placeholder multiplier - see `README-quote.md`.
+- [ ] **Wil approves the Team section**, which now has a second person on it.
 
 ## The rule while it is here
 
@@ -52,7 +79,8 @@ branch merge that happens to carry this folder with it.
 ## Viewing it
 
 Pages only publishes `main`, so this is not reachable at a URL. Run the site
-locally on this branch and open `/v2/kinetic/`.
+locally on this branch and open `/v2/kinetic/`, `/v2/es/`, `/v2/about/` or
+`/v2/self-assessment/`.
 
 Asset paths are relative (`../shared/...`), so the folder works wherever it is
 mounted rather than only at a server root.

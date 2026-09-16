@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Title and description carried over from the live /self_assessment.html
+     rather than rewritten. Same worksheet, new shell. -->
+<title>Where Is Your Team Losing Hours? | KHIPUAI Self-Assessment</title>
+<meta name="description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Score where your team loses hours to manual work.">
+
+<!-- STAYS UNTIL THE SWITCH. See v2/README.md. The canonical below already
+     points at where this will live; at the switch, delete this one line.
+
+     NOTE THE URL CHANGE. The live page is /self_assessment.html; this is
+     /self-assessment/. Hyphen, not underscore, to match every other path on
+     the site, and a directory so it reads like the rest. That means the old
+     URL needs a redirect at the switch or the PDF's own links, the LinkedIn
+     posts and anything already shared will 404. It is written down in
+     v2/README.md as a switch-day task. -->
+<meta name="robots" content="noindex">
+
+<link rel="canonical" href="https://khipuai.co/self-assessment/">
+<link rel="alternate" hreflang="en" href="https://khipuai.co/self-assessment/">
+<link rel="alternate" hreflang="x-default" href="https://khipuai.co/self-assessment/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Where is your team losing hours?">
+<meta property="og:description" content="A 5-minute automation self-assessment for back-office and professional-services teams. 15 questions, one score.">
+<meta property="og:url" content="https://khipuai.co/self-assessment/">
+<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where is your team losing hours?">
+<meta name="twitter:description" content="A 5-minute automation self-assessment. 15 questions, one score.">
+<meta name="twitter:image" content="https://khipuai.co/og-image.png">
+
+<link rel="stylesheet" href="../shared/assets/fonts.css">
+<link rel="stylesheet" href="../shared/kinetic.css">
+<link rel="icon" href="../shared/assets/mark.svg">
+</head>
+<body>
+
+<header class="hd">
+  <a class="bd" href="../kinetic/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav id="nav" aria-label="Sections"></nav>
+</header>
+
+<div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
+
+<div class="track" id="track"></div>
+
+<div class="rail"><i id="railfill"></i></div>
+
+<div class="foot">
+  <!-- The running total sits opposite the scroll hint. It is a live region so
+       a screen reader hears the score change rather than only finding it on
+       the last screen. -->
+  <div class="tally" id="tally" role="status" aria-live="polite">
+    <b id="tallynum">0</b><span>of 24 points</span>
+  </div>
+  <div class="hint" id="hint"><span>Scroll</span><span class="ar">&rarr;</span></div>
+</div>
+
+<script type="module">
+import { buildKinetic, esc } from '../shared/kinetic.js';
+import { C } from '../shared/content.js';
+
+/* The 15 questions and their weights are lifted verbatim from the live
+   worksheet. They are the scoring instrument - reworded questions would not
+   score the same, and the printable PDF that people take to their team has
+   these exact ones on it. The five parts become five screens because that is
+   already how the worksheet is grouped. */
+const PARTS = [
+  { id:'reentry', n:'Re-entry', kick:'Part one', at:'at-mid',
+    head:'Data re-entry, <em>the silent hours.</em>', q:[
+    [2,'Does anyone retype information from PDFs, emails, or one system into another?'],
+    [2,'Do you enter the same customer, vendor, or client data into more than one system?'],
+    [1,'Do people download data from one tool just to upload or paste it into another?'],
+  ]},
+  { id:'approvals', n:'Approvals', kick:'Part two', at:'at-top',
+    head:'Approvals <em>and handoffs.</em>', q:[
+    [2,'Do approvals (invoices, time off, purchases, onboarding) live in email or chat instead of a tracked workflow?'],
+    [1,'Has work ever stalled because someone did not know it was waiting on them?'],
+    [2,'When a new client or employee is onboarded, does the same information get handed between people and re-keyed?'],
+  ]},
+  { id:'reporting', n:'Reporting', kick:'Part three', at:'at-low',
+    head:'Reporting, <em>and who waits for it.</em>', q:[
+    [2,'Does someone rebuild the same report (weekly, monthly) by hand from multiple sources?'],
+    [1,'Do leaders wait on a person to assemble numbers before they can see how the business is doing?'],
+    [1,'Have you ever made a decision on a stale number because the fresh one was too much work to pull?'],
+  ]},
+  { id:'accuracy', n:'Accuracy', kick:'Part four', at:'at-mid',
+    head:'Reconciliation <em>and accuracy.</em>', q:[
+    [2,'Does anyone reconcile two systems or spreadsheets line by line to catch mismatches?'],
+    [2,'Do billing or invoicing errors slip through and get caught later (or by the client)?'],
+    [1,'Is there a &ldquo;person who just knows&rdquo; how a critical process works, with little written down?'],
+  ]},
+  { id:'tells', n:'Tells', kick:'Part five', at:'at-top',
+    head:'The tells.', q:[
+    [2,'Do you have a process everyone agrees is painful but &ldquo;that&rsquo;s just how we do it&rdquo;?'],
+    [1,'Have you looked at an AI or automation tool, felt it could help, but not known where to start?'],
+    [2,'If your busiest person took two weeks off, would routine work pile up because only they can do it?'],
+  ]},
+];
+
+/* Bands are the live page's, unchanged: the thresholds are the instrument as
+   much as the questions are. */
+const BANDS = [
+  { max:6,        name:'Lean',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
+  { max:14,       name:'Leaking',  copy:'You have several clear opportunities and are likely losing 20 to 40+ hours a month. This is the sweet spot where an audit pays for itself fast.' },
+  { max:Infinity, name:'Bleeding', copy:'Manual work is a structural drag, costing real money and risk (errors, key-person dependency). The first few fixes usually pay back in weeks.' },
+];
+
+const TOTAL = PARTS.reduce((s,p) => s + p.q.reduce((t,[w]) => t + w, 0), 0);
+
+/* A question is a button carrying its own weight, so the tally is summed from
+   the DOM and there is no second copy of the state to fall out of step. */
+const askList = (part, offset) => `<ul class="ask" data-rv>${part.q.map(([w,t],i) => `
+  <li><button type="button" aria-pressed="false" data-w="${w}" id="q${offset+i+1}">
+    <span class="pts" aria-hidden="true">${w}</span>
+    <span class="txt">${t}</span>
+  </button></li>`).join('')}</ul>`;
+
+let n = 0;
+const P = [
+  { id:'start', n:'Start', at:'at-mid', html:`
+    <div class="knot" id="knot">
+      <img src="../shared/assets/khipu-knot-v2.webp" alt="A sculptural copper knot, a contemporary reading of an Andean khipu">
+    </div>
+    <div class="inner">
+      <div class="kick" data-rv>Five minutes, fifteen questions</div>
+      <h1 data-rv>Where is your team <em>losing hours?</em></h1>
+      <p class="lede" data-rv>Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it &mdash; the manual work grew one workaround at a time until it became invisible.</p>
+      <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer honestly. If you are not sure, the answer is usually yes.</p>
+      <div class="row" data-rv>
+        <button class="btn" data-to="reentry">Start the assessment</button>
+        <a class="btn line" href="../kinetic/">Back to the site</a>
+      </div>
+    </div>` },
+
+  ...PARTS.map(part => {
+    const offset = n; n += part.q.length;
+    return { id:part.id, n:part.n, at:part.at, html:`
+    <div class="kick" data-rv>${esc(part.kick)}</div>
+    <h2 class="say" data-rv style="max-width:19ch;">${part.head}</h2>
+    ${askList(part, offset)}` };
+  }),
+
+  { id:'score', n:'Score', at:'at-mid', html:`
+    <div class="kick" data-rv>Your score</div>
+    <div class="bignum" data-rv><span id="scorenum">0</span><small>/ ${TOTAL}</small></div>
+    <ul class="bands idle" id="bands" data-rv>${BANDS.map((b,i) => `
+      <li data-band="${i}"><b>${esc(b.name)}.</b> ${esc(b.copy)}</li>`).join('')}</ul>
+    <p class="fine" data-rv id="scorenote">Answer the questions and the bands light up.</p>` },
+
+  /* Two asks, two screens, in this order - which is the live page's own
+     reasoning: the PDF is the lower-commitment step for someone not ready to
+     give up 30 minutes, so it comes before the call. Putting both on one
+     screen also overflowed it by 122px. */
+  { id:'pdf', n:'PDF', at:'at-top', html:`
+    <div class="kick" data-rv>What to do with it</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Take it <em>to your team.</em></h2>
+    <p class="sub" data-rv>The same exercise as a PDF, so you can score it with the people who actually do the work.</p>
+    <form class="lead" id="lead" action="FORM_ENDPOINT_NOT_SET" method="POST" data-rv>
+      <div class="field">
+        <label for="ga-name">Name</label>
+        <input id="ga-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="ga-email">Work email</label>
+        <input id="ga-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="ga-company">Company</label>
+        <input id="ga-company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <input type="hidden" name="_subject" value="Self-assessment PDF request">
+      <!-- Carried over, and it has to stay: the score is the one thing that
+           makes this lead worth more than an email address. -->
+      <input type="hidden" name="score" id="leadscore" value="">
+      <!-- Spam trap: a real person never fills a field they cannot see. -->
+      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Send me the PDF</button>
+      <p class="fineprint">No spam, and your details are not shared. <a href="/privacy.html">How we handle your data</a>.</p>
+    </form>` },
+
+  { id:'audit', n:'Audit', at:'at-mid', html:`
+    <div class="kick" data-rv>If you scored 7 or higher</div>
+    <h2 class="say" data-rv style="max-width:19ch;">Put real numbers <em>on it.</em></h2>
+    <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does &mdash; about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
+    <div class="row" data-rv style="margin-top:26px;">
+      <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+      <a class="btn line" href="../kinetic/#fee">See what it costs</a>
+    </div>
+    <p class="fine" data-rv>${esc(C.legal)}</p>` },
+];
+
+buildKinetic(P);
+
+/* ---- scoring -------------------------------------------------------------
+   Deliberately no storage. A score is a snapshot of an honest sitting, and a
+   half-finished one restored three days later on a different screen would be
+   presented as a result without being one. Reloading starts over, which is
+   the correct behaviour for a worksheet. */
+const buttons   = [...document.querySelectorAll('.ask button')];
+const tallynum  = document.getElementById('tallynum');
+const scorenum  = document.getElementById('scorenum');
+const bands     = document.getElementById('bands');
+const scorenote = document.getElementById('scorenote');
+const leadscore = document.getElementById('leadscore');
+
+function render(){
+  const answered = buttons.filter(b => b.getAttribute('aria-pressed') === 'true');
+  const score = answered.reduce((s,b) => s + Number(b.dataset.w), 0);
+
+  tallynum.textContent = score;
+  scorenum.textContent = score;
+  leadscore.value = answered.length ? String(score) : '';
+
+  const started = answered.length > 0;
+  bands.classList.toggle('idle', !started);
+  const hit = started ? BANDS.findIndex(b => score <= b.max) : -1;
+  [...bands.children].forEach((li,i) => li.classList.toggle('on', i === hit));
+
+  scorenote.textContent = started
+    ? `${answered.length} of ${buttons.length} answered. Nothing is stored or sent — this runs entirely in your browser.`
+    : 'Answer the questions and the bands light up.';
+}
+
+buttons.forEach(b => b.addEventListener('click', () => {
+  b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+  render();
+}));
+render();
+
+/* ---- the PDF form --------------------------------------------------------
+   Carried over from the live page with its safety net intact. The form has
+   never been wired to a provider, and a half-configured form POSTing into
+   nowhere loses real leads silently - worse than not being there. This whole
+   block disables itself the moment a real endpoint is set. */
+(function(){
+  const form = document.getElementById('lead');
+  if (!form || form.getAttribute('action').indexOf('FORM_ENDPOINT') === -1) return;
+
+  form.addEventListener('submit', e => e.preventDefault());
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn){ btn.disabled = true; btn.textContent = 'Not connected yet'; btn.style.opacity = '.55'; }
+  form.querySelectorAll('input:not(.hp):not([type="hidden"])').forEach(i => { i.disabled = true; });
+
+  const note = document.createElement('p');
+  note.className = 'fineprint';
+  note.setAttribute('role', 'status');
+  note.textContent = 'This form is built and styled but not yet wired to a form provider, so it is switched off.';
+  form.appendChild(note);
+})();
+</script>
+</body>
+</html>

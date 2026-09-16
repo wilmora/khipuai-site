@@ -109,7 +109,10 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <a class="btn line" href="/self_assessment.html">${esc(C.hero.ctaAlt)}</a> <!-- English page: the live Spanish site links here too, there is no Spanish version -->
+        <!-- Points at the English assessment: there is no Spanish version, and
+             the live Spanish site links to the English one for the same reason.
+             Relative while v2 sits under /v2/; see v2/README.md. -->
+        <a class="btn line" href="../self-assessment/">${esc(C.hero.ctaAlt)}</a>
         <button class="btn line" data-to="fee">Ver el precio</button>
       </div>
     </div>` },

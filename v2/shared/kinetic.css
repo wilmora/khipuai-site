@@ -600,3 +600,126 @@ html[lang="es"] .lede{max-width:40ch;}
   .fit > div:last-child{border-left:0;border-top:1px solid var(--line);margin-top:24px;padding-top:24px;}
   .nolines{flex-direction:column;gap:8px;}
 }
+
+/* =========================================================================
+   The self-assessment.
+
+   The live version is one long scrolling worksheet: 15 questions with a point
+   value beside each, and you add them up yourself at the bottom. That works on
+   a vertical page where all 15 are in front of you. It does not work here -
+   nothing on this site is read by scrolling past it, and you cannot hold a
+   running total in your head across five screens you have to travel between.
+
+   So the questions became tappable and the total counts itself. That is not a
+   feature added for its own sake; it is what the sideways format costs, and
+   not paying it would have left a worksheet you could not actually fill in.
+   The printable PDF still exists for the pen-and-paper version, and the form
+   on the last screen is how you get it.
+   ========================================================================= */
+.ask{list-style:none;padding:0;margin:26px 0 0;max-width:82ch;
+  border-top:1px solid var(--line);}
+.ask li{border-bottom:1px solid var(--line);}
+
+/* A button, not a checkbox with a label: the whole row is the target, it
+   reports pressed state to a screen reader, and it needs no custom control
+   drawn over a native one. */
+.ask button{width:100%;display:flex;gap:18px;align-items:flex-start;text-align:left;
+  background:none;border:0;padding:17px 4px;color:var(--muted);font:inherit;
+  font-size:.97rem;line-height:1.5;cursor:pointer;transition:color .18s;}
+.ask button:hover{color:var(--ink);}
+
+/* The points value doubles as the tick box. Empty and dim until chosen, then
+   it fills - so the row shows both what it is worth and that you took it. */
+.ask .pts{flex:0 0 38px;height:30px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);font-family:'Manrope',sans-serif;font-weight:800;
+  font-size:.82rem;color:var(--dim);transition:all .18s;}
+.ask button[aria-pressed="true"]{color:var(--ink);}
+.ask button[aria-pressed="true"] .pts{background:var(--hot);border-color:var(--hot);color:#0A1119;}
+.ask .txt{flex:1;}
+
+/* The running total, bottom-left, opposite the scroll hint. It has to be
+   visible from every screen - a tally you can only see on the last one is no
+   better than adding it up yourself. */
+.tally{flex:0 0 auto;margin-right:auto;font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim);display:flex;align-items:baseline;gap:9px;}
+.tally b{font-family:'Manrope',sans-serif;font-size:1.5rem;letter-spacing:-.04em;
+  color:var(--hot);line-height:1;}
+
+/* The result. One big number, then the three bands with the one you landed in
+   lit and the other two held back - rather than three equal boxes leaving you
+   to work out which is yours. */
+.bignum{font-family:'Manrope',sans-serif;font-weight:800;line-height:.86;
+  font-size:min(13vw,17vh,9rem);letter-spacing:-.05em;color:var(--hot);}
+.bignum small{font-size:.24em;color:var(--dim);letter-spacing:.06em;margin-left:10px;}
+.bands{list-style:none;padding:0;margin:26px 0 0;max-width:86ch;}
+.bands li{border-top:1px solid var(--line);padding:16px 0 16px 22px;position:relative;
+  color:var(--dim);transition:color .25s,border-color .25s;}
+.bands li:last-child{border-bottom:1px solid var(--line);}
+.bands li:before{content:"";position:absolute;left:0;top:19px;width:8px;height:8px;
+  border:1px solid var(--line);transition:all .25s;}
+.bands b{font-family:'Manrope',sans-serif;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--muted);transition:color .25s;}
+.bands li.on{color:var(--ink);border-color:var(--copper);}
+.bands li.on b{color:var(--hot);}
+.bands li.on:before{background:var(--hot);border-color:var(--hot);}
+/* Nothing is lit until at least one question is answered, or the page would
+   claim you scored zero before you had started. */
+.bands.idle li{color:var(--muted);}
+
+/* ---- the PDF request ----
+   Hairline fields on the dark ground, same as everything else here. The live
+   version sits this in a light card; a card would be the one boxed thing left
+   on a site that just had its boxes taken away. */
+.lead{display:grid;gap:16px;max-width:460px;margin-top:26px;}
+.lead .field{display:grid;gap:6px;}
+.lead label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:800;color:var(--muted);}
+.lead input{font:inherit;font-size:.95rem;padding:12px 0;background:none;color:var(--ink);
+  border:0;border-bottom:1px solid var(--line);transition:border-color .18s;}
+.lead input:focus{outline:none;border-bottom-color:var(--hot);}
+.lead input:disabled{color:var(--dim);}
+.lead button{justify-self:start;}
+.lead .fineprint{font-size:.78rem;color:var(--dim);margin:0;max-width:44ch;}
+.lead a{color:var(--copper);}
+/* Off-screen rather than display:none, so bots still fill it in. */
+.lead .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+
+/* Same two tiers the rest of the shell uses. A 1366x768 laptop is the common
+   case that fails: the questions fit, but the PDF form ran 40px into the
+   ticker before these. */
+@media (min-width:901px) and (max-height:860px){
+  .ask{margin-top:18px;}
+  .ask button{padding:13px 4px;font-size:.93rem;}
+  .lead{gap:11px;margin-top:18px;}
+  .lead input{padding:9px 0;}
+  .bands li{padding:12px 0 12px 22px;}
+  .bands li:before{top:15px;}
+}
+@media (min-width:901px) and (max-height:740px){
+  .ask button{padding:10px 4px;font-size:.89rem;}
+  .ask .pts{height:26px;}
+  .lead{gap:8px;margin-top:14px;}
+  .lead input{padding:7px 0;font-size:.9rem;}
+  .bands li{padding:10px 0 10px 22px;font-size:.93rem;}
+}
+@media (max-width:900px){
+  .ask{max-width:none;}
+  .ask button{gap:14px;padding:15px 0;font-size:.95rem;}
+  .tally{display:none;}          /* the score screen carries it on the phone */
+  .lead{max-width:none;}
+}
+
+/* Printing a sideways site gives you screen one and nothing else. The PDF is
+   the real printable artefact, but if someone hits Ctrl+P anyway they should
+   get the whole worksheet rather than a single panel. */
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff;color:#000;}
+  .hd,.foot,.rail,.cordwrap,.mq,.knot,.swipe-note,.lead{display:none !important;}
+  .track{display:block !important;height:auto !important;overflow:visible !important;}
+  .panel{width:auto !important;height:auto !important;min-height:0 !important;
+    page-break-inside:avoid;padding:0 0 26px !important;opacity:1 !important;
+    transform:none !important;}
+  .ask button{color:#000;}
+  .ask .pts{border-color:#999;color:#000;}
+  .bignum,.kick,.bands li.on b{color:#000;}
+}

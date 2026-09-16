@@ -105,7 +105,10 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <a class="btn line" href="/self_assessment.html">${esc(C.hero.ctaAlt)}</a>
+        <!-- Relative, not /self-assessment/, so it works while v2 sits under
+             /v2/. At the switch this becomes an absolute path - listed in
+             v2/README.md with the rest of the switch-day tasks. -->
+        <a class="btn line" href="../self-assessment/">${esc(C.hero.ctaAlt)}</a>
         <button class="btn line" data-to="fee">Get a price</button>
       </div>
     </div>` },
