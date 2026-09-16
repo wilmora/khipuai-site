@@ -9,7 +9,7 @@
      site already ranks on. Changing the copy is a separate decision from
      changing the design. -->
 <title>KHIPUAI | The AI Automation Audit</title>
-<meta name="description" content="For a one-time fixed fee, find out exactly what your back-office team should automate, what it is worth, and what to do first. Finance-grade, human-approved, built into the systems you already run.">
+<meta name="description" content="Find out exactly what your back-office team should automate, what it is worth, and what to do first. Finance-grade, human-approved, built into the systems you already run.">
 
 <!-- STAYS UNTIL THE SWITCH.
      This page lives at /v2/kinetic/ while it is being built. If the branch were
@@ -29,7 +29,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="KHIPUAI | The AI Automation Audit">
-<meta property="og:description" content="Find out exactly what your team should automate, what it is worth, and what to do first. One fixed fee. Finance-grade, human-approved.">
+<meta property="og:description" content="Find out exactly what your team should automate, what it is worth, and what to do first. Priced to your situation. Finance-grade, human-approved.">
 <meta property="og:url" content="https://khipuai.co">
 <meta property="og:image" content="https://khipuai.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -88,8 +88,9 @@
 </div>
 
 <script type="module">
-import { buildKinetic, esc } from '../shared/kinetic.js';
+import { buildKinetic, esc, mountQuote, setQuoteBooking } from '../shared/kinetic.js';
 import { C } from '../shared/content.js';
+import { getQuestions, askQuote, fmt } from '../shared/quote.js';
 
 // `at` sets where the content sits vertically. Varying it is most of what
 // stops a horizontal site reading as a deck.
@@ -104,7 +105,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <button class="btn line" data-to="fee">See the fee</button>
+        <button class="btn line" data-to="fee">Get a price</button>
       </div>
     </div>` },
 
@@ -133,14 +134,10 @@ const P = [
     <span class="swipe-note">Swipe the row &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
 
-  { id:'fee', n:'Pricing', at:'at-top', html:`
-    <div class="kick" data-rv>Pricing</div>
-    <h2 class="say" data-rv style="max-width:16ch;">One fixed fee. <em>No meter.</em></h2>
-    <div class="tiers" data-rv>${C.pricing.tiers.map(t=>`<div class="${t.featured?'f':''}">
-      <div class="nm">${esc(t.name)}</div>
-      <div class="amt">${esc(t.amount)} <small>${esc(t.unit)}</small></div>
-      <p>${esc(t.for)}</p><a class="btn" href="${C.booking}">Book a call</a></div>`).join('')}</div>
-    <p class="sub" data-rv>${esc(C.pricing.credit)}</p>` },
+  { id:'fee', n:'Quote', at:'at-top', html:`
+    <div class="kick" data-rv>What it costs</div>
+    <h2 class="say" data-rv style="max-width:18ch;">Priced to <em>your situation.</em></h2>
+    <div class="quote-wrap" id="quote" data-rv></div>` },
 
   { id:'questions', n:'Questions', at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:18ch;">The things <em>people actually ask.</em></h2>
@@ -173,7 +170,19 @@ const P = [
     </div>` },
 ];
 
-buildKinetic(P);
+const QT = {
+  step: 'Question', back: 'Back', working: 'Working it out…',
+  estimate: 'This is an estimate, not a binding quote — a person confirms it on the call.',
+  placeholder: 'Pricing outside the United States and Canada is not final yet.',
+  book: 'Book a free 30-minute call', restart: 'Start again',
+};
+
+buildKinetic(P, C);
+setQuoteBooking(C.booking);
+mountQuote(document.getElementById('quote'), {
+  QUESTIONS: getQuestions('en'),
+  askQuote: a => askQuote(a, { lang: 'en' }),
+  fmt, t: QT });
 </script>
 </body>
 </html>

@@ -520,3 +520,38 @@ html[lang="es"] .lede{max-width:40ch;}
   html[lang="es"] .p-start h1{font-size:clamp(2.1rem,9vw,3.1rem);}
   html[lang="es"] .p-start .inner{max-width:none;}
 }
+
+/* ---- the quote panel ----
+   Deliberately not a chat bubble stack. The page is hairlines and big type,
+   and a messenger UI would look borrowed from somewhere else. One question at
+   a time, answers as the same hairline row used elsewhere, the number arriving
+   in the page's own display face. */
+.quote-wrap{margin-top:30px;max-width:980px;}
+.q-step{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+  font-weight:800;margin-bottom:12px;}
+.q-ask{font-size:min(2.4vw,3.6vh,1.7rem);font-family:'Manrope',sans-serif;font-weight:800;
+  letter-spacing:-.03em;line-height:1.1;margin:0 0 20px;max-width:26ch;}
+.q-opts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);}
+.q-opts button{flex:0 0 auto;background:none;border:0;border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);color:var(--ink);font:inherit;font-size:.95rem;
+  padding:15px 26px;cursor:pointer;transition:color .2s,background .2s;text-align:left;}
+.q-opts button:hover{color:var(--hot);}
+.q-opts button:last-child{border-right:0;}
+.q-back{background:none;border:0;color:var(--dim);font:inherit;font-size:.75rem;
+  letter-spacing:.14em;text-transform:uppercase;font-weight:700;cursor:pointer;
+  padding:14px 0 0;}
+.q-back:hover{color:var(--ink);}
+
+.q-out{border-top:1px solid var(--line);padding-top:26px;}
+.q-num{font-family:'Manrope',sans-serif;font-size:min(5.4vw,8vh,4.4rem);letter-spacing:-.045em;
+  line-height:.95;color:var(--copper);}
+.q-num small{font-size:.24em;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  display:block;margin-top:12px;font-weight:800;}
+.q-note{color:var(--muted);font-size:.92rem;margin:16px 0 0;max-width:52ch;}
+.q-flag{color:var(--dim);font-size:.78rem;margin:10px 0 0;max-width:60ch;}
+.q-again{margin-top:22px;}
+@media (max-width:900px){
+  .q-opts{flex-direction:column;}
+  .q-opts button{border-right:0;width:100%;padding:14px 0;}
+  .q-ask{font-size:1.15rem;}
+}

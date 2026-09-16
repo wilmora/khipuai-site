@@ -21,7 +21,7 @@ export const C = {
     eyebrow: 'IA aplicada para equipos administrativos',
     headline: 'Descubre exactamente qué',
     headlineEm: 'debería automatizar tu equipo.',
-    sub: 'La Auditoría de Automatización con IA: una tarifa fija, alrededor de dos semanas. Mapeo el trabajo manual, le pongo cifras de horas y dólares a cada tarea, y te entrego un primer paso claro.',
+    sub: 'La Auditoría de Automatización con IA: ajustada a tu situación, alrededor de dos semanas. Mapeo el trabajo manual, le pongo cifras de horas y dólares a cada tarea, y te entrego un primer paso claro.',
     cta: 'Agenda una llamada gratuita de 30 minutos',
     ctaAlt: 'Haz la autoevaluación de 5 minutos',
   },
@@ -68,7 +68,7 @@ export const C = {
   ],
 
   pricing: {
-    note: 'Una tarifa fija, no un contador por horas. Confirmamos qué nivel encaja en la llamada de descubrimiento, y sabes la cifra antes de empezar.',
+    note: 'Ajustado a tu situación, no un contador por horas. El estimador te da un rango; confirmamos la cifra en la llamada de descubrimiento, antes de empezar.',
     credit: 'La tarifa completa se acredita a tu construcción si contratas a KHIPUAI para implementarla dentro de los 30 días.',
     tiers: [
       { name: 'Estándar', amount: '$2,500', unit: 'USD, fija', for: 'La mayoría de empresas pequeñas y medianas; uno o dos departamentos.', featured: true },
@@ -104,7 +104,7 @@ export const C = {
     ['¿Qué necesitas de nosotros?', 'Un par de horas del tiempo de tu equipo a lo largo de una semana, y una mirada a los flujos de trabajo y sistemas involucrados. Nada se automatiza ni se cambia durante la auditoría; primero es el diagnóstico.'],
     ['¿Están seguros nuestros datos?', 'Sí. Miro cómo fluye el trabajo, no tus secretos. Cualquier cosa que construya después corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio. Recibes un resumen de seguridad de una página para tu equipo de TI.'],
     ['¿La IA hará cambios por su cuenta?', 'No. Todo funciona como borrador, no como asiento automático: el sistema prepara el trabajo, y una persona revisa y aprueba. Es algo deliberado, y es la salvaguarda.'],
-    ['¿Y si no encuentras mucho?', 'Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa fija para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.'],
+    ['¿Y si no encuentras mucho?', 'Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa acordada para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.'],
     ['¿Tenemos que construir contigo?', 'No. La hoja de ruta es tuya. Si construyes con KHIPUAI dentro de los 30 días, la tarifa de la auditoría se acredita a ese trabajo.'],
   ],
 

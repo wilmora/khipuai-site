@@ -541,3 +541,48 @@ export function buildKinetic(P, content = EN){
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
 }
+
+/* ---- the quote panel ------------------------------------------------------
+   Drives the questions in shared/quote.js: one at a time, then the number.
+   The engine is swappable (local table today, LLM endpoint later) and this
+   does not care which answered - it only renders the result. */
+export function mountQuote(root, { QUESTIONS, askQuote, fmt, t }){
+  let step = 0;
+  const answers = {};
+
+  const render = () => {
+    if (step < QUESTIONS.length) {
+      const q = QUESTIONS[step];
+      root.innerHTML =
+        `<div class="q-step">${t.step} ${step + 1} / ${QUESTIONS.length}</div>
+         <p class="q-ask">${esc(q.q)}</p>
+         <div class="q-opts">${q.options.map(o =>
+            `<button type="button" data-v="${esc(o.v)}">${esc(o.label)}</button>`).join('')}</div>
+         ${step ? `<button type="button" class="q-back">&larr; ${t.back}</button>` : ''}`;
+      root.querySelectorAll('.q-opts button').forEach(b =>
+        b.onclick = () => { answers[q.id] = b.dataset.v; step++; render(); });
+      const back = root.querySelector('.q-back');
+      if (back) back.onclick = () => { step--; render(); };
+      return;
+    }
+    root.innerHTML = `<div class="q-out"><div class="q-num">${t.working}</div></div>`;
+    askQuote(answers).then(r => {
+      root.innerHTML =
+        `<div class="q-out">
+           <div class="q-num">${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
+             <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>
+           </div>
+           <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
+           ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
+           <div class="row q-again">
+             <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>
+             <button type="button" class="btn line q-restart">${esc(t.restart)}</button>
+           </div>
+         </div>`;
+      root.querySelector('.q-restart').onclick = () => { step = 0; for (const k in answers) delete answers[k]; render(); };
+    });
+  };
+  render();
+}
+export let QUOTE_BOOKING = '#';
+export function setQuoteBooking(url){ QUOTE_BOOKING = url; }

@@ -12,7 +12,7 @@ export const C = {
     eyebrow: 'Applied AI for back-office teams',
     headline: 'Know exactly what',
     headlineEm: 'your team should automate.',
-    sub: 'The AI Automation Audit: one fixed fee, about two weeks. I map the manual work, put the hours and dollars on each item, and hand you a clear first move.',
+    sub: 'The AI Automation Audit: priced to your situation, about two weeks. I map the manual work, put the hours and dollars on each item, and hand you a clear first move.',
     cta: 'Book a free 30-minute call',
     ctaAlt: 'Take the 5-minute self-assessment',
   },
@@ -59,7 +59,7 @@ export const C = {
   ],
 
   pricing: {
-    note: 'A fixed fee, not an hourly meter. We confirm which tier fits on the discovery call, and you know the number before we start.',
+    note: 'Priced to your situation, not an hourly meter. The estimator gives you a range; we confirm the number on the discovery call, before any work starts.',
     credit: 'The full fee credits toward your build if you hire KHIPUAI to implement within 30 days.',
     tiers: [
       { name: 'Standard', amount: '$2,500', unit: 'USD, fixed', for: 'Most small and mid-size firms; one or two departments.', featured: true },
@@ -94,7 +94,7 @@ export const C = {
     ['What do you need from us?', 'A couple of hours of your team’s time across a week, and a look at the workflows involved. Access is read-only. Nothing is automated or changed during the audit.'],
     ['Is our data safe?', 'Access is read-only and nothing is changed during the audit. Automations are designed to run inside your existing security controls and create drafts a person approves.'],
     ['Will AI make changes on its own?', 'No. Everything is built draft-first: the machine prepares the work, a person approves every entry that matters.'],
-    ['What if you do not find much?', 'The audit says so. That honesty is the product. If there is not much worth automating, you have spent a fixed fee to find out instead of a year.'],
+    ['What if you do not find much?', 'The audit says so. That honesty is the product. If there is not much worth automating, you have spent a small, agreed fee to find out instead of a year.'],
     ['Do we have to build with you?', 'No. The roadmap is yours to act on with anyone, including your own team.'],
   ],
 

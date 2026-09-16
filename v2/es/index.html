@@ -8,7 +8,7 @@
      here: it was written for this business and is what the Spanish side
      already ranks on. -->
 <title>KHIPUAI | La Auditoría de Automatización con IA</title>
-<meta name="description" content="Por una tarifa fija y única, descubre exactamente qué debería automatizar tu equipo administrativo, cuánto vale y por dónde empezar. Nivel financiero, aprobado por personas e integrado en los sistemas que ya usas.">
+<meta name="description" content="Descubre exactamente qué debería automatizar tu equipo administrativo, cuánto vale y por dónde empezar. Nivel financiero, aprobado por personas e integrado en los sistemas que ya usas.">
 
 <!-- STAYS UNTIL THE SWITCH.
      This page lives at /v2/kinetic/ while it is being built. If the branch were
@@ -28,7 +28,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="KHIPUAI | La Auditoría de Automatización con IA">
-<meta property="og:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar. Una tarifa fija.">
+<meta property="og:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar. Ajustado a tu situación.">
 <meta property="og:url" content="https://khipuai.co/es/">
 <meta property="og:image" content="https://khipuai.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -87,8 +87,9 @@
 </div>
 
 <script type="module">
-import { buildKinetic, esc, checkContentParity } from '../shared/kinetic.js';
+import { buildKinetic, esc, checkContentParity, mountQuote, setQuoteBooking } from '../shared/kinetic.js';
 import { C } from '../shared/content.es.js';
+import { getQuestions, askQuote, fmt } from '../shared/quote.js';
 
 // Warns in the console (localhost only) if the Spanish file has drifted from
 // the English one. The live site's Spanish mirror drifts silently; this is the
@@ -108,7 +109,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <button class="btn line" data-to="fee">Ver la tarifa</button>
+        <button class="btn line" data-to="fee">Ver el precio</button>
       </div>
     </div>` },
 
@@ -137,14 +138,10 @@ const P = [
     <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
 
-  { id:'fee', n:'Tarifa', at:'at-top', html:`
-    <div class="kick" data-rv>Tarifa</div>
-    <h2 class="say" data-rv style="max-width:16ch;">Una tarifa fija. <em>Sin contador.</em></h2>
-    <div class="tiers" data-rv>${C.pricing.tiers.map(t=>`<div class="${t.featured?'f':''}">
-      <div class="nm">${esc(t.name)}</div>
-      <div class="amt">${esc(t.amount)} <small>${esc(t.unit)}</small></div>
-      <p>${esc(t.for)}</p><a class="btn" href="${C.booking}">Agenda una llamada</a></div>`).join('')}</div>
-    <p class="sub" data-rv>${esc(C.pricing.credit)}</p>` },
+  { id:'fee', n:'Presupuesto', at:'at-top', html:`
+    <div class="kick" data-rv>Cuánto cuesta</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Ajustado a <em>tu situación.</em></h2>
+    <div class="quote-wrap" id="quote" data-rv></div>` },
 
   { id:'questions', n:'Preguntas', at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:18ch;">Lo que <em>la gente realmente pregunta.</em></h2>
@@ -177,7 +174,19 @@ const P = [
     </div>` },
 ];
 
+const QT = {
+  step: 'Pregunta', back: 'Atrás', working: 'Calculando…',
+  estimate: 'Es una estimación, no un presupuesto en firme — una persona lo confirma en la llamada.',
+  placeholder: 'Los precios fuera de Estados Unidos y Canadá aún no son definitivos.',
+  book: 'Agenda una llamada gratuita de 30 minutos', restart: 'Empezar de nuevo',
+};
+
 buildKinetic(P, C);
+setQuoteBooking(C.booking);
+mountQuote(document.getElementById('quote'), {
+  QUESTIONS: getQuestions('es'),
+  askQuote: a => askQuote(a, { lang: 'es' }),
+  fmt, t: QT });
 </script>
 </body>
 </html>
