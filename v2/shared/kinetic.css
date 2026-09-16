@@ -248,24 +248,38 @@ body{background:
    width rule at all and fell through to auto - growing as wide as their
    content instead of filling one screen. */
 
-.cols{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px;}
+/* ---- columns: hairlines, not cards ----------------------------------------
+   These were filled tiles on a 1px grid - a dark panel, a border, a hover
+   state - which read as a UI component dropped onto the page rather than as
+   part of it. Three sections used them at once (Deliverables, Process, Work)
+   and the effect was a wall of boxes.
+
+   The page already had the better pattern: the Problem section's run-list is
+   hairline rules with no fill, so the ground and the khipu cord show straight
+   through it. These now use the same language. The first column is flush left
+   so the row starts on the same line as the headline above it, which is most
+   of what stops it reading as a separate object. */
+.cols{display:grid;gap:0;background:none;border:0;margin-top:34px;}
 .c3{grid-template-columns:repeat(3,minmax(0,1fr));}
-/* Three across, two rows - not six across.
-   The six-up row is why Deliverables and Work were 132vw and 138vw: six cards
-   need that much width to stay readable, and the sections were sized to fit
-   them. That is what produced a section you had to scroll twice to see, which
-   is the thing being removed. At one screen wide, six columns would be 216px
-   each - narrower than the "~$150K / yr" figure that has to sit in one - so the
-   row wraps to two instead and the cards keep their proportions. */
+/* Three across, two rows - not six. Six columns on one screen is 216px each,
+   narrower than the "~$150K / yr" figure that has to sit in one. */
 .c6{grid-template-columns:repeat(3,minmax(0,1fr));}
-.cols > div{background:#0B1520;padding:22px 20px;transition:background .2s;}
-.cols > div:hover{background:#10202C;}
-.cols b{display:block;font-family:'Manrope',sans-serif;font-size:min(2.9vw,4.2vh,2.5rem);
-  letter-spacing:-.04em;color:var(--copper);line-height:1;}
-.cols span.cap{display:block;margin-top:7px;font-size:.72rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);font-weight:700;}
-.cols p{color:var(--muted);font-size:.86rem;margin:7px 0 0;}
-.cols h3{font-size:.95rem;text-transform:none;letter-spacing:-.01em;margin-bottom:5px;}
+.cols > div{background:none;padding:0 34px;}
+.cols > div:first-child,
+.cols.c6 > div:nth-child(3n+1),
+.cols.c3 > div:nth-child(3n+1){padding-left:0;}
+.cols.c3 > div:not(:nth-child(3n+1)),
+.cols.c6 > div:not(:nth-child(3n+1)){border-left:1px solid var(--line);}
+/* Second row of a six-up gets a rule above it and room to breathe. */
+.cols.c6 > div:nth-child(n+4){border-top:1px solid var(--line);padding-top:30px;margin-top:30px;}
+
+/* The figure carries the section now that no box does. */
+.cols b{display:block;font-family:'Manrope',sans-serif;font-size:min(3.4vw,5vh,3rem);
+  letter-spacing:-.045em;color:var(--copper);line-height:.95;}
+.cols span.cap{display:block;margin-top:10px;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);font-weight:700;}
+.cols p{color:var(--muted);font-size:.88rem;margin:8px 0 0;max-width:38ch;}
+.cols h3{font-size:1rem;text-transform:none;letter-spacing:-.01em;margin-bottom:6px;}
 
 /* The problem list runs as a wide single row: a different shape again. */
 .runlist{list-style:none;padding:0;margin:28px 0 0;display:flex;gap:0;
@@ -397,6 +411,17 @@ body{background:
   .cols.c3,.cols.c6{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;}
   .cols.c3 > div,.cols.c6 > div{flex:0 0 76%;scroll-snap-align:start;}
+  /* The desktop grid puts items 4-6 on a second row, with a rule above them and
+     margin to clear it. On a phone these become ONE swipeable row, so those
+     rules dropped items 4-6 thirty pixels below their neighbours with a stray
+     hairline floating over them. Reset for the row layout. */
+  .cols.c6 > div:nth-child(n+4){border-top:0;padding-top:0;margin-top:0;}
+  .cols > div{padding:0 18px;}
+  .cols > div:first-child{padding-left:0;}
+  .cols.c3 > div:not(:first-child),
+  .cols.c6 > div:not(:first-child){border-left:1px solid var(--line);}
+  .cols.c3 > div:nth-child(3n+1):not(:first-child),
+  .cols.c6 > div:nth-child(3n+1):not(:first-child){padding-left:18px;}
   .cols.c3::-webkit-scrollbar,.cols.c6::-webkit-scrollbar{height:5px;}
   .cols.c3::-webkit-scrollbar-thumb,.cols.c6::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;}
   .swipe-note{display:block;}
