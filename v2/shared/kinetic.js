@@ -11,14 +11,45 @@
      at   - 'at-top' | 'at-mid' | 'at-low', where the content sits vertically
      html - the section's markup
    ========================================================================= */
-import { C } from './content.js';
+import { C as EN } from './content.js';
 
 export const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 
-// The trust and stats pairs, formatted once for the ticker.
-const mq = [...C.trust, ...C.stats].map(([a,b]) => `<b>${esc(a)}</b> ${esc(b)}`).join(' &nbsp;/&nbsp; ');
+/* Warns when the Spanish content file has drifted from the English one.
+ *
+ * The live site's Spanish mirror drifts from its English pages silently,
+ * because the two are separate HTML files that nobody diffs. Here the two are
+ * data with the same shape, so the drift is checkable: same keys, same array
+ * lengths, same tier and work-item counts. It only warns, and only on
+ * localhost, so a mismatch shows up while building rather than in front of a
+ * reader. */
+export function checkContentParity(other, label = 'content'){
+  if (!/^(localhost|127.0.0.1)$/.test(location.hostname)) return;
+  const problems = [];
+  const walk = (a, b, path) => {
+    for (const k of Object.keys(a)) {
+      const pa = path ? path + '.' + k : k;
+      if (!(k in b)) { problems.push('missing: ' + pa); continue; }
+      if (Array.isArray(a[k])) {
+        if (!Array.isArray(b[k])) problems.push('not an array: ' + pa);
+        else if (a[k].length !== b[k].length)
+          problems.push(pa + ' has ' + b[k].length + ' items, English has ' + a[k].length);
+      } else if (a[k] && typeof a[k] === 'object') {
+        if (!b[k] || typeof b[k] !== 'object') problems.push('not an object: ' + pa);
+        else walk(a[k], b[k], pa);
+      }
+    }
+  };
+  walk(EN, other, '');
+  if (problems.length) console.warn('[' + label + '] drifted from English:\n  ' + problems.join('\n  '));
+}
 
-export function buildKinetic(P){
+/* The content object is passed in rather than imported, so the same engine
+   drives the English and Spanish pages. */
+export function buildKinetic(P, content = EN){
+  // The trust and stats pairs, formatted once for the ticker.
+  const mq = [...content.trust, ...content.stats]
+    .map(([a,b]) => `<b>${esc(a)}</b> ${esc(b)}`).join(' &nbsp;/&nbsp; ');
   const track = document.getElementById('track');
   const cord = document.getElementById('cord');
   track.innerHTML = ( P.map((p,i) =>

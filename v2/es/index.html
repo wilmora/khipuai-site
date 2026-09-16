@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Title and description carried over from the live landing page rather than
-     rewritten: same business, same offer, and the current wording is what the
-     site already ranks on. Changing the copy is a separate decision from
-     changing the design. -->
-<title>KHIPUAI | The AI Automation Audit</title>
-<meta name="description" content="For a one-time fixed fee, find out exactly what your back-office team should automate, what it is worth, and what to do first. Finance-grade, human-approved, built into the systems you already run.">
+<!-- Title and description lifted from the live Spanish page, not translated
+     here: it was written for this business and is what the Spanish side
+     already ranks on. -->
+<title>KHIPUAI | La Auditoría de Automatización con IA</title>
+<meta name="description" content="Por una tarifa fija y única, descubre exactamente qué debería automatizar tu equipo administrativo, cuánto vale y por dónde empezar. Nivel financiero, aprobado por personas e integrado en los sistemas que ya usas.">
 
 <!-- STAYS UNTIL THE SWITCH.
      This page lives at /v2/kinetic/ while it is being built. If the branch were
@@ -22,19 +21,19 @@
 <!-- Canonical and hreflang describe where this page will LIVE, not where the
      file currently sits. That is deliberate: it is the same page, at a
      temporary path. -->
-<link rel="canonical" href="https://khipuai.co/">
+<link rel="canonical" href="https://khipuai.co/es/">
 <link rel="alternate" hreflang="en" href="https://khipuai.co/">
 <link rel="alternate" hreflang="es" href="https://khipuai.co/es/">
 <link rel="alternate" hreflang="x-default" href="https://khipuai.co/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="KHIPUAI | The AI Automation Audit">
-<meta property="og:description" content="Find out exactly what your team should automate, what it is worth, and what to do first. One fixed fee. Finance-grade, human-approved.">
-<meta property="og:url" content="https://khipuai.co">
+<meta property="og:title" content="KHIPUAI | La Auditoría de Automatización con IA">
+<meta property="og:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar. Una tarifa fija.">
+<meta property="og:url" content="https://khipuai.co/es/">
 <meta property="og:image" content="https://khipuai.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="KHIPUAI | The AI Automation Audit">
-<meta name="twitter:description" content="Find out exactly what your team should automate, what it is worth, and what to do first.">
+<meta name="twitter:title" content="KHIPUAI | La Auditoría de Automatización con IA">
+<meta name="twitter:description" content="Descubre exactamente qué debería automatizar tu equipo y por dónde empezar.">
 <meta name="twitter:image" content="https://khipuai.co/og-image.png">
 
 <script type="application/ld+json">
@@ -69,11 +68,11 @@
 
 <header class="hd">
   <div class="bd"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</div>
-  <nav id="nav" aria-label="Sections"></nav>
+  <nav id="nav" aria-label="Secciones"></nav>
   <div class="lang">
-    <span class="on" lang="en" aria-current="true">EN</span>
+    <a href="../kinetic/" hreflang="en" lang="en" aria-label="View this page in English">EN</a>
     <span class="sep" aria-hidden="true">/</span>
-    <a href="../es/" hreflang="es" lang="es" aria-label="Ver esta página en español">ES</a>
+    <span class="on" lang="es" aria-current="true">ES</span>
   </div>
 </header>
 
@@ -84,19 +83,24 @@
 <div class="rail"><i id="railfill"></i></div>
 
 <div class="foot">
-  <div class="hint" id="hint"><span>Scroll</span><span class="ar">&rarr;</span></div>
+  <div class="hint" id="hint"><span>Desliza</span><span class="ar">&rarr;</span></div>
 </div>
 
 <script type="module">
-import { buildKinetic, esc } from '../shared/kinetic.js';
-import { C } from '../shared/content.js';
+import { buildKinetic, esc, checkContentParity } from '../shared/kinetic.js';
+import { C } from '../shared/content.es.js';
+
+// Warns in the console (localhost only) if the Spanish file has drifted from
+// the English one. The live site's Spanish mirror drifts silently; this is the
+// cheapest way to stop that happening again.
+checkContentParity(C, 'content.es.js');
 
 // `at` sets where the content sits vertically. Varying it is most of what
 // stops a horizontal site reading as a deck.
 const P = [
-  { id:'start', n:'Overview', at:'at-mid', html:`
+  { id:'start', n:'Resumen', at:'at-mid', html:`
     <div class="knot" id="knot">
-      <img src="../shared/assets/khipu-knot-v2.webp" alt="A sculptural copper knot, a contemporary reading of an Andean khipu">
+      <img src="../shared/assets/khipu-knot-v2.webp" alt="Un nudo escultórico de cobre, una lectura contemporánea de un khipu andino">
     </div>
     <div class="inner">
       <div class="kick" data-rv>${esc(C.hero.eyebrow)}</div>
@@ -104,67 +108,67 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <button class="btn line" data-to="fee">See the fee</button>
+        <button class="btn line" data-to="fee">Ver la tarifa</button>
       </div>
     </div>` },
 
-  { id:'problem', n:'Problem', at:'at-low', html:`
-    <h2 class="say" data-rv style="max-width:17ch;">Dozens of hours a month. <em>Nobody has counted them.</em></h2>
+  { id:'problem', n:'Problema', at:'at-low', html:`
+    <h2 class="say" data-rv style="max-width:17ch;">Decenas de horas al mes. <em>Nadie las ha contado.</em></h2>
     <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li><i>0${i+1}</i><span>${esc(t)}</span></li>`).join('')}</ul>
     <p class="sub" data-rv>${esc(C.problem.close)}</p>` },
 
-  { id:'get', n:'Deliverables', at:'at-top', html:`
-    <div class="kick" data-rv>The deliverable</div>
-    <h2 class="say" data-rv style="max-width:20ch;">A short, concrete plan <em>you can act on.</em></h2>
+  { id:'get', n:'Entregables', at:'at-top', html:`
+    <div class="kick" data-rv>Qué recibes</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Un plan corto y concreto <em>sobre el que puedes actuar.</em></h2>
     <div class="cols c6" data-rv>${C.deliverables.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
-    <span class="swipe-note">Swipe the row &rarr;</span>` },
+    <span class="swipe-note">Desliza la fila &rarr;</span>` },
 
-  { id:'process', n:'Process', at:'at-mid', html:`
-    <h2 class="say" data-rv style="max-width:16ch;">Three steps. <em>About two weeks.</em></h2>
+  { id:'process', n:'Proceso', at:'at-mid', html:`
+    <h2 class="say" data-rv style="max-width:16ch;">Tres pasos. <em>Alrededor de dos semanas.</em></h2>
     <div class="cols c3" data-rv>${C.steps.map(([t,d],i)=>`<div><b>0${i+1}</b><h3 style="margin-top:12px;">${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
-    <span class="swipe-note">Swipe the row &rarr;</span>
+    <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.legal)}</p>` },
 
-  { id:'work', n:'Work', at:'at-low', html:`
-    <div class="kick" data-rv>Selected work</div>
-    <h2 class="say" data-rv style="max-width:22ch;">Projects, and <em>what they moved.</em></h2>
+  { id:'work', n:'Proyectos', at:'at-low', html:`
+    <div class="kick" data-rv>Proyectos</div>
+    <h2 class="say" data-rv style="max-width:22ch;">Proyectos, y <em>lo que movieron.</em></h2>
     <div class="cols c6" data-rv>${C.work.map(w=>`<div><b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
-    <span class="swipe-note">Swipe the row &rarr;</span>
+    <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
 
-  { id:'fee', n:'Pricing', at:'at-top', html:`
-    <div class="kick" data-rv>Pricing</div>
-    <h2 class="say" data-rv style="max-width:16ch;">One fixed fee. <em>No meter.</em></h2>
+  { id:'fee', n:'Tarifa', at:'at-top', html:`
+    <div class="kick" data-rv>Tarifa</div>
+    <h2 class="say" data-rv style="max-width:16ch;">Una tarifa fija. <em>Sin contador.</em></h2>
     <div class="tiers" data-rv>${C.pricing.tiers.map(t=>`<div class="${t.featured?'f':''}">
       <div class="nm">${esc(t.name)}</div>
       <div class="amt">${esc(t.amount)} <small>${esc(t.unit)}</small></div>
-      <p>${esc(t.for)}</p><a class="btn" href="${C.booking}">Book a call</a></div>`).join('')}</div>
+      <p>${esc(t.for)}</p><a class="btn" href="${C.booking}">Agenda una llamada</a></div>`).join('')}</div>
     <p class="sub" data-rv>${esc(C.pricing.credit)}</p>` },
 
-  { id:'questions', n:'Questions', at:'at-mid', html:`
-    <h2 class="say" data-rv style="max-width:18ch;">The things <em>people actually ask.</em></h2>
+  { id:'questions', n:'Preguntas', at:'at-mid', html:`
+    <h2 class="say" data-rv style="max-width:18ch;">Lo que <em>la gente realmente pregunta.</em></h2>
     <div class="qa" data-rv>${C.faq.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>` },
 
-  { id:'operator', n:'Team', at:'at-low', html:`
-    <div class="kick" data-rv>Who runs it</div>
+  { id:'operator', n:'Equipo', at:'at-low', html:`
+    <div class="kick" data-rv>Quién lo dirige</div>
     <h2 class="say quote" data-rv>
       <em>&ldquo;${esc(C.founder.quote)}&rdquo;</em></h2>
     <div class="team" data-rv>
       <div class="member">
-        <img src="../shared/assets/founder.jpg" alt="${esc(C.founder.name)}, Founder of KHIPUAI">
+        <img src="../shared/assets/founder.jpg" alt="${esc(C.founder.name)}, fundador de KHIPUAI">
         <div>
           <h3>${esc(C.founder.name)}</h3>
-          <span class="cap">Founder</span>
+          <span class="cap">Fundador</span>
           <p>${esc(C.founder.bio)}</p>
         </div>
       </div>
       <div class="member">
-        <img src="../shared/assets/alex.jpg" alt="Alex Pena, Developer at KHIPUAI">
+        <img src="../shared/assets/alex.jpg" alt="Alex Pena, desarrollador en KHIPUAI">
         <div>
           <h3>Alex Pena</h3>
-          <span class="cap">Developer</span>
-          <p>Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.</p>
+          <span class="cap">Desarrollador</span>
+          <p>Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.</p>
         </div>
       </div>
     </div>
@@ -173,7 +177,7 @@ const P = [
     </div>` },
 ];
 
-buildKinetic(P);
+buildKinetic(P, C);
 </script>
 </body>
 </html>

@@ -487,3 +487,36 @@ body{background:
 @media (prefers-reduced-motion:reduce){
   .cols > div:hover, .runlist li:hover, .member:hover, .tiers > div:hover{transform:none;}
 }
+
+/* ---- language switch ----
+   Sits between the wordmark and the section nav. Set apart from the section
+   links by a rule and by being a fixed pair rather than a list, so it does not
+   read as another section. */
+.lang{display:flex;align-items:center;gap:8px;margin-left:22px;padding-left:22px;
+  border-left:1px solid rgba(255,255,255,.22);
+  font-family:'Manrope',sans-serif;font-size:.72rem;letter-spacing:.14em;font-weight:800;}
+.lang a,.lang span{padding:2px 0;}
+.lang a{opacity:.45;transition:opacity .2s;}
+.lang a:hover{opacity:1;}
+.lang .on{opacity:1;position:relative;}
+.lang .on:after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1.5px;background:currentColor;}
+.lang .sep{opacity:.3;font-weight:400;}
+@media (max-width:900px){
+  /* The section nav is hidden on a phone, but the language switch is not a
+     section - it is the one piece of navigation on the page, so it stays. */
+  .lang{margin-left:auto;padding-left:0;border-left:0;}
+}
+
+/* ---- longer languages ----
+   Spanish runs roughly 20% longer than English for the same sentence. At the
+   English hero size the Spanish headline pushed 91px past the point where the
+   knot photograph is fully opaque - white type over lit rope. Targeted off the
+   document's own lang attribute, so it applies to any Spanish page without a
+   second stylesheet, and any other long language can be added the same way. */
+html[lang="es"] .p-start h1{font-size:min(6.9vw,9.2vh,7.2rem);}
+html[lang="es"] .p-start .inner{max-width:46vw;}
+html[lang="es"] .lede{max-width:40ch;}
+@media (max-width:900px){
+  html[lang="es"] .p-start h1{font-size:clamp(2.1rem,9vw,3.1rem);}
+  html[lang="es"] .p-start .inner{max-width:none;}
+}
