@@ -209,6 +209,17 @@ body{background:
 .btn.line:hover{border-color:var(--hot);box-shadow:none;transform:none;background:transparent;}
 .row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
 
+/* The hero's buttons are sized by their labels, which have nothing to do with
+   how wide the headline should be allowed to run. Leaving them inside the text
+   column meant the two languages broke differently for a reason no visitor
+   could see: Spanish labels run about a quarter longer AND Spanish gets a
+   narrower column (46vw, below), so the same three buttons sat one-then-two
+   there and two-then-one in English. The row now measures itself and wraps
+   only when the screen genuinely runs out, so both languages break the same
+   way at the same width. Capped short of the viewport so it never reaches the
+   edge of the panel's padding. */
+.p-start .row{width:max-content;max-width:min(84vw,1060px);}
+
 /* The ticker used to live inside the opening section at width:150%, so it ran
    out 806px into the SECOND section and stopped dead - a hard vertical edge
    with the text sliced mid-word, which is what made the page look unfinished.
@@ -392,6 +403,9 @@ body{background:
   .panel:last-child{padding-bottom:74px;}
   .p-start h1{font-size:clamp(2.3rem,10vw,3.4rem);}
   .p-start .inner{max-width:none;}
+  /* On the phone the buttons already stack full-width; letting the row measure
+     itself here would shrink them back to their labels. */
+  .p-start .row{width:auto;max-width:none;}
   .say{font-size:clamp(1.9rem,8vw,2.6rem);}
   /* The desktop rule now positions with left/top/aspect-ratio, so the stacked
      layout has to unset all three - left:50vw on a position:relative element
