@@ -542,67 +542,47 @@ export function buildKinetic(P, content = EN){
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
 }
 
-/* ---- the quote bot --------------------------------------------------------
-   Renders the conversation. It does not know whether the local brain or the
-   Worker answered - createBot hides that - so this file never changes when the
-   AI is switched on. */
-export function mountBot(root, { bot, fmt, t }){
-  const log = document.createElement('div'); log.className = 'bot-log';
-  const form = document.createElement('form'); form.className = 'bot-ask';
-  form.innerHTML = `<input type="text" autocomplete="off" placeholder="${esc(t.placeholder)}"
-      aria-label="${esc(t.placeholder)}" maxlength="500">
-    <button type="submit">${esc(t.send)}</button>`;
-  const hint = document.createElement('p'); hint.className = 'bot-hint'; hint.textContent = t.hint;
-  root.append(log, form, hint);
+/* ---- the quote panel ------------------------------------------------------
+   Drives the questions in shared/quote.js: one at a time, then the number.
+   The engine is swappable (local table today, LLM endpoint later) and this
+   does not care which answered - it only renders the result. */
+export function mountQuote(root, { QUESTIONS, askQuote, fmt, t }){
+  let step = 0;
+  const answers = {};
 
-  const input = form.querySelector('input');
-  const send  = form.querySelector('button');
-
-  const turn = (who, html, cls) => {
-    const d = document.createElement('div');
-    d.className = 'bot-turn ' + cls;
-    d.innerHTML = `<span class="who">${esc(who)}</span>${html}`;
-    log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
-    return d;
-  };
-
-  turn(t.botName, '<p>' + esc(bot.opener) + '</p>', 'bot');
-
-  form.onsubmit = async e => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    input.disabled = send.disabled = true;
-    turn(t.you, '<p>' + esc(text) + '</p>', 'me');
-    const thinking = turn(t.botName, '<p class="bot-dots"><span></span><span></span><span></span></p>', 'bot');
-
-    const out = await bot.send(text);
-    thinking.querySelector('p').outerHTML = '<p>' + esc(out.reply) + '</p>';
-
-    if (out.done && out.quote) {
-      const r = out.quote;
-      const d = document.createElement('div');
-      d.className = 'q-out';
-      d.style.marginTop = '22px';
-      d.innerHTML =
-        `<div class="q-num">${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
-           <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>
-         </div>
-         <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
-         ${r.placeholder ? `<p class="q-flag">${esc(t.placeholderNote)}</p>` : ''}
-         <div class="row q-again">
-           <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>
-         </div>`;
-      root.insertBefore(d, form);
-      form.remove(); hint.remove();
-      d.scrollIntoView({ block: 'nearest' });
+  const render = () => {
+    if (step < QUESTIONS.length) {
+      const q = QUESTIONS[step];
+      root.innerHTML =
+        `<div class="q-step">${t.step} ${step + 1} / ${QUESTIONS.length}</div>
+         <p class="q-ask">${esc(q.q)}</p>
+         <div class="q-opts">${q.options.map(o =>
+            `<button type="button" data-v="${esc(o.v)}">${esc(o.label)}</button>`).join('')}</div>
+         ${step ? `<button type="button" class="q-back">&larr; ${t.back}</button>` : ''}`;
+      root.querySelectorAll('.q-opts button').forEach(b =>
+        b.onclick = () => { answers[q.id] = b.dataset.v; step++; render(); });
+      const back = root.querySelector('.q-back');
+      if (back) back.onclick = () => { step--; render(); };
       return;
     }
-    input.disabled = send.disabled = false;
-    input.focus();
+    root.innerHTML = `<div class="q-out"><div class="q-num">${t.working}</div></div>`;
+    askQuote(answers).then(r => {
+      root.innerHTML =
+        `<div class="q-out">
+           <div class="q-num">${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
+             <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>
+           </div>
+           <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
+           ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
+           <div class="row q-again">
+             <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>
+             <button type="button" class="btn line q-restart">${esc(t.restart)}</button>
+           </div>
+         </div>`;
+      root.querySelector('.q-restart').onclick = () => { step = 0; for (const k in answers) delete answers[k]; render(); };
+    });
   };
+  render();
 }
 export let QUOTE_BOOKING = '#';
 export function setQuoteBooking(url){ QUOTE_BOOKING = url; }

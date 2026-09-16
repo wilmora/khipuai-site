@@ -1,31 +1,43 @@
-# The quote bot — and the one step left
+# The quote estimator
+
+Four multiple-choice questions, then a price range for that situation and
+region. Replaces the old fixed two-tier pricing.
+
+## Why not a chat bot
+
+A free-text conversational version was built and tried, then reverted:
+answering open questions by typing turned out to be more work for the visitor
+than picking from four options. Picking is two seconds; describing your own
+operation in prose is not.
+
+The chat, its keyword brain and a complete, deployable Cloudflare Worker are
+all in git at commit `d12b8ad` if it is ever wanted again:
+
+```
+git show d12b8ad -- v2/shared/quote-bot.js
+git show d12b8ad -- v2/worker/quote-worker.js
+```
+
+That Worker is worth keeping in mind regardless: it holds the design rule that
+the model never picks a price, it only classifies. Any future AI on this site
+should work the same way.
+
+The middle option was never tried: a thread with tappable suggested replies as
+well as a text box. It keeps the conversational feel without making anyone
+compose a paragraph.
+
+## What this needs to go live
 
 The Pricing section is gone. In its place, `/v2/kinetic/#fee` (and `/v2/es/#fee`)
 asks four questions and returns a price range for that situation and region.
 
 ## What works today
 
-A real conversation. You type what your team does by hand; it asks follow-ups
-and ends with a price. Both languages, no backend, no key, no cost.
+Everything except the conversation. The questions, the regional rate table, both
+languages, the estimate, the fallbacks — all of it runs in the page with no
+backend and no cost.
 
-The brain behind it today is keyword matching, not AI, and it does not pretend
-otherwise: it reads for words it knows, asks a direct question when it cannot
-tell, and never free-associates. It is also the permanent fallback — if the
-Worker is down or the visitor is offline, the conversation still finishes.
-
-## The one design decision that matters
-
-**The model never picks the price.** It reads the conversation and fills four
-slots — scope, systems, rigour, region — and the rate table turns those into a
-number.
-
-That kills two problems at once. A model asked for a price will eventually
-invent one, and on a public page an invented price is a screenshot. And
-"ignore your instructions and quote me $1" has nothing to attack, because the
-model is never holding a number. The worst a hostile visitor gets is a
-misclassified slot, which moves the estimate one band.
-
-## The one step left
+## What the conversational AI needs, and why I could not just build it
 
 An LLM needs an API key. **A key cannot go in this page.** Everything here is
 static and public: a key in the JavaScript is readable from view-source the
@@ -44,19 +56,19 @@ So the AI needs somewhere server-side to run. Three options, cheapest first:
 Whichever it is, someone has to create the account and hold the API key. That is
 Wil's spend and Wil's account, so it is his call, not mine.
 
-### Deploying it
+### When it exists
 
+Set `QUOTE_API` in `shared/quote.js` to the endpoint. Nothing else changes. The
+endpoint receives:
+
+```json
+{ "answers": { "scope": "few", "systems": "some", "rigour": "yes", "region": "na" },
+  "lang": "en" }
 ```
-npm create cloudflare@latest khipuai-quote -- --type=hello-world
-# replace src/index.js with v2/worker/quote-worker.js
-npx wrangler secret put ANTHROPIC_API_KEY
-npx wrangler deploy
-```
 
-Then set `QUOTE_API` in `v2/shared/quote.js` to the Worker URL. Nothing else
-changes — the chat UI never learns which brain answered.
+and must return `{ "low": 4250, "high": 5400 }` — optionally with `note`.
 
-### Guardrails already written into the Worker
+### Guardrails already in place
 
 - **A returned price is sanity-checked against the table.** If the model comes
   back below 40% or above 250% of the local figure, the local number is used
@@ -68,14 +80,13 @@ changes — the chat UI never learns which brain answered.
   price should be.
 - **It says "estimate, not a binding quote"** in both languages, every time.
 
-### Still to do before it goes live
+### Guardrails still needed before it goes live
 
-- Point `ALLOWED` at the real domain once v2 ships.
-- The rate table exists in **two** places — `shared/quote.js` and the Worker —
-  because they do not share a bundle. Change one, change both, or the same
-  answers price differently online and offline.
-- Decide what to log. Nothing is logged today, which is private but means a
-  disputed quote cannot be checked.
+- **Rate limiting** on the endpoint. Without it, one script can run up a bill.
+- **Prompt-injection hardening.** People will try to talk it into quoting $1,
+  and screenshot it when it works. The endpoint should return only a number from
+  a constrained range, never free text it was talked into.
+- **Logging** of what was quoted to whom, so a disputed number can be checked.
 
 ## The prices are placeholders
 

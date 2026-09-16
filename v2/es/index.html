@@ -87,10 +87,9 @@
 </div>
 
 <script type="module">
-import { buildKinetic, esc, checkContentParity, mountBot, setQuoteBooking } from '../shared/kinetic.js';
+import { buildKinetic, esc, checkContentParity, mountQuote, setQuoteBooking } from '../shared/kinetic.js';
 import { C } from '../shared/content.es.js';
-import { fmt } from '../shared/quote.js';
-import { createBot } from '../shared/quote-bot.js';
+import { getQuestions, askQuote, fmt } from '../shared/quote.js';
 
 // Warns in the console (localhost only) if the Spanish file has drifted from
 // the English one. The live site's Spanish mirror drifts silently; this is the
@@ -142,7 +141,7 @@ const P = [
   { id:'fee', n:'Presupuesto', at:'at-top', html:`
     <div class="kick" data-rv>Cuánto cuesta</div>
     <h2 class="say" data-rv style="max-width:20ch;">Ajustado a <em>tu situación.</em></h2>
-    <div class="quote-wrap bot" id="quote" data-rv></div>` },
+    <div class="quote-wrap" id="quote" data-rv></div>` },
 
   { id:'questions', n:'Preguntas', at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:18ch;">Lo que <em>la gente realmente pregunta.</em></h2>
@@ -176,17 +175,18 @@ const P = [
 ];
 
 const QT = {
-  botName: 'KHIPUAI', you: 'Tú',
-  placeholder: 'p. ej. capturamos unas 400 facturas de proveedores al mes a mano',
-  send: 'Enviar', hint: 'Unas preguntas y una estimación. No hace falta tu correo.',
+  step: 'Pregunta', back: 'Atrás', working: 'Calculando…',
   estimate: 'Es una estimación, no un presupuesto en firme — una persona lo confirma en la llamada.',
-  placeholderNote: 'Los precios fuera de Estados Unidos y Canadá aún no son definitivos.',
-  book: 'Agenda una llamada gratuita de 30 minutos',
+  placeholder: 'Los precios fuera de Estados Unidos y Canadá aún no son definitivos.',
+  book: 'Agenda una llamada gratuita de 30 minutos', restart: 'Empezar de nuevo',
 };
 
 buildKinetic(P, C);
 setQuoteBooking(C.booking);
-mountBot(document.getElementById('quote'), { bot: createBot('es'), fmt, t: QT });
+mountQuote(document.getElementById('quote'), {
+  QUESTIONS: getQuestions('es'),
+  askQuote: a => askQuote(a, { lang: 'es' }),
+  fmt, t: QT });
 </script>
 </body>
 </html>
