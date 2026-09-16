@@ -441,3 +441,49 @@ body{background:
   .track{scroll-behavior:auto;}
   [data-rv]{opacity:1;transform:none;}
 }
+
+/* ---- hover: spotlight, not a box ----------------------------------------
+   The old cards had a hover that filled the tile, which is the boxiness this
+   design just removed. This does the opposite: the row you are pointing at
+   holds its brightness and everything beside it recedes, so attention is
+   directed by contrast rather than by drawing a container.
+
+   The hovered item also warms up - its figure goes to the hot copper, its
+   body text to full ink, its dividing rule lights - and lifts a few pixels.
+
+   Gated behind (hover:hover) and (pointer:fine). On a touch screen :hover
+   latches after a tap, so without this the last thing tapped would stay lit
+   and everything else would stay dimmed. */
+@media (hover:hover) and (pointer:fine){
+  .cols > div, .runlist li, .tiers > div, .member, .qa details{
+    transition:opacity .26s ease, color .26s ease, border-color .26s ease,
+               transform .26s cubic-bezier(.16,.8,.28,1);}
+
+  .cols:hover > div:not(:hover),
+  .runlist:hover li:not(:hover),
+  .tiers:hover > div:not(:hover),
+  .team:hover .member:not(:hover),
+  .qa:hover details:not(:hover){opacity:.34;}
+
+  .cols > div:hover, .runlist li:hover, .tiers > div:hover,
+  .member:hover, .qa details:hover{opacity:1;}
+
+  .cols > div:hover{transform:translateY(-4px);border-left-color:var(--copper);}
+  .cols > div:hover b{color:var(--hot);}
+  .cols > div:hover h3,
+  .cols > div:hover p{color:var(--ink);}
+  .cols > div:hover span.cap{color:var(--muted);}
+
+  .runlist li:hover{transform:translateY(-3px);}
+  .runlist li:hover i{color:var(--ink);}
+
+  .member:hover{transform:translateY(-4px);border-color:var(--copper);}
+  .tiers > div:hover{transform:translateY(-4px);}
+  .qa details:hover summary{color:var(--copper);}
+}
+
+/* The lift is motion; the dimming is not, so under reduce the spotlight still
+   works and only the movement goes. */
+@media (prefers-reduced-motion:reduce){
+  .cols > div:hover, .runlist li:hover, .member:hover, .tiers > div:hover{transform:none;}
+}
