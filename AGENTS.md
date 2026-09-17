@@ -4,23 +4,23 @@
 
 This repository contains the public KHIPUAI website. Its primary job is to help leaders of 20 to 300-person recurring-service businesses understand the offer, assess fit, receive a responsible estimate, and book a fit call.
 
-The current production site is static. The candidate redesign is under `v2/`. Do not imply that the project already uses Next.js, React, TypeScript, or Tailwind. Any migration to that stack is a separate, reviewed project.
+The production site is static and the Kinetic design is served from the repository root. Do not imply that the project uses Next.js, React, TypeScript, or Tailwind. Any migration to that stack is a separate, reviewed project.
 
 ## Working rules
 
 - Work on a topic branch. Do not push directly to `main`.
-- Keep staging content under `noindex` until the explicit production switch.
+- Keep any future staging content under `noindex` until an explicit production switch.
 - Preserve existing production routes until redirects have been planned and tested.
 - Never commit credentials, form secrets, API keys, client data, or private project records.
 - Do not publish or deploy without explicit approval.
 
 ## Architecture
 
-- Shared English content lives in `v2/shared/content.js`.
-- Spanish content lives in `v2/shared/content.es.js` and must match the English object shape.
-- Shared behavior belongs in `v2/shared/kinetic.js` or a focused shared module.
-- Shared styling belongs in `v2/shared/kinetic.css`.
-- Quote rules belong in `v2/shared/quote.js`. Page templates must not duplicate pricing logic.
+- Shared English content lives in `shared/content.js`.
+- Spanish content lives in `shared/content.es.js` and must match the English object shape.
+- Shared behavior belongs in `shared/kinetic.js` or a focused shared module.
+- Shared styling belongs in `shared/kinetic.css`.
+- Quote rules belong in `shared/quote.js`. Page templates must not duplicate pricing logic.
 - Reuse the shared page builder and existing patterns before adding page-specific code.
 - Keep UI rendering, quote rules, content, and external-service configuration separate.
 
@@ -49,6 +49,7 @@ The current production site is static. The candidate redesign is under `v2/`. Do
 - Keep the local deterministic fallback even if a server endpoint is added.
 - Sanity-check any remote result, rate-limit the endpoint, log quote inputs and outputs, and keep API keys server-side.
 - Regional multipliers are not production-ready until approved by the business owner.
+- Until then, non-North-American visitors receive a recommended engagement and a call-confirmed regional price, not an unapproved numeric range.
 - The public result must explain assumptions and state that a person confirms scope and price.
 
 ## Design system

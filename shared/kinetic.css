@@ -660,6 +660,8 @@ html[lang="es"] .lede{max-width:40ch;}
   line-height:.95;color:var(--copper);}
 .q-num small{font-size:.24em;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
   display:block;margin-top:12px;font-weight:800;}
+.q-num-regional{max-width:18ch;font-size:min(3.8vw,6vh,3.3rem);}
+.q-num-regional small{font-size:.32em;}
 .q-note{color:var(--muted);font-size:.92rem;margin:16px 0 0;max-width:52ch;}
 .q-match{border-top:1px solid var(--line);margin-top:22px;padding-top:18px;max-width:760px;}
 .q-match strong{display:block;font-family:'Manrope',sans-serif;font-size:1rem;margin-top:7px;}

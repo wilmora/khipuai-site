@@ -9,17 +9,6 @@
 <title>Where Is Your Team Losing Hours? | KHIPUAI Self-Assessment</title>
 <meta name="description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Score where your team loses hours to manual work.">
 
-<!-- STAYS UNTIL THE SWITCH. See v2/README.md. The canonical below already
-     points at where this will live; at the switch, delete this one line.
-
-     NOTE THE URL CHANGE. The live page is /self_assessment.html; this is
-     /self-assessment/. Hyphen, not underscore, to match every other path on
-     the site, and a directory so it reads like the rest. That means the old
-     URL needs a redirect at the switch or the PDF's own links, the LinkedIn
-     posts and anything already shared will 404. It is written down in
-     v2/README.md as a switch-day task. -->
-<meta name="robots" content="noindex">
-
 <link rel="canonical" href="https://khipuai.co/self-assessment/">
 <link rel="alternate" hreflang="en" href="https://khipuai.co/self-assessment/">
 <link rel="alternate" hreflang="x-default" href="https://khipuai.co/self-assessment/">
@@ -34,6 +23,14 @@
 <meta name="twitter:description" content="A 5-minute automation self-assessment. 15 questions, one score.">
 <meta name="twitter:image" content="https://khipuai.co/og-image.png">
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0ENQ1NBS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8M0ENQ1NBS');
+</script>
+
 <link rel="stylesheet" href="../shared/assets/fonts.css">
 <link rel="stylesheet" href="../shared/kinetic.css">
 <link rel="icon" href="../shared/assets/mark.svg">
@@ -43,7 +40,7 @@
 <a class="skip" href="#p-reentry">Skip to content</a>
 
 <header class="hd">
-  <a class="bd" href="../kinetic/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <a class="bd" href="/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
   <nav id="nav" aria-label="Sections"></nav>
 </header>
 
@@ -136,7 +133,7 @@ const P = [
       <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer honestly. If you are not sure, the answer is usually yes.</p>
       <div class="row" data-rv>
         <button class="btn" data-to="reentry">Start the assessment</button>
-        <a class="btn line" href="../kinetic/">Back to the site</a>
+        <a class="btn line" href="/">Back to the site</a>
       </div>
     </div>` },
 
@@ -163,28 +160,10 @@ const P = [
     <div class="kick" data-rv>What to do with it</div>
     <h2 class="say" data-rv style="max-width:20ch;">Take it <em>to your team.</em></h2>
     <p class="sub" data-rv>The same exercise as a PDF, so you can score it with the people who actually do the work.</p>
-    <form class="lead" id="lead" action="FORM_ENDPOINT_NOT_SET" method="POST" data-rv>
-      <div class="field">
-        <label for="ga-name">Name</label>
-        <input id="ga-name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="ga-email">Work email</label>
-        <input id="ga-email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="ga-company">Company</label>
-        <input id="ga-company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <input type="hidden" name="_subject" value="Self-assessment PDF request">
-      <!-- Carried over, and it has to stay: the score is the one thing that
-           makes this lead worth more than an email address. -->
-      <input type="hidden" name="score" id="leadscore" value="">
-      <!-- Spam trap: a real person never fills a field they cannot see. -->
-      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn" type="submit">Send me the PDF</button>
-      <p class="fineprint">No spam, and your details are not shared. <a href="/privacy.html">How we handle your data</a>.</p>
-    </form>` },
+    <div class="lead" data-rv>
+      <a class="btn" href="/self-assessment.pdf" download>Download the PDF</a>
+      <p class="fineprint">No form required. The worksheet downloads directly to your device.</p>
+    </div>` },
 
   { id:'audit', n:'Audit', at:'at-mid', html:`
     <div class="kick" data-rv>If you scored 7 or higher</div>
@@ -192,7 +171,7 @@ const P = [
     <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does: about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
     <div class="row" data-rv style="margin-top:26px;">
       <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-      <a class="btn line" href="../kinetic/#fee">See what it costs</a>
+      <a class="btn line" href="/#fee">See what it costs</a>
     </div>
     <p class="fine" data-rv>${esc(C.legal)}</p>` },
 ];
@@ -209,7 +188,6 @@ const tallynum  = document.getElementById('tallynum');
 const scorenum  = document.getElementById('scorenum');
 const bands     = document.getElementById('bands');
 const scorenote = document.getElementById('scorenote');
-const leadscore = document.getElementById('leadscore');
 
 function render(){
   const answered = buttons.filter(b => b.getAttribute('aria-pressed') === 'true');
@@ -217,7 +195,6 @@ function render(){
 
   tallynum.textContent = score;
   scorenum.textContent = score;
-  leadscore.value = answered.length ? String(score) : '';
 
   const started = answered.length > 0;
   bands.classList.toggle('idle', !started);
@@ -235,26 +212,6 @@ buttons.forEach(b => b.addEventListener('click', () => {
 }));
 render();
 
-/* ---- the PDF form --------------------------------------------------------
-   Carried over from the live page with its safety net intact. The form has
-   never been wired to a provider, and a half-configured form POSTing into
-   nowhere loses real leads silently - worse than not being there. This whole
-   block disables itself the moment a real endpoint is set. */
-(function(){
-  const form = document.getElementById('lead');
-  if (!form || form.getAttribute('action').indexOf('FORM_ENDPOINT') === -1) return;
-
-  form.addEventListener('submit', e => e.preventDefault());
-  const btn = form.querySelector('button[type="submit"]');
-  if (btn){ btn.disabled = true; btn.textContent = 'Not connected yet'; btn.style.opacity = '.55'; }
-  form.querySelectorAll('input:not(.hp):not([type="hidden"])').forEach(i => { i.disabled = true; });
-
-  const note = document.createElement('p');
-  note.className = 'fineprint';
-  note.setAttribute('role', 'status');
-  note.textContent = 'This form is built and styled but not yet wired to a form provider, so it is switched off.';
-  form.appendChild(note);
-})();
 </script>
 </body>
 </html>

@@ -898,12 +898,14 @@ export function mountQuote(root, { QUESTIONS, askQuote, fmt, t }){
     }
     root.innerHTML = `<div class="q-out"><div class="q-num">${t.working}</div></div>`;
     askQuote(answers).then(r => {
+      const number = r.placeholder
+        ? `${esc(t.regional)}<small>${esc(r.regionLabel)}</small>`
+        : `${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
+             <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>`;
       root.innerHTML =
         `<div class="q-out">
            <div class="q-plan"><span>${esc(t.recommended)}</span><strong>${esc(r.recommendation)}</strong></div>
-           <div class="q-num">${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
-             <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>
-           </div>
+           <div class="q-num${r.placeholder ? ' q-num-regional' : ''}">${number}</div>
            <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
            <div class="q-match"><span>${esc(t.relevant)}</span><strong>${esc(r.matchTitle)}</strong><p>${esc(r.matchText)}</p></div>
            ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
