@@ -153,55 +153,24 @@ body{background:
 .p-start h1{font-size:min(8vw,10.6vh,8.4rem);}
 .p-start h1 em{color:var(--copper);display:block;}
 .lede{max-width:44ch;color:var(--muted);font-size:clamp(1rem,1.25vw,1.16rem);margin:22px 0 26px;}
-/* The knot is an ATMOSPHERE layer, not a picture: full height, bleeding off the
-   top and bottom, with the headline sitting on its dark left side. Two earlier
-   passes both failed, in opposite directions.
-
-   Pass 1 (original) put it in a 742x900 PORTRAIT box with object-fit:cover. The
-   source is 1536x1024 - landscape, 3:2 - so cover threw away 45% of the image's
-   width and you saw rope, never the knot. It was also anchored to the panel's
-   right edge (right:-4vw on a 112vw panel), so the remainder ran past the first
-   screen and came back sliced down the left of section two.
-
-   Pass 2 fixed the cropping by shrinking it to its own aspect ratio, which is
-   correct and looks like a stock photo dropped on the page. Wrong trade.
-
-   What actually resolves it: the source is 3:2 and a screen is wider than 3:2,
-   so an image scaled to FULL VIEWPORT HEIGHT is only 1.5x900 = 1350px wide -
-   narrower than a 1440px screen. It can be full-bleed vertically, uncropped,
-   and still fit inside the first screen horizontally. Nothing is cut, nothing
-   crosses into section two, and it reads as ground rather than as a photo.
-
-   min(150vh, 94vw) is the cap that keeps that true on a squarer monitor, where
-   1.5x the height would be wider than the screen: there it sizes off width
-   instead and simply bleeds less. */
-.knot{position:absolute;right:15vw;left:auto;       /* 112vw panel - 15vw, so its
-                                                       right edge lands at 97vw:
-                                                       inside the first screen on
-                                                       every viewport, which is
-                                                       what stops the slicing */
-  width:min(150vh,94vw);aspect-ratio:3/2;height:auto;
-  top:50%;margin-top:calc(-1 * min(50vh,31.333vw));  /* half the computed height;
-                                                        no transform, the
-                                                        parallax owns that */
-  /* At full size it is the brightest thing on the page, and the fixed chrome
-     has to survive crossing it: the nav sits over the top-right rope and the
-     ticker runs straight through the bottom ropes. Both were illegible at .92.
-     Dropped to .72 and the vertical fades widened to 15%, which is deeper than
-     the header (~60px) and than the ticker band (91px up from the bottom), so
-     the image is already near-transparent everywhere the chrome lands. */
-  opacity:.72;
-  /* Horizontally: cleared entirely over the text column, then ramping to solid
-     across the gap between the end of the headline and the knot itself, so the
-     rope emerges from the dark rather than starting at an edge. */
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,transparent 38%,#000 60%,#000 90%,transparent 100%),
-                     linear-gradient(180deg,transparent 0%,#000 15%,#000 85%,transparent 100%);
-  -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(90deg,transparent 0%,transparent 38%,#000 60%,#000 90%,transparent 100%),
-             linear-gradient(180deg,transparent 0%,#000 15%,#000 85%,transparent 100%);
-  mask-composite:intersect;
+/* The hero now reads as an information system: a primary cord with organized
+   pendants and distinct knots. The source reserves its left side for copy, so
+   it can stay uncropped and no longer pushes the headline off screen. */
+.knot{position:absolute;right:0;left:auto;top:50%;
+  width:min(150vh,100vw);aspect-ratio:3/2;height:auto;
+  margin-top:calc(-1 * min(50vh,33.333vw));overflow:hidden;isolation:isolate;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 89%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 89%,transparent 100%);
   will-change:transform;z-index:0;}
-.knot img{display:block;width:100%;height:100%;object-fit:cover;}
+.knot img{position:relative;z-index:0;display:block;width:100%;height:100%;
+  object-fit:contain;opacity:.88;}
+/* A restrained text-side veil keeps the headline dominant without hiding the
+   khipu's structure. It also makes the generated navy merge into the page. */
+.knot::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(10,17,25,.72) 0%,rgba(10,17,25,.5) 30%,
+    rgba(10,17,25,.08) 52%,transparent 66%);}
+.khipu-network{position:absolute;inset:0;z-index:2;display:block;width:100%;height:100%;
+  pointer-events:none;mix-blend-mode:screen;}
 
 .p-start .inner{position:relative;z-index:2;max-width:52vw;}
 
@@ -406,7 +375,7 @@ body{background:
   .panel,.p-start,.p-problem,.p-get,.p-process,.p-work,.p-fee,.p-questions,.p-operator{
     width:100%;height:auto;min-height:0;padding:88px 22px 38px;justify-content:flex-start;}
   .panel:last-child{padding-bottom:74px;}
-  .p-start h1{font-size:clamp(2.3rem,10vw,3.4rem);}
+  .p-start h1{font-size:clamp(2.15rem,9vw,3.4rem);}
   .p-start .inner{max-width:none;}
   /* On the phone the buttons already stack full-width; letting the row measure
      itself here would shrink them back to their labels. */
@@ -416,8 +385,9 @@ body{background:
      layout has to unset all three - left:50vw on a position:relative element
      would shove the image half a screen to the right. */
   .knot{position:relative;left:auto;right:auto;top:auto;margin-top:20px;
-    width:100%;aspect-ratio:auto;height:180px;
+    width:100%;aspect-ratio:3/2;height:auto;
     -webkit-mask-image:none;mask-image:none;}
+  .knot::after{background:linear-gradient(90deg,rgba(10,17,25,.28),transparent 58%);}
   .mq,.hint,.rail{display:none;}
   .foot{position:static;padding:0;}
   .nav-toggle{display:block;}

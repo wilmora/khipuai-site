@@ -44,6 +44,144 @@ export function checkContentParity(other, label = 'content'){
   if (problems.length) console.warn('[' + label + '] drifted from English:\n  ' + problems.join('\n  '));
 }
 
+/* A small canvas layer turns the hero's knots into active information nodes.
+ * It follows the real cord and knot positions in the generated image: signals
+ * travel along the primary cord, branch down pendant cords, and occasionally
+ * cross a faint synaptic link. The canvas is decorative, pauses off-screen,
+ * and becomes a single static frame when reduced motion is requested. */
+function mountKhipuNetwork(root){
+  const canvas = root && root.querySelector('[data-khipu-network]');
+  const ctx = canvas && canvas.getContext('2d');
+  if (!ctx) return;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nodes = [
+    [.42,.035],[.50,.075],[.55,.085],[.61,.095],[.665,.105],
+    [.725,.105],[.785,.102],[.84,.09],[.895,.075],[.96,.045],
+    [.50,.265],[.55,.295],[.55,.475],[.61,.36],[.61,.65],
+    [.665,.47],[.725,.46],[.725,.78],[.785,.30],[.785,.50],
+    [.84,.38],[.84,.66],[.895,.28],[.895,.52],[.955,.25],[.955,.47]
+  ];
+  /* Third value is curvature. A fourth marks the very faint cross-cord links. */
+  const edges = [
+    [0,1,0],[1,2,0],[2,3,0],[3,4,0],[4,5,0],[5,6,0],[6,7,0],[7,8,0],[8,9,0],
+    [1,10,0],[2,11,0],[11,12,0],[3,13,0],[13,14,0],[4,15,0],
+    [5,16,0],[16,17,0],[6,18,0],[18,19,0],[7,20,0],[20,21,0],
+    [8,22,0],[22,23,0],[9,24,0],[24,25,0],
+    [10,11,-.055,1],[11,13,.04,1],[13,16,-.045,1],[16,18,.04,1],
+    [18,20,-.04,1],[20,22,.04,1],[22,24,-.035,1],
+    [12,14,.045,1],[14,15,-.04,1],[15,19,.05,1],[19,21,-.04,1],
+    [21,23,.04,1],[23,25,-.035,1]
+  ];
+  const signalEdges = [0,2,5,9,11,13,16,18,21,23,26,28,30,33,35,37];
+  let w = 0, h = 0, dpr = 1, raf = 0, visible = true;
+  let pointerX = .72, pointerY = .44, pointerLive = 0, focusNode = -1, burstUntil = 0;
+
+  const point = i => ({ x:nodes[i][0] * w, y:nodes[i][1] * h });
+  function curve(edge, t){
+    const a = point(edge[0]), b = point(edge[1]);
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const bend = edge[2] * h;
+    const cx = mx - (b.y - a.y) / Math.max(1,h) * bend;
+    const cy = my + (b.x - a.x) / Math.max(1,w) * bend;
+    const u = 1 - t;
+    return { x:u*u*a.x + 2*u*t*cx + t*t*b.x,
+             y:u*u*a.y + 2*u*t*cy + t*t*b.y };
+  }
+  function pathEdge(edge){
+    const a = point(edge[0]), b = point(edge[1]);
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const bend = edge[2] * h;
+    const cx = mx - (b.y - a.y) / Math.max(1,h) * bend;
+    const cy = my + (b.x - a.x) / Math.max(1,w) * bend;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(cx,cy,b.x,b.y);
+  }
+  function draw(now = 0){
+    const time = now / 1000;
+    ctx.clearRect(0,0,w,h);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+
+    edges.forEach(edge => {
+      pathEdge(edge);
+      ctx.setLineDash(edge[3] ? [2,8] : []);
+      ctx.strokeStyle = edge[3] ? 'rgba(244,239,231,.055)' : 'rgba(227,151,103,.075)';
+      ctx.lineWidth = edge[3] ? .8 : 1.05;
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    const burst = now < burstUntil ? 1 : 0;
+    if (!reduced) signalEdges.forEach((edgeIndex, i) => {
+      const speed = (.035 + (i % 5) * .006) * (burst ? 2.2 : 1);
+      const t = (time * speed + i * .137) % 1;
+      const p = curve(edges[edgeIndex], t);
+      const near = Math.hypot(p.x / w - pointerX, p.y / h - pointerY);
+      const response = pointerLive * Math.max(0, 1 - near * 5);
+      ctx.beginPath();ctx.arc(p.x,p.y,1.7 + response * 2.1,0,Math.PI*2);
+      ctx.shadowColor = '#FFD2AC';ctx.shadowBlur = 11 + response * 16;
+      ctx.fillStyle = `rgba(255,210,172,${.48 + response * .42})`;ctx.fill();
+    });
+
+    nodes.forEach((n, i) => {
+      const p = point(i);
+      const dist = Math.hypot(n[0] - pointerX, n[1] - pointerY);
+      const response = pointerLive * Math.max(0, 1 - dist * 7);
+      const breathe = reduced ? 0 : (Math.sin(time * 1.45 + i * 1.73) + 1) * .5;
+      const active = Math.max(response, breathe * .18, burst && i === focusNode ? 1 : 0);
+      const anchor = i < 10;
+      ctx.beginPath();ctx.arc(p.x,p.y,(anchor ? 1.15 : 1.7) + active * 1.4,0,Math.PI*2);
+      ctx.shadowColor = '#FF7A3D';ctx.shadowBlur = 7 + active * 15;
+      ctx.fillStyle = `rgba(255,164,101,${anchor ? .22 + active*.28 : .34 + active*.5})`;ctx.fill();
+      if (response > .12 || (burst && i === focusNode)) {
+        ctx.beginPath();ctx.arc(p.x,p.y,7 + active * 12,0,Math.PI*2);
+        ctx.shadowBlur = 0;ctx.strokeStyle = `rgba(255,210,172,${.2 + active*.28})`;
+        ctx.lineWidth = 1;ctx.stroke();
+      }
+    });
+    ctx.restore();
+  }
+  function tick(now){
+    raf = 0;
+    pointerLive *= .965;
+    draw(now);
+    if (visible && !document.hidden) raf = requestAnimationFrame(tick);
+  }
+  function start(){
+    if (!reduced && visible && !document.hidden && !raf) raf = requestAnimationFrame(tick);
+  }
+  function resize(){
+    const rect = root.getBoundingClientRect();
+    w = Math.max(1, rect.width); h = Math.max(1, rect.height);
+    dpr = Math.min(2, devicePixelRatio || 1);
+    canvas.width = Math.round(w * dpr);canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    if (reduced) draw(0); else start();
+  }
+  function locatePointer(e, burst = false){
+    const rect = root.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / Math.max(1,rect.width);
+    const y = (e.clientY - rect.top) / Math.max(1,rect.height);
+    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    pointerX = x;pointerY = y;pointerLive = 1;
+    let best = Infinity;
+    nodes.forEach((n,i) => { const d = Math.hypot(n[0]-x,n[1]-y); if (d < best) { best=d;focusNode=i; } });
+    if (burst) burstUntil = performance.now() + 900;
+    start();
+  }
+
+  addEventListener('pointermove', e => locatePointer(e), { passive:true });
+  addEventListener('pointerdown', e => locatePointer(e, true), { passive:true });
+  document.addEventListener('visibilitychange', start);
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(root);
+  if (window.IntersectionObserver) new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting);
+    if (!visible && raf) { cancelAnimationFrame(raf);raf = 0; }
+    else start();
+  }, { rootMargin:'10%' }).observe(root);
+  resize();
+}
+
 /* The content object is passed in rather than imported, so the same engine
    drives the English and Spanish pages. */
 export function buildKinetic(P, content = EN){
@@ -57,6 +195,7 @@ export function buildKinetic(P, content = EN){
        ${p.html}</section>`).join(''));
 
   const panels = [...track.querySelectorAll('.panel')];
+  mountKhipuNetwork(track.querySelector('#knot'));
 
   /* The ticker is appended to the track rather than written into the opening
      section, so it can run the full length of the site. It is absolutely

@@ -99,7 +99,8 @@ import { getQuestions, askQuote, fmt } from '../shared/quote.js';
 const P = [
   { id:'start', n:'Overview', at:'at-mid', html:`
     <div class="knot" id="knot">
-      <img src="../shared/assets/khipu-knot-v2.webp" alt="A sculptural copper knot, a contemporary reading of an Andean khipu">
+      <img src="../shared/assets/khipu-neural-v3.webp" width="1536" height="1024" alt="An organized Andean khipu with multiple knotted cords representing structured information">
+      <canvas class="khipu-network" data-khipu-network aria-hidden="true"></canvas>
     </div>
     <div class="inner">
       <div class="kick" data-rv>${esc(C.hero.eyebrow)}</div>
