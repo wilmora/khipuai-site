@@ -502,13 +502,49 @@ body.at-start .hint{opacity:0;}
   .hero-node-labels,.hero-aside{display:none;}
   .hero-proof{position:static;display:flex;width:100%;margin-top:34px;overflow-x:auto;
     padding:4px 0 10px;scroll-snap-type:x proximity;}
-  .hero-proof > div{flex:0 0 205px;padding:4px 18px;scroll-snap-align:start;}
+  /* The desktop rule truncates these with an ellipsis instead of wrapping,
+     which is right in a fixed-height strip across the bottom of the hero and
+     wrong here, where they are a swipeable row with room below. At the larger
+     type it was turning "improving operations" into "improving operatio...".
+     Let them wrap; a second short line costs nothing and says the whole word. */
+  .hero-proof > div{flex:0 0 212px;padding:4px 18px;scroll-snap-align:start;}
   .hero-proof > div:first-child{padding-left:0;}
-  .hero-proof strong{font-size:.7rem;}
-  .hero-proof span{font-size:.58rem;}
+  .hero-proof strong,.hero-proof span{white-space:normal;overflow:visible;
+    text-overflow:clip;line-height:1.3;}
+  /* 11.2px and 9.3px. The second one is below anything that should be asked of
+     a reader on a phone, and both sit under the hero where they are the first
+     supporting detail anyone meets. */
+  .hero-proof strong{font-size:.78rem;}
+  .hero-proof span{font-size:.7rem;}
   .mq,.hint,.rail{display:none;}
   .foot{position:static;padding:0;}
-  .nav-toggle{display:block;}
+
+  /* ---- the header has to be opaque here ----------------------------------
+     On the desktop layout the header floats over a section that is not moving
+     underneath it, so a gradient that fades to nothing is fine. On a phone the
+     whole page scrolls under it, and the gradient's transparent lower half let
+     body copy run straight through the wordmark and the menu. On the Team
+     screen the pull quote and the word KHIPUAI were printed on top of each
+     other and neither could be read.
+     Solid, with a hairline under it so it reads as a deliberate bar rather
+     than a panel that happens to be dark. */
+  .hd{background:rgba(8,15,22,.96);border-bottom:1px solid var(--line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    min-height:64px;padding:10px 22px;gap:14px;}
+
+  /* ---- touch targets ------------------------------------------------------
+     AGENTS.md asks for 44x44 where practical. These were the three that were
+     not close: the menu button at 54x19, the language switch at 18x21, and the
+     FAQ rows at 23px tall. The type size is unchanged - the box around it grew.
+     min-height on a flex child needs the box to be a flex container too, or
+     the padding lands but the height does not. */
+  .nav-toggle{display:flex;align-items:center;min-height:44px;padding:0 4px;}
+  .hd .bd{min-height:44px;}
+  .lang{gap:6px;}
+  .lang a,.lang span{display:flex;align-items:center;justify-content:center;
+    min-width:34px;min-height:44px;padding:0;}
+  .lang .sep{min-width:0;}
+  .qa summary{min-height:44px;align-items:center;padding:8px 0;}
   .hd-cta{display:none;}
   .hd nav{display:none;}
   .hd nav.open{display:flex;position:absolute;left:5vw;right:5vw;top:66px;max-height:70vh;
@@ -523,9 +559,15 @@ body.at-start .hint{opacity:0;}
   .runlist .feature-icon{margin-left:0;}
   /* Stacked, the six-up grids ran to 1,579px on their own. Swiping them keeps
      the concept's horizontal idea alive on a phone and roughly halves it. */
-  .cols.c3,.cols.c6{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
+  /* Mandatory rather than proximity, and a narrower peek. At 76% the next card
+     showed a quarter of itself, which is enough width to start rendering full
+     sentences and read as a card that has been cut in half rather than as a
+     card waiting behind. 86% shows a sliver: clearly more to come, nothing
+     half-said. Mandatory snapping also means a swipe always lands on a card
+     instead of stopping between two. */
+  .cols.c3,.cols.c6{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;}
-  .cols.c3 > div,.cols.c6 > div{flex:0 0 76%;scroll-snap-align:start;}
+  .cols.c3 > div,.cols.c6 > div{flex:0 0 86%;scroll-snap-align:start;}
   .process-cols::before{display:none;}
   /* The desktop grid puts items 4-6 on a second row, with a rule above them and
      margin to clear it. On a phone these become ONE swipeable row, so those
@@ -547,8 +589,11 @@ body.at-start .hint{opacity:0;}
      the photograph. One per row instead. */
   .quote{font-size:clamp(1.15rem,5.2vw,1.5rem);max-width:none;}
   .team{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:18px;}
-  .member{padding:16px;gap:16px;}
-  .member img{width:96px;height:96px;}
+  /* The photo beside the text leaves about 165px for the paragraph at 390px
+     wide, which breaks the bio into three and four word lines. Stacked, the
+     text gets the full card and reads as prose again. */
+  .member{grid-template-columns:minmax(0,1fr);padding:18px;gap:14px;}
+  .member img{width:84px;height:84px;}
   .face img{width:150px;height:150px;}
   [data-rv]{opacity:1;transform:none;}
 }
@@ -818,6 +863,10 @@ html[lang="es"] .lede{max-width:40ch;}
   .ask button{gap:14px;padding:15px 0;font-size:.95rem;}
   .tally{display:none;}          /* the score screen carries it on the phone */
   .lead{max-width:none;}
+  /* The "/ 24" is sized as a fraction of the score beside it, and the score is
+     sized off the viewport, so on a narrow phone it fell to 10.7px. Given a
+     floor, because the denominator is what makes the score mean anything. */
+  .bignum small{font-size:max(.24em,.82rem);}
 }
 
 /* Printing a sideways site gives you screen one and nothing else. The PDF is
