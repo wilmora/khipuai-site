@@ -67,31 +67,72 @@ function mountKhipuNetwork(root){
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nodes = [
-    [.535,.02],[.58,.065],[.62,.075],[.66,.08],[.70,.085],
-    [.75,.09],[.80,.085],[.85,.075],[.90,.06],[.96,.035],
-    [.61,.24],[.66,.30],[.66,.46],[.71,.35],[.71,.62],
-    [.75,.42],[.81,.32],[.81,.67],[.86,.26],[.86,.48],
-    [.90,.23],[.90,.43],[.94,.22],[.94,.39],[.975,.21],[.975,.37]
+    /* Primary cord and pendant knots in the v5 artwork. */
+    [.58,.02],[.65,.085],[.69,.10],[.72,.11],[.76,.12],
+    [.80,.12],[.84,.12],[.88,.11],[.92,.10],[.96,.075],
+    [.65,.23],[.69,.28],[.69,.43],[.72,.32],[.72,.53],
+    [.76,.37],[.80,.35],[.80,.66],[.84,.29],[.84,.49],
+    [.88,.25],[.88,.46],[.92,.23],[.92,.40],[.96,.21],[.96,.38],
+    /* The visible light trail crossing the mountain range. */
+    [.03,.72],[.10,.73],[.17,.71],[.25,.68],[.33,.67],[.40,.65],
+    [.46,.66],[.51,.67],[.57,.72],[.62,.76],[.66,.82],[.70,.88],[.74,.92],
+    /* The second ridge path running toward the right-hand peak. */
+    [.60,.66],[.67,.63],[.74,.62],[.81,.59],[.88,.56],[.94,.52],[.98,.48]
   ];
-  /* Third value is curvature. A fourth marks the very faint cross-cord links. */
+  const MOUNTAIN_START = 26;
+  /* Third value is curvature. The fourth identifies synaptic or mountain links. */
   const edges = [
     [0,1,0],[1,2,0],[2,3,0],[3,4,0],[4,5,0],[5,6,0],[6,7,0],[7,8,0],[8,9,0],
     [1,10,0],[2,11,0],[11,12,0],[3,13,0],[13,14,0],[4,15,0],
     [5,16,0],[16,17,0],[6,18,0],[18,19,0],[7,20,0],[20,21,0],
     [8,22,0],[22,23,0],[9,24,0],[24,25,0],
-    [10,11,-.055,1],[11,13,.04,1],[13,16,-.045,1],[16,18,.04,1],
-    [18,20,-.04,1],[20,22,.04,1],[22,24,-.035,1],
-    [12,14,.045,1],[14,15,-.04,1],[15,19,.05,1],[19,21,-.04,1],
-    [21,23,.04,1],[23,25,-.035,1]
+    [10,11,-.055,'synapse'],[11,13,.04,'synapse'],[13,16,-.045,'synapse'],
+    [16,18,.04,'synapse'],[18,20,-.04,'synapse'],[20,22,.04,'synapse'],
+    [22,24,-.035,'synapse'],[12,14,.045,'synapse'],[14,15,-.04,'synapse'],
+    [15,19,.05,'synapse'],[19,21,-.04,'synapse'],[21,23,.04,'synapse'],
+    [23,25,-.035,'synapse'],
+    [26,27,.008,'mountain'],[27,28,-.008,'mountain'],[28,29,.006,'mountain'],
+    [29,30,-.01,'mountain'],[30,31,.008,'mountain'],[31,32,-.008,'mountain'],
+    [32,33,.008,'mountain'],[33,34,.01,'mountain'],[34,35,.012,'mountain'],
+    [35,36,.012,'mountain'],[36,37,.01,'mountain'],[37,38,.008,'mountain'],
+    [39,40,-.006,'mountain'],[40,41,.008,'mountain'],[41,42,-.006,'mountain'],
+    [42,43,.006,'mountain'],[43,44,-.006,'mountain'],[44,45,-.008,'mountain'],
+    [34,39,-.018,'mountain']
   ];
-  const signalEdges = [0,2,5,9,11,13,16,18,21,23,26,28,30,33,35,37];
+  const mountainEdges = edges.map((edge,i) => edge[3] === 'mountain' ? i : -1).filter(i => i >= 0);
+  const signalEdges = edges.map((_,i) => i).concat(mountainEdges, mountainEdges);
+  const SIGNAL_COLORS = ['255,210,172','255,122,61','227,151,103','244,239,231'];
   let w = 0, h = 0, dpr = 1, raf = 0, visible = true;
-  let pointerX = .72, pointerY = .44, pointerLive = 0, focusNode = -1, burstUntil = 0;
+  let pointerX = .72, pointerY = .44, pointerLive = 0, focusNode = -1;
+  let mountainFocus = 34, burstUntil = 0, lastFrame = 0, lastPointerBurst = 0;
+  const pointerBursts = [];
+
+  /* Deterministic randomness keeps the motion organic while making visual
+     testing reproducible. Every pulse reroutes independently at the end of an
+     edge, so the network never falls into a sequential chase pattern. */
+  let randomState = 0x4b484950;
+  const random = () => {
+    randomState |= 0;randomState = randomState + 0x6D2B79F5 | 0;
+    let t = randomState;t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+  function resetSignal(signal, initial = false){
+    signal.edge = signalEdges[Math.floor(random() * signalEdges.length)];
+    signal.t = initial ? random() : 0;
+    signal.reverse = random() > .54;
+    signal.speed = .075 + random() * .16;
+    signal.size = 1.15 + random() * 1.75;
+    signal.alpha = .34 + random() * .54;
+    signal.color = SIGNAL_COLORS[Math.floor(random() * SIGNAL_COLORS.length)];
+    signal.wait = initial ? 0 : random() * .32;
+  }
+  const signals = Array.from({length:24}, () => {
+    const signal = {};resetSignal(signal, true);return signal;
+  });
 
   const SOURCE_ASPECT = 1672 / 941;
-  /* Match object-fit:cover so the canvas stays locked to the knots even when a
-     squarer viewport crops the sides of the 16:9 source. */
-  const point = i => {
+  function imageMetrics(){
     const containerAspect = w / h;
     let imageW = w, imageH = h, offsetX = 0, offsetY = 0;
     if (containerAspect < SOURCE_ASPECT) {
@@ -99,9 +140,16 @@ function mountKhipuNetwork(root){
     } else {
       imageH = w / SOURCE_ASPECT;offsetY = (h - imageH) / 2;
     }
-    return { x:offsetX + nodes[i][0] * imageW,
-             y:offsetY + nodes[i][1] * imageH };
+    return {imageW,imageH,offsetX,offsetY};
+  }
+  /* Match object-fit:cover so the canvas stays locked to the artwork when a
+     squarer viewport crops the sides of the 16:9 source. */
+  const project = coordinate => {
+    const m = imageMetrics();
+    return { x:m.offsetX + coordinate[0] * m.imageW,
+             y:m.offsetY + coordinate[1] * m.imageH };
   };
+  const point = i => project(nodes[i]);
   function curve(edge, t){
     const a = point(edge[0]), b = point(edge[1]);
     const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
@@ -120,6 +168,32 @@ function mountKhipuNetwork(root){
     const cy = my + (b.x - a.x) / Math.max(1,w) * bend;
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(cx,cy,b.x,b.y);
   }
+  function updateSignals(now){
+    const dt = lastFrame ? Math.min(.05,(now-lastFrame)/1000) : 1/60;
+    lastFrame = now;
+    const globalBoost = now < burstUntil ? 1.75 : 1;
+    signals.forEach(signal => {
+      if (signal.wait > 0) { signal.wait -= dt;return; }
+      signal.t += dt * signal.speed * globalBoost;
+      if (signal.t >= 1) resetSignal(signal);
+    });
+    for (let i=pointerBursts.length-1;i>=0;i--) {
+      const burst = pointerBursts[i];
+      burst.t += dt * burst.speed * burst.direction;
+      if (burst.t < -.05 || burst.t > 1.05) pointerBursts.splice(i,1);
+    }
+  }
+  function edgePointerResponse(edge){
+    if (edge[3] !== 'mountain') return 0;
+    const midpointX = (nodes[edge[0]][0] + nodes[edge[1]][0]) / 2;
+    return pointerLive * Math.max(0,1-Math.abs(midpointX-pointerX)*7.5);
+  }
+  function drawPulse(edge, t, size, alpha, color, response = 0){
+    const p = curve(edge,t);
+    ctx.beginPath();ctx.arc(p.x,p.y,size+response*2.3,0,Math.PI*2);
+    ctx.shadowColor = `rgb(${color})`;ctx.shadowBlur = 9+size*3+response*17;
+    ctx.fillStyle = `rgba(${color},${Math.min(1,alpha+response*.35)})`;ctx.fill();
+  }
   function draw(now = 0){
     const time = now / 1000;
     ctx.clearRect(0,0,w,h);
@@ -127,37 +201,55 @@ function mountKhipuNetwork(root){
     ctx.globalCompositeOperation = 'lighter';
 
     edges.forEach(edge => {
+      const kind = edge[3];
+      const response = edgePointerResponse(edge);
       pathEdge(edge);
-      ctx.setLineDash(edge[3] ? [2,8] : []);
-      ctx.strokeStyle = edge[3] ? 'rgba(244,239,231,.055)' : 'rgba(227,151,103,.075)';
-      ctx.lineWidth = edge[3] ? .8 : 1.05;
+      ctx.setLineDash(kind === 'synapse' ? [2,8] : kind === 'mountain' ? [1,6] : []);
+      ctx.strokeStyle = kind === 'synapse'
+        ? 'rgba(244,239,231,.055)'
+        : kind === 'mountain'
+          ? `rgba(255,154,83,${.11+response*.28})`
+          : 'rgba(227,151,103,.075)';
+      ctx.lineWidth = kind === 'mountain' ? 1+response*1.5 : kind === 'synapse' ? .8 : 1.05;
+      ctx.shadowColor = kind === 'mountain' ? '#FF7A3D' : 'transparent';
+      ctx.shadowBlur = kind === 'mountain' ? response*14 : 0;
       ctx.stroke();
     });
     ctx.setLineDash([]);
 
-    const burst = now < burstUntil ? 1 : 0;
-    if (!reduced) signalEdges.forEach((edgeIndex, i) => {
-      const speed = (.035 + (i % 5) * .006) * (burst ? 2.2 : 1);
-      const t = (time * speed + i * .137) % 1;
-      const p = curve(edges[edgeIndex], t);
-      const near = Math.hypot(p.x / w - pointerX, p.y / h - pointerY);
-      const response = pointerLive * Math.max(0, 1 - near * 5);
-      ctx.beginPath();ctx.arc(p.x,p.y,1.7 + response * 2.1,0,Math.PI*2);
-      ctx.shadowColor = '#FFD2AC';ctx.shadowBlur = 11 + response * 16;
-      ctx.fillStyle = `rgba(255,210,172,${.48 + response * .42})`;ctx.fill();
-    });
+    if (!reduced) {
+      signals.forEach(signal => {
+        if (signal.wait > 0) return;
+        const edge = edges[signal.edge];
+        const t = signal.reverse ? 1-signal.t : signal.t;
+        drawPulse(edge,t,signal.size,signal.alpha,signal.color,edgePointerResponse(edge));
+      });
+      pointerBursts.forEach(burst =>
+        drawPulse(edges[burst.edge],burst.t,2.1,.88,'255,210,172',pointerLive));
+    }
 
     nodes.forEach((n, i) => {
       const p = point(i);
-      const dist = Math.hypot(n[0] - pointerX, n[1] - pointerY);
-      const response = pointerLive * Math.max(0, 1 - dist * 7);
+      const mountain = i >= MOUNTAIN_START;
+      const dist = mountain ? Math.abs(n[0]-pointerX) : Math.hypot(n[0]-pointerX,n[1]-pointerY);
+      const response = pointerLive * Math.max(0,1-dist*(mountain?8.5:7));
       const breathe = reduced ? 0 : (Math.sin(time * 1.45 + i * 1.73) + 1) * .5;
-      const active = Math.max(response, breathe * .18, burst && i === focusNode ? 1 : 0);
+      const active = Math.max(
+        response,
+        breathe * (mountain ? .24 : .18),
+        now < burstUntil && i === focusNode ? 1 : 0
+      );
       const anchor = i < 10;
-      ctx.beginPath();ctx.arc(p.x,p.y,(anchor ? 1.15 : 1.7) + active * 1.4,0,Math.PI*2);
+      const baseSize = mountain ? 1.25 : anchor ? 1.15 : 1.7;
+      ctx.beginPath();ctx.arc(p.x,p.y,baseSize+active*1.65,0,Math.PI*2);
       ctx.shadowColor = '#FF7A3D';ctx.shadowBlur = 7 + active * 15;
-      ctx.fillStyle = `rgba(255,164,101,${anchor ? .22 + active*.28 : .34 + active*.5})`;ctx.fill();
-      if (response > .12 || (burst && i === focusNode)) {
+      const nodeAlpha = mountain
+        ? .38 + active * .5
+        : anchor
+          ? .22 + active * .28
+          : .34 + active * .5;
+      ctx.fillStyle = `rgba(255,164,101,${nodeAlpha})`;ctx.fill();
+      if (response > .12 || (now<burstUntil&&i===focusNode)) {
         ctx.beginPath();ctx.arc(p.x,p.y,7 + active * 12,0,Math.PI*2);
         ctx.shadowBlur = 0;ctx.strokeStyle = `rgba(255,210,172,${.2 + active*.28})`;
         ctx.lineWidth = 1;ctx.stroke();
@@ -167,7 +259,8 @@ function mountKhipuNetwork(root){
   }
   function tick(now){
     raf = 0;
-    pointerLive *= .965;
+    pointerLive *= .972;
+    updateSignals(now);
     draw(now);
     if (visible && !document.hidden) raf = requestAnimationFrame(tick);
   }
@@ -180,16 +273,37 @@ function mountKhipuNetwork(root){
     dpr = Math.min(2, devicePixelRatio || 1);
     canvas.width = Math.round(w * dpr);canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
+    lastFrame = 0;
     if (reduced) draw(0); else start();
   }
   function locatePointer(e, burst = false){
     const rect = root.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / Math.max(1,rect.width);
-    const y = (e.clientY - rect.top) / Math.max(1,rect.height);
-    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    const localX = e.clientX-rect.left, localY = e.clientY-rect.top;
+    if (localX<0||localX>rect.width||localY<0||localY>rect.height) return;
+    const m = imageMetrics();
+    const x = (localX-m.offsetX)/Math.max(1,m.imageW);
+    const y = (localY-m.offsetY)/Math.max(1,m.imageH);
     pointerX = x;pointerY = y;pointerLive = 1;
     let best = Infinity;
     nodes.forEach((n,i) => { const d = Math.hypot(n[0]-x,n[1]-y); if (d < best) { best=d;focusNode=i; } });
+    let mountainDistance = Infinity;
+    for (let i=MOUNTAIN_START;i<nodes.length;i++) {
+      const d = Math.abs(nodes[i][0]-x)+Math.abs(nodes[i][1]-y)*.2;
+      if (d<mountainDistance) { mountainDistance=d;mountainFocus=i; }
+    }
+    const now = performance.now();
+    if (!reduced && now-lastPointerBurst>72) {
+      const connected = mountainEdges.filter(edgeIndex => {
+        const edge = edges[edgeIndex];return edge[0]===mountainFocus||edge[1]===mountainFocus;
+      });
+      connected.forEach(edgeIndex => {
+        const edge = edges[edgeIndex],fromStart=edge[0]===mountainFocus;
+        pointerBursts.push({edge:edgeIndex,t:fromStart?0:1,
+          direction:fromStart?1:-1,speed:.72+random()*.62});
+      });
+      if (pointerBursts.length>24) pointerBursts.splice(0,pointerBursts.length-24);
+      lastPointerBurst = now;
+    }
     if (burst) burstUntil = performance.now() + 900;
     start();
   }
