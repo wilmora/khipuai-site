@@ -26,6 +26,14 @@ export const C = {
     ctaAlt: 'Haz la autoevaluación de 5 minutos',
   },
 
+  heroProof: [
+    ['15 años', 'mejorando operaciones'],
+    ['Aprobado por personas', 'acciones, no cajas negras'],
+    ['Creado para', 'operadores reales'],
+  ],
+  heroLabels: ['Personas', 'Procesos', 'Datos', 'Perspectivas', 'Automatización', 'Impacto'],
+  heroAside: ['Sabiduría ancestral.', 'Inteligencia moderna.', 'Impacto real.'],
+
   trust: [
     ['Dirigido por un operador', '15 años mejorando operaciones reales'],
     ['Aprobado por personas', 'las acciones importantes siguen bajo tu control'],

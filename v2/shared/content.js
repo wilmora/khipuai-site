@@ -17,6 +17,14 @@ export const C = {
     ctaAlt: 'Take the 5-minute self-assessment',
   },
 
+  heroProof: [
+    ['15 years', 'improving operations'],
+    ['Human-approved', 'actions, not black boxes'],
+    ['Built for', 'real operators'],
+  ],
+  heroLabels: ['People', 'Processes', 'Data', 'Insights', 'Automation', 'Impact'],
+  heroAside: ['Ancient wisdom.', 'Modern intelligence.', 'Real impact.'],
+
   trust: [
     ['Operator-led', '15 years improving real operations'],
     ['Human-approved', 'important actions stay under your control'],

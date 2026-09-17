@@ -15,6 +15,17 @@ import { C as EN } from './content.js';
 
 export const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 
+/* Small interface icons used by the opening proof bar. They remain code-native
+ * so they inherit the site's color and stay sharp at every density. */
+export function heroProofIcon(index){
+  const icons = [
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 17h3v4H5zm6-6h3v10h-3zm6-7h3v17h-3z"/></svg>',
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 20v-2.2c0-3 2.3-5.3 5.5-5.3s5.5 2.3 5.5 5.3V20M14 14.2c.8-.7 1.8-1.2 3.1-1.2 2.4 0 4.4 1.8 4.4 4.2V20"/></svg>',
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20 6v5.7c0 5.1-3.4 8.2-8 9.8-4.6-1.6-8-4.7-8-9.8V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>'
+  ];
+  return icons[index % icons.length];
+}
+
 /* Warns when the Spanish content file has drifted from the English one.
  *
  * The live site's Spanish mirror drifts from its English pages silently,
@@ -56,11 +67,11 @@ function mountKhipuNetwork(root){
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nodes = [
-    [.42,.035],[.50,.075],[.55,.085],[.61,.095],[.665,.105],
-    [.725,.105],[.785,.102],[.84,.09],[.895,.075],[.96,.045],
-    [.50,.265],[.55,.295],[.55,.475],[.61,.36],[.61,.65],
-    [.665,.47],[.725,.46],[.725,.78],[.785,.30],[.785,.50],
-    [.84,.38],[.84,.66],[.895,.28],[.895,.52],[.955,.25],[.955,.47]
+    [.535,.02],[.58,.065],[.62,.075],[.66,.08],[.70,.085],
+    [.75,.09],[.80,.085],[.85,.075],[.90,.06],[.96,.035],
+    [.61,.24],[.66,.30],[.66,.46],[.71,.35],[.71,.62],
+    [.75,.42],[.81,.32],[.81,.67],[.86,.26],[.86,.48],
+    [.90,.23],[.90,.43],[.94,.22],[.94,.39],[.975,.21],[.975,.37]
   ];
   /* Third value is curvature. A fourth marks the very faint cross-cord links. */
   const edges = [
@@ -77,7 +88,20 @@ function mountKhipuNetwork(root){
   let w = 0, h = 0, dpr = 1, raf = 0, visible = true;
   let pointerX = .72, pointerY = .44, pointerLive = 0, focusNode = -1, burstUntil = 0;
 
-  const point = i => ({ x:nodes[i][0] * w, y:nodes[i][1] * h });
+  const SOURCE_ASPECT = 1672 / 941;
+  /* Match object-fit:cover so the canvas stays locked to the knots even when a
+     squarer viewport crops the sides of the 16:9 source. */
+  const point = i => {
+    const containerAspect = w / h;
+    let imageW = w, imageH = h, offsetX = 0, offsetY = 0;
+    if (containerAspect < SOURCE_ASPECT) {
+      imageW = h * SOURCE_ASPECT;offsetX = (w - imageW) / 2;
+    } else {
+      imageH = w / SOURCE_ASPECT;offsetY = (h - imageH) / 2;
+    }
+    return { x:offsetX + nodes[i][0] * imageW,
+             y:offsetY + nodes[i][1] * imageH };
+  };
   function curve(edge, t){
     const a = point(edge[0]), b = point(edge[1]);
     const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
@@ -239,7 +263,9 @@ export function buildKinetic(P, content = EN){
   }
 
   const nav = document.getElementById('nav');
-  nav.innerHTML = P.map(p => `<button data-to="${p.id}">${esc(p.n)}</button>`).join('');
+  const navItems = P.filter(p => p.nav !== false)
+    .sort((a,b) => (a.navOrder || 99) - (b.navOrder || 99));
+  nav.innerHTML = navItems.map(p => `<button data-to="${p.id}">${esc(p.n)}</button>`).join('');
   const navToggle = document.createElement('button');
   navToggle.type = 'button';
   navToggle.className = 'nav-toggle';
@@ -481,6 +507,7 @@ export function buildKinetic(P, content = EN){
     // no segments: those read as slide numbers however they are styled.
     nav.querySelectorAll('button').forEach(b =>
       b.setAttribute('aria-current', b.dataset.to === P[current].id ? 'true' : 'false'));
+    document.body.classList.toggle('at-start', current === 0);
   }
 
   /* Reveal once, then stay revealed.
