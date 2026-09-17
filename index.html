@@ -119,7 +119,10 @@ const P = [
       ${C.heroProof.map(([title,detail],i)=>`<div>${heroProofIcon(i)}<p><strong>${esc(title)}</strong><span>${esc(detail)}</span></p></div>`).join('')}
     </div>` },
 
-  { id:'problem', n:'Problem', navOrder:2, at:'at-low', html:`
+  /* The id stays 'problem'. It is the URL fragment, so renaming it would break
+     #problem anywhere it has already been shared, and it is never shown. The
+     label is the only part anyone reads. */
+  { id:'problem', n:'Patterns', navOrder:2, at:'at-low', html:`
     <h2 class="say" data-rv style="max-width:17ch;">Dozens of hours a month. <em>Nobody has counted them.</em></h2>
     <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li>${featureIcon('problem',i)}<span>${esc(t)}</span></li>`).join('')}</ul>
     <p class="sub" data-rv>${esc(C.problem.close)}</p>` },

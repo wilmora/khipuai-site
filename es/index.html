@@ -123,7 +123,9 @@ const P = [
       ${C.heroProof.map(([title,detail],i)=>`<div>${heroProofIcon(i)}<p><strong>${esc(title)}</strong><span>${esc(detail)}</span></p></div>`).join('')}
     </div>` },
 
-  { id:'problem', n:'Problema', navOrder:2, at:'at-low', html:`
+  /* The id stays 'problem' to keep the #problem fragment working; see the note
+     in the English page. */
+  { id:'problem', n:'Patrones', navOrder:2, at:'at-low', html:`
     <h2 class="say" data-rv style="max-width:17ch;">Decenas de horas al mes. <em>Nadie las ha contado.</em></h2>
     <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li>${featureIcon('problem',i)}<span>${esc(t)}</span></li>`).join('')}</ul>
     <p class="sub" data-rv>${esc(C.problem.close)}</p>` },
