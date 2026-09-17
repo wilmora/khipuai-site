@@ -1,8 +1,9 @@
 /* =========================================================================
    The quote engine.
 
-   Replaces the fixed two-tier pricing. A visitor answers a few questions and
-   gets a price for their situation and their region.
+   Replaces the fixed two-tier pricing. A visitor identifies the kind of work
+   that is stuck, answers a few scoping questions, and gets a recommended
+   starting point plus a price range for the audit.
 
    TWO BRAINS, ONE INTERFACE
    -------------------------
@@ -63,6 +64,12 @@ const pick = (v, lang) => (v && typeof v === 'object') ? (v[lang] || v.en) : v;
    and how much of it needs to survive a finance or audit review. */
 const Q = {
   en: [
+    { id:'goal', q:'Where is manual work hurting the most?', options:[
+      {v:'finance',label:'Finance and operations',weight:0},
+      {v:'documents',label:'Documents and specifications',weight:0},
+      {v:'customers',label:'Customer conversations',weight:0},
+      {v:'visibility',label:'Internal visibility and approvals',weight:0},
+      {v:'multiple',label:'Several areas or not sure',weight:0}]},
     { id:'scope', q:'How many separate workflows do you want looked at?', options:[
       {v:'one',label:'One',weight:0},{v:'few',label:'Two or three',weight:1},
       {v:'dept',label:'A whole department',weight:2},{v:'multi',label:'Several departments',weight:3}]},
@@ -74,6 +81,12 @@ const Q = {
       {v:'yes',label:'Yes, all of it',weight:2}]},
   ],
   es: [
+    { id:'goal', q:'¿Dónde está afectando más el trabajo manual?', options:[
+      {v:'finance',label:'Finanzas y operaciones',weight:0},
+      {v:'documents',label:'Documentos y especificaciones',weight:0},
+      {v:'customers',label:'Conversaciones con clientes',weight:0},
+      {v:'visibility',label:'Visibilidad interna y aprobaciones',weight:0},
+      {v:'multiple',label:'Varias áreas o no estoy seguro',weight:0}]},
     { id:'scope', q:'¿Cuántos flujos de trabajo distintos quieres revisar?', options:[
       {v:'one',label:'Uno',weight:0},{v:'few',label:'Dos o tres',weight:1},
       {v:'dept',label:'Un departamento entero',weight:2},{v:'multi',label:'Varios departamentos',weight:3}]},
@@ -100,6 +113,31 @@ export const QUESTIONS = getQuestions('en');
 const BASE = 2500;          // the North America starting point, unchanged
 const PER_WEIGHT = 550;     // each point of complexity
 
+const MATCHES = {
+  en: {
+    finance: ['Finance and operations', 'A role-aware operations hub connecting billing, support, reporting, and approvals across existing systems.'],
+    documents: ['Document-heavy decisions', 'A reviewable workflow that turns PDFs, drawings, specifications, and spreadsheets into structured outputs with source evidence.'],
+    customers: ['Customer conversations', 'A customer-facing assistant that answers questions, applies quoting rules, captures demand, and hands sensitive decisions to a person.'],
+    visibility: ['Internal operations hub', 'A role-aware portal bringing workflows, documents, milestones, dashboards, and audit history into one working surface.'],
+    multiple: ['Cross-system operations', 'A workflow audit that finds the strongest first move across the tools, handoffs, and teams already involved.'],
+  },
+  es: {
+    finance: ['Finanzas y operaciones', 'Un centro de operaciones por roles que conecta facturación, soporte, reportes y aprobaciones entre los sistemas existentes.'],
+    documents: ['Decisiones basadas en documentos', 'Un flujo revisable que convierte PDFs, planos, especificaciones y hojas de cálculo en resultados estructurados con evidencia de la fuente.'],
+    customers: ['Conversaciones con clientes', 'Un asistente de atención que responde, aplica reglas de cotización, captura demanda y entrega las decisiones sensibles a una persona.'],
+    visibility: ['Centro interno de operaciones', 'Un portal por roles que reúne flujos, documentos, hitos, tableros e historial de auditoría en un solo lugar de trabajo.'],
+    multiple: ['Operaciones entre sistemas', 'Una auditoría de flujos que encuentra el mejor primer paso entre las herramientas, los traspasos y los equipos involucrados.'],
+  },
+};
+
+function recommendation(answers, weight, lang){
+  if (weight >= 5) return lang === 'es' ? 'Auditoría de Automatización por etapas' : 'Staged Automation Audit';
+  if (answers.scope === 'one' && answers.systems === 'one' && answers.rigour === 'no') {
+    return lang === 'es' ? 'Auditoría enfocada en un flujo' : 'Focused Workflow Audit';
+  }
+  return lang === 'es' ? 'Auditoría de Automatización con IA' : 'AI Automation Audit';
+}
+
 /* Returns a RANGE, not a single number, and never a binding quote.
    The site's whole argument is that a person approves anything that matters;
    a machine handing out a firm price on a public page would contradict it. */
@@ -109,6 +147,7 @@ export function localQuote(answers, lang = 'en'){
     return sum + (opt ? opt.weight : 0);
   }, 0);
   const region = REGIONS[answers.region] || REGIONS.na;
+  const match = (MATCHES[lang] || MATCHES.en)[answers.goal] || (MATCHES[lang] || MATCHES.en).multiple;
   const mid  = (BASE + weight * PER_WEIGHT) * region.mult;
   const low  = Math.round(mid * 0.9 / 50) * 50;
   const high = Math.round(mid * 1.15 / 50) * 50;
@@ -116,6 +155,8 @@ export function localQuote(answers, lang = 'en'){
     low, high, weight,
     currency: region.currency, symbol: region.symbol,
     regionLabel: pick(region.label, lang), tax: pick(region.tax, lang),
+    recommendation: recommendation(answers, weight, lang),
+    matchTitle: match[0], matchText: match[1],
     placeholder: !!region.placeholder,
     source: 'local',
     note: weight >= 5

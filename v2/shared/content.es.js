@@ -18,25 +18,25 @@ export const C = {
   booking: 'https://calendly.com/wmorapal/30min',
 
   hero: {
-    eyebrow: 'IA aplicada para equipos administrativos',
-    headline: 'Descubre exactamente qué',
-    headlineEm: 'debería automatizar tu equipo.',
-    sub: 'La Auditoría de Automatización con IA: ajustada a tu situación, alrededor de dos semanas. Mapeo el trabajo manual, le pongo cifras de horas y dólares a cada tarea, y te entrego un primer paso claro.',
-    cta: 'Agenda una llamada gratuita de 30 minutos',
+    eyebrow: 'Automatización con IA para operaciones de servicios recurrentes',
+    headline: 'Encuentra el trabajo manual que más',
+    headlineEm: 'le cuesta a tu equipo.',
+    sub: 'En unas dos semanas, la Auditoría de Automatización con IA mapea los flujos de tu operación, cuantifica los cuellos de botella y entrega a operaciones, finanzas y TI un primer paso defendible.',
+    cta: 'Agenda una llamada de encaje de 30 minutos',
     ctaAlt: 'Haz la autoevaluación de 5 minutos',
   },
 
   trust: [
-    ['15 años', 'dirigiendo operaciones reales'],
-    ['Con seguro E&O', 'responsabilidad profesional'],
-    ['Acceso de solo lectura', 'nada cambia durante la auditoría'],
-    ['EE. UU. y Canadá', 'remoto, estudio en Ontario'],
+    ['Dirigido por un operador', '15 años mejorando operaciones reales'],
+    ['Aprobado por personas', 'las acciones importantes siguen bajo tu control'],
+    ['Auditoría de solo lectura', 'nada cambia mientras diagnosticamos'],
+    ['Sistemas existentes', 'trabajamos con las herramientas que tu equipo ya usa'],
   ],
 
   stats: [
-    ['hasta 80%', 'más rápida la revisión de especificaciones'],
-    ['~$150K', 'ahorrados al año'],
-    ['95%', 'de coincidencia con el cierre manual'],
+    ['20 a 300 personas', 'el perfil principal de cliente'],
+    ['Unas dos semanas', 'del recorrido a la hoja de ruta'],
+    ['Una secuencia clara', 'qué hacer primero, segundo y tercero'],
   ],
 
   problem: {
@@ -49,7 +49,7 @@ export const C = {
       'Copiando los mismos datos de clientes o proveedores en tres herramientas distintas',
       'Conciliando cifras línea por línea porque los sistemas no se comunican entre sí',
     ],
-    close: 'No es un problema de presupuesto. Es un problema de claridad.',
+    close: 'Antes de comprar otra herramienta, encuentra el trabajo que realmente vale la pena cambiar.',
   },
 
   steps: [
@@ -76,30 +76,27 @@ export const C = {
     ],
   },
 
-  // The figures are identical to the English file on purpose: they are the
-  // same results, not a separate set.
+  // Solo patrones de capacidad. Los proyectos con nombre y sus resultados se
+  // agregan después de revisar la evidencia y el permiso de publicación.
   work: [
-    { t: 'Revisión de especificaciones asistida por IA', big: '~$150K / año', lab: 'ahorrados, con la revisión técnica hasta 80% más rápida',
-      d: 'Un sistema asistido por IA para revisar especificaciones técnicas en una empresa norteamericana de materiales de construcción. El flujo de contratos se reconstruyó a su alrededor.' },
-    { t: 'Documentos entran, registros ERP salen', big: '0', lab: 'registros asentados sin que una persona los apruebe',
-      d: 'Para una firma norteamericana de servicios administrativos, un flujo que lee PDFs de facturas de proveedores y deja registros en borrador listos para aprobar dentro de su propio ERP, con la fuente adjunta.' },
-    { t: 'Control de calidad de nivel financiero', big: '6 cifras', lab: 'de fugas recurrentes detectadas, con ~95% de coincidencia con el cierre manual',
-      d: 'Un evaluador de confianza VERDE/AMARILLO/ROJO sobre registros contables generados por máquina, más un motor de contratos contra reales.' },
-    { t: 'Logística y despacho', big: '~15%', lab: 'menos costos de distribución, en 20 plantas y más de 280 camiones',
-      d: 'Programación y ruteo para un productor de concreto premezclado que mueve más de un millón de metros cúbicos al año.' },
-    { t: 'Analítica ejecutiva', big: '~95%', lab: 'de precisión en los KPIs que la dirección realmente usaba',
-      d: 'Un tablero ejecutivo de ventas sobre SQL, Qlik Sense y AWS Redshift, que reemplazó reportes manuales lentos.' },
-    { t: 'Rediseño del proceso de ventas', big: '~$1M', lab: 'en ventas adicionales, con 20% más proyectos revisados',
-      d: 'Un proceso de ventas y control de calidad reconstruido con pasos claros y herramientas digitales en una empresa de materiales de construcción.' },
+    { t: 'Finanzas y operaciones', big: '01', lab: 'Conciliar, preparar, aprobar, reportar',
+      d: 'Conecta el trabajo operativo y financiero recurrente entre los sistemas que tu equipo ya usa, dirigiendo las excepciones a la persona correcta.' },
+    { t: 'Decisiones basadas en documentos', big: '02', lab: 'Leer, estructurar, calcular, revisar',
+      d: 'Convierte PDFs, planos, especificaciones, correos y hojas de cálculo en resultados estructurados, con la fuente y la incertidumbre claramente visibles.' },
+    { t: 'Conversaciones con clientes', big: '03', lab: 'Responder, calificar, cotizar, transferir',
+      d: 'Da respuestas más rápidas sin perder el control humano sobre los precios, las decisiones sensibles y la transferencia al equipo.' },
+    { t: 'Centros internos de operaciones', big: '04', lab: 'Un lugar de trabajo según cada rol',
+      d: 'Reúne flujos, documentos, tableros, aprobaciones e historial de auditoría en una interfaz construida alrededor del trabajo real del equipo.' },
   ],
 
   fit: {
     forTitle: 'Esto es para ti si',
     notTitle: 'Probablemente no es para ti si',
     forYou: [
-      'Diriges una firma administrativa o de servicios profesionales (servicios de RR. HH. y back-office, servicios de TI y MSP, consultoría o contabilidad), de aproximadamente 20 a 300 personas.',
-      'Tu equipo tiene trabajo manual real y repetitivo, y operas con relaciones recurrentes con clientes.',
-      'Quieres un plan honesto de alguien que ya lo ha construido, no el discurso de venta de un proveedor.',
+      'Diriges una empresa de servicios recurrentes de 20 a 300 personas con trabajo administrativo complejo.',
+      'Tu equipo mueve documentos, datos de clientes, información de facturación o aprobaciones entre varios sistemas.',
+      'Un flujo repetitivo consume tiempo importante o crea riesgo financiero, de servicio o de cumplimiento.',
+      'Necesitas un plan práctico y no tienes un equipo interno dedicado a automatización.',
     ],
     notForYou: [
       'Eres una empresa de software puro con operaciones limpias y de autoservicio.',
@@ -108,7 +105,7 @@ export const C = {
     ],
   },
 
-  noLines: ['Sin gran proyecto de software.', 'Sin plataforma a la que comprometerte.', 'Sin contador de consultoría abierto.'],
+  noLines: ['Sin gran compromiso de software.', 'Sin obligarte a usar una plataforma nueva.', 'Sin contador de consultoría abierto.'],
 
   founder: {
     name: 'Wil Mora',
@@ -123,8 +120,9 @@ export const C = {
     ['¿La IA hará cambios por su cuenta?', 'No. Todo funciona como borrador, no como asiento automático: el sistema prepara el trabajo, y una persona revisa y aprueba. Es algo deliberado, y es la salvaguarda.'],
     ['¿Y si no encuentras mucho?', 'Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa acordada para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.'],
     ['¿Tenemos que construir contigo?', 'No. La hoja de ruta es tuya. Si construyes con KHIPUAI dentro de los 30 días, la tarifa de la auditoría se acredita a ese trabajo.'],
+    ['¿Qué pasa después de la auditoría?', 'Si vale la pena construir la primera oportunidad, KHIPUAI puede definir una implementación de alcance fijo y continuar con mejora administrada. Tú decides después de ver la hoja de ruta.'],
   ],
 
-  disclaimer: 'Los resultados descritos son el resultado de una sola empresa y no son un resultado típico ni garantizado.',
-  legal: 'KHIPUAI es un estudio de Ontario, Canadá, que atiende a clientes en Estados Unidos y Canadá, y cuenta con seguro de responsabilidad profesional (E&O).',
+  disclaimer: 'Las historias específicas de clientes y sus resultados medidos se agregarán después de revisar la evidencia y el permiso de publicación.',
+  legal: 'KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.',
 };

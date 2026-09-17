@@ -106,6 +106,9 @@ body{background:
 .live [data-rv]:nth-child(6){transition-delay:.32s;}
 
 /* ---- fixed chrome ---- */
+.skip{position:fixed;left:16px;top:-80px;z-index:100;background:var(--ink);color:var(--bg);
+  padding:10px 14px;border-radius:4px;font-family:'Manrope',sans-serif;font-weight:800;}
+.skip:focus{top:12px;}
 .hd{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;gap:18px;
   padding:22px 5vw;mix-blend-mode:difference;}
 .hd .bd{display:flex;align-items:center;gap:10px;font-family:'Manrope',sans-serif;
@@ -118,6 +121,8 @@ body{background:
 .hd nav button:hover,.hd nav button[aria-current="true"]{opacity:1;}
 .hd nav button[aria-current="true"]:after{content:"";position:absolute;left:0;right:0;bottom:-5px;
   height:1.5px;background:currentColor;}
+.nav-toggle{display:none;background:none;border:0;color:inherit;font:inherit;font-size:.75rem;
+  letter-spacing:.15em;text-transform:uppercase;font-weight:800;cursor:pointer;}
 
 /* Wayfinding without deck furniture.
    A numbered corner ("05 / 08") and a row of segments along the bottom are
@@ -273,7 +278,7 @@ body{background:
 .cols{display:grid;gap:0;background:none;border:0;margin-top:34px;}
 .c3{grid-template-columns:repeat(3,minmax(0,1fr));}
 /* Three across, two rows - not six. Six columns on one screen is 216px each,
-   narrower than the "~$150K / yr" figure that has to sit in one. */
+   narrow enough to keep the label and explanation readable together. */
 .c6{grid-template-columns:repeat(3,minmax(0,1fr));}
 .cols > div{background:none;padding:0 34px;}
 .cols > div:first-child,
@@ -415,7 +420,13 @@ body{background:
     -webkit-mask-image:none;mask-image:none;}
   .mq,.hint,.rail{display:none;}
   .foot{position:static;padding:0;}
+  .nav-toggle{display:block;}
   .hd nav{display:none;}
+  .hd nav.open{display:flex;position:absolute;left:5vw;right:5vw;top:66px;max-height:70vh;
+    overflow:auto;flex-direction:column;gap:0;padding:10px 18px;background:var(--bg);
+    color:var(--ink);border:1px solid var(--line);mix-blend-mode:normal;box-shadow:0 18px 50px rgba(0,0,0,.16);}
+  .hd nav.open button{width:100%;text-align:left;padding:12px 0;border-bottom:1px solid var(--line);opacity:.75;}
+  .hd nav.open button:last-child{border-bottom:0;}
   .runlist{flex-direction:column;}
   .runlist li{border-right:0;border-bottom:1px solid var(--line);padding:14px 0;}
   .runlist li:last-child{border-bottom:0;}
@@ -557,11 +568,18 @@ html[lang="es"] .lede{max-width:40ch;}
 .q-back:hover{color:var(--ink);}
 
 .q-out{border-top:1px solid var(--line);padding-top:26px;}
+.q-plan{display:flex;align-items:baseline;gap:10px;margin-bottom:20px;}
+.q-plan span,.q-match span{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);font-weight:800;}
+.q-plan strong{font-family:'Manrope',sans-serif;font-size:1rem;}
 .q-num{font-family:'Manrope',sans-serif;font-size:min(5.4vw,8vh,4.4rem);letter-spacing:-.045em;
   line-height:.95;color:var(--copper);}
 .q-num small{font-size:.24em;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
   display:block;margin-top:12px;font-weight:800;}
 .q-note{color:var(--muted);font-size:.92rem;margin:16px 0 0;max-width:52ch;}
+.q-match{border-top:1px solid var(--line);margin-top:22px;padding-top:18px;max-width:760px;}
+.q-match strong{display:block;font-family:'Manrope',sans-serif;font-size:1rem;margin-top:7px;}
+.q-match p{color:var(--muted);font-size:.88rem;line-height:1.55;margin:6px 0 0;max-width:68ch;}
 .q-flag{color:var(--dim);font-size:.78rem;margin:10px 0 0;max-width:60ch;}
 .q-again{margin-top:22px;}
 @media (max-width:900px){

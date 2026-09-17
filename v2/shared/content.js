@@ -9,25 +9,25 @@ export const C = {
   booking: 'https://calendly.com/wmorapal/30min',
 
   hero: {
-    eyebrow: 'Applied AI for back-office teams',
-    headline: 'Know exactly what',
-    headlineEm: 'your team should automate.',
-    sub: 'The AI Automation Audit: priced to your situation, about two weeks. I map the manual work, put the hours and dollars on each item, and hand you a clear first move.',
-    cta: 'Book a free 30-minute call',
+    eyebrow: 'AI automation for recurring-service operations',
+    headline: 'Find the manual work costing',
+    headlineEm: 'your team the most.',
+    sub: 'In about two weeks, the AI Automation Audit maps the workflows behind your operation, quantifies the bottlenecks, and gives your operations, finance, and IT leaders a defensible first move.',
+    cta: 'Book a 30-minute fit call',
     ctaAlt: 'Take the 5-minute self-assessment',
   },
 
   trust: [
-    ['15 years', 'running real operations'],
-    ['E&O insured', 'professional liability'],
-    ['Read-only access', 'nothing changes during the audit'],
-    ['US & Canada', 'remote, Ontario studio'],
+    ['Operator-led', '15 years improving real operations'],
+    ['Human-approved', 'important actions stay under your control'],
+    ['Read-only audit', 'nothing changes while we diagnose'],
+    ['Existing systems', 'work with the tools your team already uses'],
   ],
 
   stats: [
-    ['up to 80%', 'faster spec review'],
-    ['~$150K', 'saved per year'],
-    ['95%', 'match to manual close'],
+    ['20 to 300 people', 'the primary client profile'],
+    ['About two weeks', 'from walkthrough to roadmap'],
+    ['One clear sequence', 'what to do first, second, and third'],
   ],
 
   problem: {
@@ -40,7 +40,7 @@ export const C = {
       'Copying the same customer data into three different tools',
       'Reconciling numbers line by line because the systems do not talk',
     ],
-    close: 'It is not a budget problem. It is a clarity problem.',
+    close: 'Before you buy another tool, find the work that is actually worth changing.',
   },
 
   steps: [
@@ -67,20 +67,17 @@ export const C = {
     ],
   },
 
-  // Every figure below already appears in the live site's own copy.
+  // Capability patterns only. Named projects and measured outcomes are added
+  // after evidence and publication permission have been reviewed.
   work: [
-    { t: 'AI-assisted spec review', big: '~$150K / yr', lab: 'saved, with technical spec review up to 80% faster',
-      d: 'An AI-assisted system to review technical specifications at a North American building-materials enterprise. The contract workflow was rebuilt around it.' },
-    { t: 'Documents in, ERP records out', big: '0', lab: 'records posted without a person approving them',
-      d: 'For a North American back-office services firm, a pipeline that reads vendor-invoice PDFs and posts ready-to-approve draft records into their own ERP, source attached.' },
-    { t: 'Finance-grade QA', big: '6 figures', lab: 'of recurring leakage surfaced, at ~95% match to the manual close',
-      d: 'A GREEN/YELLOW/RED confidence grader over machine-generated accounting records, plus a contracts-vs-actuals engine.' },
-    { t: 'Logistics and dispatch', big: '~15%', lab: 'lower distribution costs, across 20 plants and 280-plus trucks',
-      d: 'Scheduling and routing for a ready-mix concrete producer moving over a million cubic meters a year.' },
-    { t: 'Executive analytics', big: '~95%', lab: 'data accuracy on the KPIs leadership actually used',
-      d: 'An executive sales dashboard on SQL, Qlik Sense and AWS Redshift, replacing slow manual reporting.' },
-    { t: 'Sales-process redesign', big: '~$1M', lab: 'in added sales, with 20% more projects reviewed',
-      d: 'A sales and quality-control process rebuilt with clear steps and digital tools at a building-materials company.' },
+    { t: 'Finance and operations', big: '01', lab: 'Reconcile, draft, approve, report',
+      d: 'Connect recurring operational and financial work across the systems your team already uses, with exceptions routed to the right person.' },
+    { t: 'Document-heavy decisions', big: '02', lab: 'Read, structure, calculate, review',
+      d: 'Turn PDFs, drawings, specifications, emails, and spreadsheets into structured outputs with source evidence and uncertainty clearly flagged.' },
+    { t: 'Customer conversations', big: '03', lab: 'Answer, qualify, quote, hand off',
+      d: 'Give customers faster answers while keeping pricing rules, sensitive decisions, and human takeover under your control.' },
+    { t: 'Internal operations hubs', big: '04', lab: 'One role-aware place to work',
+      d: 'Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.' },
   ],
 
   /* Brought over from the live landing page, where it qualified leads. The
@@ -90,9 +87,10 @@ export const C = {
     forTitle: 'This is built for you if',
     notTitle: 'It is probably not for you if',
     forYou: [
-      'You run a back-office or professional-services firm (HR and back-office services, MSP and IT services, consulting, or accounting), roughly 20 to 300 people.',
-      'Your team has real, repetitive manual work and you run on recurring client relationships.',
-      'You want an honest plan from someone who has built this, not a vendor pitch.',
+      'You lead a 20 to 300-person recurring-service business with complex back-office work.',
+      'Your team moves documents, customer data, billing information, or approvals between several systems.',
+      'A repetitive workflow consumes meaningful staff time or creates financial, service, or compliance risk.',
+      'You need a practical plan and do not have a dedicated internal automation team.',
     ],
     notForYou: [
       'You are a pure-product software company with clean self-serve operations.',
@@ -103,7 +101,7 @@ export const C = {
 
   /* The objection handling from the live "offer" section. Folded into
      Deliverables rather than given a screen of its own. */
-  noLines: ['No big software project.', 'No platform to commit to.', 'No open-ended consulting meter.'],
+  noLines: ['No big software commitment.', 'No new platform forced on you.', 'No open-ended consulting meter.'],
 
   founder: {
     name: 'Wil Mora',
@@ -118,8 +116,9 @@ export const C = {
     ['Will AI make changes on its own?', 'No. Everything is built draft-first: the machine prepares the work, a person approves every entry that matters.'],
     ['What if you do not find much?', 'The audit says so. That honesty is the product. If there is not much worth automating, you have spent a small, agreed fee to find out instead of a year.'],
     ['Do we have to build with you?', 'No. The roadmap is yours to act on with anyone, including your own team.'],
+    ['What happens after the audit?', 'If the first opportunity is worth building, KHIPUAI can scope a fixed implementation and stay on for managed improvement. You decide after seeing the roadmap.'],
   ],
 
-  disclaimer: 'Results described are one firm’s outcome and are not a typical or guaranteed result.',
-  legal: 'KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada, and carries professional-liability (E&O) insurance.',
+  disclaimer: 'Specific client stories and measured outcomes will be added after evidence and publication permission are reviewed.',
+  legal: 'KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.',
 };

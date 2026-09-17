@@ -57,6 +57,8 @@
 </head>
 <body>
 
+<a class="skip" href="#p-intro">Skip to content</a>
+
 <header class="hd">
   <a class="bd" href="../kinetic/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
   <nav id="nav" aria-label="Sections"></nav>
@@ -64,7 +66,7 @@
 
 <div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
 
-<div class="track" id="track"></div>
+<main class="track" id="track"></main>
 
 <div class="rail"><i id="railfill"></i></div>
 
@@ -73,8 +75,7 @@
 </div>
 
 <script type="module">
-import { buildKinetic, esc } from '../shared/kinetic.js';
-import { C } from '../shared/content.js';
+import { buildKinetic } from '../shared/kinetic.js';
 
 /* Wil's four bio paragraphs are split across four sections rather than stacked
    into one. At roughly 125 words a screen they do not fit together, and the
@@ -109,17 +110,17 @@ const P = [
     <h2 class="say" data-rv style="max-width:19ch;">The same problem, <em>from the inside.</em></h2>
     <p class="sub" data-rv>At a North American building-materials enterprise I led the projects that introduced AI tooling into core workflows.</p>
     <div class="cols c3" data-rv>
-      <div><b>80%</b><span class="cap">faster on a core process</span><p>An AI-assisted review system that saved around $150K a year.</p></div>
-      <div><b>SQL</b><span class="cap">Qlik and AWS Redshift</span><p>Executive dashboards built on the company's own data stack.</p></div>
-      <div><b>~$1M</b><span class="cap">added in revenue</span><p>A redesigned sales process, rebuilt around clear steps.</p></div>
+      <div><b>01</b><span class="cap">AI-assisted review</span><p>Introduced structured AI review into a technical workflow where accuracy and traceability mattered.</p></div>
+      <div><b>02</b><span class="cap">Executive analytics</span><p>Built decision tools on the company's own SQL, Qlik, and AWS data stack.</p></div>
+      <div><b>03</b><span class="cap">Process redesign</span><p>Rebuilt operational and commercial work around clear steps, ownership, and measurable decisions.</p></div>
     </div>
-    <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
+    <p class="fine" data-rv>Founder experience from a prior operating role, not a KHIPUAI client case study.</p>` },
 
   { id:'today', n:'Today', at:'at-low', html:`
     <div class="kick" data-rv>Today</div>
-    <h2 class="say" data-rv style="max-width:20ch;">Production automation, <em>not pilots.</em></h2>
-    <p class="sub" data-rv>The flagship build runs daily at a North American back-office services firm: a pipeline that reads documents and posts ready-to-approve draft records into the firm's own ERP, with a confidence grader that ran a monthly close at about 95% match to manual work.</p>
-    <p class="fine" data-rv>One firm's result, not a promise, but it is real, in production, and used by non-technical staff.</p>` },
+    <h2 class="say" data-rv style="max-width:20ch;">Built for operating teams, <em>not demos.</em></h2>
+    <p class="sub" data-rv>KHIPUAI builds working systems that connect documents, business rules, dashboards, and approvals inside the tools a team already relies on.</p>
+    <p class="fine" data-rv>Specific client stories and measured outcomes will be published after evidence and permission are reviewed.</p>` },
 
   { id:'team', n:'Team', at:'at-low', html:`
     <div class="face" data-rv>

@@ -8,7 +8,7 @@
      here: it was written for this business and is what the Spanish side
      already ranks on. -->
 <title>KHIPUAI | La Auditoría de Automatización con IA</title>
-<meta name="description" content="Descubre exactamente qué debería automatizar tu equipo administrativo, cuánto vale y por dónde empezar. Nivel financiero, aprobado por personas e integrado en los sistemas que ya usas.">
+<meta name="description" content="Encuentra el trabajo manual que más le cuesta a tu equipo. KHIPUAI mapea flujos administrativos complejos, cuantifica los cuellos de botella y entrega un primer paso defendible.">
 
 <!-- STAYS UNTIL THE SWITCH.
      This page lives at /v2/kinetic/ while it is being built. If the branch were
@@ -28,12 +28,12 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="KHIPUAI | La Auditoría de Automatización con IA">
-<meta property="og:description" content="Descubre exactamente qué debería automatizar tu equipo, cuánto vale y por dónde empezar. Ajustado a tu situación.">
+<meta property="og:description" content="Encuentra el trabajo manual que más le cuesta a tu equipo y recibe un primer paso defendible con una estimación.">
 <meta property="og:url" content="https://khipuai.co/es/">
 <meta property="og:image" content="https://khipuai.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="KHIPUAI | La Auditoría de Automatización con IA">
-<meta name="twitter:description" content="Descubre exactamente qué debería automatizar tu equipo y por dónde empezar.">
+<meta name="twitter:description" content="Encuentra el trabajo manual que más le cuesta a tu equipo y recibe un primer paso defendible.">
 <meta name="twitter:image" content="https://khipuai.co/og-image.png">
 
 <script type="application/ld+json">
@@ -44,7 +44,7 @@
   "url": "https://khipuai.co",
   "logo": "https://khipuai.co/og-image.png",
   "image": "https://khipuai.co/og-image.png",
-  "description": "AI automation studio for back-office and professional-services teams. Lead offer: the fixed-fee AI Automation Audit, a two-week diagnostic that maps manual work and delivers a prioritized automation roadmap with hours and dollars on each item.",
+  "description": "Estudio de automatización con IA para empresas de servicios recurrentes. La auditoría mapea el trabajo manual, cuantifica los cuellos de botella y entrega una hoja de ruta priorizada.",
   "founder": {"@type": "Person", "name": "Wil Mora", "url": "https://khipuai.co/about/"},
   "email": "wil@khipuai.co",
   "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
@@ -52,9 +52,9 @@
   "makesOffer": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "2500",
-    "highPrice": "5000",
-    "offerCount": 2,
+    "lowPrice": "2250",
+    "highPrice": "7300",
+    "offerCount": 1,
     "itemOffered": {"@type": "Service", "name": "The AI Automation Audit", "url": "https://khipuai.co/audit/"}
   }
 }
@@ -66,8 +66,10 @@
 </head>
 <body>
 
+<a class="skip" href="#p-start">Ir al contenido</a>
+
 <header class="hd">
-  <div class="bd"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</div>
+  <a class="bd" href="../es/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
   <nav id="nav" aria-label="Secciones"></nav>
   <div class="lang">
     <a href="../kinetic/" hreflang="en" lang="en" aria-label="View this page in English">EN</a>
@@ -78,7 +80,7 @@
 
 <div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
 
-<div class="track" id="track"></div>
+<main class="track" id="track"></main>
 
 <div class="rail"><i id="railfill"></i></div>
 
@@ -109,11 +111,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <!-- Points at the English assessment: there is no Spanish version, and
-             the live Spanish site links to the English one for the same reason.
-             Relative while v2 sits under /v2/; see v2/README.md. -->
-        <a class="btn line" href="../self-assessment/">${esc(C.hero.ctaAlt)}</a>
-        <button class="btn line" data-to="fee">Ver el precio</button>
+        <button class="btn line" data-to="fee">Encuentra tu punto de partida</button>
       </div>
     </div>` },
 
@@ -136,16 +134,16 @@ const P = [
     <p class="fine" data-rv>${esc(C.legal)}</p>` },
 
   { id:'work', n:'Proyectos', at:'at-low', html:`
-    <div class="kick" data-rv>Proyectos</div>
-    <h2 class="say" data-rv style="max-width:22ch;">Proyectos, y <em>lo que movieron.</em></h2>
+    <div class="kick" data-rv>Formas en que ayudamos</div>
+    <h2 class="say" data-rv style="max-width:22ch;">Construido alrededor del trabajo <em>que tu equipo ya hace.</em></h2>
     <div class="cols c6" data-rv>${C.work.map(w=>`<div><b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
     <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
 
   { id:'fee', n:'Presupuesto', at:'at-top', html:`
-    <div class="kick" data-rv>Cuánto cuesta</div>
-    <h2 class="say" data-rv style="max-width:20ch;">Ajustado a <em>tu situación.</em></h2>
+    <div class="kick" data-rv>Encaje y estimación del proyecto</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Encuentra tu <em>mejor punto de partida.</em></h2>
     <div class="quote-wrap" id="quote" data-rv></div>` },
 
 { id:'fit', n:'Encaje', at:'at-mid', html:`
@@ -190,11 +188,14 @@ const P = [
     </div>
     <div class="row" data-rv style="margin-top:26px;">
       <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+      <a class="btn line" href="../about/">Cómo trabaja KHIPUAI</a>
+      <a class="btn line" href="../self-assessment/">Haz la autoevaluación</a>
     </div>` },
 ];
 
 const QT = {
   step: 'Pregunta', back: 'Atrás', working: 'Calculando…',
+  recommended: 'Primer paso recomendado', relevant: 'Patrón de proyecto relevante',
   estimate: 'Es una estimación, no un presupuesto en firme. Una persona lo confirma en la llamada.',
   placeholder: 'Los precios fuera de Estados Unidos y Canadá aún no son definitivos.',
   book: 'Agenda una llamada gratuita de 30 minutos', restart: 'Empezar de nuevo',

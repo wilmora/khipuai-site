@@ -9,7 +9,7 @@
      site already ranks on. Changing the copy is a separate decision from
      changing the design. -->
 <title>KHIPUAI | The AI Automation Audit</title>
-<meta name="description" content="Find out exactly what your back-office team should automate, what it is worth, and what to do first. Finance-grade, human-approved, built into the systems you already run.">
+<meta name="description" content="Find the manual work costing your team the most. KHIPUAI maps complex back-office workflows, quantifies the bottlenecks, and gives you a defensible first move.">
 
 <!-- STAYS UNTIL THE SWITCH.
      This page lives at /v2/kinetic/ while it is being built. If the branch were
@@ -29,12 +29,12 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="KHIPUAI | The AI Automation Audit">
-<meta property="og:description" content="Find out exactly what your team should automate, what it is worth, and what to do first. Priced to your situation. Finance-grade, human-approved.">
+<meta property="og:description" content="Find the manual work costing your team the most, then get a costed and defensible first move.">
 <meta property="og:url" content="https://khipuai.co">
 <meta property="og:image" content="https://khipuai.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="KHIPUAI | The AI Automation Audit">
-<meta name="twitter:description" content="Find out exactly what your team should automate, what it is worth, and what to do first.">
+<meta name="twitter:description" content="Find the manual work costing your team the most and get a defensible first move.">
 <meta name="twitter:image" content="https://khipuai.co/og-image.png">
 
 <script type="application/ld+json">
@@ -45,7 +45,7 @@
   "url": "https://khipuai.co",
   "logo": "https://khipuai.co/og-image.png",
   "image": "https://khipuai.co/og-image.png",
-  "description": "AI automation studio for back-office and professional-services teams. Lead offer: the fixed-fee AI Automation Audit, a two-week diagnostic that maps manual work and delivers a prioritized automation roadmap with hours and dollars on each item.",
+  "description": "AI automation studio for recurring-service businesses. The AI Automation Audit maps manual work, quantifies operational bottlenecks, and delivers a prioritized automation roadmap.",
   "founder": {"@type": "Person", "name": "Wil Mora", "url": "https://khipuai.co/about/"},
   "email": "wil@khipuai.co",
   "areaServed": [{"@type": "Country", "name": "United States"}, {"@type": "Country", "name": "Canada"}],
@@ -53,9 +53,9 @@
   "makesOffer": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "2500",
-    "highPrice": "5000",
-    "offerCount": 2,
+    "lowPrice": "2250",
+    "highPrice": "7300",
+    "offerCount": 1,
     "itemOffered": {"@type": "Service", "name": "The AI Automation Audit", "url": "https://khipuai.co/audit/"}
   }
 }
@@ -67,8 +67,10 @@
 </head>
 <body>
 
+<a class="skip" href="#p-start">Skip to content</a>
+
 <header class="hd">
-  <div class="bd"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</div>
+  <a class="bd" href="../kinetic/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
   <nav id="nav" aria-label="Sections"></nav>
   <div class="lang">
     <span class="on" lang="en" aria-current="true">EN</span>
@@ -79,7 +81,7 @@
 
 <div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
 
-<div class="track" id="track"></div>
+<main class="track" id="track"></main>
 
 <div class="rail"><i id="railfill"></i></div>
 
@@ -105,11 +107,7 @@ const P = [
       <p class="lede" data-rv>${esc(C.hero.sub)}</p>
       <div class="row" data-rv>
         <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-        <!-- Relative, not /self-assessment/, so it works while v2 sits under
-             /v2/. At the switch this becomes an absolute path - listed in
-             v2/README.md with the rest of the switch-day tasks. -->
-        <a class="btn line" href="../self-assessment/">${esc(C.hero.ctaAlt)}</a>
-        <button class="btn line" data-to="fee">Get a price</button>
+        <button class="btn line" data-to="fee">Find your starting point</button>
       </div>
     </div>` },
 
@@ -132,16 +130,16 @@ const P = [
     <p class="fine" data-rv>${esc(C.legal)}</p>` },
 
   { id:'work', n:'Work', at:'at-low', html:`
-    <div class="kick" data-rv>Selected work</div>
-    <h2 class="say" data-rv style="max-width:22ch;">Projects, and <em>what they moved.</em></h2>
+    <div class="kick" data-rv>Ways we help</div>
+    <h2 class="say" data-rv style="max-width:22ch;">Built around the work <em>your team already does.</em></h2>
     <div class="cols c6" data-rv>${C.work.map(w=>`<div><b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
     <span class="swipe-note">Swipe the row &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
 
   { id:'fee', n:'Quote', at:'at-top', html:`
-    <div class="kick" data-rv>What it costs</div>
-    <h2 class="say" data-rv style="max-width:18ch;">Priced to <em>your situation.</em></h2>
+    <div class="kick" data-rv>Project fit and estimate</div>
+    <h2 class="say" data-rv style="max-width:18ch;">Find your <em>best starting point.</em></h2>
     <div class="quote-wrap" id="quote" data-rv></div>` },
 
 { id:'fit', n:'Fit', at:'at-mid', html:`
@@ -186,11 +184,14 @@ const P = [
     </div>
     <div class="row" data-rv style="margin-top:26px;">
       <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+      <a class="btn line" href="../about/">How KHIPUAI works</a>
+      <a class="btn line" href="../self-assessment/">Take the self-assessment</a>
     </div>` },
 ];
 
 const QT = {
   step: 'Question', back: 'Back', working: 'Working it out…',
+  recommended: 'Recommended first step', relevant: 'Relevant build pattern',
   estimate: 'This is an estimate, not a binding quote. A person confirms it on the call.',
   placeholder: 'Pricing outside the United States and Canada is not final yet.',
   book: 'Book a free 30-minute call', restart: 'Start again',

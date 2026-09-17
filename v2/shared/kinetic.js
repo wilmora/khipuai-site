@@ -101,6 +101,21 @@ export function buildKinetic(P, content = EN){
 
   const nav = document.getElementById('nav');
   nav.innerHTML = P.map(p => `<button data-to="${p.id}">${esc(p.n)}</button>`).join('');
+  const navToggle = document.createElement('button');
+  navToggle.type = 'button';
+  navToggle.className = 'nav-toggle';
+  navToggle.textContent = document.documentElement.lang === 'es' ? 'Menú' : 'Menu';
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-controls', 'nav');
+  nav.before(navToggle);
+  navToggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  nav.addEventListener('click', () => {
+    nav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  });
   const railfill = document.getElementById('railfill');
   const hint = document.getElementById('hint');
 
@@ -569,10 +584,12 @@ export function mountQuote(root, { QUESTIONS, askQuote, fmt, t }){
     askQuote(answers).then(r => {
       root.innerHTML =
         `<div class="q-out">
+           <div class="q-plan"><span>${esc(t.recommended)}</span><strong>${esc(r.recommendation)}</strong></div>
            <div class="q-num">${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
              <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>
            </div>
            <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
+           <div class="q-match"><span>${esc(t.relevant)}</span><strong>${esc(r.matchTitle)}</strong><p>${esc(r.matchText)}</p></div>
            ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
            <div class="row q-again">
              <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>

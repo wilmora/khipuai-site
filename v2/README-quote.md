@@ -1,7 +1,8 @@
 # The quote estimator
 
-Four multiple-choice questions, then a price range for that situation and
-region. Replaces the old fixed two-tier pricing.
+Five multiple-choice questions, then a recommended starting engagement, a
+relevant build pattern, and an audit price range for that situation and region.
+Replaces the old fixed two-tier pricing.
 
 ## Why not a chat bot
 
@@ -29,7 +30,8 @@ compose a paragraph.
 ## What this needs to go live
 
 The Pricing section is gone. In its place, `/v2/kinetic/#fee` (and `/v2/es/#fee`)
-asks four questions and returns a price range for that situation and region.
+asks five questions and returns a recommended starting point plus a price range
+for that situation and region.
 
 ## What works today
 
