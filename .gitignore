@@ -1,0 +1,8 @@
+# Local-only tools. GitHub Pages publishes every file at the repository root,
+# so anything committed here is public at a guessable URL on khipuai.co.
+# These are working tools, not part of the site, and must stay out of git.
+mobile-preview.html
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
