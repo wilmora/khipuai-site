@@ -90,7 +90,7 @@
 </div>
 
 <script type="module">
-import { buildKinetic, esc, checkContentParity, heroProofIcon, mountQuote, setQuoteBooking } from '../shared/kinetic.js';
+import { buildKinetic, esc, checkContentParity, featureIcon, heroProofIcon, mountQuote, setQuoteBooking } from '../shared/kinetic.js';
 import { C } from '../shared/content.es.js';
 import { getQuestions, askQuote, fmt } from '../shared/quote.js';
 
@@ -128,26 +128,26 @@ const P = [
 
   { id:'problem', n:'Problema', navOrder:2, at:'at-low', html:`
     <h2 class="say" data-rv style="max-width:17ch;">Decenas de horas al mes. <em>Nadie las ha contado.</em></h2>
-    <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li><i>0${i+1}</i><span>${esc(t)}</span></li>`).join('')}</ul>
+    <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li>${featureIcon('problem',i)}<span>${esc(t)}</span></li>`).join('')}</ul>
     <p class="sub" data-rv>${esc(C.problem.close)}</p>` },
 
   { id:'get', n:'Resultados', navOrder:4, at:'at-top', html:`
     <div class="kick" data-rv>Qué recibes</div>
     <h2 class="say" data-rv style="max-width:20ch;">Un plan corto y concreto <em>sobre el que puedes actuar.</em></h2>
-    <div class="cols c6" data-rv>${C.deliverables.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <div class="cols c6 visual-cols" data-rv>${C.deliverables.map(([t,d],i)=>`<div>${featureIcon('deliverable',i)}<h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
     <div class="nolines" data-rv>${C.noLines.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
     <span class="swipe-note">Desliza la fila &rarr;</span>` },
 
   { id:'process', n:'Enfoque', navOrder:3, at:'at-mid', html:`
     <h2 class="say" data-rv style="max-width:16ch;">Tres pasos. <em>Alrededor de dos semanas.</em></h2>
-    <div class="cols c3" data-rv>${C.steps.map(([t,d],i)=>`<div><b>0${i+1}</b><h3 style="margin-top:12px;">${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <div class="cols c3 process-cols" data-rv>${C.steps.map(([t,d],i)=>`<div><div class="process-mark">${featureIcon('process',i)}<b>0${i+1}</b></div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
     <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.legal)}</p>` },
 
   { id:'work', n:'Proyectos', navOrder:5, at:'at-low', html:`
     <div class="kick" data-rv>Formas en que ayudamos</div>
     <h2 class="say" data-rv style="max-width:22ch;">Construido alrededor del trabajo <em>que tu equipo ya hace.</em></h2>
-    <div class="cols c6" data-rv>${C.work.map(w=>`<div><b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
+    <div class="cols c6 visual-cols work-cols" data-rv>${C.work.map((w,i)=>`<div>${featureIcon('work',i)}<b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
     <span class="swipe-note">Desliza la fila &rarr;</span>
     <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },

@@ -84,10 +84,18 @@ body{background:
    scrollWidth grew as you scrolled (12,028px to 12,894px) and the end of the
    site kept receding as you approached it. */
 .cordwrap{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none;}
-.cord{position:absolute;left:0;top:0;height:100%;will-change:transform;}
+.cordwrap::before{content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(5,12,18,.68) 0%,rgba(5,12,18,.42) 48%,rgba(5,12,18,.7) 100%),
+    linear-gradient(90deg,rgba(5,12,18,.48),transparent 42%,rgba(5,12,18,.28)),
+    url('./assets/mountain-range-backdrop-v1.webp') center bottom/cover no-repeat;
+  opacity:.86;filter:saturate(.9) contrast(1.02);}
+.cord{position:absolute;left:0;top:0;height:100%;will-change:transform;z-index:1;}
 
 .panel{position:relative;z-index:1;height:100vh;width:100vw;
   padding:128px 5vw 104px;display:flex;flex-direction:column;flex:0 0 auto;}
+.panel:not(.p-start) .say,.panel:not(.p-start) .kick,
+.panel:not(.p-start) .sub{position:relative;text-shadow:0 2px 18px rgba(0,0,0,.55);}
 /* Content sits at a different height in each section. A deck centres
    everything; this is what stops the eye settling into a rhythm. */
 .panel.at-top{justify-content:flex-start;padding-top:158px;}
@@ -302,6 +310,9 @@ body.at-start .hint{opacity:0;}
 .cols.c6 > div:not(:nth-child(3n+1)){border-left:1px solid var(--line);}
 /* Second row of a six-up gets a rule above it and room to breathe. */
 .cols.c6 > div:nth-child(n+4){border-top:1px solid var(--line);padding-top:30px;margin-top:30px;}
+.work-cols{grid-template-columns:repeat(4,minmax(0,1fr));}
+.work-cols > div:nth-child(4){border-top:0;border-left:1px solid var(--line);
+  padding-top:0;padding-left:34px;margin-top:0;}
 
 /* The figure carries the section now that no box does. */
 .cols b{display:block;font-family:'Manrope',sans-serif;font-size:min(3.4vw,5vh,3rem);
@@ -311,6 +322,32 @@ body.at-start .hint{opacity:0;}
 .cols p{color:var(--muted);font-size:.88rem;margin:8px 0 0;max-width:38ch;}
 .cols h3{font-size:1rem;text-transform:none;letter-spacing:-.01em;margin-bottom:6px;}
 
+/* The supplied visual proposal uses a consistent family of copper line icons
+   to make dense operational concepts scannable. These are code-native so they
+   inherit the design tokens, remain sharp, and stay decorative beside text. */
+.feature-icon{width:35px;height:35px;display:flex;align-items:center;justify-content:center;
+  color:var(--hot);filter:drop-shadow(0 0 9px rgba(255,122,61,.22));}
+.feature-icon svg{width:27px;height:27px;display:block;fill:none;stroke:currentColor;
+  stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;}
+.visual-cols .feature-icon{margin-bottom:13px;}
+.visual-cols h3{margin-top:0;}
+.work-cols .feature-icon{display:inline-flex;margin:0 10px 0 0;vertical-align:middle;}
+.work-cols b{display:inline-block;vertical-align:middle;font-size:1.45rem;}
+
+/* Process nodes borrow the proposal's illuminated-knot rhythm while remaining
+   an abstract interface marker rather than pretending to be another khipu. */
+.process-cols{position:relative;}
+.process-cols::before{content:"";position:absolute;left:20px;right:20px;top:24px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--copper) 12%,var(--copper) 88%,transparent);
+  opacity:.44;box-shadow:0 0 9px rgba(255,122,61,.34);}
+.process-mark{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin-bottom:15px;}
+.process-mark .feature-icon{width:47px;height:47px;border:1px solid rgba(227,151,103,.7);
+  border-radius:50%;background:#0A1119;box-shadow:0 0 18px rgba(255,122,61,.2);}
+.process-mark .feature-icon svg{width:24px;height:24px;}
+.process-cols .process-mark b{display:block;font-size:.72rem;letter-spacing:.14em;
+  color:var(--ink);background:#0A1119;padding:4px 6px;}
+.process-cols h3{margin-top:0;}
+
 /* The problem list runs as a wide single row: a different shape again. */
 .runlist{list-style:none;padding:0;margin:28px 0 0;display:flex;gap:0;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
@@ -319,6 +356,8 @@ body.at-start .hint{opacity:0;}
 .runlist li:last-child{border-right:0;}
 .runlist i{font-style:normal;color:var(--hot);font-family:'Manrope',sans-serif;
   font-weight:800;font-size:.76rem;padding-left:20px;}
+.runlist .feature-icon{flex:0 0 31px;width:31px;height:31px;margin-left:14px;}
+.runlist .feature-icon svg{width:24px;height:24px;}
 
 .tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);
   border:1px solid var(--line);max-width:720px;margin-top:30px;}
@@ -411,6 +450,12 @@ body.at-start .hint{opacity:0;}
   .cols h3{margin-bottom:3px;}
   .cols p{font-size:.82rem;}
   .cols span.cap{margin-top:5px;}
+  .visual-cols .feature-icon{width:27px;height:27px;margin-bottom:7px;}
+  .visual-cols .feature-icon svg{width:22px;height:22px;}
+  .work-cols .feature-icon{margin:0 7px 0 0;}
+  .process-mark{margin-bottom:9px;}
+  .process-mark .feature-icon{width:35px;height:35px;}
+  .process-cols::before{top:18px;}
   .face img{width:168px;height:168px;}
   .p-start h1{font-size:clamp(3rem,4.5vw,3.9rem);}
   .hero-proof{bottom:22px;}
@@ -428,7 +473,7 @@ body.at-start .hint{opacity:0;}
 @media (max-width:900px){
   html,body{overflow:auto;height:auto;}
   .track{display:block;height:auto;overflow:visible;scroll-snap-type:none;cursor:auto;
-    background:var(--bg);}
+    background:rgba(10,17,25,.38);}
   .cord{display:none;}
   .panel,.p-start,.p-problem,.p-get,.p-process,.p-work,.p-fee,.p-questions,.p-operator{
     width:100%;height:auto;min-height:0;padding:88px 22px 38px;justify-content:flex-start;}
@@ -468,11 +513,13 @@ body.at-start .hint{opacity:0;}
   .runlist li{border-right:0;border-bottom:1px solid var(--line);padding:14px 0;}
   .runlist li:last-child{border-bottom:0;}
   .runlist i{padding-left:0;}
+  .runlist .feature-icon{margin-left:0;}
   /* Stacked, the six-up grids ran to 1,579px on their own. Swiping them keeps
      the concept's horizontal idea alive on a phone and roughly halves it. */
   .cols.c3,.cols.c6{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;}
   .cols.c3 > div,.cols.c6 > div{flex:0 0 76%;scroll-snap-align:start;}
+  .process-cols::before{display:none;}
   /* The desktop grid puts items 4-6 on a second row, with a rule above them and
      margin to clear it. On a phone these become ONE swipeable row, so those
      rules dropped items 4-6 thirty pixels below their neighbours with a stray

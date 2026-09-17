@@ -26,6 +26,42 @@ export function heroProofIcon(index){
   return icons[index % icons.length];
 }
 
+/* Copper line icons extend the visual language in the supplied design proposal
+ * without turning the proposal's unverified example copy into site content.
+ * Each icon remains decorative because the adjacent heading carries its name. */
+export function featureIcon(group, index){
+  const icons = {
+    problem: [
+      '<path d="M5 4.5h10l4 4V20H5zM15 4.5V9h4M8 13h8M8 16.5h5"/>',
+      '<path d="M7 4v4M17 4v4M4 8h16v11H4zM8 13l2.3 2.3L16 10"/>',
+      '<path d="M4 19h16M6 16l3-4 3 2 5-7M17 7h3v3"/>',
+      '<rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/><path d="M10 7h4a3 3 0 0 1 3 3v4M14 17h-4a3 3 0 0 1-3-3v-4"/>',
+      '<path d="M7 7h10l-2.5-2.5M17 17H7l2.5 2.5M17 7a7 7 0 0 1 1.4 8M7 17a7 7 0 0 1-1.4-8"/>'
+    ],
+    deliverable: [
+      '<circle cx="5" cy="12" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="19" r="2"/><path d="m6.7 10.8 3.6-3.6m3.4 0 3.6 3.6m0 2.4-3.6 4.4m-3.4 0-3.6-4.4"/>',
+      '<path d="M3 20h18M5 16h3v4H5zm6-6h3v10h-3zm6-5h3v15h-3z"/>',
+      '<path d="m13 2-7 11h6l-1 9 7-12h-6z"/>',
+      '<path d="M4 6h11M4 12h8M4 18h5M17 5l3 3-3 3M14 11l3 3-3 3"/>',
+      '<path d="M4 5h16v11H4zM8 20h8M12 16v4M8 9h8M8 12h5"/>',
+      '<path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h7"/>'
+    ],
+    process: [
+      '<path d="M4 5h16v11H9l-5 4zM8 9h8M8 12h5"/>',
+      '<circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="18" r="2"/><path d="M8 7h8M7 9l4 7M17 9l-4 7"/>',
+      '<path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h4"/><path d="m15 15 1.5 1.5L20 13"/>'
+    ],
+    work: [
+      '<path d="M4 20h16M6 16h3v4H6zm5-5h3v9h-3zm5-6h3v15h-3z"/>',
+      '<path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h5"/>',
+      '<path d="M4 5h16v11H9l-5 4zM8 9h8M8 12h5"/>',
+      '<circle cx="5" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="19" r="2"/><path d="M7 12h10M12 7v10"/>'
+    ]
+  };
+  const set = icons[group] || icons.work;
+  return `<span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24">${set[index % set.length]}</svg></span>`;
+}
+
 /* Warns when the Spanish content file has drifted from the English one.
  *
  * The live site's Spanish mirror drifts from its English pages silently,
@@ -190,9 +226,9 @@ function mountKhipuNetwork(root){
   }
   function drawPulse(edge, t, size, alpha, color, response = 0){
     const p = curve(edge,t);
-    ctx.beginPath();ctx.arc(p.x,p.y,size+response*2.3,0,Math.PI*2);
-    ctx.shadowColor = `rgb(${color})`;ctx.shadowBlur = 9+size*3+response*17;
-    ctx.fillStyle = `rgba(${color},${Math.min(1,alpha+response*.35)})`;ctx.fill();
+    ctx.beginPath();ctx.arc(p.x,p.y,size+response*.76,0,Math.PI*2);
+    ctx.shadowColor = `rgb(${color})`;ctx.shadowBlur = 9+size*3+response*5.6;
+    ctx.fillStyle = `rgba(${color},${Math.min(1,alpha+response*.18)})`;ctx.fill();
   }
   function draw(now = 0){
     const time = now / 1000;
@@ -210,9 +246,9 @@ function mountKhipuNetwork(root){
         : kind === 'mountain'
           ? `rgba(255,154,83,${.11+response*.28})`
           : 'rgba(227,151,103,.075)';
-      ctx.lineWidth = kind === 'mountain' ? 1+response*1.5 : kind === 'synapse' ? .8 : 1.05;
+      ctx.lineWidth = kind === 'mountain' ? 1+response*.5 : kind === 'synapse' ? .8 : 1.05;
       ctx.shadowColor = kind === 'mountain' ? '#FF7A3D' : 'transparent';
-      ctx.shadowBlur = kind === 'mountain' ? response*14 : 0;
+      ctx.shadowBlur = kind === 'mountain' ? response*4.7 : 0;
       ctx.stroke();
     });
     ctx.setLineDash([]);
@@ -225,7 +261,7 @@ function mountKhipuNetwork(root){
         drawPulse(edge,t,signal.size,signal.alpha,signal.color,edgePointerResponse(edge));
       });
       pointerBursts.forEach(burst =>
-        drawPulse(edges[burst.edge],burst.t,2.1,.88,'255,210,172',pointerLive));
+        drawPulse(edges[burst.edge],burst.t,.7,.72,'255,210,172',pointerLive));
     }
 
     nodes.forEach((n, i) => {
@@ -234,11 +270,11 @@ function mountKhipuNetwork(root){
       const dist = mountain ? Math.abs(n[0]-pointerX) : Math.hypot(n[0]-pointerX,n[1]-pointerY);
       const response = pointerLive * Math.max(0,1-dist*(mountain?8.5:7));
       const breathe = reduced ? 0 : (Math.sin(time * 1.45 + i * 1.73) + 1) * .5;
-      const active = Math.max(
-        response,
+      const ambient = Math.max(
         breathe * (mountain ? .24 : .18),
         now < burstUntil && i === focusNode ? 1 : 0
       );
+      const active = Math.max(ambient,response/3);
       const anchor = i < 10;
       const baseSize = mountain ? 1.25 : anchor ? 1.15 : 1.7;
       ctx.beginPath();ctx.arc(p.x,p.y,baseSize+active*1.65,0,Math.PI*2);
@@ -250,8 +286,8 @@ function mountKhipuNetwork(root){
           : .34 + active * .5;
       ctx.fillStyle = `rgba(255,164,101,${nodeAlpha})`;ctx.fill();
       if (response > .12 || (now<burstUntil&&i===focusNode)) {
-        ctx.beginPath();ctx.arc(p.x,p.y,7 + active * 12,0,Math.PI*2);
-        ctx.shadowBlur = 0;ctx.strokeStyle = `rgba(255,210,172,${.2 + active*.28})`;
+        ctx.beginPath();ctx.arc(p.x,p.y,2.3 + active * 4,0,Math.PI*2);
+        ctx.shadowBlur = 0;ctx.strokeStyle = `rgba(255,210,172,${.14 + active*.2})`;
         ctx.lineWidth = 1;ctx.stroke();
       }
     });
