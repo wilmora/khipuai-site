@@ -173,7 +173,14 @@ body{background:
    it can stay uncropped and no longer pushes the headline off screen. */
 .knot{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;
   overflow:hidden;isolation:isolate;
-  will-change:transform;z-index:0;}
+  will-change:transform;z-index:0;
+  /* The right-hand feather that stops the opening photograph ending in a hard
+     vertical line as you travel to the second section. Width is written by the
+     scroll handler as --hero-feather and is 0px at rest, so this is no mask at
+     all while you are on the opening and the section looks exactly as
+     designed. See heroFade in kinetic.js for why the edge needs removing. */
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - var(--hero-feather,0px)),transparent 100%);
+  mask-image:linear-gradient(90deg,#000 calc(100% - var(--hero-feather,0px)),transparent 100%);}
 .knot img{position:relative;z-index:0;display:block;width:100%;height:100%;
   object-fit:cover;object-position:center;opacity:.94;}
 /* A restrained text-side veil keeps the headline dominant without hiding the

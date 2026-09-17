@@ -688,6 +688,14 @@ export function buildKinetic(P, content = EN){
     fillTicker();
     progress();
     paint();
+    /* The parallax and the hero fade are only written by the horizontal scroll
+       handler, which returns early on the stacked phone layout. Without this,
+       narrowing the window after scrolling left the opening photograph frozen
+       at whatever offset and opacity it happened to hold - on the phone that
+       showed as a hero that was shifted sideways and partly transparent, with
+       nothing able to put it back. */
+    const knot = document.getElementById('knot');
+    if (knot && !horizontal()) { knot.style.transform = ''; knot.style.opacity = ''; }
     // The light loop stops itself when there is no cord to light, which is the
     // case on the stacked phone layout. Restart it here so that widening the
     // window back past 900px brings the cord to life again.
@@ -832,12 +840,53 @@ export function buildKinetic(P, content = EN){
 
   /* ---- parallax: layers travel at their own rates ---- */
   const knotEl = document.getElementById('knot');
+
+  /* ---- the opening section's photograph has to leave, not be cut off -------
+     Every other section boundary is seamless because every section shares one
+     ground: the fixed mountain backdrop behind the track, with the cord drawn
+     across it. Nothing of section two ends where section three begins.
+     The opening is the exception. It carries a full-bleed photograph of its
+     own, absolutely positioned inside a 100vw panel, so the picture STOPS at a
+     hard vertical edge - and because the photograph drifts at 0.1x while the
+     panel travels at 1x, that edge does not leave with the panel. Mid-travel
+     it sits in the middle of the screen, and with the second section fully in
+     view there is still a 144px strip of hero photograph down the left.
+     A bright, detailed picture ending in a straight line against a plain dark
+     backdrop is exactly the seam that was reported.
+     Widening the photograph past the panel was the obvious fix and is the
+     wrong one: the signal canvas inside it is sized to the same box and maps
+     its node positions onto a cover-fitted 1672x941, so changing that box
+     moves every node off the knots it is drawn to follow.
+     Fading it instead removes the edge rather than moving it. The picture
+     belongs to the opening section; once you are reading the second one it has
+     no business being on screen, and at rest on the opening nothing changes at
+     all. The curve is deliberately front-loaded (the square of the linear
+     fade) so most of the opacity is gone in the first third of the travel,
+     while the edge is still off at the side of the screen and nobody is
+     looking at it. A linear fade leaves it at half strength dead centre, which
+     is the worst place for it.
+
+     Fading alone got most of the way but not all of it: at a quarter opacity
+     the edge is faint, and still an edge. So the same travel value also grows
+     a soft right-hand feather, written as a pixel width the stylesheet turns
+     into a mask. At rest it is 0px wide, which is no mask at all and leaves
+     the opening exactly as designed; by mid-travel it is half the panel, and
+     the picture has no edge left to notice. */
+  const heroFade = x => {
+    const w = track.clientWidth || 1;
+    const t = Math.min(Math.max(x / w, 0), 1);
+    if (knotEl) knotEl.style.setProperty('--hero-feather', Math.round(t * w * 0.5) + 'px');
+    return String((1 - t) * (1 - t));
+  };
   track.addEventListener('scroll', () => {
     if (!horizontal()) return;
     const x = track.scrollLeft;
     progress();
     cord.style.transform = `translateX(${-x * 0.58}px)`;  // fixed layer: drifts at 0.58x
-    if (knotEl) knotEl.style.transform = `translateX(${x * 0.1}px)`;
+    if (knotEl) {
+      knotEl.style.transform = `translateX(${x * 0.1}px)`;
+      knotEl.style.opacity = heroFade(x);
+    }
     // Scrolling this loop did not cause - a touch swipe, the scrollbar, a
     // find-in-page jump - has to be adopted, or the next gesture would spring
     // back to a stale target.
