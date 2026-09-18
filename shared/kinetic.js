@@ -303,6 +303,41 @@ function mountKhipuNetwork(root){
   function start(){
     if (!reduced && visible && !document.hidden && !raf) raf = requestAnimationFrame(tick);
   }
+  /* ---- the three left-hand labels ----------------------------------------
+     People, Processes and Data name things in the artwork, so they have to sit
+     against the artwork. They were placed at fixed percentages of the PANEL,
+     which is a different box: the image is object-fit:cover, so it is cropped
+     by a different amount at every window shape and the cords slide under a
+     label that cannot follow them. At 1440x900 that left gaps of 168px, 154px
+     and 306px - and the inconsistency read worse than the distance, because
+     three labels in a column pointing at nothing lined up.
+
+     They are now anchored to coordinates in the same normalised space the
+     network's own nodes use, and placed through the same projection, so each
+     one keeps its distance from the cord it names whatever the window does.
+     The anchors are real nodes from the table above - the leftmost pendant
+     knot at each height - which is why the three step rightward: that is the
+     shape of the cluster, not a mistake.
+
+     Anchored by their RIGHT edge, so the connector line ends at a fixed
+     distance from the cord and a longer translation grows leftward into empty
+     sky. Anchored from the left, Spanish would push the line into the rope. */
+  const LABEL_ANCHORS = [['.node-1',[.65,.23]], ['.node-2',[.69,.43]], ['.node-3',[.72,.53]]];
+  const LABEL_GAP = 10;          // the ::after glow closes the last few pixels
+  const labelLayer = root.querySelector('.hero-node-labels');
+
+  function placeLabels(){
+    if (!labelLayer || getComputedStyle(labelLayer).display === 'none') return;
+    for (const [sel, at] of LABEL_ANCHORS){
+      const el = labelLayer.querySelector(sel);
+      if (!el) continue;
+      const p = project(at);
+      el.style.left  = 'auto';
+      el.style.right = Math.round(w - p.x + LABEL_GAP) + 'px';
+      el.style.top   = Math.round(p.y - el.offsetHeight / 2) + 'px';
+    }
+  }
+
   function resize(){
     const rect = root.getBoundingClientRect();
     w = Math.max(1, rect.width); h = Math.max(1, rect.height);
@@ -310,6 +345,7 @@ function mountKhipuNetwork(root){
     canvas.width = Math.round(w * dpr);canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
     lastFrame = 0;
+    placeLabels();
     if (reduced) draw(0); else start();
   }
   function locatePointer(e, burst = false){
