@@ -321,20 +321,50 @@ function mountKhipuNetwork(root){
 
      Anchored by their RIGHT edge, so the connector line ends at a fixed
      distance from the cord and a longer translation grows leftward into empty
-     sky. Anchored from the left, Spanish would push the line into the rope. */
-  const LABEL_ANCHORS = [['.node-1',[.65,.23]], ['.node-2',[.69,.43]], ['.node-3',[.72,.53]]];
-  const LABEL_GAP = 10;          // the ::after glow closes the last few pixels
+     sky. Anchored from the left, Spanish would push the line into the rope.
+
+     THE THREE ROWS SHARE A HEIGHT WITH THEIR OPPOSITE NUMBER. Each row places
+     the left label and the right one from the same projected y, so People sits
+     on Insights' line, Processes on Automation's, Data on Impact's, and they
+     stay paired at every window shape. The heights are evenly spaced rather
+     than landing on whichever knot happened to be nearest.
+
+     Only the LEFT labels hug a cord. The right ones keep their CSS anchor to
+     the panel edge, because there is no room to do otherwise: the cluster sits
+     right of centre, so at the bottom row the rightmost cord is already at 95%
+     of the image and a label placed beyond it would start off the screen -
+     Spanish "Automatizacion" would be most of the way off. The asymmetry is in
+     the artwork, not in the layout.
+
+     leftCord is the measured left edge of the leftmost cord at each height,
+     read off the source image rather than guessed, so the gap below is a real
+     distance from painted rope. */
+  const LABEL_ROWS = [
+    { y:.23, leftCord:.6352, left:'.node-1', right:'.node-4' },
+    { y:.38, leftCord:.6423, left:'.node-2', right:'.node-5' },
+    { y:.53, leftCord:.6746, left:'.node-3', right:'.node-6' },
+  ];
+
+  /* The connector line is 34px with a glow reaching about 43px past the
+     element's edge. At a 10px gap that glow landed ON the cord and the bottom
+     label clipped a lit one - peak brightness behind the word jumped from 27
+     to 72, which is what made it hard to read. 52px puts the glow just short
+     of the rope: still clearly pointing at it, no longer touching it. */
+  const LABEL_GAP = 52;
   const labelLayer = root.querySelector('.hero-node-labels');
 
   function placeLabels(){
     if (!labelLayer || getComputedStyle(labelLayer).display === 'none') return;
-    for (const [sel, at] of LABEL_ANCHORS){
-      const el = labelLayer.querySelector(sel);
-      if (!el) continue;
-      const p = project(at);
-      el.style.left  = 'auto';
-      el.style.right = Math.round(w - p.x + LABEL_GAP) + 'px';
-      el.style.top   = Math.round(p.y - el.offsetHeight / 2) + 'px';
+    for (const row of LABEL_ROWS){
+      const p = project([row.leftCord, row.y]);
+      const l = labelLayer.querySelector(row.left);
+      if (l){
+        l.style.left  = 'auto';
+        l.style.right = Math.round(w - p.x + LABEL_GAP) + 'px';
+        l.style.top   = Math.round(p.y - l.offsetHeight / 2) + 'px';
+      }
+      const r = labelLayer.querySelector(row.right);
+      if (r) r.style.top = Math.round(p.y - r.offsetHeight / 2) + 'px';
     }
   }
 

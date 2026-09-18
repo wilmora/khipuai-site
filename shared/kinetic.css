@@ -211,7 +211,14 @@ body{background:
 .hero-node-labels .node-4::after,.hero-node-labels .node-5::after,.hero-node-labels .node-6::after{
   transform:scaleX(-1);}
 
-.hero-aside{position:absolute;right:4.8vw;bottom:113px;z-index:4;margin:0;width:150px;
+/* Three statements, one per line. The fixed 150px was narrower than the middle
+   line needs once uppercase and .18em of letter-spacing are counted, so
+   "Modern intelligence." broke across two lines and read as four statements
+   rather than three. Sized to its content instead, growing leftward from the
+   right edge, with each line held on one line. Spanish is the longer set
+   ("Inteligencia moderna.") and sets the width. */
+.hero-aside{position:absolute;right:4.8vw;bottom:113px;z-index:4;margin:0;
+  width:max-content;max-width:38vw;white-space:nowrap;
   font-family:'Manrope',sans-serif;font-size:.64rem;font-weight:800;letter-spacing:.18em;
   line-height:1.85;text-transform:uppercase;color:rgba(244,239,231,.78);}
 .hero-aside span{display:block;}
