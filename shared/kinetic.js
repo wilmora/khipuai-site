@@ -1018,15 +1018,22 @@ export function mountQuote(root, { QUESTIONS, askQuote, fmt, t }){
         : `${fmt(r.low, r.symbol)} &ndash; ${fmt(r.high, r.symbol)}
              <small>${esc(r.currency)} &middot; ${esc(r.regionLabel)}${r.tax ? ' &middot; ' + esc(r.tax) : ''}</small>`;
       root.innerHTML =
+        /* Two groups - the estimate, and what to do with it - so a short screen
+           can set them side by side (the short-screen .q-out rule in kinetic.css). Elsewhere the
+           wrappers are plain blocks and the result reads exactly as before. */
         `<div class="q-out">
-           <div class="q-plan"><span>${esc(t.recommended)}</span><strong>${esc(r.recommendation)}</strong></div>
-           <div class="q-num${r.placeholder ? ' q-num-regional' : ''}">${number}</div>
-           <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
-           <div class="q-match"><span>${esc(t.relevant)}</span><strong>${esc(r.matchTitle)}</strong><p>${esc(r.matchText)}</p></div>
-           ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
-           <div class="row q-again">
-             <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>
-             <button type="button" class="btn line q-restart">${esc(t.restart)}</button>
+           <div class="q-main">
+             <div class="q-plan"><span>${esc(t.recommended)}</span><strong>${esc(r.recommendation)}</strong></div>
+             <div class="q-num${r.placeholder ? ' q-num-regional' : ''}">${number}</div>
+             <p class="q-note">${esc(r.note)} ${esc(t.estimate)}</p>
+           </div>
+           <div class="q-side">
+             <div class="q-match"><span>${esc(t.relevant)}</span><strong>${esc(r.matchTitle)}</strong><p>${esc(r.matchText)}</p></div>
+             ${r.placeholder ? `<p class="q-flag">${esc(t.placeholder)}</p>` : ''}
+             <div class="row q-again">
+               <a class="btn" href="${QUOTE_BOOKING}">${esc(t.book)}</a>
+               <button type="button" class="btn line q-restart">${esc(t.restart)}</button>
+             </div>
            </div>
          </div>`;
       root.querySelector('.q-restart').onclick = () => { step = 0; for (const k in answers) delete answers[k]; render(); };

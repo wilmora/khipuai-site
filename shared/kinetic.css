@@ -65,7 +65,11 @@ body{background:
   #0A1119;}
 
 /* ---- the track is one long canvas, not a stack of cards ---- */
-.track{position:relative;z-index:1;display:flex;height:100vh;overflow-x:auto;overflow-y:hidden;
+/* 100dvh after 100vh throughout: on a tablet browser 100vh is the height with
+   the toolbars hidden, so a screen sized to it ran its bottom edge - the proof
+   strip, the ticker - under the toolbar. dvh is the height actually visible.
+   On a desktop the two are the same number; browsers without dvh keep vh. */
+.track{position:relative;z-index:1;display:flex;height:100vh;height:100dvh;overflow-x:auto;overflow-y:hidden;
   /* CSS snapping and smooth scroll-behavior are both off on purpose. The settle
      is done in JS so it can be directional - a deliberate gesture advances
      rather than being pulled back to where it started - and CSS snap would
@@ -92,7 +96,7 @@ body{background:
   opacity:.86;filter:saturate(.9) contrast(1.02);}
 .cord{position:absolute;left:0;top:0;height:100%;will-change:transform;z-index:1;}
 
-.panel{position:relative;z-index:1;height:100vh;width:100vw;
+.panel{position:relative;z-index:1;height:100vh;height:100dvh;width:100vw;
   padding:128px 5vw 104px;display:flex;flex-direction:column;flex:0 0 auto;}
 .panel:not(.p-start) .say,.panel:not(.p-start) .kick,
 .panel:not(.p-start) .sub{position:relative;text-shadow:0 2px 18px rgba(0,0,0,.55);}
@@ -233,7 +237,13 @@ body{background:
 .hero-proof svg{width:29px;height:29px;flex:0 0 auto;fill:none;stroke:var(--hot);
   stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
 .hero-proof p{margin:0;min-width:0;font-family:'Manrope',sans-serif;text-transform:uppercase;}
-.hero-proof strong,.hero-proof span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* Allowed to wrap, not cut off. These were held to one line with an ellipsis,
+   and every Spanish desktop width lost words to it - "APROBADO POR PERSONAS"
+   and "ACCIONES, NO CAJAS NEGRAS" were cut short even at 1440px, and English
+   lost "ACTIONS, NOT BLACK BOXES" at 1280px. A promise with its last word
+   missing is worse than a strip one line taller. Where a line fits, as English
+   does at 1440, it looks exactly as before. */
+.hero-proof strong,.hero-proof span{display:block;overflow-wrap:break-word;}
 .hero-proof strong{font-size:.66rem;letter-spacing:.1em;color:var(--ink);}
 .hero-proof span{margin-top:4px;font-size:.53rem;letter-spacing:.08em;color:var(--muted);}
 
@@ -434,7 +444,7 @@ body.at-start .hint{opacity:0;}
    So the frame tightens instead of the content colliding with the chrome. The
    bottom padding stays at 100px on purpose: the ticker band occupies 44px to
    91px up from the bottom, so anything less would push content into it. */
-@media (min-width:901px) and (max-height:860px){
+@media (min-width:901px) and (max-height:860px) and (min-height:501px){
   .panel{padding:96px 5vw 100px;}
   .panel.at-top{padding-top:112px;}
   .panel.at-low{padding-bottom:100px;}
@@ -455,7 +465,7 @@ body.at-start .hint{opacity:0;}
    and Work's two card rows need 554, so its kicker clipped under the header
    again. The card padding and the gaps give up the difference; the bottom stays
    at 100px for the ticker band, as above. */
-@media (min-width:901px) and (max-height:740px){
+@media (min-width:901px) and (max-height:740px) and (min-height:501px){
   .panel{padding:76px 5vw 100px;}
   .panel.at-top{padding-top:88px;}
   .panel.at-low{padding-bottom:100px;}
@@ -484,7 +494,22 @@ body.at-start .hint{opacity:0;}
   .hero-proof{width:65vw;}
 }
 
-@media (max-width:900px){
+/* ---- the stacked layout: phones, and tablets held upright ----------------
+   Every rule block that switches to the stacked layout uses this same query.
+   It used to be width alone (900px), which sent a 1024x1366 iPad Pro held
+   upright to the sideways layout: the opening was one 1366px-tall screen with
+   the headline in the top third, 700px of empty sky, and the proof strip at the
+   very bottom. A portrait tablet is read like a phone, so up to 1100px wide it
+   now gets the stacked layout too. Held sideways it keeps the desktop layout,
+   which it has the room for.
+   The third condition is a phone held sideways. A 932x430 phone is wider than
+   900px, so it got the sideways layout with 430px of height - less than the
+   header and the bottom padding need between them before any content. Nothing
+   under 500px tall can hold a one-screen section, so it stacks. The two
+   short-laptop tiers above stop at 501px for the same reason.
+   A normal desktop window is landscape and taller than 500px, so none of this
+   reaches it. */
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   html,body{overflow:auto;height:auto;}
   .track{display:block;height:auto;overflow:visible;scroll-snap-type:none;cursor:auto;
     background:rgba(10,17,25,.38);}
@@ -669,7 +694,7 @@ body.at-start .hint{opacity:0;}
 .lang .on{opacity:1;position:relative;}
 .lang .on:after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1.5px;background:currentColor;}
 .lang .sep{opacity:.3;font-weight:400;}
-@media (max-width:900px){
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   /* The section nav is hidden on a phone, but the language switch is not a
      section - it is the one piece of navigation on the page, so it stays. */
   .lang{margin-left:auto;padding-left:0;border-left:0;}
@@ -684,7 +709,7 @@ body.at-start .hint{opacity:0;}
 html[lang="es"] .p-start h1{font-size:clamp(3.3rem,4.35vw,4.5rem);}
 html[lang="es"] .p-start .inner{max-width:48vw;}
 html[lang="es"] .lede{max-width:40ch;}
-@media (max-width:900px){
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   html[lang="es"] .p-start h1{font-size:clamp(2.1rem,9vw,3.1rem);}
   html[lang="es"] .p-start .inner{max-width:none;}
 }
@@ -727,10 +752,31 @@ html[lang="es"] .lede{max-width:40ch;}
 .q-match p{color:var(--muted);font-size:.88rem;line-height:1.55;margin:6px 0 0;max-width:68ch;}
 .q-flag{color:var(--dim);font-size:.78rem;margin:10px 0 0;max-width:60ch;}
 .q-again{margin-top:22px;}
-@media (max-width:900px){
+/* The result on a short screen. Stacked in one column it is about 470px tall
+   (560px for the regional answer, with its extra note), and with the kicker and
+   headline above it that is more than a 1366x768 or 1280x720 laptop has. The
+   section is one fixed screen, so what did not fit was simply cut off - in
+   Spanish the "Book a call" button ended up to 167px below the bottom of the
+   screen, with no way to scroll to it. Side by side, the estimate on the left
+   and what to do about it on the right, it is roughly half the height. Tall
+   screens (1920x1080 and up) keep the single column, which fits there. */
+@media (min-width:901px) and (max-height:900px) and (min-height:501px){
+  .q-out{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;
+    align-items:start;}
+  .q-side .q-match{margin-top:0;border-top:0;padding-top:0;}
+  .q-note{margin-bottom:0;}
+}
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   .q-opts{flex-direction:column;}
   .q-opts button{border-right:0;width:100%;padding:14px 0;}
   .q-ask{font-size:1.15rem;}
+  /* The result is sized off the viewport width for the desktop, which on a
+     390px phone made the price 21px, the regional answer 15px, and the
+     currency and region line under them about 5px. Given phone sizes. */
+  .q-plan{flex-wrap:wrap;gap:4px 10px;}
+  .q-num{font-size:clamp(2rem,9vw,2.6rem);}
+  .q-num-regional{font-size:clamp(1.45rem,6.4vw,2rem);}
+  .q-num small,.q-num-regional small{font-size:.75rem;}
 }
 
 /* ---- fit: for you / not for you ----
@@ -757,7 +803,7 @@ html[lang="es"] .lede{max-width:40ch;}
   border-top:1px solid var(--line);}
 .nolines span{font-family:'Manrope',sans-serif;font-weight:800;font-size:.8rem;
   letter-spacing:.02em;color:var(--dim);}
-@media (max-width:900px){
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   .fit{grid-template-columns:minmax(0,1fr);}
   .fit > div{padding:0;}
   .fit > div:last-child{border-left:0;border-top:1px solid var(--line);margin-top:24px;padding-top:24px;}
@@ -850,7 +896,7 @@ html[lang="es"] .lede{max-width:40ch;}
 /* Same two tiers the rest of the shell uses. A 1366x768 laptop is the common
    case that fails: the questions fit, but the PDF form ran 40px into the
    ticker before these. */
-@media (min-width:901px) and (max-height:860px){
+@media (min-width:901px) and (max-height:860px) and (min-height:501px){
   .ask{margin-top:18px;}
   .ask button{padding:13px 4px;font-size:.93rem;}
   .lead{gap:11px;margin-top:18px;}
@@ -858,14 +904,14 @@ html[lang="es"] .lede{max-width:40ch;}
   .bands li{padding:12px 0 12px 22px;}
   .bands li:before{top:15px;}
 }
-@media (min-width:901px) and (max-height:740px){
+@media (min-width:901px) and (max-height:740px) and (min-height:501px){
   .ask button{padding:10px 4px;font-size:.89rem;}
   .ask .pts{height:26px;}
   .lead{gap:8px;margin-top:14px;}
   .lead input{padding:7px 0;font-size:.9rem;}
   .bands li{padding:10px 0 10px 22px;font-size:.93rem;}
 }
-@media (max-width:900px){
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
   .ask{max-width:none;}
   .ask button{gap:14px;padding:15px 0;font-size:.95rem;}
   .tally{display:none;}          /* the score screen carries it on the phone */
@@ -874,6 +920,77 @@ html[lang="es"] .lede{max-width:40ch;}
      sized off the viewport, so on a narrow phone it fell to 10.7px. Given a
      floor, because the denominator is what makes the score mean anything. */
   .bignum small{font-size:max(.24em,.82rem);}
+}
+
+/* ---- tablets in the stacked layout: grids, not swipe rows ----------------
+   On a phone the six-up and three-up rows become swipeable cards, one card at
+   a time, because one column of six ran to 1,579px. On a tablet that same
+   treatment showed one 660px-wide card with a sliver of the next - a phone
+   layout blown up, with room for two or three columns going unused. From
+   601px they are grids again: three steps across, the six deliverables and
+   the four work areas two across, the team and the fit lists side by side.
+   The .track prefix is only there to outrank the phone rules above. */
+@media (min-width:601px) and (max-width:900px),
+       (min-width:601px) and (max-width:1100px) and (orientation:portrait),
+       (min-width:601px) and (max-height:500px){
+  .track .cols.c3,.track .cols.c6{display:grid;overflow:visible;scroll-snap-type:none;}
+  .track .cols.c3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .track .cols.c6{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .track .panel .cols.c3 > div,.track .panel .cols.c6 > div{flex:none;padding:0 0 0 22px;
+    margin-top:0;border-top:0;border-left:1px solid var(--line);}
+  .track .panel .cols.c3 > div:nth-child(3n+1),
+  .track .panel .cols.c6 > div:nth-child(2n+1){padding-left:0;border-left:0;}
+  .track .panel .cols.c6 > div:nth-child(2n){padding-right:0;}
+  .track .panel .cols.c3 > div:nth-child(n+4),
+  .track .panel .cols.c6 > div:nth-child(n+3){border-top:1px solid var(--line);
+    margin-top:26px;padding-top:26px;}
+  .track .panel .cols.c3 > div:not(:nth-child(3n)){padding-right:22px;}
+  .track .panel .cols.c6 > div:nth-child(2n+1){padding-right:22px;}
+  .swipe-note{display:none;}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .fit{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .fit > div{padding:0 0 0 28px;}
+  .fit > div:first-child{padding:0 28px 0 0;}
+  .fit > div:last-child{border-top:0;border-left:1px solid var(--line);margin-top:0;padding-top:0;}
+}
+
+/* A phone held sideways: the stacked opening puts the photograph first, and at
+   16:9 across an 888px-wide column it is 500px tall - taller than the whole
+   430px screen, so the first thing seen was a picture with no headline and no
+   button. Here the headline and its buttons come first and the photograph
+   follows. Portrait phones keep the photograph on top, where it is 220px. */
+@media (max-height:500px){
+  .p-start .inner{order:-1;}
+}
+
+/* ---- phones and tablets: a 12px floor for the small labels --------------
+   The kickers, captions, role labels and quote step counter are set between
+   .68rem and .72rem - 10.9px to 11.5px. Uppercase with wide tracking helps, but
+   on a phone held at arm's length they were the smallest text on the page and
+   the first things to become a smear. A tablet held sideways gets the desktop
+   layout, and with it the same labels plus the opening's proof strip, whose
+   second line was 8.5px, so touch screens get the floor too. A desktop with a
+   mouse keeps its sizes. */
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px), (pointer:coarse){
+  .kick,.cols span.cap,.member .cap,.swipe-note,.q-step,.q-plan span,.q-match span,
+  .process-cols .process-mark b,.fit h3,.hero-proof span,.lead label,
+  .lang,.hd nav,.hint,.tally{font-size:.75rem;}
+  .hero-proof strong{font-size:.78rem;}      /* the phone size, set above */
+}
+
+/* ---- touch screens: 44px targets everywhere, including the sideways layout
+   The phone layout already had these. A tablet held sideways gets the
+   desktop layout, and with it desktop-sized targets: the section links in the
+   header were 30px wide, the wordmark 30px tall, and the FAQ rows and the
+   quote's Back button about 25px. (pointer:coarse) is a touch screen as the
+   main input, so a desktop with a mouse is untouched. */
+@media (pointer:coarse){
+  .hd nav button{min-width:44px;}
+  .hd .bd{min-height:44px;}
+  .lang a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;}
+  .qa summary{min-height:44px;align-items:center;}
+  .q-back{display:inline-flex;align-items:center;min-height:44px;padding:0;margin-top:6px;}
+  .bignum small{font-size:max(.24em,.82rem);}   /* the phone floor, set above */
 }
 
 /* Printing a sideways site gives you screen one and nothing else. The PDF is

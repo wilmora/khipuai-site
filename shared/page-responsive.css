@@ -1,0 +1,84 @@
+/* =========================================================================
+   Responsive fixes for the older, vertically scrolling pages: /work/, /audit/,
+   /blog/ and its three posts, the Spanish /es/about/, /es/audit/, /es/work/,
+   /thank-you.html and /privacy.html.
+
+   Those pages each carry their own inline stylesheet, copied page to page, so
+   a fix written into one of them is missing from the others. This file is
+   linked AFTER the inline styles on every one of them, so one edit reaches all
+   eleven. It only adds phone, tablet and touch behaviour; nothing here applies
+   to a desktop with a mouse, which stays exactly as it was.
+   ========================================================================= */
+
+/* ---- the header menu collapses at 900px, not 560px ----------------------
+   Between 561px and 900px the inline styles kept the full row of links, which
+   fits in English but not in Spanish: at 640px "La Auditoria" broke onto two
+   lines, the wordmark ran into "Inicio", and "Agenda una llamada" was cut off
+   by the right edge of the screen. 900px is also where the Kinetic pages switch
+   to their phone layout, so the whole site now changes over at the same width. */
+@media (max-width:900px){
+  .hamburger{display:flex;margin-left:6px;width:44px;height:44px;padding:10px;}
+  .navcta{margin-left:auto;}
+  .navlinks{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+    background:#fff;border-bottom:1px solid var(--line);box-shadow:0 10px 24px rgba(18,38,58,.12);
+    padding:6px 24px 14px;display:none;max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px);
+    overflow-y:auto;}
+  .navtoggle:checked ~ .navlinks{display:flex;}
+  .navlinks a{width:100%;padding:13px 2px;border-top:1px solid var(--line);}
+  .navtoggle:checked ~ .hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .navtoggle:checked ~ .hamburger span:nth-child(2){opacity:0;}
+  .navtoggle:checked ~ .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* The menu is a checkbox and a <label>. It was display:none and aria-hidden,
+     which left the label as the only control - and a label cannot take focus,
+     so on a phone-width window the menu could not be opened from a keyboard at
+     all. The checkbox is now kept in the tab order, visually hidden, and the
+     focus ring is drawn on the three-line icon that stands for it. */
+  .navtoggle{display:block;position:absolute;width:1px;height:1px;margin:0;opacity:0;
+    pointer-events:none;}
+  .navtoggle:focus-visible ~ .hamburger{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
+}
+
+/* ---- touch targets ------------------------------------------------------
+   AGENTS.md asks for 44x44 where practical. On these pages the header links,
+   the wordmark, the footer links, the FAQ rows and the stand-alone text links
+   were all between 22px and 30px tall.
+
+   The header and stand-alone links get an invisible hit area rather than a
+   bigger box, so nothing moves on screen: a transparent ::after, centred on the
+   link and 46px each way (44px plus a pixel of margin on each side). Footer links and FAQ rows sit close to their
+   neighbours, where overlapping hit areas would make taps ambiguous, so those
+   get real height instead. Only for touch screens and phone widths. */
+@media (max-width:900px), (pointer:coarse){
+  .logo,.navlinks > a:not(.btn),.cta-row a.link,.readmore,.eyebrow a,
+  .hero a.link,.final a.link,body > .wrap > p > a:only-child,footer > a{position:relative;}
+  .logo::after,.navlinks > a:not(.btn)::after,.cta-row a.link::after,.readmore::after,.eyebrow a::after,
+  .hero a.link::after,.final a.link::after,body > .wrap > p > a:only-child::after,footer > a::after{
+    content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:calc(100% + 8px);min-width:46px;height:46px;}
+  details{padding:8px 0;}
+  details summary{min-height:44px;align-items:center;padding:6px 0;}
+  footer .wrap > div:first-child a{display:inline-flex;align-items:center;justify-content:center;
+    min-width:44px;min-height:44px;}
+
+  /* 11.5px uppercase tags, lifted to a 12px floor. */
+  .tag{font-size:.75rem;}
+}
+/* In the open phone menu each link is already a full-width 48px row. */
+@media (max-width:900px){
+  .navlinks > a:not(.btn)::after{display:none;}
+}
+
+/* ---- the work page's diagrams -------------------------------------------
+   Each diagram is a 440-unit-wide SVG drawn with 8px to 11.5px labels, sized
+   for the desktop column. Scaled down to a 390px phone it rendered at 304px,
+   which put its smallest labels at about 5.5px - legible to nobody. Below
+   560px the diagram keeps a readable width and scrolls sideways inside its own
+   card; the page itself does not move. The caption stays pinned in view. */
+@media (max-width:560px){
+  .viz{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:14px;}
+  .viz svg{min-width:500px;}
+  .vizcap{position:sticky;left:0;max-width:calc(100vw - 80px);}
+  .viz::-webkit-scrollbar{height:5px;}
+  .viz::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;}
+}
