@@ -328,15 +328,17 @@ body.at-start .hint{opacity:0;}
 .c6{grid-template-columns:repeat(3,minmax(0,1fr));}
 .cols > div{background:none;padding:0 34px;}
 .cols > div:first-child,
-.cols.c6 > div:nth-child(3n+1),
+.cols.c6:not(.work-cols) > div:nth-child(3n+1),
 .cols.c3 > div:nth-child(3n+1){padding-left:0;}
 .cols.c3 > div:not(:nth-child(3n+1)),
 .cols.c6 > div:not(:nth-child(3n+1)){border-left:1px solid var(--line);}
 /* Second row of a six-up gets a rule above it and room to breathe. */
-.cols.c6 > div:nth-child(n+4){border-top:1px solid var(--line);padding-top:30px;margin-top:30px;}
+.cols.c6:not(.work-cols) > div:nth-child(n+4){border-top:1px solid var(--line);padding-top:30px;margin-top:30px;}
+/* Work is one row of four, so its fourth card is not a second row: the two
+   rules above skip it, and it takes the same padding as cards two and three
+   at every height tier. Overriding them here lost on specificity instead. */
 .work-cols{grid-template-columns:repeat(4,minmax(0,1fr));}
-.work-cols > div:nth-child(4){border-top:0;border-left:1px solid var(--line);
-  padding-top:0;padding-left:34px;margin-top:0;}
+.work-cols > div:nth-child(4){border-left:1px solid var(--line);}
 
 /* The figure carries the section now that no box does. */
 .cols b{display:block;font-family:'Manrope',sans-serif;font-size:min(3.4vw,5vh,3rem);
