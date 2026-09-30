@@ -33,7 +33,9 @@
 
 <link rel="stylesheet" href="../shared/assets/fonts.css">
 <link rel="stylesheet" href="../shared/kinetic.css">
+<link rel="stylesheet" href="/shared/meta-pixel.css">
 <link rel="icon" href="../shared/assets/mark.svg">
+<script defer src="/shared/meta-pixel.js"></script>
 <style>
 /* v2: every question gets an explicit Yes / No, so "not tapped" never has to mean "no". */
 .ask li.q{display:flex;gap:16px;align-items:center;padding:14px 4px;}
@@ -231,6 +233,7 @@ const leaksEl   = document.getElementById('leaks');
 const rescta    = document.getElementById('rescta');
 const bookbtn   = document.getElementById('bookbtn');
 const scorenote = document.getElementById('scorenote');
+const scorePanel = document.getElementById('p-score');
 const PARTNAME  = Object.fromEntries(PARTS.map(p => [p.id, LEAK[p.id][0]]));
 
 const answerOf = row => row.querySelector('.yes').getAttribute('aria-pressed') === 'true' ? 'yes'
@@ -257,9 +260,11 @@ function render(){
   tallynum.textContent = score;
   scorenum.textContent = score;
 
-  if (!done.length){
-    resband.textContent = 'Answer the questions and your result appears here.';
-    leaksEl.hidden = true; rescta.hidden = true; scorenote.textContent = '';
+  if (done.length < rows.length){
+    resband.textContent = 'Answer all 15 questions to see your result.';
+    leaksEl.hidden = true;
+    rescta.hidden = true;
+    scorenote.textContent = `${done.length} of ${rows.length} answered. Your answers stay in this browser; opening booking shares your score and top areas with Calendly.`;
     return;
   }
   const band = BANDS.find(b => score <= b.max);
@@ -280,10 +285,12 @@ function render(){
   leaksEl.hidden = false;
   rescta.hidden = false;
   bookbtn.href = bookingUrl(score, band.name, top);
+  const scoreBounds = scorePanel.getBoundingClientRect();
+  if (scoreBounds.top < innerHeight * 0.75 && scoreBounds.bottom > innerHeight * 0.25) {
+    window.KHIPUAIMeta?.scoreViewed();
+  }
 
-  scorenote.textContent = done.length === rows.length
-    ? `All ${rows.length} answered. Your answers stay in this browser.`
-    : `${done.length} of ${rows.length} answered so far. Your answers stay in this browser.`;
+  scorenote.textContent = `All ${rows.length} answered. Your answers stay in this browser; opening booking shares your score and top areas with Calendly.`;
 }
 
 rows.forEach(r => r.querySelectorAll('.yn button').forEach(btn => btn.addEventListener('click', () => {
@@ -293,6 +300,16 @@ rows.forEach(r => r.querySelectorAll('.yn button').forEach(btn => btn.addEventLi
   render();
 })));
 render();
+
+if (scorePanel) {
+  const scoreObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    if (!rows.every(row => answerOf(row))) return;
+    window.KHIPUAIMeta?.scoreViewed();
+    scoreObserver.disconnect();
+  }, { threshold: 0.25 });
+  scoreObserver.observe(scorePanel);
+}
 
 </script>
 </body>
