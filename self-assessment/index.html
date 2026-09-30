@@ -34,6 +34,30 @@
 <link rel="stylesheet" href="../shared/assets/fonts.css">
 <link rel="stylesheet" href="../shared/kinetic.css">
 <link rel="icon" href="../shared/assets/mark.svg">
+<style>
+/* v2: every question gets an explicit Yes / No, so "not tapped" never has to mean "no". */
+.ask li.q{display:flex;gap:16px;align-items:center;padding:14px 4px;}
+.ask li.q .txt{flex:1;color:var(--muted);font-size:.97rem;line-height:1.5;transition:color .18s;}
+.ask li.q.done .txt{color:var(--ink);}
+.yn{display:flex;gap:8px;flex:0 0 auto;}
+.yn button{min-width:58px;padding:9px 12px;border:1px solid var(--line);background:none;color:var(--muted);
+  font-family:'Manrope',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:all .18s;}
+.yn button:hover{color:var(--ink);border-color:var(--muted);}
+.yn button.yes[aria-pressed="true"]{background:var(--hot);border-color:var(--hot);color:#0A1119;}
+.yn button.no[aria-pressed="true"]{background:var(--line);border-color:var(--muted);color:var(--ink);}
+@media (max-width:640px){ .ask li.q{flex-direction:column;align-items:stretch;gap:10px;} .yn button{flex:1;} }
+/* v2 result: score, the one band you landed in, your top leaks, then the call. */
+.res-band{margin-top:14px;max-width:62ch;color:var(--ink);line-height:1.5;}
+.res-band b{font-family:'Manrope',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--hot);}
+.leaks{list-style:none;padding:0;margin:18px 0 0;max-width:70ch;border-top:1px solid var(--line);}
+.leaks li{padding:12px 0 12px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--muted);line-height:1.45;font-size:.95rem;}
+.leaks li:before{content:"";position:absolute;left:0;top:18px;width:8px;height:8px;background:var(--hot);}
+.leaks li b{color:var(--ink);}
+.res-cta{margin-top:22px;}
+.res-cta .alt{margin-top:12px;font-size:.85rem;color:var(--dim);}
+.res-cta .alt a{color:var(--muted);text-decoration:underline;}
+</style>
 </head>
 <body>
 
@@ -106,19 +130,31 @@ const PARTS = [
    much as the questions are. */
 const BANDS = [
   { max:6,        name:'Lean',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
-  { max:14,       name:'Leaking',  copy:'You have several clear opportunities and are likely losing 20 to 40+ hours a month. This is the sweet spot where an audit pays for itself fast.' },
-  { max:Infinity, name:'Bleeding', copy:'Manual work is a structural drag, costing real money and risk (errors, key-person dependency). The first few fixes usually pay back in weeks.' },
+  { max:14,       name:'Leaking',  copy:'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.' },
+  { max:Infinity, name:'Bleeding', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
 ];
+
+/* v2: what each area usually means, in plain words, for the personal result. */
+const LEAK = {
+  reentry:  ['Data re-entry', 'people retype the same information into more than one system. Usually the first thing worth automating: the system moves it, a person checks it.'],
+  approvals:['Approvals and handoffs', 'work waits in inboxes and chats. A tracked approval flow with reminders removes most of the chasing.'],
+  reporting:['Reporting', 'numbers get rebuilt by hand before anyone can decide. Reports can assemble themselves from the systems you already use.'],
+  accuracy: ['Reconciliation and accuracy', 'mismatches get caught late, by hand. Automatic checks can flag them before a client does.'],
+  tells:    ['Key-person dependency', 'routine work lives in one person\u2019s head. Writing it down and automating the routine part protects you when they are away.'],
+};
 
 const TOTAL = PARTS.reduce((s,p) => s + p.q.reduce((t,[w]) => t + w, 0), 0);
 
 /* A question is a button carrying its own weight, so the tally is summed from
    the DOM and there is no second copy of the state to fall out of step. */
 const askList = (part, offset) => `<ul class="ask" data-rv>${part.q.map(([w,t],i) => `
-  <li><button type="button" aria-pressed="false" data-w="${w}" id="q${offset+i+1}">
-    <span class="pts" aria-hidden="true">${w}</span>
+  <li class="q" id="q${offset+i+1}" data-w="${w}" data-part="${part.id}">
     <span class="txt">${t}</span>
-  </button></li>`).join('')}</ul>`;
+    <span class="yn" role="group" aria-label="Answer">
+      <button type="button" class="yes" aria-pressed="false">Yes</button>
+      <button type="button" class="no" aria-pressed="false">No</button>
+    </span>
+  </li>`).join('')}</ul>`;
 
 let n = 0;
 const P = [
@@ -130,7 +166,7 @@ const P = [
       <div class="kick" data-rv>Five minutes, fifteen questions</div>
       <h1 data-rv>Where is your team <em>losing hours?</em></h1>
       <p class="lede" data-rv>Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it, because the manual work grew one workaround at a time until it became invisible.</p>
-      <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer honestly. If you are not sure, the answer is usually yes.</p>
+      <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer yes or no to each. If you are not sure, the answer is usually yes.</p>
       <div class="row" data-rv>
         <button class="btn" data-to="reentry">Start the assessment</button>
         <a class="btn line" href="/">Back to the site</a>
@@ -146,11 +182,15 @@ const P = [
   }),
 
   { id:'score', n:'Score', at:'at-mid', html:`
-    <div class="kick" data-rv>Your score</div>
+    <div class="kick" data-rv>Your result</div>
     <div class="bignum" data-rv><span id="scorenum">0</span><small>/ ${TOTAL}</small></div>
-    <ul class="bands idle" id="bands" data-rv>${BANDS.map((b,i) => `
-      <li data-band="${i}"><b>${esc(b.name)}.</b> ${esc(b.copy)}</li>`).join('')}</ul>
-    <p class="fine" data-rv id="scorenote">Answer the questions and the bands light up.</p>` },
+    <p class="res-band" data-rv id="resband">Answer the questions and your result appears here.</p>
+    <ul class="leaks" id="leaks" data-rv hidden></ul>
+    <div class="res-cta" data-rv id="rescta" hidden>
+      <a class="btn" id="bookbtn" href="${C.booking}">Book a 30-minute fit call</a>
+      <p class="alt">We go through your answers together and pick the first thing worth fixing. Not ready? <a href="#p-pdf">Take the worksheet to your team</a>.</p>
+    </div>
+    <p class="fine" data-rv id="scorenote"></p>` },
 
   /* Two asks, two screens, in this order - which is the live page's own
      reasoning: the PDF is the lower-commitment step for someone not ready to
@@ -166,7 +206,7 @@ const P = [
     </div>` },
 
   { id:'audit', n:'Audit', at:'at-mid', html:`
-    <div class="kick" data-rv>If you scored 7 or higher</div>
+    <div class="kick" data-rv>The next step</div>
     <h2 class="say" data-rv style="max-width:19ch;">Put real numbers <em>on it.</em></h2>
     <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does: about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
     <div class="row" data-rv style="margin-top:26px;">
@@ -183,33 +223,75 @@ buildKinetic(P);
    half-finished one restored three days later on a different screen would be
    presented as a result without being one. Reloading starts over, which is
    the correct behaviour for a worksheet. */
-const buttons   = [...document.querySelectorAll('.ask button')];
+const rows      = [...document.querySelectorAll('.ask li.q')];
 const tallynum  = document.getElementById('tallynum');
 const scorenum  = document.getElementById('scorenum');
-const bands     = document.getElementById('bands');
+const resband   = document.getElementById('resband');
+const leaksEl   = document.getElementById('leaks');
+const rescta    = document.getElementById('rescta');
+const bookbtn   = document.getElementById('bookbtn');
 const scorenote = document.getElementById('scorenote');
+const PARTNAME  = Object.fromEntries(PARTS.map(p => [p.id, LEAK[p.id][0]]));
+
+const answerOf = row => row.querySelector('.yes').getAttribute('aria-pressed') === 'true' ? 'yes'
+                      : row.querySelector('.no').getAttribute('aria-pressed') === 'true' ? 'no' : null;
+
+/* The call link carries the result, so the booking shows it before the call.
+   Campaign tags the visitor arrived with are passed through; the score goes in utm_content. */
+function bookingUrl(score, band, top){
+  const u = new URL(C.booking);
+  const here = new URLSearchParams(location.search);
+  u.searchParams.set('utm_source', here.get('utm_source') || 'khipuai_site');
+  u.searchParams.set('utm_medium', here.get('utm_medium') || 'self_assessment');
+  u.searchParams.set('utm_campaign', here.get('utm_campaign') || 'self_assessment');
+  u.searchParams.set('utm_content', `score-${score}-${band.toLowerCase()}${top.length ? '-' + top.join('-') : ''}`);
+  u.searchParams.set('a1', `Self-assessment: ${score}/${TOTAL} (${band}). Biggest leaks: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`);
+  return u.toString();
+}
 
 function render(){
-  const answered = buttons.filter(b => b.getAttribute('aria-pressed') === 'true');
-  const score = answered.reduce((s,b) => s + Number(b.dataset.w), 0);
-
+  const answers = rows.map(r => [r, answerOf(r)]);
+  const done = answers.filter(([,a]) => a);
+  const score = answers.reduce((s,[r,a]) => s + (a === 'yes' ? Number(r.dataset.w) : 0), 0);
+  rows.forEach(r => r.classList.toggle('done', !!answerOf(r)));
   tallynum.textContent = score;
   scorenum.textContent = score;
 
-  const started = answered.length > 0;
-  bands.classList.toggle('idle', !started);
-  const hit = started ? BANDS.findIndex(b => score <= b.max) : -1;
-  [...bands.children].forEach((li,i) => li.classList.toggle('on', i === hit));
+  if (!done.length){
+    resband.textContent = 'Answer the questions and your result appears here.';
+    leaksEl.hidden = true; rescta.hidden = true; scorenote.textContent = '';
+    return;
+  }
+  const band = BANDS.find(b => score <= b.max);
+  resband.innerHTML = `<b>${esc(band.name)}.</b> ${esc(band.copy)}`;
 
-  scorenote.textContent = started
-    ? `${answered.length} of ${buttons.length} answered. Nothing is stored or sent. This runs entirely in your browser.`
-    : 'Answer the questions and the bands light up.';
+  // Top leak areas: share of each part's points answered yes; up to two, strongest first.
+  const byPart = PARTS.map(p => {
+    const rs = rows.filter(r => r.dataset.part === p.id);
+    const got = rs.reduce((s,r) => s + (answerOf(r) === 'yes' ? Number(r.dataset.w) : 0), 0);
+    const max = rs.reduce((s,r) => s + Number(r.dataset.w), 0);
+    return { id:p.id, share: got / max };
+  }).filter(x => x.share > 0).sort((a,b) => b.share - a.share);
+  const top = byPart.filter((x,i) => i === 0 || x.share >= 0.4).slice(0,2).map(x => x.id);
+
+  leaksEl.innerHTML = top.length
+    ? top.map(id => `<li><b>${esc(LEAK[id][0])}:</b> ${esc(LEAK[id][1])}</li>`).join('')
+    : `<li><b>No big leaks flagged.</b> Your answers point to a tidy back office.</li>`;
+  leaksEl.hidden = false;
+  rescta.hidden = false;
+  bookbtn.href = bookingUrl(score, band.name, top);
+
+  scorenote.textContent = done.length === rows.length
+    ? `All ${rows.length} answered. Your answers stay in this browser.`
+    : `${done.length} of ${rows.length} answered so far. Your answers stay in this browser.`;
 }
 
-buttons.forEach(b => b.addEventListener('click', () => {
-  b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+rows.forEach(r => r.querySelectorAll('.yn button').forEach(btn => btn.addEventListener('click', () => {
+  const on = btn.getAttribute('aria-pressed') === 'true';
+  r.querySelectorAll('.yn button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  btn.setAttribute('aria-pressed', on ? 'false' : 'true');
   render();
-}));
+})));
 render();
 
 </script>
