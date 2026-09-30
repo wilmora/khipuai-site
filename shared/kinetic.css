@@ -294,6 +294,13 @@ body.at-start .hint{opacity:0;}
 .say{font-size:min(5.2vw,8vh,4.3rem);max-width:15ch;}
 .say em{color:var(--copper);}
 .sub{color:var(--muted);max-width:56ch;font-size:1.01rem;margin-top:20px;}
+/* The positioning line: louder than a .sub, quieter than a .say. The copper
+   rule marks it as a statement rather than one more line of body copy. */
+.stance{position:relative;margin:26px 0 0;padding-left:18px;border-left:2px solid var(--hot);
+  max-width:46ch;font-size:clamp(1.15rem,min(1.9vw,3.2vh),1.6rem);line-height:1.25;
+  color:var(--ink);text-shadow:0 2px 18px rgba(0,0,0,.55);}
+.stance strong{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.01em;}
+.stance em{color:var(--copper);}
 .fine{color:var(--dim);font-size:.75rem;margin-top:20px;max-width:74ch;}
 
 

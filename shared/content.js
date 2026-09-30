@@ -51,6 +51,12 @@ export const C = {
     close: 'Before you buy another tool, find the work that is actually worth changing.',
   },
 
+  // The positioning line. It closes the Patterns screen, straight after the hero.
+  stance: {
+    lead: 'We don’t sell AI.',
+    rest: 'We redesign business processes and use AI where it produces measurable value.',
+  },
+
   steps: [
     ['Discovery call', 'Free, 20 to 30 minutes. We confirm there is a fit and pick the areas worth looking at.'],
     ['Walkthrough', 'About one week. Working sessions to see the real workflows: the systems, the handoffs, the manual steps.'],

@@ -60,6 +60,12 @@ export const C = {
     close: 'Antes de comprar otra herramienta, encuentra el trabajo que realmente vale la pena cambiar.',
   },
 
+  // La frase de posicionamiento. Cierra la pantalla de Patrones, justo después del inicio.
+  stance: {
+    lead: 'No vendemos IA.',
+    rest: 'Rediseñamos procesos de negocio y usamos la IA donde genera valor medible.',
+  },
+
   steps: [
     ['Llamada de descubrimiento', 'Gratis, de 20 a 30 minutos. Confirmamos que encajamos y elegimos las áreas que vale la pena revisar.'],
     ['Recorrido', 'Alrededor de una semana. Sesiones de trabajo para ver los flujos reales: los sistemas, los traspasos y los pasos manuales.'],
