@@ -194,9 +194,7 @@ def main():
             md = to_markdown(data['blocks'], spec['lang'], spec['path'])
 
             src = ROOT / spec['file']
-            text = src.read_text(encoding='utf-8').replace('
-', '
-')
+            text = src.read_text(encoding='utf-8').replace('\r\n', '\n')
             if START not in text or END not in text:
                 sys.exit(f'{spec["file"]}: prerender markers missing')
             head, rest = text.split(START, 1)
@@ -205,9 +203,7 @@ def main():
             md_file = src.with_suffix('.md')
 
             for target, content in ((src, new), (md_file, md)):
-                current = target.read_text(encoding='utf-8').replace('
-', '
-') if target.exists() else None
+                current = target.read_text(encoding='utf-8').replace('\r\n', '\n') if target.exists() else None
                 if current != content:
                     stale.append(str(target.relative_to(ROOT)))
                     if not args.check:
