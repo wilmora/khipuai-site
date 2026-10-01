@@ -1,0 +1,11 @@
+# Cloudflare Worker that adds Markdown content negotiation in front of
+# GitHub Pages. NOT DEPLOYED. Deploying needs the khipuai.co zone on
+# Cloudflare (nameservers moved from Porkbun, records proxied) and approval.
+# See edge/README.md.
+name = "khipuai-markdown"
+main = "worker.js"
+compatibility_date = "2026-09-30"
+workers_dev = false
+routes = [
+  { pattern = "khipuai.co/*", zone_name = "khipuai.co" },
+]
