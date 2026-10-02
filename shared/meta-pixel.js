@@ -92,6 +92,10 @@ window.KHIPUAIMeta = {
     scoreViewed = true;
     if (pixelStarted) window.fbq('trackCustom', 'AssessmentScoreViewed');
   },
+  /* The visitor asked for their result by email. Counted as a Lead, like a booking. */
+  lead() {
+    if (pixelStarted) window.fbq('track', 'Lead');
+  },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
