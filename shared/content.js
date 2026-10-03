@@ -9,7 +9,7 @@ export const C = {
   booking: 'https://calendly.com/wmorapal/30min',
   // Google Apps Script web app that stores self-assessment leads and emails
   // the visitor their result (edge/leads/). Empty = the form stays hidden.
-  leads: '',
+  leads: 'https://script.google.com/macros/s/AKfycbxNF3Rt-NzcxrTMmYtZtVBgGMxO-0fc8hTgLnASUK0UeVUNBHWQvDNCBMqnBWErRLvM/exec',
 
   hero: {
     eyebrow: 'AI automation for recurring-service operations',
