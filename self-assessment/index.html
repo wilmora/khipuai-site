@@ -59,6 +59,12 @@
 .res-cta{margin-top:22px;}
 .res-cta .alt{margin-top:12px;font-size:.85rem;color:var(--dim);}
 .res-cta .alt a{color:var(--muted);text-decoration:underline;}
+/* Result by email: the tick box reads as body text, not as a field label. */
+.lead label.check{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;letter-spacing:0;text-transform:none;font-weight:400;color:var(--muted);cursor:pointer;}
+.lead label.check input{margin-top:3px;accent-color:var(--hot);}
+#pdfonly{margin-top:22px;}
+/* .lead sets display:grid, which would beat the hidden attribute. */
+.lead[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -190,7 +196,7 @@ const P = [
     <ul class="leaks" id="leaks" data-rv hidden></ul>
     <div class="res-cta" data-rv id="rescta" hidden>
       <a class="btn" id="bookbtn" href="${C.booking}">Book a 30-minute fit call</a>
-      <p class="alt">We go through your answers together and pick the first thing worth fixing. Not ready? <a href="#p-pdf">Take the worksheet to your team</a>.</p>
+      <p class="alt">We go through your answers together and pick the first thing worth fixing. Not ready? <a href="#p-pdf">Get your result by email</a>.</p>
     </div>
     <p class="fine" data-rv id="scorenote"></p>` },
 
@@ -198,11 +204,20 @@ const P = [
      reasoning: the PDF is the lower-commitment step for someone not ready to
      give up 30 minutes, so it comes before the call. Putting both on one
      screen also overflowed it by 122px. */
-  { id:'pdf', n:'PDF', at:'at-top', html:`
-    <div class="kick" data-rv>What to do with it</div>
-    <h2 class="say" data-rv style="max-width:20ch;">Take it <em>to your team.</em></h2>
-    <p class="sub" data-rv>The same exercise as a PDF, so you can score it with the people who actually do the work.</p>
-    <div class="lead" data-rv>
+  { id:'pdf', n:'Email', at:'at-top', html:`
+    <div class="kick" data-rv>Keep your result</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Get it <em>by email.</em></h2>
+    <p class="sub" data-rv>Your score, your top areas, and the worksheet PDF to score with the people who actually do the work.</p>
+    <form class="lead" id="leadform" data-rv novalidate hidden>
+      <div class="field"><label for="lf-name">First name</label><input id="lf-name" name="name" autocomplete="given-name" maxlength="40"></div>
+      <div class="field"><label for="lf-email">Work email</label><input id="lf-email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
+      <div class="field"><label for="lf-company">Company (optional)</label><input id="lf-company" name="company" autocomplete="organization" maxlength="80"></div>
+      <label class="check"><input type="checkbox" id="lf-follow"> Wil can follow up about my result. Unsubscribe anytime.</label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Email me my result</button>
+      <p class="fineprint" id="lf-msg" role="status" aria-live="polite">One email with your result. Nothing else unless you tick the box. <a href="/privacy.html">Privacy</a>. Or just <a href="/self-assessment.pdf" download>download the worksheet</a>.</p>
+    </form>
+    <div class="lead" data-rv id="pdfonly">
       <a class="btn" href="/self-assessment.pdf" download>Download the PDF</a>
       <p class="fineprint">No form required. The worksheet downloads directly to your device.</p>
     </div>` },
@@ -235,6 +250,7 @@ const bookbtn   = document.getElementById('bookbtn');
 const scorenote = document.getElementById('scorenote');
 const scorePanel = document.getElementById('p-score');
 const PARTNAME  = Object.fromEntries(PARTS.map(p => [p.id, LEAK[p.id][0]]));
+let lastResult = null;
 
 const answerOf = row => row.querySelector('.yes').getAttribute('aria-pressed') === 'true' ? 'yes'
                       : row.querySelector('.no').getAttribute('aria-pressed') === 'true' ? 'no' : null;
@@ -261,10 +277,11 @@ function render(){
   scorenum.textContent = score;
 
   if (done.length < rows.length){
+    lastResult = null;
     resband.textContent = 'Answer all 15 questions to see your result.';
     leaksEl.hidden = true;
     rescta.hidden = true;
-    scorenote.textContent = `${done.length} of ${rows.length} answered. Your answers stay in this browser; opening booking shares your score and top areas with Calendly.`;
+    scorenote.textContent = `${done.length} of ${rows.length} answered. Your answers stay in this browser unless you book a call or ask for your result by email.`;
     return;
   }
   const band = BANDS.find(b => score <= b.max);
@@ -285,12 +302,13 @@ function render(){
   leaksEl.hidden = false;
   rescta.hidden = false;
   bookbtn.href = bookingUrl(score, band.name, top);
+  lastResult = { score, band: band.name.toLowerCase(), top };
   const scoreBounds = scorePanel.getBoundingClientRect();
   if (scoreBounds.top < innerHeight * 0.75 && scoreBounds.bottom > innerHeight * 0.25) {
     window.KHIPUAIMeta?.scoreViewed();
   }
 
-  scorenote.textContent = `All ${rows.length} answered. Your answers stay in this browser; opening booking shares your score and top areas with Calendly.`;
+  scorenote.textContent = `All ${rows.length} answered. Your answers stay in this browser unless you book a call or ask for your result by email.`;
 }
 
 rows.forEach(r => r.querySelectorAll('.yn button').forEach(btn => btn.addEventListener('click', () => {
@@ -309,6 +327,48 @@ if (scorePanel) {
     scoreObserver.disconnect();
   }, { threshold: 0.25 });
   scoreObserver.observe(scorePanel);
+}
+
+/* ---- result by email -----------------------------------------------------
+   Posts to the Apps Script in edge/leads/. text/plain keeps it a "simple"
+   request (no CORS preflight, which Apps Script cannot answer), and no-cors
+   makes the reply unreadable, so a request that went out counts as sent. The
+   script builds the email from ids only, so nothing typed here is mailed back
+   out except the first name. Hidden until C.leads is set. */
+const leadform = document.getElementById('leadform');
+if (leadform && C.leads) {
+  leadform.hidden = false;
+  // One call to action on this screen; the PDF becomes a text link so the
+  // form still fits a 1366x768 laptop above the footer band.
+  document.getElementById('pdfonly').hidden = true;
+  const msg = document.getElementById('lf-msg');
+  const btn = leadform.querySelector('button[type="submit"]');
+  leadform.addEventListener('submit', async event => {
+    event.preventDefault();
+    const email = leadform.email.value.trim();
+    if (!lastResult) { msg.textContent = 'Answer all 15 questions first, then your result can be sent.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { msg.textContent = 'Please check the email address.'; leadform.email.focus(); return; }
+    const here = new URLSearchParams(location.search);
+    const body = JSON.stringify({
+      name: leadform.name.value.trim(), email, company: leadform.company.value.trim(),
+      followUp: document.getElementById('lf-follow').checked, hp: leadform.website.value,
+      ...lastResult,
+      utm: { source: here.get('utm_source') || '', medium: here.get('utm_medium') || '',
+             campaign: here.get('utm_campaign') || '', content: here.get('utm_content') || '' },
+    });
+    btn.disabled = true; btn.textContent = 'Sending...';
+    try {
+      await fetch(C.leads, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
+      leadform.querySelectorAll('input').forEach(i => { i.disabled = true; });
+      btn.textContent = 'Sent';
+      msg.textContent = `Done. Your result is on its way to ${email}. If it is not there in a few minutes, check spam.`;
+      window.KHIPUAIMeta?.lead();
+      if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'self_assessment_email' });
+    } catch {
+      btn.disabled = false; btn.textContent = 'Email me my result';
+      msg.textContent = 'That did not go through. Please try again, or email wil@khipuai.co.';
+    }
+  });
 }
 
 </script>
