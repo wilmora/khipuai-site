@@ -72,10 +72,6 @@ export const C = {
   pricing: {
     note: 'Priced to your situation, not an hourly meter. The estimator gives you a range; we confirm the number on the discovery call, before any work starts.',
     credit: 'The full fee credits toward your build if you hire KHIPUAI to implement within 30 days.',
-    tiers: [
-      { name: 'Standard', amount: '$2,500', unit: 'USD, fixed', for: 'Most small and mid-size firms; one or two departments.', featured: true },
-      { name: 'Plus', amount: '$5,000', unit: 'USD, fixed', for: 'Larger or multi-department firms; several workflows.' },
-    ],
   },
 
   // Capability patterns only. Named projects and measured outcomes are added

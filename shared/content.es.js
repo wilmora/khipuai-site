@@ -78,10 +78,6 @@ export const C = {
   pricing: {
     note: 'Ajustado a tu situación, no un contador por horas. El estimador te da un rango; confirmamos la cifra en la llamada de descubrimiento, antes de empezar.',
     credit: 'La tarifa completa se acredita a tu construcción si contratas a KHIPUAI para implementarla dentro de los 30 días.',
-    tiers: [
-      { name: 'Estándar', amount: '$2,500', unit: 'USD, fija', for: 'La mayoría de empresas pequeñas y medianas; uno o dos departamentos.', featured: true },
-      { name: 'Plus', amount: '$5,000', unit: 'USD, fija', for: 'Empresas más grandes o con varios departamentos; varios flujos de trabajo.' },
-    ],
   },
 
   // Solo patrones de capacidad. Los proyectos con nombre y sus resultados se
