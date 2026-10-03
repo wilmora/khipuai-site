@@ -8,7 +8,7 @@ Founder
 
 ## Wil Mora
 
-I have spent 15 years on the operating side of real businesses in Peru, the US, and Canada, with a finance degree (B.Comm, Toronto Metropolitan University) underneath it. Bilingual, English and Spanish.
+I have spent 15 years on the operating side of real businesses in Canada and the US, with a finance degree (B.Comm, Toronto Metropolitan University) underneath it. Bilingual, English and Spanish.
 
 The first decade
 
