@@ -149,7 +149,7 @@ Quién lo dirige
 
 Fundador
 
-15 años del lado operativo de empresas reales en Perú, Estados Unidos y Canadá, con una carrera en finanzas como base. Supervisó plantas de producción de alto volumen y luego dirigió logística y servicio al cliente en 20 plantas y más de 280 camiones.
+15 años dirigiendo operaciones en empresas de alta demanda en Canadá y Estados Unidos, donde cada día corría contra el reloj y cada retraso costaba dinero. Sé lo que de verdad cuesta el trabajo manual porque lo pagué en horas extra, errores y traspasos que se caían. Hoy construyo la automatización que me hubiera gustado tener.
 
 ### Alex Pena
 

@@ -119,7 +119,7 @@ export const C = {
     name: 'Wil Mora',
     role: 'Fundador, KHIPUAI',
     quote: 'Creé esta propuesta porque seguía viendo lo mismo en cada empresa en la que trabajé: buena gente atrapada haciendo trabajo que debería hacer una computadora.',
-    bio: '15 años del lado operativo de empresas reales en Perú, Estados Unidos y Canadá, con una carrera en finanzas como base. Supervisó plantas de producción de alto volumen y luego dirigió logística y servicio al cliente en 20 plantas y más de 280 camiones.',
+    bio: '15 años dirigiendo operaciones en empresas de alta demanda en Canadá y Estados Unidos, donde cada día corría contra el reloj y cada retraso costaba dinero. Sé lo que de verdad cuesta el trabajo manual porque lo pagué en horas extra, errores y traspasos que se caían. Hoy construyo la automatización que me hubiera gustado tener.',
   },
 
   faq: [

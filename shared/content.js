@@ -118,7 +118,7 @@ export const C = {
     name: 'Wil Mora',
     role: 'Founder, KHIPUAI',
     quote: 'I built this offer because I kept seeing the same thing in every business I worked in: good people stuck doing work a computer should do.',
-    bio: '15 years on the operating side of real businesses in Peru, the US and Canada, with a finance degree behind it. Supervised high-volume production plants, then led logistics and customer service across 20 plants and 280-plus trucks.',
+    bio: '15 years running operations in high-demand businesses across Canada and the US, where every day ran on deadlines and every delay cost money. I know what manual work really costs because I paid for it in overtime, errors and dropped handoffs. Now I build the automation I wished I had.',
   },
 
   faq: [
