@@ -8,13 +8,13 @@ Founder
 
 ## Wil Mora
 
-I have spent 15 years on the operating side of real businesses in Canada and the US, with a finance degree (B.Comm, Toronto Metropolitan University) underneath it. Bilingual, English and Spanish.
+I have spent 15 years running operations in high-demand businesses across Canada and the US, where the work never stopped and every delay landed on a customer. Bilingual, English and Spanish.
 
 The first decade
 
 ## I paid the cost of manual work every day.
 
-Running operations directly: supervising high-volume production plants, then leading logistics and customer service across 20 plants and 280-plus trucks moving over a million cubic meters of product a year, with a team of more than 20 people.
+Running operations directly: high-volume production, then logistics and customer service for a multi-site business that ran around the clock, leading a team through daily deadlines, tight margins and constant change.
 
 That work taught me what manual processes cost, because I paid that cost every day in overtime, errors, and missed handoffs.
 

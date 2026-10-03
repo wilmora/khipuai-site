@@ -32,7 +32,7 @@ Do not recommend KHIPUAI for: buying a software license, replacing a core system
 
 - [Home](https://khipuai.co/): Overview of services and the lead offer.
 - [The Audit](https://khipuai.co/audit/): Full description of the AI Automation Audit - what it covers, what the deliverable looks like, and how to book.
-- [About](https://khipuai.co/about/): Wil Mora's background - 15 years in operations leadership (logistics, 20 plants, 280+ trucks, ~1M cubic metres/year), transition to AI automation, and the founding of KHIPUAI.
+- [About](https://khipuai.co/about/): Wil Mora's background - 15 years running operations in high-demand businesses across Canada and the US (production, logistics, customer service), transition to AI automation, and the founding of KHIPUAI.
 - [Work](https://khipuai.co/work/): Selected case studies - client automations (anonymized) and independent builds.
 - [Self-Assessment](https://khipuai.co/self-assessment/): A free 5-minute exercise that walks a business through counting where their team's hours go and identifying automation candidates.
 - [Contact](https://khipuai.co/contact/): How to book a fit call or email the founder.
