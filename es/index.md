@@ -4,6 +4,8 @@ Automatización con IA para operaciones de servicios recurrentes
 
 En unas dos semanas, la Auditoría de Automatización con IA mapea los flujos de tu operación, cuantifica los cuellos de botella y entrega a operaciones, finanzas y TI un primer paso defendible.
 
+[Haz la autoevaluación de 5 minutos](https://khipuai.co/self-assessment/)
+
 [Agenda una llamada de encaje de 30 minutos](https://calendly.com/wmorapal/30min)
 
 Sabiduría ancestral. Inteligencia moderna. Impacto real.
