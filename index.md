@@ -4,6 +4,8 @@ AI automation for recurring-service operations
 
 In about two weeks, the AI Automation Audit maps the workflows behind your operation, quantifies the bottlenecks, and gives your operations, finance, and IT leaders a defensible first move.
 
+[Take the 5-minute self-assessment](https://khipuai.co/self-assessment/)
+
 [Book a 30-minute fit call](https://calendly.com/wmorapal/30min)
 
 Ancient wisdom. Modern intelligence. Real impact.
