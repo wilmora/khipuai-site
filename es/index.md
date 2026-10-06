@@ -98,7 +98,7 @@ Un lugar de trabajo según cada rol
 
 Reúne flujos, documentos, tableros, aprobaciones e historial de auditoría en una interfaz construida alrededor del trabajo real del equipo.
 
-Las historias específicas de clientes y sus resultados medidos se agregarán después de revisar la evidencia y el permiso de publicación.
+El trabajo con clientes se muestra en la página Proyectos, de forma anónima, con los sistemas involucrados y el resultado medido de cada caso.
 
 Para quién es
 

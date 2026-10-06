@@ -127,6 +127,6 @@ export const C = {
     ['¿Qué pasa después de la auditoría?', 'Si vale la pena construir la primera oportunidad, KHIPUAI puede definir una implementación de alcance fijo y continuar con mejora administrada. Tú decides después de ver la hoja de ruta.'],
   ],
 
-  disclaimer: 'Las historias específicas de clientes y sus resultados medidos se agregarán después de revisar la evidencia y el permiso de publicación.',
+  disclaimer: 'El trabajo con clientes se muestra en la página Proyectos, de forma anónima, con los sistemas involucrados y el resultado medido de cada caso.',
   legal: 'KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.',
 };
