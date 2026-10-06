@@ -126,6 +126,5 @@ export const C = {
     ['What happens after the audit?', 'If the first opportunity is worth building, KHIPUAI can scope a fixed implementation and stay on for managed improvement. You decide after seeing the roadmap.'],
   ],
 
-  disclaimer: 'Client work is shown on the Work page, anonymized, with the systems involved and the measured outcome for each.',
   legal: 'KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.',
 };

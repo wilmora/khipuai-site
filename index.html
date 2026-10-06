@@ -137,7 +137,6 @@
 <p>One role-aware place to work</p>
 <h3>Internal operations hubs</h3>
 <p>Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.</p>
-<p>Client work is shown on the Work page, anonymized, with the systems involved and the measured outcome for each.</p>
 <p>Who it is for</p>
 <h2>Worth doing, or worth saying no to.</h2>
 <h3>This is built for you if</h3>
@@ -246,8 +245,7 @@ const P = [
     <h2 class="say" data-rv style="max-width:22ch;">Built around the work <em>your team already does.</em></h2>
     <div class="cols c6 visual-cols work-cols" data-rv>${C.work.map((w,i)=>`<div>${featureIcon('work',i)}<b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
-    <span class="swipe-note">Swipe the row &rarr;</span>
-    <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
+    <span class="swipe-note">Swipe the row &rarr;</span>` },
 
   { id:'fee', n:'Quote', nav:false, at:'at-top', html:`
     <div class="kick" data-rv>Project fit and estimate</div>

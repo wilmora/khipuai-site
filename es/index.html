@@ -136,7 +136,6 @@
 <p>Un lugar de trabajo según cada rol</p>
 <h3>Centros internos de operaciones</h3>
 <p>Reúne flujos, documentos, tableros, aprobaciones e historial de auditoría en una interfaz construida alrededor del trabajo real del equipo.</p>
-<p>El trabajo con clientes se muestra en la página Proyectos, de forma anónima, con los sistemas involucrados y el resultado medido de cada caso.</p>
 <p>Para quién es</p>
 <h2>Vale la pena hacerlo, o vale la pena decir que no.</h2>
 <h3>Esto es para ti si</h3>
@@ -249,8 +248,7 @@ const P = [
     <h2 class="say" data-rv style="max-width:22ch;">Construido alrededor del trabajo <em>que tu equipo ya hace.</em></h2>
     <div class="cols c6 visual-cols work-cols" data-rv>${C.work.map((w,i)=>`<div>${featureIcon('work',i)}<b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
       <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
-    <span class="swipe-note">Desliza la fila &rarr;</span>
-    <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
+    <span class="swipe-note">Desliza la fila &rarr;</span>` },
 
   { id:'fee', n:'Presupuesto', nav:false, at:'at-top', html:`
     <div class="kick" data-rv>Encaje y estimación del proyecto</div>

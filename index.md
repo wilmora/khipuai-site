@@ -98,7 +98,6 @@ One role-aware place to work
 
 Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.
 
-Client work is shown on the Work page, anonymized, with the systems involved and the measured outcome for each.
 
 Who it is for
 
