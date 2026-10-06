@@ -28,8 +28,11 @@ not change. A brand-new deployment gets a new URL.
 - The visitor email is built only from text in `Code.gs`. The site sends a
   score, a band id and area ids, never free text that gets mailed out, except
   the first name, which is cleaned and capped.
-- One result per address every 10 minutes; at most 60 result emails a day
-  (a personal Gmail account allows about 100).
+- One result per address every 10 minutes; at most 60 result emails a day.
+- At most 40 "new lead" notices to the owner a day. The first submission past
+  that sends one warning email, then notices stay quiet until the next day.
+- At most 200 rows saved a day; past that, requests are dropped without
+  writing. Days are UTC. The counters live in the script property `counters`.
 - The site cannot read the script's reply (Apps Script does not do CORS), so
   the page shows "sent" once the request leaves the browser. The Sheet and the
   notice email are the record of truth.

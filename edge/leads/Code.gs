@@ -11,12 +11,16 @@
    ends up in an email body, so nobody can use this endpoint to mail arbitrary
    content to arbitrary addresses. The first name is trimmed, stripped of
    anything link-like and capped. One result per email address per 10 minutes,
-   and a daily cap well below the Gmail quota.
+   and a daily cap well below the Gmail quota. The owner notices and the sheet
+   rows are capped per day as well, so a flood of fake submissions cannot fill
+   the inbox, burn the mail quota, or grow the sheet without limit.
 
    Setup and redeploy steps: edge/leads/README.md. No secrets live here. */
 
 const SHEET = 'Leads';
-const DAILY_CAP = 60;
+const DAILY_CAP = 60;     // result emails to visitors per day (UTC)
+const NOTICE_CAP = 40;    // "new lead" notices to the owner per day; one warning when reached
+const ROW_CAP = 200;      // rows saved per day; past this, requests are dropped unwritten
 const REPLY_TO = 'wil@khipuai.co';
 const SENDER_NAME = 'Wil Mora, KHIPUAI';
 const BOOKING = 'https://calendly.com/wmorapal/30min';
@@ -61,17 +65,27 @@ function doPost(e) {
     const cache = CacheService.getScriptCache();
     const key = 'e:' + Utilities.base64EncodeWebSafe(email);
     const dupe = !!cache.get(key);
-    const day = 'd:' + Utilities.formatDate(new Date(), 'UTC', 'yyyyMMdd');
-    const sent = Number(cache.get(day) || 0);
-    const canMail = !dupe && sent < DAILY_CAP;
+    const day = Utilities.formatDate(new Date(), 'UTC', 'yyyyMMdd');
 
+    /* Counting and writing happen under the lock, so two requests landing
+       together cannot both slip under a cap. */
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
+    let canMail, canNotify, warn;
     try {
+      const c = counters_(day);
+      if (c.rows >= ROW_CAP) return reply_(false, 'busy');   // flood: drop it, write nothing
+      canMail = !dupe && c.results < DAILY_CAP;
+      canNotify = c.notices < NOTICE_CAP;
+      warn = c.notices === NOTICE_CAP;                       // first one past the cap sends one warning
       sheet_().appendRow([new Date(), name, email, company, score, band[0],
         top.map(id => LEAK[id][0]).join(', '), followUp ? 'yes' : 'no',
         clean_(utm.source, 60), clean_(utm.medium, 60), clean_(utm.campaign, 60), clean_(utm.content, 80),
         canMail ? 'yes' : (dupe ? 'no (repeat within 10 min)' : 'no (daily cap)')]);
+      c.rows += 1;
+      if (canMail) c.results += 1;
+      if (canNotify || warn) c.notices += 1;
+      saveCounters_(c);
     } finally {
       lock.releaseLock();
     }
@@ -85,25 +99,40 @@ function doPost(e) {
         body: visitorBody_(name, score, band, top),
       });
       cache.put(key, '1', 600);
-      cache.put(day, String(sent + 1), 21600);
     }
 
-    MailApp.sendEmail({
-      to: Session.getEffectiveUser().getEmail(),
-      subject: 'New KHIPUAI lead: ' + (company || email) + ' scored ' + score + '/' + TOTAL,
-      body: [
-        'Name: ' + (name || '(not given)'),
-        'Email: ' + email,
-        'Company: ' + (company || '(not given)'),
-        'Score: ' + score + '/' + TOTAL + ' (' + band[0] + ')',
-        'Top areas: ' + (top.length ? top.map(id => LEAK[id][0]).join(', ') : 'none flagged'),
-        'OK to follow up: ' + (followUp ? 'YES' : 'no, result only'),
-        'Came from: ' + [utm.source, utm.medium, utm.campaign].filter(Boolean).join(' / '),
-        'Result emailed: ' + (canMail ? 'yes' : 'no'),
-        '',
-        'Sheet: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl(),
-      ].join('\n'),
-    });
+    const owner = Session.getEffectiveUser().getEmail();
+    const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+    if (canNotify) {
+      MailApp.sendEmail({
+        to: owner,
+        subject: 'New KHIPUAI lead: ' + (company || email) + ' scored ' + score + '/' + TOTAL,
+        body: [
+          'Name: ' + (name || '(not given)'),
+          'Email: ' + email,
+          'Company: ' + (company || '(not given)'),
+          'Score: ' + score + '/' + TOTAL + ' (' + band[0] + ')',
+          'Top areas: ' + (top.length ? top.map(id => LEAK[id][0]).join(', ') : 'none flagged'),
+          'OK to follow up: ' + (followUp ? 'YES' : 'no, result only'),
+          'Came from: ' + [utm.source, utm.medium, utm.campaign].filter(Boolean).join(' / '),
+          'Result emailed: ' + (canMail ? 'yes' : 'no'),
+          '',
+          'Sheet: ' + sheetUrl,
+        ].join('\n'),
+      });
+    } else if (warn) {
+      MailApp.sendEmail({
+        to: owner,
+        subject: 'KHIPUAI lead notices paused for today: ' + NOTICE_CAP + ' submissions since midnight UTC',
+        body: [
+          'More than ' + NOTICE_CAP + ' submissions came in today, so the per-lead notices are paused until tomorrow (UTC).',
+          'Every submission is still saved to the sheet, up to ' + ROW_CAP + ' rows a day; past that, requests are dropped.',
+          'If these are not real leads, check the sheet for junk rows.',
+          '',
+          'Sheet: ' + sheetUrl,
+        ].join('\n'),
+      });
+    }
 
     return reply_(true);
   } catch (err) {
@@ -161,6 +190,23 @@ function sheet_() {
     sh.setFrozenRows(1);
   }
   return sh;
+}
+
+/* Daily counters (UTC) in script properties, so the caps hold all day instead
+   of expiring with the cache. Call only while holding the script lock. */
+function counters_(day) {
+  let c = {};
+  try {
+    c = JSON.parse(PropertiesService.getScriptProperties().getProperty('counters') || '{}');
+  } catch (e) {
+    c = {};
+  }
+  if (c.day !== day) c = { day: day, results: 0, rows: 0, notices: 0 };
+  return c;
+}
+
+function saveCounters_(c) {
+  PropertiesService.getScriptProperties().setProperty('counters', JSON.stringify(c));
 }
 
 /* Single line, no markup or links, capped. Also defuses spreadsheet formulas. */
