@@ -16,6 +16,15 @@ This repository is the production source for [khipuai.co](https://khipuai.co). G
 
 Serve the repository root over HTTP. Do not open the HTML files directly because the pages use JavaScript modules.
 
+Run locally from the repository root with either command, then open <http://localhost:8000>:
+
+```bash
+python -m http.server 8000
+npx --yes serve -l 8000 .
+```
+
+No `.env` settings are needed. The site has no build step, no server code, and no environment variables.
+
 The site is intentionally buildless. Before publishing, follow `AGENTS.md`, validate local routes and assets, exercise both quote languages, test responsive layouts, and confirm production pages do not contain `noindex`.
 
 ## Deployment
