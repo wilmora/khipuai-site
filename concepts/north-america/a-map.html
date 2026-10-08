@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Concept A: The Map | KHIPUAI</title>
+<link rel="stylesheet" href="../../shared/assets/fonts.css">
+<link rel="stylesheet" href="./concepts.css">
+<link rel="icon" href="../../shared/assets/mark.svg">
+<style>
+/* CONCEPT A: "The Map".
+   The khipu's job on the current site is to say "we see how your operation
+   connects". This says the same thing with the visitor's own systems: an
+   inbox, a PDF, a spreadsheet, the accounting system. Nothing to decode. */
+body{background:var(--paper);}
+.hero{padding:40px 0 80px;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:40px;}}
+.hero h1{font-size:clamp(38px,5.6vw,68px);font-weight:800;margin:14px 0 20px;}
+.hero h1 em{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-style:italic;color:var(--copper-ink);letter-spacing:-.01em;}
+.hero .lede{font-size:19px;color:var(--muted);max-width:52ch;margin:0 0 28px;}
+.row{display:flex;flex-wrap:wrap;gap:12px;}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line);}
+.trust b{display:block;font-size:15px;}
+.trust span{font-size:14px;color:var(--muted);}
+@media (max-width:700px){.trust{grid-template-columns:1fr 1fr;}}
+
+/* The map itself */
+.map{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 30px 60px -30px rgba(14,26,36,.25);}
+.map-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.map-top h2{font-size:16px;letter-spacing:-.01em;}
+.toggle{display:inline-flex;background:#EFE9E0;border-radius:999px;padding:4px;}
+.toggle button{border:0;background:transparent;font:inherit;font-size:14px;font-weight:700;padding:0 14px;min-height:40px;border-radius:999px;cursor:pointer;color:var(--muted);}
+.toggle button[aria-pressed="true"]{background:var(--navy);color:var(--cream);}
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+.node{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper);transition:border-color .3s,background .3s,transform .3s;}
+.node .ic{width:38px;height:38px;border-radius:10px;background:var(--navy-2);color:var(--cream);display:grid;place-items:center;flex:none;}
+.node .ic svg{width:20px;height:20px;}
+.node b{display:block;font-size:15px;}
+.node span{font-size:13px;color:var(--muted);}
+.node.on{border-color:var(--copper);background:#FFF4EC;transform:translateX(4px);}
+.node.gate{border-style:dashed;}
+.edge{display:flex;align-items:center;gap:10px;padding:6px 0 6px 31px;min-height:40px;font-size:13px;font-weight:600;}
+.edge::before{content:"";width:2px;align-self:stretch;background:var(--line);}
+.edge .tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;}
+.manual .edge .tag{background:#FDE7DA;color:#8A3A0E;}
+.auto .edge .tag{background:#DDF1E8;color:#1E5F47;}
+.auto .edge::before{background:var(--green);}
+.manual .edge::before{background:repeating-linear-gradient(var(--copper) 0 4px,transparent 4px 8px);}
+.map-foot{margin:16px 0 0;font-size:13px;color:var(--muted);}
+
+/* Sections */
+.dark{background:var(--navy);color:var(--cream);}
+.dark .kick{color:var(--copper);}
+.dark .sec-lede,.dark .fine{color:#A9B9C4;}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;list-style:none;padding:0;margin:0;}
+.checks li{display:flex;gap:12px;padding:18px;border:1px solid #22323E;border-radius:14px;background:#0F1B26;}
+.checks li::before{content:"";flex:none;width:10px;height:10px;margin-top:8px;border-radius:50%;background:var(--hot);}
+.stance{font-size:clamp(22px,2.6vw,30px);margin:40px 0 0;max-width:40ch;}
+.stance em{font-family:'Instrument Serif',serif;color:var(--copper);}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s;}
+@media (max-width:820px){.steps{grid-template-columns:1fr;}}
+.steps div{padding:26px;border-radius:16px;background:#fff;border:1px solid var(--line);}
+.steps div::before{counter-increment:s;content:"0" counter(s);font-family:'Manrope';font-weight:800;font-size:14px;color:var(--copper-ink);}
+.steps h3{font-size:22px;margin:10px 0 8px;}
+.steps p{margin:0;color:var(--muted);}
+
+.get{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+@media (max-width:820px){.get{grid-template-columns:1fr;}}
+.get div{background:var(--paper);padding:24px;}
+.get h3{font-size:18px;margin-bottom:6px;}
+.get p{margin:0;color:var(--muted);font-size:15px;}
+
+.price{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:20px;align-items:stretch;}
+@media (max-width:900px){.price{grid-template-columns:1fr;}}
+.tier{border:1px solid var(--line);border-radius:16px;padding:26px;background:#fff;}
+.tier.f{border:2px solid var(--navy);}
+.tier .amt{font-family:'Manrope';font-weight:800;font-size:44px;letter-spacing:-.03em;margin:8px 0 2px;}
+.tier .unit{font-size:14px;color:var(--muted);}
+.tier p{margin:14px 0 0;}
+.price aside{padding:26px;border-radius:16px;background:var(--navy);color:var(--cream);}
+.price aside p{margin:0 0 12px;}
+
+.cta-band{text-align:center;}
+.cta-band .sec-h{margin:10px auto 16px;}
+.cta-band .row{justify-content:center;}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="concept-bar"><div class="wrap"><span><b>Concept A: The Map.</b> North America direction, not live.</span><a href="./">All concepts</a></div></div>
+
+<div class="wrap">
+  <header class="hd">
+    <a class="bd" href="./"><img src="../../shared/assets/mark.svg" alt="">KHIPUAI</a>
+    <nav aria-label="Sections"><a href="#how">How it works</a><a href="#get">What you get</a><a href="#price">Pricing</a></nav>
+    <a class="btn sm" id="book-top" href="#">Book a call</a>
+  </header>
+</div>
+
+<main id="main">
+  <section class="hero"><div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="kick" id="eyebrow"></div>
+        <h1 id="h1"></h1>
+        <p class="lede" id="lede"></p>
+        <div class="row">
+          <a class="btn" id="book-hero" href="#"></a>
+          <a class="btn ghost" href="../../self-assessment/" id="assess"></a>
+        </div>
+      </div>
+
+      <div class="map" id="map">
+        <div class="map-top">
+          <h2>One invoice, five systems</h2>
+          <div class="toggle" role="group" aria-label="Show the workflow">
+            <button type="button" data-mode="manual" aria-pressed="true">Today</button>
+            <button type="button" data-mode="auto" aria-pressed="false">Automated</button>
+          </div>
+        </div>
+        <ol class="flow manual" id="flow" aria-live="polite"></ol>
+        <p class="map-foot" id="mapfoot"></p>
+      </div>
+    </div>
+    <div class="trust" id="trust"></div>
+  </div></section>
+
+  <section class="dark"><div class="wrap">
+    <div class="kick">Where the hours go</div>
+    <h2 class="sec-h" id="prob-h"></h2>
+    <p class="sec-lede" id="prob-lead"></p>
+    <ul class="checks" id="prob"></ul>
+    <p class="stance" id="stance"></p>
+  </div></section>
+
+  <section id="how"><div class="wrap">
+    <div class="kick">How it works</div>
+    <h2 class="sec-h">Three steps. About two weeks.</h2>
+    <div class="steps" id="steps"></div>
+  </div></section>
+
+  <section id="get" style="padding-top:0"><div class="wrap">
+    <div class="kick">What you get</div>
+    <h2 class="sec-h">A short, concrete plan you can act on.</h2>
+    <div class="get" id="deliv"></div>
+  </div></section>
+
+  <section id="price" style="padding-top:0"><div class="wrap">
+    <div class="kick">Pricing</div>
+    <h2 class="sec-h">A fixed fee, agreed before any work starts.</h2>
+    <div class="price" id="tiers"></div>
+  </div></section>
+
+  <section class="dark cta-band"><div class="wrap">
+    <div class="kick">Next step</div>
+    <h2 class="sec-h">Find the manual work costing your team the most.</h2>
+    <p class="sec-lede" style="margin:0 auto 28px;">A free 30-minute call. If there is no fit, we will say so.</p>
+    <div class="row"><a class="btn" id="book-end" href="#"></a></div>
+  </div></section>
+</main>
+
+<footer class="ft"><div class="wrap"><span id="legal"></span><span>&copy; KHIPUAI</span></div></footer>
+
+<script type="module">
+import { C } from '../../shared/content.js';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+for (const id of ['book-top','book-hero','book-end']) $(id).href = C.booking;
+$('book-hero').textContent = C.hero.cta; $('book-end').textContent = C.hero.cta;
+$('assess').textContent = C.hero.ctaAlt;
+$('eyebrow').textContent = C.hero.eyebrow;
+$('h1').innerHTML = `${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em>`;
+$('lede').textContent = C.hero.sub;
+$('trust').innerHTML = C.trust.map(([t,d]) => `<div><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join('');
+$('prob-h').textContent = C.problem.title;
+$('prob-lead').textContent = C.problem.lead;
+$('prob').innerHTML = C.problem.items.map(x => `<li>${esc(x)}</li>`).join('');
+$('stance').innerHTML = `<strong>${esc(C.stance.lead)}</strong> <em>${esc(C.stance.rest)}</em>`;
+$('steps').innerHTML = C.steps.map(([t,d]) => `<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
+$('deliv').innerHTML = C.deliverables.map(([t,d]) => `<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
+$('tiers').innerHTML = C.pricing.tiers.map(t => `<div class="tier${t.featured?' f':''}"><div class="kick">${esc(t.name)}</div>
+  <div class="amt">${esc(t.amount)}</div><div class="unit">${esc(t.unit)}</div><p>${esc(t.for)}</p></div>`).join('')
+  + `<aside><p>${esc(C.pricing.note)}</p><p>${esc(C.pricing.credit)}</p></aside>`;
+$('legal').textContent = C.legal;
+
+/* The map. Generic systems every back office has, so the visitor recognises
+   their own week in it. The "Today" labels are the problem list, not new
+   claims; the automated path keeps a person approving before anything posts. */
+const icon = {
+  mail:'<path d="M3 6h18v12H3z M3 6l9 7 9-7"/>',
+  doc:'<path d="M6 3h9l4 4v14H6z M14 3v5h5 M9 13h7 M9 17h5"/>',
+  grid:'<path d="M4 4h16v16H4z M4 10h16 M4 15h16 M10 4v16"/>',
+  book:'<path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z M5 16h14"/>',
+  check:'<path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z M8 12l3 3 5-6"/>',
+};
+const nodes = [
+  ['mail','Email inbox','The invoice arrives as an attachment'],
+  ['doc','PDF','Totals, dates and line items inside'],
+  ['grid','Spreadsheet','The tracker everyone keeps'],
+  ['check','Approval','A manager signs off', true],
+  ['book','Accounting system','Where it finally gets posted'],
+];
+const edges = {
+  manual: ['Opened and read by hand','Retyped line by line','Chased across inboxes','Re-keyed into a second system'],
+  auto:   ['Read automatically','Fields filled, sources linked','Routed to the right person','Posted after a person approves'],
+};
+const foot = {
+  manual: 'Four handoffs, each one a person copying or chasing.',
+  auto: 'The machine prepares the work. A person still approves every entry that matters.',
+};
+const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${icon[k]}</svg>`;
+let mode = 'manual';
+function draw(){
+  $('flow').className = 'flow ' + mode;
+  $('flow').innerHTML = nodes.map(([k,t,d,gate],i) =>
+    `<li class="node${gate?' gate':''}" data-i="${i}"><div class="ic">${svg(k)}</div><div><b>${esc(t)}</b><span>${esc(d)}</span></div></li>`
+    + (i < edges[mode].length ? `<li class="edge" aria-label="${esc(edges[mode][i])}"><span class="tag">${mode==='manual'?'Manual':'Automatic'}: ${esc(edges[mode][i])}</span></li>` : '')
+  ).join('');
+  $('mapfoot').textContent = foot[mode];
+}
+document.querySelectorAll('.toggle button').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll('.toggle button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  draw();
+}));
+draw();
+
+// A light highlight walks the path so the eye follows the document. Off for
+// reduced motion: the map reads the same standing still.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let step = 0;
+  setInterval(() => {
+    document.querySelectorAll('.node').forEach(n => n.classList.toggle('on', +n.dataset.i === step));
+    step = (step + 1) % nodes.length;
+  }, 1400);
+}
+</script>
+</body>
+</html>

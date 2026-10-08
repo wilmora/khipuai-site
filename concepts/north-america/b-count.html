@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- CONCEPT B: "The Count", North America version. Not live.
+     The current Kinetic homepage with the khipu taken out: the opening
+     photograph is replaced by an hours calculator, and the cord across the
+     site loses its knots, so it reads as a line of light rather than a rope.
+     Everything else, including the quote tool, is the live homepage as is.
+     No analytics here, so concept reviews do not count as site traffic. -->
+<title>Concept B: The Count | KHIPUAI</title>
+<meta name="description" content="Find the manual work costing your team the most. KHIPUAI maps complex back-office workflows, quantifies the bottlenecks, and gives you a defensible first move.">
+
+<link rel="stylesheet" href="../../shared/assets/fonts.css">
+<link rel="stylesheet" href="../../shared/kinetic.css">
+<link rel="icon" href="../../shared/assets/mark.svg">
+<style>
+/* Knots off: without them the cord is a line of light, not a knotted rope. */
+.cord circle{display:none;}
+
+/* The calculator takes the place of the khipu photograph on the right. It is
+   centred with auto margins rather than a transform, because the reveal
+   animation owns the transform of anything marked data-rv. */
+.p-start h1{max-width:14ch;}
+.calc{position:absolute;right:4.8vw;top:0;bottom:0;height:fit-content;margin:auto 0;z-index:4;
+  width:min(38vw,470px);padding:24px 26px 20px;border:1px solid rgba(147,167,180,.24);border-radius:4px;
+  background:rgba(8,15,22,.74);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+.calc h2{font-size:.71rem;letter-spacing:.26em;color:var(--hot);margin-bottom:14px;line-height:1.4;}
+.calc .field{margin-bottom:2px;}
+.calc label{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  font-size:.8rem;color:#C4D0D8;}
+.calc output{font-family:'Manrope',sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink);}
+.calc input[type=range]{display:block;width:100%;height:44px;margin:0;accent-color:var(--hot);cursor:pointer;}
+.calc .res{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;padding-top:16px;
+  border-top:1px solid rgba(147,167,180,.22);}
+.calc .big{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(1.9rem,2.9vw,2.8rem);
+  letter-spacing:-.04em;line-height:1;color:var(--hot);font-variant-numeric:tabular-nums;}
+.calc .big.cost{color:var(--ink);}
+.calc .res span{display:block;margin-top:6px;font-size:.74rem;color:var(--muted);line-height:1.35;}
+.calc .note{margin:14px 0 0;font-size:.72rem;color:var(--dim);line-height:1.45;}
+
+.concept-tag{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:62;margin:0;
+  font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);white-space:nowrap;}
+.concept-tag a{color:var(--copper);}
+
+@media (min-width:901px) and (max-height:740px) and (min-height:501px){
+  .calc{padding:18px 22px 16px;}
+  .calc h2{margin-bottom:8px;}
+  .calc input[type=range]{height:40px;}
+  .calc .note{display:none;}
+}
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
+  .calc{position:relative;right:auto;top:auto;bottom:auto;margin:30px 0 0;width:100%;height:auto;}
+  .concept-tag{display:none;}
+}
+@media (max-width:420px){ .calc .res{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#p-start">Skip to content</a>
+
+<header class="hd">
+  <a class="bd" href="./"><img src="../../shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav id="nav" aria-label="Sections"></nav>
+  <div class="lang" role="group" aria-label="Region">
+    <span class="on" aria-current="true">US / CA</span>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="/" aria-label="View the Peru and Latin America site">PE</a>
+  </div>
+  <a class="hd-cta" id="header-book" href="#">Book a call <span aria-hidden="true">&rarr;</span></a>
+</header>
+
+<div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
+
+<main class="track" id="track"></main>
+
+<div class="rail"><i id="railfill"></i></div>
+
+<p class="concept-tag">Concept B, not live. <a href="./">All concepts</a></p>
+
+<div class="foot">
+  <div class="hint" id="hint"><span>Scroll</span><span class="ar">&rarr;</span></div>
+</div>
+
+<script type="module">
+import { buildKinetic, esc, featureIcon, heroProofIcon, mountQuote, setQuoteBooking } from '../../shared/kinetic.js';
+import { C } from '../../shared/content.js';
+import { getQuestions, askQuote, fmt } from '../../shared/quote.js';
+
+document.getElementById('header-book').href = C.booking;
+
+// `at` sets where the content sits vertically. Varying it is most of what
+// stops a horizontal site reading as a deck.
+const P = [
+  { id:'start', n:'Overview', navOrder:1, at:'at-mid', html:`
+    <div class="inner">
+      <div class="kick" data-rv>${esc(C.hero.eyebrow)}</div>
+      <h1 data-rv>Dozens of hours a month.<em>Nobody has counted them.</em></h1>
+      <p class="lede" data-rv>${esc(C.hero.sub)}</p>
+      <div class="row" data-rv>
+        <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+        <button class="btn line" data-to="fee">Find your starting point</button>
+      </div>
+    </div>
+    <form class="calc" data-rv aria-labelledby="calc-h" onsubmit="return false">
+      <h2 id="calc-h">Count yours in 10 seconds</h2>
+      <div class="field">
+        <label for="calc-people">People doing back-office admin <output for="calc-people" id="o-people"></output></label>
+        <input type="range" id="calc-people" min="1" max="60" value="8">
+      </div>
+      <div class="field">
+        <label for="calc-hours">Hours each, per week, copying, chasing and re-keying <output for="calc-hours" id="o-hours"></output></label>
+        <input type="range" id="calc-hours" min="1" max="20" value="5">
+      </div>
+      <div class="field">
+        <label for="calc-rate">Loaded cost per hour, USD <output for="calc-rate" id="o-rate"></output></label>
+        <input type="range" id="calc-rate" min="20" max="120" step="5" value="45">
+      </div>
+      <div class="res" aria-live="polite">
+        <div><div class="big" id="r-hours">0</div><span>hours a year on work a computer should do</span></div>
+        <div><div class="big cost" id="r-cost">$0</div><span>a year in staff time spent on it</span></div>
+      </div>
+      <p class="note">Your numbers, our arithmetic: people &times; hours &times; 48 weeks &times; cost. The audit replaces these guesses with measured ones.</p>
+    </form>
+    <div class="hero-proof" data-rv aria-label="Why KHIPUAI">
+      ${C.heroProof.map(([title,detail],i)=>`<div>${heroProofIcon(i)}<p><strong>${esc(title)}</strong><span>${esc(detail)}</span></p></div>`).join('')}
+    </div>` },
+
+  /* The id stays 'problem'. It is the URL fragment, so renaming it would break
+     #problem anywhere it has already been shared, and it is never shown. The
+     label is the only part anyone reads. */
+  { id:'problem', n:'Patterns', navOrder:2, at:'at-low', html:`
+    <h2 class="say" data-rv style="max-width:17ch;">Where the hours <em>actually go.</em></h2>
+    <ul class="runlist" data-rv>${C.problem.items.map((t,i)=>`<li>${featureIcon('problem',i)}<span>${esc(t)}</span></li>`).join('')}</ul>
+    <p class="stance" data-rv><strong>${esc(C.stance.lead)}</strong> <em>${esc(C.stance.rest)}</em></p>` },
+
+  { id:'get', n:'Results', navOrder:4, at:'at-top', html:`
+    <div class="kick" data-rv>The deliverable</div>
+    <h2 class="say" data-rv style="max-width:20ch;">A short, concrete plan <em>you can act on.</em></h2>
+    <div class="cols c6 visual-cols" data-rv>${C.deliverables.map(([t,d],i)=>`<div>${featureIcon('deliverable',i)}<h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <div class="nolines" data-rv>${C.noLines.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+    <span class="swipe-note">Swipe the row &rarr;</span>` },
+
+  { id:'process', n:'Approach', navOrder:3, at:'at-mid', html:`
+    <h2 class="say" data-rv style="max-width:16ch;">Three steps. <em>About two weeks.</em></h2>
+    <div class="cols c3 process-cols" data-rv>${C.steps.map(([t,d],i)=>`<div><div class="process-mark">${featureIcon('process',i)}<b>0${i+1}</b></div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('')}</div>
+    <span class="swipe-note">Swipe the row &rarr;</span>
+    <p class="fine" data-rv>${esc(C.legal)}</p>` },
+
+  { id:'work', n:'Work', navOrder:5, at:'at-low', html:`
+    <div class="kick" data-rv>Ways we help</div>
+    <h2 class="say" data-rv style="max-width:22ch;">Built around the work <em>your team already does.</em></h2>
+    <div class="cols c6 visual-cols work-cols" data-rv>${C.work.map((w,i)=>`<div>${featureIcon('work',i)}<b>${esc(w.big)}</b><span class="cap">${esc(w.lab)}</span>
+      <h3 style="margin-top:12px;">${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join('')}</div>
+    <span class="swipe-note">Swipe the row &rarr;</span>
+    <p class="fine" data-rv>${esc(C.disclaimer)}</p>` },
+
+  { id:'fee', n:'Quote', nav:false, at:'at-top', html:`
+    <div class="kick" data-rv>Project fit and estimate</div>
+    <h2 class="say" data-rv style="max-width:18ch;">Find your <em>best starting point.</em></h2>
+    <div class="quote-wrap" id="quote" data-rv></div>` },
+
+{ id:'fit', n:'Fit', nav:false, at:'at-mid', html:`
+    <div class="kick" data-rv>Who it is for</div>
+    <h2 class="say" data-rv style="max-width:20ch;">Worth doing, <em>or worth saying no to.</em></h2>
+    <div class="fit" data-rv>
+      <div class="yes">
+        <h3>${esc(C.fit.forTitle)}</h3>
+        <ul>${C.fit.forYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+      <div class="no">
+        <h3>${esc(C.fit.notTitle)}</h3>
+        <ul>${C.fit.notForYou.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </div>
+    </div>` },
+
+  { id:'questions', n:'Questions', nav:false, at:'at-mid', html:`
+    <h2 class="say" data-rv style="max-width:18ch;">The things <em>people actually ask.</em></h2>
+    <div class="qa" data-rv>${C.faq.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>` },
+
+  { id:'operator', n:'About', navOrder:6, at:'at-low', html:`
+    <div class="kick" data-rv>Who runs it</div>
+    <h2 class="say quote" data-rv>
+      <em>&ldquo;${esc(C.founder.quote)}&rdquo;</em></h2>
+    <div class="team" data-rv>
+      <div class="member">
+        <img src="../../shared/assets/founder.jpg" alt="${esc(C.founder.name)}, Founder of KHIPUAI">
+        <div>
+          <h3>${esc(C.founder.name)}</h3>
+          <span class="cap">Founder</span>
+          <p>${esc(C.founder.bio)}</p>
+        </div>
+      </div>
+      <div class="member">
+        <img src="../../shared/assets/alex.jpg" alt="Alex Pena, Developer at KHIPUAI">
+        <div>
+          <h3>Alex Pena</h3>
+          <span class="cap">Developer</span>
+          <p>Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-rv style="margin-top:26px;">
+      <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+      <a class="btn line" href="/about/">How KHIPUAI works</a>
+      <a class="btn line" href="/self-assessment/">Take the self-assessment</a>
+    </div>` },
+];
+
+const QT = {
+  step: 'Question', back: 'Back', working: 'Working it out…',
+  recommended: 'Recommended first step', relevant: 'Relevant build pattern',
+  regional: 'Pricing confirmed on the fit call',
+  estimate: 'This is an estimate, not a binding quote. A person confirms it on the call.',
+  placeholder: 'We will confirm regional scope, currency, tax treatment, and pricing with you before any work begins.',
+  book: 'Book a free 30-minute call', restart: 'Start again',
+};
+
+buildKinetic(P, C);
+setQuoteBooking(C.booking);
+mountQuote(document.getElementById('quote'), {
+  QUESTIONS: getQuestions('en'),
+  askQuote: a => askQuote(a, { lang: 'en' }),
+  fmt, t: QT });
+
+/* The calculator. 48 working weeks is printed on the page so a visitor can
+   check it; every figure is their own input, never a KHIPUAI result. */
+const $ = id => document.getElementById(id);
+const num = new Intl.NumberFormat('en-US');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let shown = { h: 0, c: 0 }, run = 0;
+const paint = () => {
+  $('r-hours').textContent = num.format(Math.round(shown.h));
+  $('r-cost').textContent = '$' + num.format(Math.round(shown.c / 100) * 100);
+};
+function tween(target){
+  if (reduce || document.hidden) { shown = target; paint(); return; }
+  const from = { ...shown }, t0 = performance.now(), me = ++run;
+  // Animation frames pause in a background tab; land on the real number anyway.
+  setTimeout(() => { if (me === run) { shown = target; paint(); } }, 600);
+  const step = t => {
+    if (me !== run) return;
+    const k = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - k, 3);
+    shown = { h: from.h + (target.h - from.h) * e, c: from.c + (target.c - from.c) * e };
+    paint(); if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+function calc(){
+  const p = +$('calc-people').value, h = +$('calc-hours').value, r = +$('calc-rate').value;
+  $('o-people').textContent = p; $('o-hours').textContent = h; $('o-rate').textContent = '$' + r;
+  const hours = p * h * 48;
+  tween({ h: hours, c: hours * r });
+}
+['calc-people','calc-hours','calc-rate'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>
