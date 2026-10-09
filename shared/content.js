@@ -7,6 +7,9 @@
 export const C = {
   brand: { name: 'KHIPUAI', founder: 'Wil Mora', email: 'wil@khipuai.co', domain: 'khipuai.co' },
   booking: 'https://calendly.com/wmorapal/30min',
+  // Google Apps Script web app that stores self-assessment leads and emails
+  // the visitor their result (edge/leads/). Empty = the form stays hidden.
+  leads: 'https://script.google.com/macros/s/AKfycbxNF3Rt-NzcxrTMmYtZtVBgGMxO-0fc8hTgLnASUK0UeVUNBHWQvDNCBMqnBWErRLvM/exec',
 
   hero: {
     eyebrow: 'AI automation for recurring-service operations',
@@ -75,10 +78,6 @@ export const C = {
   pricing: {
     note: 'Priced to your situation, not an hourly meter. The estimator gives you a range; we confirm the number on the discovery call, before any work starts.',
     credit: 'The full fee credits toward your build if you hire KHIPUAI to implement within 30 days.',
-    tiers: [
-      { name: 'Standard', amount: '$2,500', unit: 'USD, fixed', for: 'Most small and mid-size firms; one or two departments.', featured: true },
-      { name: 'Plus', amount: '$5,000', unit: 'USD, fixed', for: 'Larger or multi-department firms; several workflows.' },
-    ],
   },
 
   // Capability patterns only. Named projects and measured outcomes are added
@@ -121,7 +120,7 @@ export const C = {
     name: 'Wil Mora',
     role: 'Founder, KHIPUAI',
     quote: 'I built this offer because I kept seeing the same thing in every business I worked in: good people stuck doing work a computer should do.',
-    bio: '15 years on the operating side of real businesses in Peru, the US and Canada, with a finance degree behind it. Supervised high-volume production plants, then led logistics and customer service across 20 plants and 280-plus trucks.',
+    bio: '15 years running operations in high-demand businesses across Canada and the US, where every day ran on deadlines and every delay cost money. I know what manual work really costs because I paid for it in overtime, errors and dropped handoffs. Now I build the automation I wished I had.',
   },
 
   faq: [
@@ -133,6 +132,5 @@ export const C = {
     ['What happens after the audit?', 'If the first opportunity is worth building, KHIPUAI can scope a fixed implementation and stay on for managed improvement. You decide after seeing the roadmap.'],
   ],
 
-  disclaimer: 'Specific client stories and measured outcomes will be added after evidence and publication permission are reviewed.',
   legal: 'KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.',
 };

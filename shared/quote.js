@@ -47,7 +47,7 @@ export const QUOTE_API = null;
    live rather than after. */
 export const REGIONS = {
   na:    { label: { en:'United States & Canada', es:'Estados Unidos y Canadá' }, currency:'USD', symbol:'$', mult:1.00,
-           tax: { en:'plus GST/HST where applicable', es:'más GST/HST cuando aplique' } },
+           tax: { en:'plus GST/HST where applicable', es:'más GST/HST cuando aplique' }, placeholder:true },
   latam: { label: { en:'Latin America', es:'América Latina' }, currency:'USD', symbol:'$', mult:0.60, tax:null, placeholder:true },
   eu:    { label: { en:'Europe & UK', es:'Europa y Reino Unido' }, currency:'EUR', symbol:'€', mult:0.95,
            tax: { en:'plus VAT', es:'más IVA' }, placeholder:true },

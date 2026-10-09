@@ -84,10 +84,6 @@ export const C = {
   pricing: {
     note: 'Ajustado a tu situación, no un contador por horas. El estimador te da un rango; confirmamos la cifra en la llamada de descubrimiento, antes de empezar.',
     credit: 'La tarifa completa se acredita a tu construcción si contratas a KHIPUAI para implementarla dentro de los 30 días.',
-    tiers: [
-      { name: 'Estándar', amount: '$2,500', unit: 'USD, fija', for: 'La mayoría de empresas pequeñas y medianas; uno o dos departamentos.', featured: true },
-      { name: 'Plus', amount: '$5,000', unit: 'USD, fija', for: 'Empresas más grandes o con varios departamentos; varios flujos de trabajo.' },
-    ],
   },
 
   // Solo patrones de capacidad. Los proyectos con nombre y sus resultados se
@@ -125,7 +121,7 @@ export const C = {
     name: 'Wil Mora',
     role: 'Fundador, KHIPUAI',
     quote: 'Creé esta propuesta porque seguía viendo lo mismo en cada empresa en la que trabajé: buena gente atrapada haciendo trabajo que debería hacer una computadora.',
-    bio: '15 años del lado operativo de empresas reales en Perú, Estados Unidos y Canadá, con una carrera en finanzas como base. Supervisó plantas de producción de alto volumen y luego dirigió logística y servicio al cliente en 20 plantas y más de 280 camiones.',
+    bio: '15 años dirigiendo operaciones en empresas de alta demanda en Canadá y Estados Unidos, donde cada día corría contra el reloj y cada retraso costaba dinero. Sé lo que de verdad cuesta el trabajo manual porque lo pagué en horas extra, errores y traspasos que se caían. Hoy construyo la automatización que me hubiera gustado tener.',
   },
 
   faq: [
@@ -137,6 +133,5 @@ export const C = {
     ['¿Qué pasa después de la auditoría?', 'Si vale la pena construir la primera oportunidad, KHIPUAI puede definir una implementación de alcance fijo y continuar con mejora administrada. Tú decides después de ver la hoja de ruta.'],
   ],
 
-  disclaimer: 'Las historias específicas de clientes y sus resultados medidos se agregarán después de revisar la evidencia y el permiso de publicación.',
   legal: 'KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.',
 };
