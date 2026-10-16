@@ -1,16 +1,22 @@
 /* A plain, one-screen trial of the homepage, built only to compare against
    the Kinetic one. Not linked from the live site and marked noindex.
 
-   On a laptop the whole page is one screen: the offer on the left, every
-   other section in a tab panel on the right, and the booking button fixed in
-   the top bar. On a phone the same pieces stack and the page scrolls.
+   Layout: the section tabs sit in the top bar beside the booking button, and
+   each tab fills the screen below. Overview pairs the offer with a diagram of
+   the three steps; AI shows the work before and after, as a diagram rather
+   than a list. On a phone the same pieces stack and the page scrolls.
 
    Every sentence comes from shared/content.js / shared/content.es.js, or from
    a heading or section label the live homepage already uses (passed in as L).
-   Nothing here is new copy, so the comparison is about layout alone. */
+   The diagrams use only that wording plus the site's own line icons, and no
+   numbers that are not already in the copy. */
+import { featureIcon } from '/shared/kinetic.js';
+
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
-const cards = items => items.map(([t, d]) => `<div class="card"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
+const iconCards = (items, group) => items.map(([t, d], i) =>
+  `<div class="card">${featureIcon(group, i)}<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></div>`).join('');
+const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 
 export function render(C, L) {
   document.title = L.title;
@@ -18,26 +24,56 @@ export function render(C, L) {
   top.href = C.booking;
   top.textContent = L.bookShort;
 
-  // id = the live homepage's section id, so a shared #portfolio-style link
-  // means the same thing on both. Labels are the live homepage's own.
+  // ids match the live homepage's section ids, so #work or #security means
+  // the same thing on both. Labels are the live homepage's own.
   const tabs = [
-    ['problem', L.tabs.problem, `
-      ${h2(L.problem[0], L.problem[1])}
-      <p>${esc(C.problem.lead)}</p>
-      <ul class="ticks">${C.problem.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
-      <p class="strong">${esc(C.problem.close)}</p>`],
+    ['start', L.tabs.start, `
+      <div class="overview">
+        <div class="hero">
+          <p class="kick">${esc(C.hero.eyebrow)}</p>
+          <h1>${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em></h1>
+          <p class="lede">${esc(C.hero.sub)}</p>
+          <div class="ctas">
+            <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
+            <a class="btn line" href="/self-assessment/">${esc(C.hero.ctaAlt)}</a>
+          </div>
+          <ul class="trust">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>
+        </div>
+        <figure class="flow" aria-labelledby="flow-h">
+          <figcaption id="flow-h">${h2(L.steps[0], L.steps[1])}</figcaption>
+          <ol class="timeline">
+            ${C.steps.map(([t, d], i) => `<li><span class="node">${featureIcon('process', i)}<b>0${i + 1}</b></span>
+              <div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join('')}
+            <li class="end"><span class="node">${featureIcon('deliverable', 5)}</span>
+              <div><h3>${esc(C.deliverables[5][0])}</h3><p>${esc(C.deliverables[5][1])}</p></div></li>
+          </ol>
+          <p class="note">${esc(C.legal)}</p>
+        </figure>
+      </div>`],
+
+    // Patterns and AI as one picture: the manual work today on the left, the
+    // same work with AI drafting and a person approving on the right.
     ['ai', L.tabs.ai, `
-      ${h2(C.ai.title, C.ai.titleEm)}
-      <p>${esc(C.ai.lead)}</p>
-      <div class="grid g3">${cards(C.ai.points)}</div>`],
-    ['process', L.tabs.process, `
-      ${h2(L.steps[0], L.steps[1])}
-      <ol class="steps">${C.steps.map(([t, d]) => `<li><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('')}</ol>
-      <p class="note">${esc(C.legal)}</p>`],
+      ${h2(L.problem[0], L.problem[1])}
+      <div class="ba">
+        <section class="before" aria-labelledby="ba-before">
+          <h3 id="ba-before">${esc(C.problem.lead)}</h3>
+          <ul>${C.problem.items.map((x, i) => `<li>${featureIcon('problem', i)}<span>${esc(x)}</span></li>`).join('')}</ul>
+        </section>
+        <span class="ba-arrow">${ARROW}</span>
+        <section class="after" aria-labelledby="ba-after">
+          <h3 id="ba-after">${esc(C.ai.title)} ${esc(C.ai.titleEm)}</h3>
+          <p>${esc(C.ai.lead)}</p>
+          <ul>${C.ai.points.map(([t, d], i) => `<li>${featureIcon('ai', i)}<span><strong>${esc(t)}</strong> ${esc(d)}</span></li>`).join('')}</ul>
+        </section>
+      </div>
+      <p class="strong">${esc(C.problem.close)}</p>`],
+
     ['get', L.tabs.get, `
       ${h2(L.get[1], L.get[2])}
-      <div class="grid g3">${cards(C.deliverables)}</div>
+      <div class="grid g3">${iconCards(C.deliverables, 'deliverable')}</div>
       <ul class="nolines">${C.noLines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`],
+
     ['work', L.tabs.work, `
       ${h2(C.portfolio.title, C.portfolio.titleEm)}
       <table class="pf">
@@ -48,55 +84,47 @@ export function render(C, L) {
       </table>
       <p class="note">${esc(C.portfolio.note)}</p>
       <p class="callout">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a></p>`],
+
+    // Names as text, not logos: each brand's guidelines require a licence or
+    // written permission before a third party shows its logo.
     ['tools', L.tabs.tools, `
       ${h2(C.tools.title, C.tools.titleEm)}
       <ul class="tools">${C.tools.items.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>
       <p class="note">${esc(C.tools.note)}</p>`],
+
     ['security', L.tabs.security, `
       ${h2(C.security.title, C.security.titleEm)}
-      <div class="grid g3">${cards(C.security.points)}</div>
+      <div class="grid g3">${iconCards(C.security.points, 'security')}</div>
       <p class="more"><a href="${L.securityHref}">${esc(C.security.link)} &rarr;</a></p>`],
+
     ['fit', L.tabs.fit, `
       ${h2(L.fit[1], L.fit[2])}
       <div class="grid g2">
-        <div class="card yes"><h3>${esc(C.fit.forTitle)}</h3><ul>${C.fit.forYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div class="card no"><h3>${esc(C.fit.notTitle)}</h3><ul>${C.fit.notForYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="card yes"><div><h3>${esc(C.fit.forTitle)}</h3><ul>${C.fit.forYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
+        <div class="card no"><div><h3>${esc(C.fit.notTitle)}</h3><ul>${C.fit.notForYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
       </div>`],
+
     ['questions', L.tabs.questions, `
       ${h2(L.faq[0], L.faq[1])}
       <div class="faq">${C.faq.map(([q, a]) => `<details name="faq"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>`],
+
     ['operator', L.tabs.operator, `
       <h2>${esc(L.aboutKick)}</h2>
       <blockquote>&ldquo;${esc(C.founder.quote)}&rdquo;</blockquote>
       <div class="grid g2 team">
-        <div class="member"><img src="/shared/assets/founder.jpg" alt="${esc(L.founderAlt)}" width="64" height="64">
+        <div class="member"><img src="/shared/assets/founder.jpg" alt="${esc(L.founderAlt)}" width="72" height="72">
           <div><h3>${esc(C.founder.name)}</h3><p class="role">${esc(C.founder.role)}</p><p>${esc(C.founder.bio)}</p></div></div>
-        <div class="member"><img src="/shared/assets/alex.jpg" alt="${esc(L.alex.alt)}" width="64" height="64">
+        <div class="member"><img src="/shared/assets/alex.jpg" alt="${esc(L.alex.alt)}" width="72" height="72">
           <div><h3>Alex Pena</h3><p class="role">${esc(L.alex.role)}</p><p>${esc(L.alex.bio)}</p></div></div>
       </div>
       <p class="more"><a href="${L.aboutHref}">${esc(L.aboutLink)} &rarr;</a></p>`],
   ];
 
-  document.getElementById('main').innerHTML = `
-  <section class="hero" aria-labelledby="h1">
-    <p class="kick">${esc(C.hero.eyebrow)}</p>
-    <h1 id="h1">${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em></h1>
-    <p class="lede">${esc(C.hero.sub)}</p>
-    <div class="ctas">
-      <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-      <a class="btn line" href="/self-assessment/">${esc(C.hero.ctaAlt)}</a>
-    </div>
-    <ul class="trust">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>
-  </section>
-
-  <section class="sections" aria-label="${esc(L.tabsLabel)}">
-    <div class="tablist" role="tablist" aria-label="${esc(L.tabsLabel)}">
-      ${tabs.map(([id, label], i) => `<button type="button" role="tab" id="tab-${id}" aria-controls="panel-${id}"
-        aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(label)}</button>`).join('')}
-    </div>
-    ${tabs.map(([id, , html], i) => `<div class="panel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}"
-      tabindex="0"${i === 0 ? '' : ' hidden'}>${html}</div>`).join('')}
-  </section>`;
+  document.getElementById('tabs').innerHTML = tabs.map(([id, label], i) =>
+    `<button type="button" role="tab" id="tab-${id}" aria-controls="panel-${id}"
+      aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(label)}</button>`).join('');
+  document.getElementById('main').innerHTML = tabs.map(([id, , html], i) =>
+    `<div class="panel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}" tabindex="0"${i === 0 ? '' : ' hidden'}>${html}</div>`).join('');
 
   mountTabs(tabs.map(([id]) => id));
 }
