@@ -12,7 +12,9 @@ html{scroll-behavior:smooth;scroll-padding-top:80px;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',-apple-system,"Segoe UI",sans-serif;
   font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
 h1,h2,h3{font-family:'Manrope','DM Sans',sans-serif;letter-spacing:-.02em;line-height:1.15;margin:0;}
-h1 em,h2 em{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-style:italic;color:var(--copper-ink);letter-spacing:0;}
+/* The second half of each heading reads as part of the same line: same
+   font, weight, colour and spacing, not a contrasting italic. */
+h1 em,h2 em{font:inherit;font-style:normal;color:inherit;letter-spacing:inherit;}
 a{color:var(--copper-ink);}
 :focus-visible{outline:3px solid var(--hot);outline-offset:3px;border-radius:4px;}
 img{max-width:100%;}
