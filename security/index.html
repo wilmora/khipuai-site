@@ -12,7 +12,7 @@
   gtag('config', 'G-8M0ENQ1NBS');
 </script>
 <title>Security and Data Governance | KHIPUAI</title>
-<meta name="description" content="How KHIPUAI keeps client data safe while using AI: business API only, least-privilege access, sensitive fields kept out, a full audit trail, and a person approving every important action.">
+<meta name="description" content="How KHIPUAI keeps client data safe: AI writes and tests the code using made-up or redacted data, least-privilege access, a full audit trail, and a person approving every important action.">
 <link rel="canonical" href="https://khipuai.co/security/">
 <link rel="alternate" type="text/markdown" href="/security/index.md">
 <link rel="alternate" hreflang="en" href="https://khipuai.co/security/">
@@ -60,15 +60,17 @@
 <main class="wrap" id="main">
   <a class="logo" href="/">KHIPU<span class="dot">A</span>I</a>
   <h1>Security and data governance</h1>
-  <p class="muted">We use AI so your staff get more done and your customers get better service. Using AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during the AI Automation Audit and in anything we build afterward.</p>
+  <p class="muted">We use AI to build software that helps your staff get more done and your customers get better service. Building with AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during the AI Automation Audit and in anything we build afterward.</p>
   <hr>
 
-  <h2>How we use AI with your data</h2>
+  <h2>How we use AI</h2>
   <ul>
-    <li><strong>No public AI apps.</strong> Client data reaches Claude only through Anthropic’s business API, under terms that do not use it to train AI models. It is never pasted into consumer chat apps.</li>
-    <li><strong>Sensitive fields kept out.</strong> Details like social security numbers and bank accounts are masked or left out of what the AI sees.</li>
-    <li><strong>People approve.</strong> The AI prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.</li>
-    <li><strong>A full audit trail.</strong> Every AI-prepared action is logged with who approved it and when.</li>
+    <li><strong>Built with test data.</strong> We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.</li>
+    <li><strong>The code does the work.</strong> What we deliver is code that reads, sorts and drafts the same way every time, inside your systems.</li>
+    <li><strong>AI in live systems.</strong> Where a system uses AI while it runs, such as answering customer messages or sorting support tickets, it goes through Anthropic’s business API, under terms that do not use the data to train AI models. Never consumer chat apps.</li>
+    <li><strong>Sensitive fields kept out.</strong> In those systems, details like social security numbers and bank accounts are masked or left out of what the AI sees.</li>
+    <li><strong>People approve.</strong> The system prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.</li>
+    <li><strong>A full audit trail.</strong> Every action the system prepares is logged with who approved it and when.</li>
   </ul>
 
   <h2>Access and storage</h2>

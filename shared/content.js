@@ -74,15 +74,18 @@ export const C = {
     credit: 'The full fee credits toward your build if you hire KHIPUAI to implement within 30 days.',
   },
 
-  /* How the AI is used, said plainly for the person deciding to buy. The
-     human-approval line is the point of the screen, not a footnote. */
+  /* How the AI is used, said plainly for the person deciding to buy. AI
+     writes and tests the code; the delivered code does the work. Only the
+     customer-conversation and ticket-sorting projects call an AI model while
+     they run (confirmed by KHIPUAI 2026-10-16). The human-approval line is the
+     point of the screen, not a footnote. */
   ai: {
     kick: 'How we use AI',
     title: 'Your staff get more done.',
     titleEm: 'Your customers get better service.',
-    lead: 'We build with Claude, by Anthropic, and other large language models (LLMs): AI that reads, writes and summarizes like a careful assistant. It does the reading, sorting and first drafts. Your people make the decisions.',
+    lead: 'We use Claude, by Anthropic, and other large language models (LLMs) to write and test the software, not to handle your records. The code we deliver does the reading, sorting and first drafts the same way every time, inside your systems. Your people make the decisions.',
     points: [
-      ['For your staff', 'The AI reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.'],
+      ['For your staff', 'The code reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.'],
       ['For your customers', 'Faster, consistent answers at any hour, using your own prices, rules and policies, with a clear handoff to a person when it matters.'],
       ['For you', 'A person approves every important action: anything that moves money, changes a record or commits you to a customer. Every approval is logged.'],
     ],
@@ -133,13 +136,15 @@ export const C = {
       ['monday.com', 'Projects and team workflows'],
       ['Google Search Console', 'How your site appears in Google search'],
       ['Meta', 'WhatsApp, Facebook and Instagram for business'],
-      ['Claude by Anthropic', 'The AI models behind the reading and drafting'],
+      ['Claude by Anthropic', 'The AI we use to write and test the code'],
     ],
     note: 'Not on the list? We confirm on the fit call whether your system can be connected. Product names are trademarks of their owners; listing them is not a claim of partnership or endorsement.',
   },
 
   /* Security and data governance. Every line here was confirmed as current
-     practice by KHIPUAI on 2026-10-16. Do not add a practice, certification
+     practice by KHIPUAI on 2026-10-16, including that client data is never
+     sent to an AI model while building and that only live customer-
+     conversation and ticket-sorting systems call one. Do not add a practice, certification
      or standard without the same confirmation. The homepage shows the six a
      buyer asks about first; the full list, and the SOP note, are written out
      in security/index.html and es/security/index.html. Change both together. */
@@ -148,11 +153,11 @@ export const C = {
     title: 'Your data stays yours.',
     titleEm: 'Not in a public chatbot.',
     points: [
-      ['No public AI apps', 'Client data reaches Claude only through Anthropic’s business API, under terms that do not use it to train AI models. It is never pasted into consumer chat apps.'],
+      ['Built with test data', 'We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.'],
       ['Your systems, your data', 'Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.'],
       ['Least-privilege access', 'Separate accounts with only the access the job needs, removed when the work ends.'],
-      ['Sensitive fields kept out', 'Details like social security numbers and bank accounts are masked or left out of what the AI sees.'],
-      ['A full audit trail', 'Every AI-prepared action is logged with who approved it and when.'],
+      ['AI in live systems', 'Where a system uses AI while it runs, such as answering customer messages, it goes through Anthropic’s business API, and details like social security numbers are masked or left out.'],
+      ['A full audit trail', 'Every action the system prepares is logged with who approved it and when.'],
       ['Returned or deleted', 'At the end of an engagement, your data is returned or deleted.'],
     ],
     link: 'Read the full security page',
@@ -190,7 +195,7 @@ export const C = {
 
   faq: [
     ['What do you need from us?', 'A couple of hours of your team’s time across a week, and a look at the workflows involved. Access is read-only. Nothing is automated or changed during the audit.'],
-    ['Is our data safe?', 'Yes. Access is read-only during the audit. Anything we build runs inside your own security controls, with least-privilege access, sensitive fields kept away from the AI, and a person approving every important action. The security page sets out every practice.'],
+    ['Is our data safe?', 'Yes. Access is read-only during the audit. We build and test with made-up or redacted data, so your records are never sent to an AI model while we build. What we deliver runs inside your own security controls, with least-privilege access and a person approving every important action. The security page sets out every practice.'],
     ['Will AI make changes on its own?', 'No. Everything is built draft-first: the machine prepares the work, a person approves every entry that matters.'],
     ['What if you do not find much?', 'The audit says so. That honesty is the product. If there is not much worth automating, you have spent a small, agreed fee to find out instead of a year.'],
     ['Do we have to build with you?', 'No. The roadmap is yours to act on with anyone, including your own team.'],
