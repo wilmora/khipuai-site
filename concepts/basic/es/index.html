@@ -14,15 +14,14 @@
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<div class="concept-bar"><div class="wrap"><span>Prueba: una página de inicio simple que se lee hacia abajo, para comparar con el sitio actual. No está publicada.</span><a href="/es/">Sitio actual</a></div></div>
 <header class="hd"><div class="wrap">
-  <a class="bd" href="#top"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
-  <nav aria-label="Secciones"><a href="#ai">IA</a><a href="#how">Enfoque</a><a href="#portfolio">Portafolio</a><a href="#security">Seguridad</a><a href="#about">Nosotros</a></nav>
+  <a class="bd" href="./"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <p class="trial">Prueba, no publicada. <a href="/es/">Sitio actual</a></p>
   <p class="lang"><a href="../" hreflang="en" lang="en" aria-label="View this trial in English">EN</a> / <span aria-current="true">ES</span></p>
   <a class="btn sm" id="book-top" href="#"></a>
 </div></header>
-<main id="main"><noscript><div class="wrap"><p>Esta página de prueba necesita JavaScript. El sitio actual está en <a href="/es/">khipuai.co/es/</a>.</p></div></noscript></main>
-<footer class="ft"><div class="wrap"><span id="legal"></span><span><a href="/es/security/">Seguridad</a> &middot; <a href="/privacy.html">Privacidad</a> &middot; <a href="/contact/">Contacto</a></span></div></footer>
+<main id="main" class="wrap"><noscript><div class="wrap"><p>Esta página de prueba necesita JavaScript. El sitio actual está en <a href="/es/">khipuai.co/es/</a>.</p></div></noscript></main>
+<footer class="ft"><div class="wrap"><a href="/privacy.html">Privacidad</a> &middot; <a href="/contact/">Contacto</a></div></footer>
 <script type="module">
 import { C } from '/shared/content.es.js';
 import { render } from '../basic.js';
@@ -39,6 +38,8 @@ render(C, {
   alex: { alt: 'Alex Pena, desarrollador en KHIPUAI', role: 'Desarrollador',
     bio: 'Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.' },
   aboutHref: '/es/about/', aboutLink: 'Cómo trabaja KHIPUAI',
+  tabs: { problem: 'Patrones', ai: 'IA', process: 'Enfoque', get: 'Resultados', work: 'Portafolio', tools: 'Herramientas', security: 'Seguridad', fit: 'Encaje', questions: 'Preguntas', operator: 'Nosotros' },
+  tabsLabel: 'Secciones',
   securityHref: '/es/security/',
 });
 </script>

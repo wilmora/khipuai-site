@@ -14,15 +14,14 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="concept-bar"><div class="wrap"><span>Trial: a plain homepage that scrolls down, to compare with the current site. Not live.</span><a href="/">Current site</a></div></div>
 <header class="hd"><div class="wrap">
-  <a class="bd" href="#top"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
-  <nav aria-label="Sections"><a href="#ai">AI</a><a href="#how">Approach</a><a href="#portfolio">Portfolio</a><a href="#security">Security</a><a href="#about">About</a></nav>
+  <a class="bd" href="./"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <p class="trial">Trial, not live. <a href="/">Current site</a></p>
   <p class="lang"><span aria-current="true">EN</span> / <a href="./es/" hreflang="es" lang="es" aria-label="Ver esta prueba en español">ES</a></p>
   <a class="btn sm" id="book-top" href="#"></a>
 </div></header>
-<main id="main"><noscript><div class="wrap"><p>This trial page needs JavaScript. The live site is at <a href="/">khipuai.co</a>.</p></div></noscript></main>
-<footer class="ft"><div class="wrap"><span id="legal"></span><span><a href="/security/">Security</a> &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/contact/">Contact</a></span></div></footer>
+<main id="main" class="wrap"><noscript><div class="wrap"><p>This trial page needs JavaScript. The live site is at <a href="/">khipuai.co</a>.</p></div></noscript></main>
+<footer class="ft"><div class="wrap"><a href="/privacy.html">Privacy</a> &middot; <a href="/contact/">Contact</a></div></footer>
 <script type="module">
 import { C } from '/shared/content.js';
 import { render } from './basic.js';
@@ -39,6 +38,8 @@ render(C, {
   alex: { alt: 'Alex Pena, Developer at KHIPUAI', role: 'Developer',
     bio: 'Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.' },
   aboutHref: '/about/', aboutLink: 'How KHIPUAI works',
+  tabs: { problem: 'Patterns', ai: 'AI', process: 'Approach', get: 'Results', work: 'Portfolio', tools: 'Tools', security: 'Security', fit: 'Fit', questions: 'Questions', operator: 'About' },
+  tabsLabel: 'Sections',
   securityHref: '/security/',
 });
 </script>
