@@ -30,11 +30,11 @@ How we use AI
 
 ## Your staff get more done. Your customers get better service.
 
-We build with Claude, by Anthropic, and other large language models (LLMs): AI that reads, writes and summarizes like a careful assistant. It does the reading, sorting and first drafts. Your people make the decisions.
+We use Claude, by Anthropic, and other large language models (LLMs) to write and test the software, not to handle your records. The code we deliver does the reading, sorting and first drafts the same way every time, inside your systems. Your people make the decisions.
 
 ### For your staff
 
-The AI reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.
+The code reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.
 
 ### For your customers
 
@@ -115,7 +115,7 @@ Tools we work with
 - monday.com: Projects and team workflows
 - Google Search Console: How your site appears in Google search
 - Meta: WhatsApp, Facebook and Instagram for business
-- Claude by Anthropic: The AI models behind the reading and drafting
+- Claude by Anthropic: The AI we use to write and test the code
 
 Not on the list? We confirm on the fit call whether your system can be connected. Product names are trademarks of their owners; listing them is not a claim of partnership or endorsement.
 
@@ -123,9 +123,9 @@ Security and data governance
 
 ## Your data stays yours. Not in a public chatbot.
 
-### No public AI apps
+### Built with test data
 
-Client data reaches Claude only through Anthropic’s business API, under terms that do not use it to train AI models. It is never pasted into consumer chat apps.
+We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.
 
 ### Your systems, your data
 
@@ -135,13 +135,13 @@ Wherever possible we build inside your own environment, such as your Microsoft A
 
 Separate accounts with only the access the job needs, removed when the work ends.
 
-### Sensitive fields kept out
+### AI in live systems
 
-Details like social security numbers and bank accounts are masked or left out of what the AI sees.
+Where a system uses AI while it runs, such as answering customer messages, it goes through Anthropic’s business API, and details like social security numbers are masked or left out.
 
 ### A full audit trail
 
-Every AI-prepared action is logged with who approved it and when.
+Every action the system prepares is logged with who approved it and when.
 
 ### Returned or deleted
 
@@ -174,7 +174,7 @@ A couple of hours of your team’s time across a week, and a look at the workflo
 
 ### Is our data safe?
 
-Yes. Access is read-only during the audit. Anything we build runs inside your own security controls, with least-privilege access, sensitive fields kept away from the AI, and a person approving every important action. The security page sets out every practice.
+Yes. Access is read-only during the audit. We build and test with made-up or redacted data, so your records are never sent to an AI model while we build. What we deliver runs inside your own security controls, with least-privilege access and a person approving every important action. The security page sets out every practice.
 
 ### Will AI make changes on its own?
 

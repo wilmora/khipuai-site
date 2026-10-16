@@ -30,11 +30,11 @@ Cómo usamos la IA
 
 ## Tu equipo rinde más. Tus clientes reciben mejor servicio.
 
-Construimos con Claude, de Anthropic, y otros modelos de lenguaje (LLM): IA que lee, redacta y resume como un asistente cuidadoso. Hace la lectura, la clasificación y los primeros borradores. Las decisiones las toma tu gente.
+Usamos Claude, de Anthropic, y otros modelos de lenguaje (LLM) para escribir y probar el software, no para manejar tus registros. El código que entregamos hace la lectura, la clasificación y los primeros borradores siempre de la misma forma, dentro de tus sistemas. Las decisiones las toma tu gente.
 
 ### Para tu equipo
 
-La IA lee los PDFs, correos y hojas de cálculo, completa los campos y redacta el reporte o la respuesta. Tu equipo revisa y aprueba en lugar de volver a escribir.
+El código lee los PDFs, correos y hojas de cálculo, completa los campos y redacta el reporte o la respuesta. Tu equipo revisa y aprueba en lugar de volver a escribir.
 
 ### Para tus clientes
 
@@ -115,7 +115,7 @@ Herramientas con las que trabajamos
 - monday.com: Proyectos y flujos de trabajo del equipo
 - Google Search Console: Cómo aparece tu sitio en las búsquedas de Google
 - Meta: WhatsApp, Facebook e Instagram para empresas
-- Claude de Anthropic: Los modelos de IA detrás de la lectura y la redacción
+- Claude de Anthropic: La IA con la que escribimos y probamos el código
 
 ¿No está en la lista? En la llamada de encaje confirmamos si tu sistema se puede conectar. Los nombres de productos son marcas de sus dueños; mencionarlos no implica una alianza ni un respaldo.
 
@@ -123,9 +123,9 @@ Seguridad y gobierno de datos
 
 ## Tus datos siguen siendo tuyos. No van a un chatbot público.
 
-### Nada de apps públicas de IA
+### Construido con datos de prueba
 
-Los datos de clientes llegan a Claude solo por la API empresarial de Anthropic, cuyos términos no permiten usarlos para entrenar modelos. Nunca van a apps de chat públicas.
+Usamos IA para escribir y probar el código, con datos inventados o anonimizados. Tus registros nunca se envían a un modelo de IA mientras construimos.
 
 ### Tus sistemas, tus datos
 
@@ -135,13 +135,13 @@ Siempre que es posible construimos dentro de tu propio entorno, como tu Microsof
 
 Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.
 
-### Datos sensibles fuera
+### IA en sistemas en uso
 
-Datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.
+Si un sistema usa IA al funcionar, como al responder a clientes, va por la API empresarial de Anthropic y oculta datos como números de seguro social.
 
 ### Registro de auditoría completo
 
-Cada acción preparada por la IA queda registrada con quién la aprobó y cuándo.
+Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.
 
 ### Devueltos o eliminados
 
@@ -174,7 +174,7 @@ Un par de horas del tiempo de tu equipo a lo largo de una semana, y una mirada a
 
 ### ¿Están seguros nuestros datos?
 
-Sí. Durante la auditoría el acceso es de solo lectura. Todo lo que construimos corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio, los datos sensibles fuera del alcance de la IA y una persona aprobando cada acción importante. La página de seguridad detalla cada práctica.
+Sí. Durante la auditoría el acceso es de solo lectura. Construimos y probamos con datos inventados o anonimizados, así que tus registros nunca se envían a un modelo de IA mientras construimos. Lo que entregamos corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio y una persona aprobando cada acción importante. La página de seguridad detalla cada práctica.
 
 ### ¿La IA hará cambios por su cuenta?
 

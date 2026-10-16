@@ -1,13 +1,15 @@
 # Seguridad y gobierno de datos
 
-Usamos IA para que tu equipo rinda más y tus clientes reciban mejor servicio. Usar IA no significa entregar tus registros a un tercero. Esta página explica cómo protegemos la información sensible, durante la Auditoría de Automatización con IA y en todo lo que construimos después.
+Usamos IA para construir software que ayuda a tu equipo a rendir más y a tus clientes a recibir mejor servicio. Construir con IA no significa entregar tus registros a un tercero. Esta página explica cómo protegemos la información sensible, durante la Auditoría de Automatización con IA y en todo lo que construimos después.
 
-## Cómo usamos la IA con tus datos
+## Cómo usamos la IA
 
-- **Nada de apps públicas de IA.** Los datos de clientes llegan a Claude solo por la API empresarial de Anthropic, cuyos términos no permiten usarlos para entrenar modelos de IA. Nunca se pegan en apps de chat para consumidores.
-- **Datos sensibles fuera.** Datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.
-- **Las personas aprueban.** La IA prepara el trabajo. Una persona aprueba todo lo importante antes de que ocurra: todo lo que mueve dinero, cambia un registro o te compromete con un cliente.
-- **Registro de auditoría completo.** Cada acción preparada por la IA queda registrada con quién la aprobó y cuándo.
+- **Construido con datos de prueba.** Usamos IA para escribir y probar el código, con datos inventados o anonimizados. Tus registros nunca se envían a un modelo de IA mientras construimos.
+- **El código hace el trabajo.** Lo que entregamos es código que lee, clasifica y redacta siempre de la misma forma, dentro de tus sistemas.
+- **IA en sistemas en uso.** Si un sistema usa IA mientras funciona, como al responder mensajes de clientes o clasificar tickets de soporte, lo hace por la API empresarial de Anthropic, cuyos términos no permiten usar los datos para entrenar modelos de IA. Nunca apps de chat para consumidores.
+- **Datos sensibles fuera.** En esos sistemas, datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.
+- **Las personas aprueban.** El sistema prepara el trabajo. Una persona aprueba todo lo importante antes de que ocurra: todo lo que mueve dinero, cambia un registro o te compromete con un cliente.
+- **Registro de auditoría completo.** Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.
 
 ## Acceso y almacenamiento
 

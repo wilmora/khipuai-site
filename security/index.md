@@ -1,13 +1,15 @@
 # Security and data governance
 
-We use AI so your staff get more done and your customers get better service. Using AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during the AI Automation Audit and in anything we build afterward.
+We use AI to build software that helps your staff get more done and your customers get better service. Building with AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during the AI Automation Audit and in anything we build afterward.
 
-## How we use AI with your data
+## How we use AI
 
-- **No public AI apps.** Client data reaches Claude only through Anthropic’s business API, under terms that do not use it to train AI models. It is never pasted into consumer chat apps.
-- **Sensitive fields kept out.** Details like social security numbers and bank accounts are masked or left out of what the AI sees.
-- **People approve.** The AI prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.
-- **A full audit trail.** Every AI-prepared action is logged with who approved it and when.
+- **Built with test data.** We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.
+- **The code does the work.** What we deliver is code that reads, sorts and drafts the same way every time, inside your systems.
+- **AI in live systems.** Where a system uses AI while it runs, such as answering customer messages or sorting support tickets, it goes through Anthropic’s business API, under terms that do not use the data to train AI models. Never consumer chat apps.
+- **Sensitive fields kept out.** In those systems, details like social security numbers and bank accounts are masked or left out of what the AI sees.
+- **People approve.** The system prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.
+- **A full audit trail.** Every action the system prepares is logged with who approved it and when.
 
 ## Access and storage
 
