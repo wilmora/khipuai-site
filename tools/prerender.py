@@ -48,12 +48,14 @@ FOOTER = {
     'en': [
         ('Contact', '/contact/'),
         ('About', '/about/'),
+        ('Security', '/security/'),
         ('Privacy', '/privacy.html'),
         ('Guide for AI agents (llms.txt)', '/llms.txt'),
     ],
     'es': [
         ('Contacto', '/contact/'),
         ('Nosotros', '/es/about/'),
+        ('Seguridad', '/es/security/'),
         ('Privacidad', '/privacy.html'),
         ('Guía para agentes de IA (llms.txt, en inglés)', '/llms.txt'),
     ],
@@ -82,8 +84,35 @@ EXTRACT = r"""
         out.push({t: 'q', x: clean(s ? text(s) : ''), a});
         continue;
       }
-      if (tag === 'LI') { out.push({t: 'li', x: clean(text(n))}); continue; }
+      // A table becomes one list item per row: "Row heading: cell. Column: cell."
+      if (tag === 'TABLE') {
+        const cols = [...n.querySelectorAll('thead th')].map(th => clean(text(th)));
+        n.querySelectorAll('tbody tr').forEach(tr => {
+          const cells = [...tr.children].map(c => clean(text(c)));
+          const rest = cells.slice(1).map((c, i) => i ? cols[i + 1] + ': ' + c : c).join(' ');
+          out.push({t: 'li', x: cells[0] + ': ' + rest});
+        });
+        continue;
+      }
+      if (tag === 'LI') {
+        const strong = n.querySelector(':scope > strong');
+        const x = clean(text(n));
+        if (strong && n.children.length === 2) {
+          const head = clean(text(strong));
+          out.push({t: 'li', x: head + ': ' + clean(x.slice(head.length))});
+        } else out.push({t: 'li', x});
+        continue;
+      }
       if (tag === 'P' || n.classList.contains('kick') || n.classList.contains('cap')) {
+        // A text link inside a paragraph stays a link: the sentence, then the link.
+        const link = n.querySelector('a.inline-link');
+        if (link) {
+          const lx = clean(text(link));
+          const rest = clean(text(n).replace(link.textContent, ''));
+          if (rest) out.push({t: 'p', x: rest});
+          out.push({t: 'a', x: lx, h: link.getAttribute('href')});
+          continue;
+        }
         const strong = n.querySelector(':scope > strong');
         const x = clean(text(n));
         if (strong && n.children.length === 2) {

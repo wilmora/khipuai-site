@@ -71,6 +71,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://khipuai.co/security/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://khipuai.co/es/security/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://khipuai.co/privacy.html</loc>
     <lastmod>2026-06-03</lastmod>
     <priority>0.2</priority>

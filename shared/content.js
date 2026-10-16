@@ -74,18 +74,89 @@ export const C = {
     credit: 'The full fee credits toward your build if you hire KHIPUAI to implement within 30 days.',
   },
 
-  // Capability patterns only. Named projects and measured outcomes are added
-  // after evidence and publication permission have been reviewed.
-  work: [
-    { t: 'Finance and operations', big: '01', lab: 'Reconcile, draft, approve, report',
-      d: 'Connect recurring operational and financial work across the systems your team already uses, with exceptions routed to the right person.' },
-    { t: 'Document-heavy decisions', big: '02', lab: 'Read, structure, calculate, review',
-      d: 'Turn PDFs, drawings, specifications, emails, and spreadsheets into structured outputs with source evidence and uncertainty clearly flagged.' },
-    { t: 'Customer conversations', big: '03', lab: 'Answer, qualify, quote, hand off',
-      d: 'Give customers faster answers while keeping pricing rules, sensitive decisions, and human takeover under your control.' },
-    { t: 'Internal operations hubs', big: '04', lab: 'One role-aware place to work',
-      d: 'Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.' },
-  ],
+  /* How the AI is used, said plainly for the person deciding to buy. The
+     human-approval line is the point of the screen, not a footnote. */
+  ai: {
+    kick: 'How we use AI',
+    title: 'Your staff get more done.',
+    titleEm: 'Your customers get better service.',
+    lead: 'We build with Claude, by Anthropic, and other large language models (LLMs): AI that reads, writes and summarizes like a careful assistant. It does the reading, sorting and first drafts. Your people make the decisions.',
+    points: [
+      ['For your staff', 'The AI reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.'],
+      ['For your customers', 'Faster, consistent answers at any hour, using your own prices, rules and policies, with a clear handoff to a person when it matters.'],
+      ['For you', 'A person approves every important action: anything that moves money, changes a record or commits you to a customer. Every approval is logged.'],
+    ],
+  },
+
+  /* Projects we have built, with who approves the work in each. Per
+     AGENTS.md: capability patterns only, no client names, no results, until
+     each client has approved publication. The last card is the invitation,
+     not a project. */
+  portfolio: {
+    kick: 'Portfolio',
+    title: 'What we',
+    titleEm: 'have built.',
+    cols: ['Project', 'What it does', 'Who approves'],
+    items: [
+      { t: 'Payroll compliance reporting',
+        d: 'Builds certified payroll reports from payroll data and checks each worker’s pay against the required wage rates.',
+        who: 'Payroll staff review the flags and sign.' },
+      { t: 'Material lists from drawings',
+        d: 'Reads building plans and drafts the material list, each line traced to its drawing.',
+        who: 'Product experts check it before quoting or ordering.' },
+      { t: 'WhatsApp quoting assistant',
+        d: 'Answers questions and prepares quotes on WhatsApp from the business’s own prices, at any hour.',
+        who: 'Staff take over anything outside the rules.' },
+      { t: 'Billing exceptions workbench',
+        d: 'One queue for every billing exception, with customer details from several systems on one screen.',
+        who: 'The billing team resolves each one.' },
+      { t: 'Support tickets with AI triage',
+        d: 'Reads each new ticket, tags its topic and urgency, and routes it to the right person.',
+        who: 'Agents answer every ticket. The AI only sorts.' },
+    ],
+    next: 'Tell us the workflow costing your team the most, and we will tell you honestly if it is worth automating.',
+    nextLink: 'Book a fit call',
+    note: 'Client names and measured results stay private until each client approves publication.',
+  },
+
+  /* The systems we work in. Text, not logos: no logo assets to license, and
+     a footnote so nobody reads the list as a partnership. */
+  tools: {
+    kick: 'Tools we work with',
+    title: 'Built into the systems',
+    titleEm: 'you already run.',
+    items: [
+      ['Business Central', 'Accounting and ERP, part of Microsoft Dynamics 365'],
+      ['Outlook', 'Email, calendar and approvals in Microsoft 365'],
+      ['Azure', 'Microsoft cloud hosting, identity and security'],
+      ['Zendesk', 'Customer support tickets'],
+      ['monday.com', 'Projects and team workflows'],
+      ['Google Search Console', 'How your site appears in Google search'],
+      ['Meta', 'WhatsApp, Facebook and Instagram for business'],
+      ['Claude by Anthropic', 'The AI models behind the reading and drafting'],
+    ],
+    note: 'Not on the list? We confirm on the fit call whether your system can be connected. Product names are trademarks of their owners; listing them is not a claim of partnership or endorsement.',
+  },
+
+  /* Security and data governance. Every line here was confirmed as current
+     practice by KHIPUAI on 2026-10-16. Do not add a practice, certification
+     or standard without the same confirmation. The homepage shows the six a
+     buyer asks about first; the full list, and the SOP note, are written out
+     in security/index.html and es/security/index.html. Change both together. */
+  security: {
+    kick: 'Security and data governance',
+    title: 'Your data stays yours.',
+    titleEm: 'Not in a public chatbot.',
+    points: [
+      ['No public AI apps', 'Client data reaches Claude only through Anthropic’s business API, under terms that do not use it to train AI models. It is never pasted into consumer chat apps.'],
+      ['Your systems, your data', 'Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.'],
+      ['Least-privilege access', 'Separate accounts with only the access the job needs, removed when the work ends.'],
+      ['Sensitive fields kept out', 'Details like social security numbers and bank accounts are masked or left out of what the AI sees.'],
+      ['A full audit trail', 'Every AI-prepared action is logged with who approved it and when.'],
+      ['Returned or deleted', 'At the end of an engagement, your data is returned or deleted.'],
+    ],
+    link: 'Read the full security page',
+  },
 
   /* Brought over from the live landing page, where it qualified leads. The
      "probably not for you" half is the point: a page that says who it is not
@@ -119,7 +190,7 @@ export const C = {
 
   faq: [
     ['What do you need from us?', 'A couple of hours of your team’s time across a week, and a look at the workflows involved. Access is read-only. Nothing is automated or changed during the audit.'],
-    ['Is our data safe?', 'Access is read-only and nothing is changed during the audit. Automations are designed to run inside your existing security controls and create drafts a person approves.'],
+    ['Is our data safe?', 'Yes. Access is read-only during the audit. Anything we build runs inside your own security controls, with least-privilege access, sensitive fields kept away from the AI, and a person approving every important action. The security page sets out every practice.'],
     ['Will AI make changes on its own?', 'No. Everything is built draft-first: the machine prepares the work, a person approves every entry that matters.'],
     ['What if you do not find much?', 'The audit says so. That honesty is the product. If there is not much worth automating, you have spent a small, agreed fee to find out instead of a year.'],
     ['Do we have to build with you?', 'No. The roadmap is yours to act on with anyone, including your own team.'],

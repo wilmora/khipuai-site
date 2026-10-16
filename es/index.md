@@ -26,6 +26,24 @@ Creado para: operadores reales
 
 Antes de comprar otra herramienta, encuentra el trabajo que realmente vale la pena cambiar.
 
+Cómo usamos la IA
+
+## Tu equipo rinde más. Tus clientes reciben mejor servicio.
+
+Construimos con Claude, de Anthropic, y otros modelos de lenguaje (LLM): IA que lee, redacta y resume como un asistente cuidadoso. Hace la lectura, la clasificación y los primeros borradores. Las decisiones las toma tu gente.
+
+### Para tu equipo
+
+La IA lee los PDFs, correos y hojas de cálculo, completa los campos y redacta el reporte o la respuesta. Tu equipo revisa y aprueba en lugar de volver a escribir.
+
+### Para tus clientes
+
+Respuestas más rápidas y consistentes a cualquier hora, con tus propios precios, reglas y políticas, y un traspaso claro a una persona cuando hace falta.
+
+### Para ti
+
+Una persona aprueba cada acción importante: todo lo que mueve dinero, cambia un registro o te compromete con un cliente. Cada aprobación queda registrada.
+
 Qué recibes
 
 ## Un plan corto y concreto sobre el que puedes actuar.
@@ -70,34 +88,66 @@ Semana dos. La hoja de ruta por escrito y una llamada en vivo sobre las principa
 
 KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.
 
-Formas en que ayudamos
+Portafolio
 
-## Construido alrededor del trabajo que tu equipo ya hace.
+## Lo que hemos construido.
 
-Conciliar, preparar, aprobar, reportar
+- Reportes de cumplimiento de nómina: Genera reportes de nómina certificada desde los datos de nómina y revisa el pago de cada trabajador contra las tarifas exigidas. Quién aprueba: Nómina revisa las alertas y firma.
+- Listas de materiales desde planos: Lee los planos y prepara la lista de materiales, cada línea vinculada a su plano. Quién aprueba: Expertos en producto la revisan antes de cotizar o pedir.
+- Asistente de cotización por WhatsApp: Responde preguntas y prepara cotizaciones por WhatsApp con los precios del negocio, a cualquier hora. Quién aprueba: El equipo toma lo que queda fuera de las reglas.
+- Mesa de excepciones de facturación: Una sola cola para cada excepción de facturación, con datos del cliente de varios sistemas en una pantalla. Quién aprueba: Facturación resuelve cada una.
+- Tickets de soporte con clasificación por IA: Lee cada ticket nuevo, marca tema y urgencia, y lo dirige a la persona correcta. Quién aprueba: Los agentes responden cada ticket. La IA solo ordena.
 
-### Finanzas y operaciones
+Cuéntanos qué flujo le cuesta más a tu equipo y te diremos con honestidad si vale la pena automatizarlo.
 
-Conecta el trabajo operativo y financiero recurrente entre los sistemas que tu equipo ya usa, dirigiendo las excepciones a la persona correcta.
+[Agenda una llamada →](https://calendly.com/wmorapal/30min)
 
-Leer, estructurar, calcular, revisar
+Los nombres de los clientes y los resultados medidos se mantienen privados hasta que cada cliente apruebe su publicación.
 
-### Decisiones basadas en documentos
+Herramientas con las que trabajamos
 
-Convierte PDFs, planos, especificaciones, correos y hojas de cálculo en resultados estructurados, con la fuente y la incertidumbre claramente visibles.
+## Integrado en los sistemas que ya usas.
 
-Responder, calificar, cotizar, transferir
+- Business Central: Contabilidad y ERP, parte de Microsoft Dynamics 365
+- Outlook: Correo, calendario y aprobaciones en Microsoft 365
+- Azure: Alojamiento, identidad y seguridad en la nube de Microsoft
+- Zendesk: Tickets de atención al cliente
+- monday.com: Proyectos y flujos de trabajo del equipo
+- Google Search Console: Cómo aparece tu sitio en las búsquedas de Google
+- Meta: WhatsApp, Facebook e Instagram para empresas
+- Claude de Anthropic: Los modelos de IA detrás de la lectura y la redacción
 
-### Conversaciones con clientes
+¿No está en la lista? En la llamada de encaje confirmamos si tu sistema se puede conectar. Los nombres de productos son marcas de sus dueños; mencionarlos no implica una alianza ni un respaldo.
 
-Da respuestas más rápidas sin perder el control humano sobre los precios, las decisiones sensibles y la transferencia al equipo.
+Seguridad y gobierno de datos
 
-Un lugar de trabajo según cada rol
+## Tus datos siguen siendo tuyos. No van a un chatbot público.
 
-### Centros internos de operaciones
+### Nada de apps públicas de IA
 
-Reúne flujos, documentos, tableros, aprobaciones e historial de auditoría en una interfaz construida alrededor del trabajo real del equipo.
+Los datos de clientes llegan a Claude solo por la API empresarial de Anthropic, cuyos términos no permiten usarlos para entrenar modelos. Nunca van a apps de chat públicas.
 
+### Tus sistemas, tus datos
+
+Siempre que es posible construimos dentro de tu propio entorno, como tu Microsoft Azure, y no guardamos copias.
+
+### Acceso de mínimo privilegio
+
+Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.
+
+### Datos sensibles fuera
+
+Datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.
+
+### Registro de auditoría completo
+
+Cada acción preparada por la IA queda registrada con quién la aprobó y cuándo.
+
+### Devueltos o eliminados
+
+Al terminar el proyecto, tus datos se devuelven o se eliminan.
+
+[Lee la página de seguridad completa →](https://khipuai.co/es/security/)
 
 Para quién es
 
@@ -124,7 +174,7 @@ Un par de horas del tiempo de tu equipo a lo largo de una semana, y una mirada a
 
 ### ¿Están seguros nuestros datos?
 
-Sí. Miro cómo fluye el trabajo, no tus secretos. Cualquier cosa que construya después corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio. Recibes un resumen de seguridad de una página para tu equipo de TI.
+Sí. Durante la auditoría el acceso es de solo lectura. Todo lo que construimos corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio, los datos sensibles fuera del alcance de la IA y una persona aprobando cada acción importante. La página de seguridad detalla cada práctica.
 
 ### ¿La IA hará cambios por su cuenta?
 
@@ -167,4 +217,4 @@ Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramie
 ---
 
 Canonical page: https://khipuai.co/es/
-[Contacto](https://khipuai.co/contact/) | [Nosotros](https://khipuai.co/es/about/) | [Privacidad](https://khipuai.co/privacy.html) | [Guía para agentes de IA (llms.txt, en inglés)](https://khipuai.co/llms.txt)
+[Contacto](https://khipuai.co/contact/) | [Nosotros](https://khipuai.co/es/about/) | [Seguridad](https://khipuai.co/es/security/) | [Privacidad](https://khipuai.co/privacy.html) | [Guía para agentes de IA (llms.txt, en inglés)](https://khipuai.co/llms.txt)

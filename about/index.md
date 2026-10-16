@@ -97,4 +97,4 @@ It is a working standard, not a certification.
 ---
 
 Canonical page: https://khipuai.co/about/
-[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
+[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Security](https://khipuai.co/security/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
