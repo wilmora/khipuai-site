@@ -26,6 +26,24 @@ Built for: real operators
 
 Before you buy another tool, find the work that is actually worth changing.
 
+How we use AI
+
+## Your staff get more done. Your customers get better service.
+
+We use Claude, by Anthropic, and other large language models (LLMs) to write and test the software, not to handle your records. The code we deliver does the reading, sorting and first drafts the same way every time, inside your systems. Your people make the decisions.
+
+### For your staff
+
+The code reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team checks and approves instead of retyping.
+
+### For your customers
+
+Faster, consistent answers at any hour, using your own prices, rules and policies, with a clear handoff to a person when it matters.
+
+### For you
+
+A person approves every important action: anything that moves money, changes a record or commits you to a customer. Every approval is logged.
+
 The deliverable
 
 ## A short, concrete plan you can act on.
@@ -70,34 +88,66 @@ Week two. The written roadmap, and a live call through the top opportunities and
 
 KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.
 
-Ways we help
+Portfolio
 
-## Built around the work your team already does.
+## What we have built.
 
-Reconcile, draft, approve, report
+- Payroll compliance reporting: Builds certified payroll reports from payroll data and checks each worker’s pay against the required wage rates. Who approves: Payroll staff review the flags and sign.
+- Material lists from drawings: Reads building plans and drafts the material list, each line traced to its drawing. Who approves: Product experts check it before quoting or ordering.
+- WhatsApp quoting assistant: Answers questions and prepares quotes on WhatsApp from the business’s own prices, at any hour. Who approves: Staff take over anything outside the rules.
+- Billing exceptions workbench: One queue for every billing exception, with customer details from several systems on one screen. Who approves: The billing team resolves each one.
+- Support tickets with AI triage: Reads each new ticket, tags its topic and urgency, and routes it to the right person. Who approves: Agents answer every ticket. The AI only sorts.
 
-### Finance and operations
+Tell us the workflow costing your team the most, and we will tell you honestly if it is worth automating.
 
-Connect recurring operational and financial work across the systems your team already uses, with exceptions routed to the right person.
+[Book a fit call →](https://calendly.com/wmorapal/30min)
 
-Read, structure, calculate, review
+Client names and measured results stay private until each client approves publication.
 
-### Document-heavy decisions
+Tools we work with
 
-Turn PDFs, drawings, specifications, emails, and spreadsheets into structured outputs with source evidence and uncertainty clearly flagged.
+## Built into the systems you already run.
 
-Answer, qualify, quote, hand off
+- Business Central: Accounting and ERP, part of Microsoft Dynamics 365
+- Outlook: Email, calendar and approvals in Microsoft 365
+- Azure: Microsoft cloud hosting, identity and security
+- Zendesk: Customer support tickets
+- monday.com: Projects and team workflows
+- Google Search Console: How your site appears in Google search
+- Meta: WhatsApp, Facebook and Instagram for business
+- Claude by Anthropic: The AI we use to write and test the code
 
-### Customer conversations
+Not on the list? We confirm on the fit call whether your system can be connected. Product names are trademarks of their owners; listing them is not a claim of partnership or endorsement.
 
-Give customers faster answers while keeping pricing rules, sensitive decisions, and human takeover under your control.
+Security and data governance
 
-One role-aware place to work
+## Your data stays yours. Not in a public chatbot.
 
-### Internal operations hubs
+### Built with test data
 
-Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.
+We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.
 
+### Your systems, your data
+
+Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.
+
+### Least-privilege access
+
+Separate accounts with only the access the job needs, removed when the work ends.
+
+### AI in live systems
+
+Where a system uses AI while it runs, such as answering customer messages, it goes through Anthropic’s business API, and details like social security numbers are masked or left out.
+
+### A full audit trail
+
+Every action the system prepares is logged with who approved it and when.
+
+### Returned or deleted
+
+At the end of an engagement, your data is returned or deleted.
+
+[Read the full security page →](https://khipuai.co/security/)
 
 Who it is for
 
@@ -124,7 +174,7 @@ A couple of hours of your team’s time across a week, and a look at the workflo
 
 ### Is our data safe?
 
-Access is read-only and nothing is changed during the audit. Automations are designed to run inside your existing security controls and create drafts a person approves.
+Yes. Access is read-only during the audit. We build and test with made-up or redacted data, so your records are never sent to an AI model while we build. What we deliver runs inside your own security controls, with least-privilege access and a person approving every important action. The security page sets out every practice.
 
 ### Will AI make changes on its own?
 
@@ -167,4 +217,4 @@ Builds and tests the systems behind the work: the website and the internal tools
 ---
 
 Canonical page: https://khipuai.co/
-[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
+[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Security](https://khipuai.co/security/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)

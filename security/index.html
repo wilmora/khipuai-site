@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0ENQ1NBS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8M0ENQ1NBS');
+</script>
+<title>Security and Data Governance | KHIPUAI</title>
+<meta name="description" content="How KHIPUAI keeps client data safe: AI writes and tests the code using made-up or redacted data, least-privilege access, a full audit trail, and a person approving every important action.">
+<link rel="canonical" href="https://khipuai.co/security/">
+<link rel="alternate" type="text/markdown" href="/security/index.md">
+<link rel="alternate" hreflang="en" href="https://khipuai.co/security/">
+<link rel="alternate" hreflang="es" href="https://khipuai.co/es/security/">
+<link rel="alternate" hreflang="x-default" href="https://khipuai.co/security/">
+<link rel="icon" href="/shared/assets/mark.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Security and data governance at KHIPUAI",
+  "url": "https://khipuai.co/security/",
+  "inLanguage": "en",
+  "about": {"@type": "ProfessionalService", "name": "KHIPUAI", "url": "https://khipuai.co", "email": "wil@khipuai.co"}
+}
+</script>
+<style>
+  body{margin:0;color:#12263A;background:#fff;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px;}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
+  .logo{font-weight:800;letter-spacing:.14em;color:#12263A;text-decoration:none;}
+  .logo .dot{color:#D8743B;}
+  h1{font-size:2rem;margin:24px 0 4px;}
+  h2{font-size:1.2rem;margin:28px 0 6px;}
+  .muted{color:#566472;}
+  a{color:#AD5627;}
+  hr{border:0;border-top:1px solid #E6E2DC;margin:24px 0;}
+</style>
+<!-- Same type and accessibility polish as privacy.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Source Sans 3',-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  h1,h2,h3,.logo{font-family:'Lexend','Source Sans 3',-apple-system,"Segoe UI",sans-serif;}
+  a:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
+  .skip{position:absolute;left:-999px;top:8px;background:#12263A;color:#fff;padding:8px 12px;}
+  .skip:focus{left:8px;}
+</style>
+<link rel="stylesheet" href="/shared/page-responsive.css">
+<link rel="stylesheet" href="/shared/meta-pixel.css">
+<script defer src="/shared/meta-pixel.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main class="wrap" id="main">
+  <a class="logo" href="/">KHIPU<span class="dot">A</span>I</a>
+  <h1>Security and data governance</h1>
+  <p class="muted">We use AI to build software that helps your staff get more done and your customers get better service. Building with AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during the AI Automation Audit and in anything we build afterward.</p>
+  <hr>
+
+  <h2>How we use AI</h2>
+  <ul>
+    <li><strong>Built with test data.</strong> We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.</li>
+    <li><strong>The code does the work.</strong> What we deliver is code that reads, sorts and drafts the same way every time, inside your systems.</li>
+    <li><strong>AI in live systems.</strong> Where a system uses AI while it runs, such as answering customer messages or sorting support tickets, it goes through Anthropic’s business API, under terms that do not use the data to train AI models. Never consumer chat apps.</li>
+    <li><strong>Sensitive fields kept out.</strong> In those systems, details like social security numbers and bank accounts are masked or left out of what the AI sees.</li>
+    <li><strong>People approve.</strong> The system prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.</li>
+    <li><strong>A full audit trail.</strong> Every action the system prepares is logged with who approved it and when.</li>
+  </ul>
+
+  <h2>Access and storage</h2>
+  <ul>
+    <li><strong>Your systems, your data.</strong> Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.</li>
+    <li><strong>Least-privilege access.</strong> Separate accounts with only the access the job needs, removed when the work ends.</li>
+    <li><strong>Read-only audit.</strong> During the audit our access is read-only. Nothing is automated or changed while we diagnose.</li>
+    <li><strong>Secrets in a vault.</strong> API keys and passwords are stored server-side, for example in Azure Key Vault, never in code.</li>
+  </ul>
+
+  <h2>Agreements and the end of an engagement</h2>
+  <ul>
+    <li><strong>NDA on request.</strong> We sign a non-disclosure agreement or a data processing agreement on request.</li>
+    <li><strong>Returned or deleted.</strong> At the end of an engagement, your data is returned or deleted.</li>
+  </ul>
+
+  <h2>Policies we are writing</h2>
+  <p>We are writing these practices up as policies and standard operating procedures (SOPs) your IT team can review. Each one will be listed on this page as it is finished.</p>
+
+  <h2>Questions from your IT or security team</h2>
+  <p>Send them to <a href="mailto:wil@khipuai.co">wil@khipuai.co</a>, or raise them on a free <a href="https://calendly.com/wmorapal/30min">30-minute fit call</a>. Please do not send passwords, client records, or other sensitive data by email. If a project needs that information, we agree on a secure way to share it first.</p>
+  <p>How the website itself handles the details you share is covered in the <a href="/privacy.html">privacy policy</a>.</p>
+
+  <hr>
+  <p class="muted"><a href="/">Home</a> | <a href="/about/">About</a> | <a href="/contact/">Contact</a> | <a href="/privacy.html">Privacy</a> | <a href="/llms.txt">Guide for AI agents</a> | <a href="/es/security/" hreflang="es" lang="es">Español</a></p>
+</main>
+</body>
+</html>

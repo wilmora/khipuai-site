@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- A layout trial to compare with the live Kinetic homepage. Not linked from
+     the site, not indexed, no analytics. Wording comes only from the shared
+     content files and the live homepage headings; see basic.js. -->
+<title>Prueba de inicio básica | KHIPUAI</title>
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="../basic.css">
+<link rel="icon" href="/shared/assets/mark.svg">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="./"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <div class="tablist" id="tabs" role="tablist" aria-label="Secciones"></div>
+  <p class="lang"><a href="../" hreflang="en" lang="en" aria-label="View this trial in English">EN</a> / <span aria-current="true">ES</span></p>
+  <a class="btn sm" id="book-top" href="#"></a>
+</div></header>
+<main id="main" class="wrap"><noscript><div class="wrap"><p>Esta página de prueba necesita JavaScript. El sitio actual está en <a href="/es/">khipuai.co/es/</a>.</p></div></noscript></main>
+<footer class="ft"><div class="wrap"><p class="trial">Prueba, no publicada. <a href="/es/">Sitio actual</a></p><p><a href="/privacy.html">Privacidad</a> &middot; <a href="/contact/">Contacto</a></p></div></footer>
+<script type="module">
+import { C } from '/shared/content.es.js';
+import { render } from '../basic.js';
+render(C, {
+  title: 'Prueba de inicio básica | KHIPUAI',
+  bookShort: 'Agenda una llamada',
+  problem: ['Decenas de horas al mes.', 'Nadie las ha contado.'],
+  steps: ['Tres pasos.', 'Alrededor de dos semanas.'],
+  get: ['Qué recibes', 'Un plan corto y concreto', 'sobre el que puedes actuar.'],
+  fit: ['Para quién es', 'Vale la pena hacerlo,', 'o vale la pena decir que no.'],
+  faq: ['Lo que', 'la gente realmente pregunta.'],
+  aboutKick: 'Quién lo dirige',
+  founderAlt: 'Wil Mora, fundador de KHIPUAI',
+  alex: { alt: 'Alex Pena, desarrollador en KHIPUAI', role: 'Desarrollador',
+    bio: 'Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.' },
+  aboutHref: '/es/about/', aboutLink: 'Cómo trabaja KHIPUAI',
+  tabs: { start: 'Resumen', ai: 'IA', get: 'Resultados', work: 'Portafolio', tools: 'Herramientas', security: 'Seguridad', fit: 'Encaje', questions: 'Preguntas', operator: 'Nosotros' },
+  securityHref: '/es/security/',
+});
+</script>
+</body>
+</html>

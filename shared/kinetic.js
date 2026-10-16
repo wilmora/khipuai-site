@@ -56,6 +56,21 @@ export function featureIcon(group, index){
       '<path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h5"/>',
       '<path d="M4 5h16v11H9l-5 4zM8 9h8M8 12h5"/>',
       '<circle cx="5" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="19" r="2"/><path d="M7 12h10M12 7v10"/>'
+    ],
+    /* staff, customers, the approver */
+    ai: [
+      '<path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h4"/><path d="m14 17 1.5 1.5L19 15"/>',
+      '<path d="M4 5h16v11H9l-5 4zM8 9h8M8 12h5"/>',
+      '<circle cx="12" cy="8" r="3.5"/><path d="M5 20v-1.5c0-3 3-5 7-5s7 2 7 5V20"/><path d="m15.5 4.5 1.5 1.5 3-3"/>'
+    ],
+    /* no public apps, your systems, least privilege, fields kept out, audit trail, returned */
+    security: [
+      '<path d="M12 2.5 20 6v5.7c0 5.1-3.4 8.2-8 9.8-4.6-1.6-8-4.7-8-9.8V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/>',
+      '<path d="M7 18a4 4 0 0 1-.6-8 5.5 5.5 0 0 1 10.7-1A4.5 4.5 0 0 1 17 18z"/><path d="M10 14h4"/>',
+      '<circle cx="8" cy="12" r="3.5"/><path d="M11.5 12H21M17 12v3M20 12v2"/>',
+      '<rect x="5" y="10" width="14" height="10" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2"/>',
+      '<path d="M6 3h12v18H6zM9 7h6M9 11h6M9 15h3"/><path d="m14 16 1.5 1.5L18.5 14"/>',
+      '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>'
     ]
   };
   const set = icons[group] || icons.work;
