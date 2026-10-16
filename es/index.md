@@ -98,7 +98,6 @@ Un lugar de trabajo según cada rol
 
 Reúne flujos, documentos, tableros, aprobaciones e historial de auditoría en una interfaz construida alrededor del trabajo real del equipo.
 
-
 Para quién es
 
 ## Vale la pena hacerlo, o vale la pena decir que no.

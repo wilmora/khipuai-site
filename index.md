@@ -98,7 +98,6 @@ One role-aware place to work
 
 Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.
 
-
 Who it is for
 
 ## Worth doing, or worth saying no to.
