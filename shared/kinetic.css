@@ -468,6 +468,10 @@ body.at-start .hint{opacity:0;}
   /* The founder portrait is the tallest fixed element on the page; at 258px it
      pushed the Founder section 11px into the ticker band. */
   .face img{width:190px;height:190px;}
+  /* Results' second row of deliverables sat 60px below the first (a 30px
+     margin plus 30px padding around its rule). Halved here, that brings the
+     section back above the ticker on a 1366x768 laptop. */
+  .cols.c6:not(.work-cols) > div:nth-child(n+4){padding-top:18px;margin-top:18px;}
 }
 
 /* A second, tighter tier. At 1280x720 the frame above still leaves only 524px
@@ -490,6 +494,7 @@ body.at-start .hint{opacity:0;}
   .process-mark .feature-icon{width:35px;height:35px;}
   .process-cols::before{top:18px;}
   .face img{width:168px;height:168px;}
+  .cols.c6:not(.work-cols) > div:nth-child(n+4){padding-top:14px;margin-top:14px;}
   .p-start h1{font-size:clamp(3rem,4.5vw,3.9rem);}
   .hero-proof{bottom:22px;}
   .hero-aside{bottom:84px;}

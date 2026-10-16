@@ -24,7 +24,7 @@ Built for: real operators
 - Copying the same customer data into three different tools
 - Reconciling numbers line by line because the systems do not talk
 
-Before you buy another tool, find the work that is actually worth changing.
+We don’t sell AI.: We redesign business processes and use AI where it produces measurable value.
 
 How we use AI
 

@@ -24,7 +24,7 @@ Creado para: operadores reales
 - Copiando los mismos datos de clientes o proveedores en tres herramientas distintas
 - Conciliando cifras línea por línea porque los sistemas no se comunican entre sí
 
-Antes de comprar otra herramienta, encuentra el trabajo que realmente vale la pena cambiar.
+No vendemos IA.: Rediseñamos procesos de negocio y usamos la IA donde genera valor medible.
 
 Cómo usamos la IA
 
