@@ -86,14 +86,15 @@ export function render(C, L) {
       rows(C.deliverables, 'deliverable', true))],
 
     // Portfolio as project cards, like GeoSolv's project summaries: a screen,
-    // a title, two lines, and "Learn more" for the full summary.
+    // a title, two lines, and "Learn more" for the full summary. Eight cards
+    // fill two rows of four, so the next-step link sits in the header.
     ['work', L.tabs.work, `<div class="sec-work">
-        <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="note">${esc(C.portfolio.note)}</p></div>
+        <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
+          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a></span></p></div>
         <ul class="pcards">${projects.map(p => `<li class="pc">
           <div class="pc-img">${p.shots.length ? `<img src="${ASSET}shots/${p.shots[0]}" alt="" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
             <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
-          <li class="pc pc-cta"><div class="pc-body"><p>${esc(C.portfolio.next)}</p><a class="btn" href="${C.booking}">${esc(C.portfolio.nextLink)}</a></div></li>
         </ul></div>`],
 
     ['security', L.tabs.security, sec('security',
