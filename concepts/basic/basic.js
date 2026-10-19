@@ -14,6 +14,7 @@
    numbers that are not already in the copy. */
 import { featureIcon } from '/shared/kinetic.js';
 import { PROJECTS, shown } from './projects.js';
+import { tone } from './tone.js';
 
 // Screens and logos live next to this file, so the Spanish page (one folder
 // down) loads the same files.
@@ -23,6 +24,7 @@ const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
 const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 
 export function render(C, L) {
+  C = tone(C, L.lang);
   const PJ = PROJECTS[L.lang];
   document.title = L.title;
   const top = document.getElementById('book-top');
@@ -184,6 +186,7 @@ function mountBand(C, book) {
    header with its menus, the same band and footer, around the page's own
    content, which scrolls normally. home is the trial homepage's address. */
 export function page(C, L, home) {
+  C = tone(C, L.lang);
   const top = document.getElementById('book-top');
   top.href = C.booking;
   top.textContent = L.bookShort;

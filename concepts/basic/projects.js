@@ -19,7 +19,7 @@ export const PROJECTS = {
     close: 'Close',
     view: 'What to show', demoView: 'Try the demo', shotsView: 'Screenshots',
     frameLabel: 'Demo, made-up data', frameTitle: '{app}: working demo with made-up data',
-    frameNote: 'A working copy of the real app’s screens, in its own language. Click around: nothing is saved or sent.',
+    frameNote: 'A working copy of the real app’s screens, in its own language. You can use it freely: nothing is saved or sent.',
     openFull: 'Open full size',
     shotNote: 'Screens show sample or empty data. Client names are removed.',
     items: [
@@ -82,7 +82,7 @@ export const PROJECTS = {
     close: 'Cerrar',
     view: 'Qué mostrar', demoView: 'Probar la demo', shotsView: 'Capturas',
     frameLabel: 'Demo, datos inventados', frameTitle: '{app}: demo funcional con datos inventados',
-    frameNote: 'Una copia funcional de las pantallas de la app real, en su idioma original. Explora: nada se guarda ni se envía.',
+    frameNote: 'Una copia funcional de las pantallas de la app real, en su idioma original. Puedes usarla libremente: nada se guarda ni se envía.',
     openFull: 'Abrir en tamaño completo',
     shotNote: 'Las pantallas muestran datos de ejemplo o vacíos. Los nombres de clientes se eliminaron.',
     items: [

@@ -35,9 +35,9 @@ const PARTS = [
 ];
 
 const BANDS = [
-  { max:6,        name:'Lean',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
-  { max:14,       name:'Leaking',  copy:'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.' },
-  { max:Infinity, name:'Bleeding', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
+  { max:6,        name:'Low',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
+  { max:14,       name:'Moderate',  copy:'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.' },
+  { max:Infinity, name:'High', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
 ];
 
 const LEAK = {
@@ -113,7 +113,7 @@ export function mountQuiz(C) {
     u.searchParams.set('utm_medium', here.get('utm_medium') || 'self_assessment');
     u.searchParams.set('utm_campaign', here.get('utm_campaign') || 'self_assessment');
     u.searchParams.set('utm_content', `score-${sc}-${band.toLowerCase()}${top.length ? '-' + top.join('-') : ''}`);
-    u.searchParams.set('a1', `Self-assessment: ${sc}/${TOTAL} (${band}). Biggest leaks: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`);
+    u.searchParams.set('a1', `Self-assessment: ${sc}/${TOTAL} (${band}). Largest gaps: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`);
     return u.toString();
   }
 
@@ -142,7 +142,7 @@ export function mountQuiz(C) {
     const top = byPart.filter((x, i) => i === 0 || x.share >= 0.4).slice(0, 2).map(x => x.id);
     $('leaks').innerHTML = top.length
       ? top.map(id => `<li><b>${esc(LEAK[id][0])}:</b> ${esc(LEAK[id][1])}</li>`).join('')
-      : `<li><b>No big leaks flagged.</b> Your answers point to a tidy back office.</li>`;
+      : `<li><b>No major gaps identified.</b> Your answers indicate a well-organized back office.</li>`;
     $('leaks').hidden = false;
     $('rescta').hidden = false;
     $('bookbtn').href = bookingUrl(sc, band.name, top);
