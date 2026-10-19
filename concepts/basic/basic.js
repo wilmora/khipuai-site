@@ -114,13 +114,14 @@ export function render(C, L) {
         <div class="faq">${C.faq.map(([q, a]) => `<details name="faq"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>`)],
 
     ['operator', L.tabs.operator, sec('operator',
-      `<h2>${esc(L.aboutKick)}</h2><blockquote>&ldquo;${esc(C.founder.quote)}&rdquo;</blockquote>`, `
+      `<h2>${esc(L.aboutKick)}</h2><blockquote class="quote"><p>&ldquo;${esc(C.founder.quote)}&rdquo;</p><footer>${esc(C.founder.name)}, ${esc(C.founder.role)}</footer></blockquote>`, `
         <div class="team">
-          <div class="member"><img src="/shared/assets/founder.jpg" alt="${esc(L.founderAlt)}" width="72" height="72">
+          <div class="member"><img src="/shared/assets/founder.jpg" alt="${esc(L.founderAlt)}" width="96" height="96">
             <div><h3>${esc(C.founder.name)}</h3><p class="role">${esc(C.founder.role)}</p><p>${esc(C.founder.bio)}</p></div></div>
-          <div class="member"><img src="/shared/assets/alex.jpg" alt="${esc(L.alex.alt)}" width="72" height="72">
+          <div class="member"><img src="/shared/assets/alex.jpg" alt="${esc(L.alex.alt)}" width="96" height="96">
             <div><h3>Alex Pena</h3><p class="role">${esc(L.alex.role)}</p><p>${esc(L.alex.bio)}</p></div></div>
         </div>
+        <ul class="principles">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>
         <p class="more"><a href="${L.aboutHref}">${esc(L.aboutLink)} &rarr;</a></p>`)],
   ];
 
@@ -282,9 +283,34 @@ function mountNav(ids) {
     tops.forEach(b => b.classList.toggle('is-current', !!b.nextElementSibling.querySelector(`[data-sec="${id}"]`)));
     if (moveFocus) document.getElementById('panel-' + id).focus({ preventScroll: true });
   };
+  // Laptop one-screen layout: a section designed to fit the smallest laptop
+  // window left a lot of empty space on taller ones. Each section is zoomed up
+  // to the largest size that still fits without scrolling (at most 1.25x), and
+  // fitted again when the window changes or a question is opened.
+  const oneScreen = matchMedia('(min-width:900px) and (min-height:560px)');
+  const fit = () => {
+    const p = ids.map(id => document.getElementById('panel-' + id)).find(x => !x.hidden);
+    if (!p) return;
+    p.style.zoom = '';
+    if (!oneScreen.matches) return;
+    const doc = document.documentElement;
+    const fits = z => { p.style.zoom = z; return p.scrollHeight <= p.clientHeight + 1 && doc.scrollHeight <= innerHeight + 1; };
+    if (!fits(1)) { p.style.zoom = ''; return; }
+    let lo = 1, hi = 1.25;
+    for (let n = 0; n < 7; n++) { const mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+    p.style.zoom = String(Math.floor(lo * 100) / 100);
+    if (!fits(p.style.zoom)) p.style.zoom = '';
+  };
+  let raf = 0;
+  const refit = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); };
+  addEventListener('resize', refit);
+  document.getElementById('main').addEventListener('toggle', refit, true);
+  document.fonts?.ready.then(refit);
+
   const fromHash = moveFocus => {
     const id = location.hash.slice(1);
     show(ids.includes(id) ? id : ids[0], moveFocus && ids.includes(id));
+    fit();
   };
   window.addEventListener('hashchange', () => { closeAll(); fromHash(true); });
   fromHash(false);
