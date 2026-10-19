@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="doc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Trial page: the live /thank-you.html wording in the trial homepage's look.
+     Not linked from the live site, not indexed, no analytics, no pixel. -->
+<title>Your self-assessment PDF | KHIPUAI</title>
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="../basic.css">
+<link rel="stylesheet" href="../page.css">
+<link rel="icon" href="/shared/assets/mark.svg">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="../"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+  <p class="lang"><span aria-current="true">EN</span></p>
+  <a class="btn sm" id="book-top" href="#"></a>
+</div></header>
+<main id="main" class="wrap">
+  <section class="doc-hero">
+    <h1>Thanks. Here is your copy.</h1>
+    <p class="lede">The 5-minute exercise, as a PDF you can print or share with your team.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-download">
+    <div class="sec-head"><h2 id="h-download">Download the self-assessment</h2></div>
+    <div class="sec-body">
+      <p>Three pages. Score it with the people who actually do the work, not just the managers.</p>
+      <div class="cta-row"><a class="btn" href="/self-assessment.pdf" download>Download the PDF</a></div>
+      <p class="fine">Trouble with the download? Email <a href="mailto:wil@khipuai.co">wil@khipuai.co</a> and Wil will send it over.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-numbers">
+    <div class="sec-head"><h2 id="h-numbers">Want the real numbers?</h2></div>
+    <div class="sec-body">
+      <p>The self-assessment tells you where to look. The AI Automation Audit puts hours and dollars on each item and tells you what to fix first.</p>
+      <div class="cta-row"><a class="btn" id="tq-book" href="#">Book a free 30-minute call</a></div>
+      <p><a href="../self-assessment/">Back to the self-assessment</a></p>
+    </div>
+  </section>
+</main>
+<footer class="ft"><div class="wrap"><p class="trial">Trial, not live. <a href="/thank-you.html">Current site</a></p><p><a href="../privacy/">Privacy</a> &middot; <a href="../contact/">Contact</a> &middot; <a href="../security/">Security</a></p></div></footer>
+<script type="module">
+import { C } from '/shared/content.js';
+import { page } from '../basic.js';
+import { LABELS } from '../labels.js';
+page(C, LABELS.en, '../');
+document.getElementById('tq-book').href = C.booking;
+</script>
+</body>
+</html>

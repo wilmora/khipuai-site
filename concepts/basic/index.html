@@ -21,29 +21,12 @@
   <a class="btn sm" id="book-top" href="#"></a>
 </div></header>
 <main id="main" class="wrap"><noscript><div class="wrap"><p>This trial page needs JavaScript. The live site is at <a href="/">khipuai.co</a>.</p></div></noscript></main>
-<footer class="ft"><div class="wrap"><p class="trial">Trial, not live. <a href="/">Current site</a></p><p><a href="/privacy.html">Privacy</a> &middot; <a href="/contact/">Contact</a></p></div></footer>
+<footer class="ft"><div class="wrap"><p class="trial">Trial, not live. <a href="/">Current site</a></p><p><a href="/concepts/basic/privacy/">Privacy</a> &middot; <a href="/concepts/basic/contact/">Contact</a></p></div></footer>
 <script type="module">
 import { C } from '/shared/content.js';
 import { render } from './basic.js';
-render(C, {
-  lang: 'en',
-  title: 'Basic homepage trial | KHIPUAI',
-  bookShort: 'Book a call',
-  problem: ['Dozens of hours a month.', 'Nobody has counted them.'],
-  steps: ['Three steps.', 'About two weeks.'],
-  own: ['A product you own', 'The product is yours.'],
-  get: ['The deliverable', 'A short, concrete plan', 'you can act on.'],
-  fit: ['Who it is for', 'Worth doing,', 'or worth saying no to.'],
-  faq: ['The things', 'people actually ask.'],
-  aboutKick: 'Leadership',
-  founderAlt: 'Wil Mora, Founder of KHIPUAI',
-  alex: { alt: 'Alex Pena, Developer at KHIPUAI', role: 'Developer',
-    bio: 'Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.' },
-  aboutHref: '/about/', aboutLink: 'How KHIPUAI works',
-  nav: { services: 'Services', menu: 'Menu', team: 'Wil Mora · Alex Pena' },
-  tabs: { start: 'Overview', ai: 'AI', get: 'Results', work: 'Portfolio', tools: 'Tools', security: 'Security', fit: 'Fit', questions: 'Questions', operator: 'About' },
-  securityHref: '/security/',
-});
+import { LABELS } from './labels.js';
+render(C, LABELS.en);
 </script>
 </body>
 </html>

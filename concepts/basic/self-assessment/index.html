@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="doc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Score where your team loses hours to manual work.">
+<!-- Trial page: the live /self-assessment/ wording, questions and scoring in
+     the trial homepage's look. Not linked from the live site, not indexed, no
+     analytics, no pixel. The email form is switched off: nothing is sent. -->
+<title>Where Is Your Team Losing Hours? | KHIPUAI Self-Assessment</title>
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="../basic.css">
+<link rel="stylesheet" href="../page.css">
+<link rel="icon" href="/shared/assets/mark.svg">
+<style>
+/* Page-only styles for the one-question card, the result and the form. */
+.doc-hero .lede + .lede{margin-top:10px;}
+.doc-hero .cta-row{margin-top:26px;}
+.qcard{max-width:760px;margin:0 0 44px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:clamp(20px,3.5vw,36px);}
+.qcard:focus{outline:none;}
+.qcard{scroll-margin-top:96px;}
+.qtop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;font-size:14px;color:var(--muted);}
+.qtop b{color:var(--ink);font-family:'Manrope',sans-serif;}
+.qbar{height:4px;background:var(--cream);border-radius:2px;margin-top:10px;overflow:hidden;}
+.qbar i{display:block;height:100%;width:0;background:var(--copper-ink);transition:width .2s;}
+.qcard .kick{margin-top:24px;}
+.qcard h2{margin-top:8px;font-size:clamp(24px,2.4vw,30px);}
+.qtext{margin-top:18px;font-size:18px;line-height:1.5;max-width:60ch;}
+.qtext:focus{outline:none;}
+.yn{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.yn button{min-width:110px;min-height:46px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:transparent;
+  color:var(--ink);font:700 15px/1 'DM Sans',sans-serif;cursor:pointer;}
+.yn button:hover{background:var(--cream);}
+.yn button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+.yn button[aria-pressed="true"]::before{content:"\2713\00a0";}
+.qnav{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);}
+.qnav .btn{min-width:110px;}
+.qnav .btn[disabled]{opacity:.45;cursor:default;}
+.bignum{font:800 clamp(52px,7vw,84px)/1 'Manrope',sans-serif;letter-spacing:-.03em;}
+.bignum small{font-size:.38em;color:var(--muted);margin-left:8px;letter-spacing:0;}
+.res-band{max-width:62ch;}
+.res-band b{color:var(--copper-ink);text-transform:uppercase;letter-spacing:.04em;font-family:'Manrope',sans-serif;}
+.leaks{list-style:none;padding:0;max-width:70ch;border-top:1px solid var(--line);}
+.leaks li{padding:12px 0 12px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--muted);font-size:15px;line-height:1.5;}
+.leaks li::before{content:"";position:absolute;left:0;top:19px;width:8px;height:8px;background:var(--copper-ink);}
+.leaks li b{color:var(--ink);}
+.lead{display:grid;gap:15px;max-width:460px;}
+.lead .field{display:grid;gap:5px;}
+.lead label{font-weight:700;font-size:14px;}
+.lead input:not([type=checkbox]){font:inherit;min-height:46px;padding:10px 13px;border:1px solid var(--muted);border-radius:6px;background:var(--white);color:var(--ink);width:100%;}
+.lead label.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:var(--muted);cursor:pointer;}
+.lead label.check input{margin-top:4px;width:18px;height:18px;accent-color:var(--copper-ink);}
+.lead button{justify-self:start;cursor:pointer;}
+.lead .fineprint{font-size:13.5px;color:var(--muted);}
+.lead .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+.lead[hidden]{display:none;}
+.lead .fineprint.trial-off{border-left:3px solid var(--copper-ink);padding:8px 12px;background:var(--cream);color:var(--ink);font-size:14.5px;}
+@media (max-width:480px){.yn button,.qnav .btn{flex:1;}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="../"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+  <p class="lang"><span aria-current="true">EN</span></p>
+  <a class="btn sm" id="book-top" href="#"></a>
+</div></header>
+<main id="main" class="wrap">
+  <section class="doc-hero">
+    <p class="kick">Five minutes, fifteen questions</p>
+    <h1>Where is your team losing hours?</h1>
+    <p class="lede">Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it, because the manual work grew one workaround at a time until it became invisible.</p>
+    <p class="lede">This is the same lens used walking into a firm for an audit. Answer yes or no to each. If you are not sure, the answer is usually yes.</p>
+    <div class="cta-row">
+      <button type="button" class="btn" id="start">Start the assessment</button>
+      <a class="btn line" href="../">Back to the site</a>
+    </div>
+  </section>
+
+  <!-- One question at a time. Filled in by quiz.js. -->
+  <section class="qcard" id="quiz" aria-labelledby="q-part" tabindex="-1" hidden>
+    <div class="qtop">
+      <span id="q-count">Question 1 of 15</span>
+      <span id="tally" role="status" aria-live="polite"><b id="tallynum">0</b> <span>of 24 points</span></span>
+    </div>
+    <div class="qbar" aria-hidden="true"><i id="q-bar"></i></div>
+    <p class="kick" id="q-kick"></p>
+    <h2 id="q-part"></h2>
+    <p class="qtext" id="q-text" tabindex="-1"></p>
+    <div class="yn" role="group" aria-labelledby="q-text">
+      <button type="button" class="yes" aria-pressed="false">Yes</button>
+      <button type="button" class="no" aria-pressed="false">No</button>
+    </div>
+    <div class="qnav">
+      <button type="button" class="btn line" id="q-back">Back</button>
+      <button type="button" class="btn line" id="q-next">Next</button>
+    </div>
+  </section>
+
+  <section class="qcard" id="result" aria-labelledby="h-result" tabindex="-1" hidden>
+    <p class="kick">Your result</p>
+    <h2 class="bignum" id="h-result" style="margin-top:10px;"><span id="scorenum">0</span><small>/ 24</small></h2>
+    <p class="res-band" id="resband" style="margin-top:16px;">Answer the questions and your result appears here.</p>
+    <ul class="leaks" id="leaks" style="margin-top:18px;" hidden></ul>
+    <div id="rescta" style="margin-top:22px;" hidden>
+      <a class="btn" id="bookbtn" href="#">Book a 30-minute fit call</a>
+      <p class="note" style="margin-top:12px;">We go through your answers together and pick the first thing worth fixing. Not ready? <a href="#email">Get your result by email</a>.</p>
+    </div>
+    <p class="note" id="scorenote" style="margin-top:16px;"></p>
+    <div class="qnav">
+      <button type="button" class="btn line" id="r-back">Back</button>
+      <button type="button" class="btn line" id="r-restart">Start over</button>
+    </div>
+  </section>
+
+  <section class="sec" id="email" aria-labelledby="h-email">
+    <div class="sec-head"><p class="kick">Keep your result</p><h2 id="h-email">Get it by email.</h2></div>
+    <div class="sec-body">
+      <p>Your score, your top areas, and the worksheet PDF to score with the people who actually do the work.</p>
+      <!-- No action and no method: quiz.js stops the submit and shows the
+           trial note. Nothing typed here leaves the browser. -->
+      <form class="lead" id="leadform" novalidate>
+        <div class="field"><label for="lf-name">First name</label><input id="lf-name" name="name" autocomplete="given-name" maxlength="40"></div>
+        <div class="field"><label for="lf-email">Work email</label><input id="lf-email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
+        <div class="field"><label for="lf-company">Company (optional)</label><input id="lf-company" name="company" autocomplete="organization" maxlength="80"></div>
+        <label class="check"><input type="checkbox" id="lf-follow"> Wil can follow up about my result. Unsubscribe anytime.</label>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">Email me my result</button>
+        <p class="fineprint" id="lf-msg" role="status" aria-live="polite">One email with your result. Nothing else unless you tick the box. <a href="../privacy/">Privacy</a>. Or just <a href="/self-assessment.pdf" download>download the worksheet</a>.</p>
+      </form>
+      <div class="lead" id="pdfonly" hidden>
+        <a class="btn" href="/self-assessment.pdf" download>Download the PDF</a>
+        <p class="fineprint">No form required. The worksheet downloads directly to your device.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-next">
+    <div class="sec-head"><p class="kick">The next step</p><h2 id="h-next">Put real numbers on it.</h2></div>
+    <div class="sec-body">
+      <p>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does: about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
+      <div class="cta-row"><a class="btn" id="audit-book" href="#"></a><a class="btn line" href="../audit/#pricing">See what it costs</a></div>
+      <p class="fine" id="legal"></p>
+    </div>
+  </section>
+</main>
+<footer class="ft"><div class="wrap"><p class="trial">Trial, not live. <a href="/self-assessment/">Current site</a></p><p><a href="../privacy/">Privacy</a> &middot; <a href="../contact/">Contact</a> &middot; <a href="../security/">Security</a></p></div></footer>
+<script type="module">
+import { C } from '/shared/content.js';
+import { page } from '../basic.js';
+import { LABELS } from '../labels.js';
+import { mountQuiz } from './quiz.js';
+page(C, LABELS.en, '../');
+mountQuiz(C);
+</script>
+</body>
+</html>

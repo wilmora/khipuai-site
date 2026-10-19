@@ -21,29 +21,12 @@
   <a class="btn sm" id="book-top" href="#"></a>
 </div></header>
 <main id="main" class="wrap"><noscript><div class="wrap"><p>Esta página de prueba necesita JavaScript. El sitio actual está en <a href="/es/">khipuai.co/es/</a>.</p></div></noscript></main>
-<footer class="ft"><div class="wrap"><p class="trial">Prueba, no publicada. <a href="/es/">Sitio actual</a></p><p><a href="/privacy.html">Privacidad</a> &middot; <a href="/contact/">Contacto</a></p></div></footer>
+<footer class="ft"><div class="wrap"><p class="trial">Prueba, no publicada. <a href="/es/">Sitio actual</a></p><p><a href="/concepts/basic/privacy/">Privacidad</a> &middot; <a href="/concepts/basic/contact/">Contacto</a></p></div></footer>
 <script type="module">
 import { C } from '/shared/content.es.js';
 import { render } from '../basic.js';
-render(C, {
-  lang: 'es',
-  title: 'Prueba de inicio básica | KHIPUAI',
-  bookShort: 'Agenda una llamada',
-  problem: ['Decenas de horas al mes.', 'Nadie las ha contado.'],
-  steps: ['Tres pasos.', 'Alrededor de dos semanas.'],
-  own: ['Un producto que es tuyo', 'El producto es tuyo.'],
-  get: ['Qué recibes', 'Un plan corto y concreto', 'sobre el que puedes actuar.'],
-  fit: ['Para quién es', 'Vale la pena hacerlo,', 'o vale la pena decir que no.'],
-  faq: ['Lo que', 'la gente realmente pregunta.'],
-  aboutKick: 'Liderazgo',
-  founderAlt: 'Wil Mora, fundador de KHIPUAI',
-  alex: { alt: 'Alex Pena, desarrollador en KHIPUAI', role: 'Desarrollador',
-    bio: 'Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.' },
-  aboutHref: '/es/about/', aboutLink: 'Cómo trabaja KHIPUAI',
-  nav: { services: 'Servicios', menu: 'Menú', team: 'Wil Mora · Alex Pena' },
-  tabs: { start: 'Resumen', ai: 'IA', get: 'Resultados', work: 'Portafolio', tools: 'Herramientas', security: 'Seguridad', fit: 'Encaje', questions: 'Preguntas', operator: 'Nosotros' },
-  securityHref: '/es/security/',
-});
+import { LABELS } from '../labels.js';
+render(C, LABELS.es);
 </script>
 </body>
 </html>

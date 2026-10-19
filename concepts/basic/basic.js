@@ -55,7 +55,7 @@ export function render(C, L) {
         <p class="kick">${esc(C.hero.eyebrow)}</p>
         <h1>${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em></h1>
         <p class="lede">${esc(C.hero.sub)}</p>
-        <div class="ctas">${book}<a class="btn line" href="/self-assessment/">${esc(C.hero.ctaAlt)}</a></div>
+        <div class="ctas">${book}<a class="btn line" href="/concepts/basic/self-assessment/">${esc(C.hero.ctaAlt)}</a></div>
         <ul class="trust">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>`, `
         <figure class="flow" aria-labelledby="flow-h">
           <figcaption id="flow-h">${h2(L.steps[0], L.steps[1])}</figcaption>
@@ -132,6 +132,26 @@ export function render(C, L) {
   // grouped links on the right, menus that open on click or keyboard (never
   // hover only), and the booking button at the far right. Menu titles and
   // their one-line descriptions are the sections' own headings.
+  document.getElementById('nav').innerHTML = navHTML(C, L, '');
+
+  // The page's small print (trial note, privacy, contact) moves from the
+  // footer into the strip, so the footer row can carry the tool logos alone.
+  mountBand(C, book);
+  document.getElementById('main').innerHTML = tabs.map(([id, label, html], i) =>
+    `<section class="panel" id="panel-${id}" aria-label="${esc(label)}" tabindex="-1"${i === 0 ? '' : ' hidden'}>${html}</section>`).join('');
+
+  mountNav(tabs.map(([id]) => id));
+  mountLogos(C, L);
+  mountProjects(projects, PJ, C);
+}
+
+// Navigation after BotLogix and Fractional AI: the logo on the left, a few
+// grouped links on the right, menus that open on click or keyboard (never
+// hover only), and the booking button at the far right. Menu titles and
+// their one-line descriptions are the sections' own headings. On the trial's
+// other pages (about, security...) the same menu links back to the trial
+// homepage's sections: home is that page's address.
+function navHTML(C, L, home) {
   const groups = [
     { label: L.nav.services, items: [
       ['ai', C.ai.kick, C.ai.title],
@@ -143,25 +163,34 @@ export function render(C, L) {
       ['operator', L.aboutKick, L.nav.team],
       ['questions', L.tabs.questions, `${L.faq[0]} ${L.faq[1]}`] ] },
   ];
-  document.getElementById('nav').innerHTML = `
+  return `
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-list">${esc(L.nav.menu)}</button>
     <ul class="nav-list" id="nav-list">${groups.map((g, i) => g.items ? `<li class="nav-group">
       <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-${i}">${esc(g.label)}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
-      <ul class="nav-menu" id="menu-${i}">${g.items.map(([id, t, d]) => `<li><a href="#${id}" data-sec="${id}"><strong>${esc(t)}</strong><span>${esc(d)}</span></a></li>`).join('')}</ul></li>`
-      : `<li><a class="nav-top" href="#${g.id}" data-sec="${g.id}">${esc(g.label)}</a></li>`).join('')}</ul>`;
+      <ul class="nav-menu" id="menu-${i}">${g.items.map(([id, t, d]) => `<li><a href="${home}#${id}" data-sec="${id}"><strong>${esc(t)}</strong><span>${esc(d)}</span></a></li>`).join('')}</ul></li>`
+      : `<li><a class="nav-top" href="${home}#${g.id}" data-sec="${g.id}">${esc(g.label)}</a></li>`).join('')}</ul>`;
+}
 
-  // The page's small print (trial note, privacy, contact) moves from the
-  // footer into the strip, so the footer row can carry the tool logos alone.
+// The page's small print (trial note, privacy, contact) moves from the
+// footer into the strip, so the footer row can carry the tool logos alone.
+function mountBand(C, book) {
   const fine = [...document.querySelectorAll('.ft .wrap > p')].map(n => n.innerHTML).join(' &middot; ');
   document.querySelectorAll('.ft .wrap > p').forEach(n => n.remove());
   document.querySelector('.ft').insertAdjacentHTML('beforebegin', `<aside class="band" aria-label="${esc(C.hero.cta)}">
     <div class="wrap"><div><p>${esc(C.problem.close)}</p><p class="band-fine">${fine}</p></div>${book}</div></aside>`);
-  document.getElementById('main').innerHTML = tabs.map(([id, label, html], i) =>
-    `<section class="panel" id="panel-${id}" aria-label="${esc(label)}" tabindex="-1"${i === 0 ? '' : ' hidden'}>${html}</section>`).join('');
+}
 
-  mountNav(tabs.map(([id]) => id));
+/* The trial's other pages (How KHIPUAI works, Security, Contact...): the same
+   header with its menus, the same band and footer, around the page's own
+   content, which scrolls normally. home is the trial homepage's address. */
+export function page(C, L, home) {
+  const top = document.getElementById('book-top');
+  top.href = C.booking;
+  top.textContent = L.bookShort;
+  document.getElementById('nav').innerHTML = navHTML(C, L, home);
+  mountMenus(document.getElementById('nav'));
+  mountBand(C, `<a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>`);
   mountLogos(C, L);
-  mountProjects(projects, PJ, C);
 }
 
 /* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
@@ -283,8 +312,7 @@ function mountProjects(projects, PJ, C) {
    so every menu item is an ordinary link and the back button works. Menus
    follow the disclosure pattern: a button with aria-expanded, opened by click,
    Enter or Space; Escape or a click outside closes it and returns focus. */
-function mountNav(ids) {
-  const nav = document.getElementById('nav');
+function mountMenus(nav) {
   const tops = [...nav.querySelectorAll('button.nav-top')];
   const toggle = nav.querySelector('.nav-toggle');
   // On phones the language switch lives inside the Menu panel, so the header
@@ -312,6 +340,12 @@ function mountNav(ids) {
   nav.addEventListener('pointerdown', () => { pressing = true; });
   window.addEventListener('pointerup', () => setTimeout(() => { pressing = false; }));
   nav.addEventListener('focusout', e => { if (!pressing && !nav.contains(e.relatedTarget)) tops.forEach(b => close(b)); });
+  return { tops, closeAll };
+}
+
+function mountNav(ids) {
+  const nav = document.getElementById('nav');
+  const { tops, closeAll } = mountMenus(nav);
 
   const show = (id, moveFocus) => {
     for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;

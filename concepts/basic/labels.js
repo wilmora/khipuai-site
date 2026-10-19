@@ -1,0 +1,44 @@
+/* The trial's labels in English and Spanish: the homepage and the trial's
+   other pages (about, security...) share them, so the menus read the same
+   everywhere. Wording comes from the shared content files and the live
+   homepage headings. */
+export const LABELS = {
+  en: {
+    lang: 'en',
+    title: 'Basic homepage trial | KHIPUAI',
+    bookShort: 'Book a call',
+    problem: ['Dozens of hours a month.', 'Nobody has counted them.'],
+    steps: ['Three steps.', 'About two weeks.'],
+    own: ['A product you own', 'The product is yours.'],
+    get: ['The deliverable', 'A short, concrete plan', 'you can act on.'],
+    fit: ['Who it is for', 'Worth doing,', 'or worth saying no to.'],
+    faq: ['The things', 'people actually ask.'],
+    aboutKick: 'Leadership',
+    founderAlt: 'Wil Mora, Founder of KHIPUAI',
+    alex: { alt: 'Alex Pena, Developer at KHIPUAI', role: 'Developer',
+      bio: 'Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.' },
+    aboutHref: '/concepts/basic/about/', aboutLink: 'How KHIPUAI works',
+    nav: { services: 'Services', menu: 'Menu', team: 'Wil Mora · Alex Pena' },
+    tabs: { start: 'Overview', ai: 'AI', get: 'Results', work: 'Portfolio', tools: 'Tools', security: 'Security', fit: 'Fit', questions: 'Questions', operator: 'About' },
+    securityHref: '/concepts/basic/security/',
+  },
+  es: {
+    lang: 'es',
+    title: 'Prueba de inicio básica | KHIPUAI',
+    bookShort: 'Agenda una llamada',
+    problem: ['Decenas de horas al mes.', 'Nadie las ha contado.'],
+    steps: ['Tres pasos.', 'Alrededor de dos semanas.'],
+    own: ['Un producto que es tuyo', 'El producto es tuyo.'],
+    get: ['Qué recibes', 'Un plan corto y concreto', 'sobre el que puedes actuar.'],
+    fit: ['Para quién es', 'Vale la pena hacerlo,', 'o vale la pena decir que no.'],
+    faq: ['Lo que', 'la gente realmente pregunta.'],
+    aboutKick: 'Liderazgo',
+    founderAlt: 'Wil Mora, fundador de KHIPUAI',
+    alex: { alt: 'Alex Pena, desarrollador en KHIPUAI', role: 'Desarrollador',
+      bio: 'Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.' },
+    aboutHref: '/concepts/basic/es/about/', aboutLink: 'Cómo trabaja KHIPUAI',
+    nav: { services: 'Servicios', menu: 'Menú', team: 'Wil Mora · Alex Pena' },
+    tabs: { start: 'Resumen', ai: 'IA', get: 'Resultados', work: 'Portafolio', tools: 'Herramientas', security: 'Seguridad', fit: 'Encaje', questions: 'Preguntas', operator: 'Nosotros' },
+    securityHref: '/concepts/basic/es/security/',
+  },
+};
