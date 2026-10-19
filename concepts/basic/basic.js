@@ -1,8 +1,8 @@
 /* A plain, one-screen trial of the homepage, built only to compare against
    the Kinetic one. Not linked from the live site and marked noindex.
 
-   Layout: the section tabs sit in the top bar beside the booking button, and
-   each tab fills the screen below in the same two-column section layout.
+   Layout: a top bar with grouped section links on the right and the booking
+   button; each section fills the screen below in the same layout.
    Overview pairs the offer with a diagram of the three steps; AI shows the
    work before and after. On a phone the same pieces stack and the page
    scrolls.
@@ -123,21 +123,38 @@ export function render(C, L) {
         <p class="more"><a href="${L.aboutHref}">${esc(L.aboutLink)} &rarr;</a></p>`)],
   ];
 
-  document.getElementById('tabs').innerHTML = tabs.map(([id, label], i) =>
-    `<button type="button" role="tab" id="tab-${id}" aria-controls="panel-${id}"
-      aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(label)}</button>`).join('');
-  // The closing strip under every tab: the page's own closing line and the
-  // booking button, so each tab ends like a finished page rather than a slide.
+  // Navigation after BotLogix and Fractional AI: the logo on the left, a few
+  // grouped links on the right, menus that open on click or keyboard (never
+  // hover only), and the booking button at the far right. Menu titles and
+  // their one-line descriptions are the sections' own headings.
+  const groups = [
+    { label: L.nav.services, items: [
+      ['ai', C.ai.kick, C.ai.title],
+      ['get', L.get[0], `${L.get[1]} ${L.get[2]}`],
+      ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`] ] },
+    { id: 'work', label: L.tabs.work },
+    { id: 'security', label: L.tabs.security },
+    { label: L.tabs.operator, items: [
+      ['operator', L.aboutKick, L.nav.team],
+      ['questions', L.tabs.questions, `${L.faq[0]} ${L.faq[1]}`] ] },
+  ];
+  document.getElementById('nav').innerHTML = `
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-list">${esc(L.nav.menu)}</button>
+    <ul class="nav-list" id="nav-list">${groups.map((g, i) => g.items ? `<li class="nav-group">
+      <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-${i}">${esc(g.label)}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+      <ul class="nav-menu" id="menu-${i}">${g.items.map(([id, t, d]) => `<li><a href="#${id}" data-sec="${id}"><strong>${esc(t)}</strong><span>${esc(d)}</span></a></li>`).join('')}</ul></li>`
+      : `<li><a class="nav-top" href="#${g.id}" data-sec="${g.id}">${esc(g.label)}</a></li>`).join('')}</ul>`;
+
   // The page's small print (trial note, privacy, contact) moves from the
   // footer into the strip, so the footer row can carry the tool logos alone.
   const fine = [...document.querySelectorAll('.ft .wrap > p')].map(n => n.innerHTML).join(' &middot; ');
   document.querySelectorAll('.ft .wrap > p').forEach(n => n.remove());
   document.querySelector('.ft').insertAdjacentHTML('beforebegin', `<aside class="band" aria-label="${esc(C.hero.cta)}">
     <div class="wrap"><div><p>${esc(C.problem.close)}</p><p class="band-fine">${fine}</p></div>${book}</div></aside>`);
-  document.getElementById('main').innerHTML = tabs.map(([id, , html], i) =>
-    `<div class="panel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}" tabindex="0"${i === 0 ? '' : ' hidden'}>${html}</div>`).join('');
+  document.getElementById('main').innerHTML = tabs.map(([id, label, html], i) =>
+    `<section class="panel" id="panel-${id}" aria-label="${esc(label)}" tabindex="-1"${i === 0 ? '' : ' hidden'}>${html}</section>`).join('');
 
-  mountTabs(tabs.map(([id]) => id));
+  mountNav(tabs.map(([id]) => id));
   mountLogos(C, L);
   mountProjects(projects, PJ, C);
 }
@@ -198,33 +215,45 @@ function mountProjects(projects, PJ, C) {
   dlg.addEventListener('close', () => opener && opener.focus());
 }
 
-/* Standard tab behaviour: click or Enter/Space selects, arrow keys move
-   between tabs, Home/End jump to the ends. The hash follows the open tab, so
-   #work or #security opens straight to that section. */
-function mountTabs(ids) {
-  const tab = id => document.getElementById('tab-' + id);
-  const show = (id, focus) => {
-    for (const other of ids) {
-      const on = other === id;
-      tab(other).setAttribute('aria-selected', String(on));
-      tab(other).tabIndex = on ? 0 : -1;
-      document.getElementById('panel-' + other).hidden = !on;
-    }
-    if (focus) tab(id).focus();
-    if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id);
+/* Sections are shown one at a time by address: #work, #security and so on,
+   so every menu item is an ordinary link and the back button works. Menus
+   follow the disclosure pattern: a button with aria-expanded, opened by click,
+   Enter or Space; Escape or a click outside closes it and returns focus. */
+function mountNav(ids) {
+  const nav = document.getElementById('nav');
+  const tops = [...nav.querySelectorAll('button.nav-top')];
+  const toggle = nav.querySelector('.nav-toggle');
+  // On phones the language switch lives inside the Menu panel, so the header
+  // stays one row; a copy sits there and CSS shows whichever fits.
+  nav.querySelector('.nav-list').insertAdjacentHTML('beforeend', `<li class="nav-lang">${document.querySelector('.hd .lang').innerHTML}</li>`);
+  const close = (btn, focus) => { btn.setAttribute('aria-expanded', 'false'); if (focus) btn.focus(); };
+  const closeAll = () => { tops.forEach(b => close(b)); toggle.setAttribute('aria-expanded', 'false'); };
+  tops.forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') === 'true';
+    tops.forEach(o => close(o));
+    b.setAttribute('aria-expanded', String(!open));
+    if (!open) b.nextElementSibling.querySelector('a').focus();
+  }));
+  toggle.addEventListener('click', () => toggle.setAttribute('aria-expanded', String(toggle.getAttribute('aria-expanded') !== 'true')));
+  document.addEventListener('click', e => { if (!nav.contains(e.target)) closeAll(); });
+  nav.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = tops.find(b => b.getAttribute('aria-expanded') === 'true');
+    if (open) close(open, true); else if (toggle.getAttribute('aria-expanded') === 'true') { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
+  });
+  nav.addEventListener('focusout', e => { if (!nav.contains(e.relatedTarget)) tops.forEach(b => close(b)); });
+
+  const show = (id, moveFocus) => {
+    for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;
+    nav.querySelectorAll('[data-sec]').forEach(a => a.toggleAttribute('aria-current', a.dataset.sec === id));
+    nav.querySelectorAll('[data-sec]').forEach(a => { if (a.hasAttribute('aria-current')) a.setAttribute('aria-current', 'page'); });
+    tops.forEach(b => b.classList.toggle('is-current', !!b.nextElementSibling.querySelector(`[data-sec="${id}"]`)));
+    if (moveFocus) document.getElementById('panel-' + id).focus({ preventScroll: true });
   };
-  for (const [i, id] of ids.entries()) {
-    tab(id).addEventListener('click', () => show(id, false));
-    tab(id).addEventListener('keydown', e => {
-      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      let next = null;
-      if (step) next = ids[(i + step + ids.length) % ids.length];
-      if (e.key === 'Home') next = ids[0];
-      if (e.key === 'End') next = ids[ids.length - 1];
-      if (next) { e.preventDefault(); show(next, true); }
-    });
-  }
-  const fromHash = () => { const id = location.hash.slice(1); if (ids.includes(id)) show(id, false); };
-  window.addEventListener('hashchange', fromHash);
-  fromHash();
+  const fromHash = moveFocus => {
+    const id = location.hash.slice(1);
+    show(ids.includes(id) ? id : ids[0], moveFocus && ids.includes(id));
+  };
+  window.addEventListener('hashchange', () => { closeAll(); fromHash(true); });
+  fromHash(false);
 }
