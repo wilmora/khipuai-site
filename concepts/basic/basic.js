@@ -220,21 +220,39 @@ function mountProjects(projects, PJ, C) {
   let opener = null;
   // Fit the app's laptop-size page into the stage. On a phone it keeps a
   // readable scale and the stage scrolls instead.
+  // Laptops and desktops: scale the app by whichever of width or height runs
+  // out first, then size the dialog to the scaled app exactly, so there is no
+  // blank band around it. The summary column scrolls if it is ever taller.
+  // Phones: the app keeps a readable scale and scrolls inside the frame.
+  const media = stage.parentElement, text = dlg.querySelector('.pd-text'), TEXT_W = 300, MAX_K = 1.25;
   const fit = () => {
-    const frame = box.querySelector('iframe'); if (!frame || stage.hidden) return;
+    const frame = box.querySelector('iframe'); if (!frame || !dlg.open) return;
     const phone = matchMedia('(max-width: 899px), (max-height: 559px)').matches;
-    const w = stage.clientWidth, h = stage.clientHeight || APP_H;
-    const k = phone ? Math.max(0.5, Math.min(1, w / APP_W)) : Math.min(1, w / APP_W, h / APP_H);
+    let k;
+    if (phone) {
+      dlg.style.width = dlg.style.height = text.style.maxHeight = '';
+      k = Math.max(0.5, Math.min(1, stage.clientWidth / APP_W));
+      stage.style.height = `${Math.round(Math.min(innerHeight * 0.62, APP_H * k))}px`;
+    } else {
+      const pad = parseFloat(getComputedStyle(media).paddingLeft) * 2;
+      // Everything in the frame column that is not the app: browser bar, line under it, padding, gaps.
+      for (let pass = 0; pass < 2; pass++) {
+        const chrome = media.offsetHeight - stage.offsetHeight;
+        const maxW = Math.min(1840, innerWidth * 0.96) - TEXT_W - pad, maxH = innerHeight * 0.94 - chrome;
+        k = Math.min(MAX_K, maxW / APP_W, maxH / APP_H);
+        dlg.style.width = `${Math.floor(APP_W * k + pad + TEXT_W)}px`;
+        stage.style.height = `${Math.round(APP_H * k)}px`;
+      }
+      text.style.maxHeight = `${media.offsetHeight}px`;
+    }
+    shots.style.height = stage.style.height;
     frame.style.transform = `scale(${k})`;
     box.style.width = `${Math.round(APP_W * k)}px`; box.style.height = `${Math.round(APP_H * k)}px`;
-    // Phones: the stage is only as tall as the scaled app, so no empty band.
-    stage.style.height = phone ? `${Math.round(Math.min(innerHeight * 0.62, APP_H * k))}px` : '';
   };
-  new ResizeObserver(fit).observe(stage);
+  addEventListener('resize', () => requestAnimationFrame(fit));
   const view = v => {
     sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
     stage.hidden = v !== 'demo'; shots.hidden = v !== 'shots';
-    if (v === 'demo') fit();
   };
   const open = (key, btn) => {
     const p = projects.find(x => x.key === key); if (!p) return;
