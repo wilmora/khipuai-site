@@ -227,6 +227,15 @@ blockquote{margin:0;}
 .pc{display:flex;flex-direction:column;background:var(--navy);color:var(--cream);border-radius:4px;overflow:hidden;}
 .pc-img{aspect-ratio:2.6/1;background:#162433;overflow:hidden;}
 .pc-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;}
+/* Card pictures: each product's sign-in header (name and one line) at the
+   same true size, centred on a canvas of its own page colour shaped like the
+   card box (2.6:1). The header sits inside the canvas's middle half, so the
+   picture can fill any box shape the grid makes (cover) at one zoom across
+   all seven without cutting it off; a soft shadow joins it to the dark title
+   area below. */
+.pc-img[data-k]{position:relative;background:var(--card-bg,#fff);}
+.pc-img[data-k]::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 -12px 12px -10px rgba(10,17,25,.35);}
+.pc-img[data-k="materials"]{--card-bg:#fcfaf5;}
 .pc-ph{display:flex;align-items:center;justify-content:center;height:100%;
   background:repeating-linear-gradient(135deg,#132131 0 12px,#17283a 12px 24px);}
 .pc-ph .feature-icon{color:var(--copper);width:34px;height:34px;}
