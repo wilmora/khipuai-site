@@ -25,6 +25,8 @@ const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 
 
 export function render(C, L) {
   C = tone(C, L.lang);
+  // Two looks for Alex to choose from: A (light, default) and B (?welcome=b).
+  if (new URLSearchParams(location.search).get('welcome') === 'b') document.documentElement.classList.add('wl-b');
   const PJ = PROJECTS[L.lang];
   document.title = L.title;
   const top = document.getElementById('book-top');
@@ -53,9 +55,22 @@ export function render(C, L) {
   });
 
   const tabs = [
+    // The welcome screen (Alex, 2026-10-19): the logo, who we are in the
+    // site's own approved words, and two ways in. The Overview follows it.
+    ['home', L.tabs.home, `<div class="wl">
+        <div class="wl-in">
+          <p class="kick">${esc(L.welcome.kick)}</p>
+          <h1 class="wl-name"><img src="/shared/assets/mark.svg" alt="" width="112" height="112"><span>KHIPUAI</span></h1>
+          <p class="wl-line">${esc(C.hero.eyebrow)}</p>
+          <p class="wl-sub">${esc(C.legal)}</p>
+          <div class="ctas wl-ctas"><a class="btn" href="#start">${esc(L.welcome.see)}</a><a class="btn line" href="${C.booking}">${esc(L.bookShort)}</a></div>
+        </div>
+        <a class="wl-cue" href="#start" aria-label="${esc(L.welcome.see)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+      </div>`],
+
     ['start', L.tabs.start, sec('start', `
         <p class="kick">${esc(C.hero.eyebrow)}</p>
-        <h1>${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em></h1>
+        <h2 class="hl">${esc(C.hero.headline)} <em>${esc(C.hero.headlineEm)}</em></h2>
         <p class="lede">${esc(C.hero.sub)}</p>
         <div class="ctas">${book}<a class="btn line" href="/concepts/basic/self-assessment/">${esc(C.hero.ctaAlt)}</a></div>
         <ul class="trust">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>`, `
@@ -352,6 +367,7 @@ function mountNav(ids) {
 
   const show = (id, moveFocus) => {
     for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;
+    document.documentElement.classList.toggle('at-home', id === 'home');
     nav.querySelectorAll('[data-sec]').forEach(a => a.toggleAttribute('aria-current', a.dataset.sec === id));
     nav.querySelectorAll('[data-sec]').forEach(a => { if (a.hasAttribute('aria-current')) a.setAttribute('aria-current', 'page'); });
     tops.forEach(b => b.classList.toggle('is-current', !!b.nextElementSibling.querySelector(`[data-sec="${id}"]`)));
@@ -366,6 +382,7 @@ function mountNav(ids) {
     const p = ids.map(id => document.getElementById('panel-' + id)).find(x => !x.hidden);
     if (!p) return;
     p.style.zoom = '';
+    if (p.id === 'panel-home') return;
     if (!oneScreen.matches) return;
     const doc = document.documentElement;
     const fits = z => { p.style.zoom = z; return p.scrollHeight <= p.clientHeight + 1 && doc.scrollHeight <= innerHeight + 1; };

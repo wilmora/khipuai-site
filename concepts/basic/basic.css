@@ -113,7 +113,7 @@ main.wrap{padding-top:clamp(28px,5.5vh,56px);padding-bottom:24px;}
 
 /* Overview: the offer, and the three steps drawn as a timeline */
 .sec-start{grid-template-columns:minmax(0,6fr) minmax(0,5fr);}
-.sec-start h1{font-size:clamp(32px,3.4vw,50px);}
+.sec-start .hl{font-size:clamp(32px,3.4vw,50px);}
 .lede{font-size:17px;color:var(--muted);max-width:56ch;}
 .sec-start .ctas{margin-top:22px;}
 .trust{list-style:none;padding:16px 0 0;border-top:1px solid var(--line);
@@ -331,7 +331,7 @@ blockquote{margin:0;}
   .sec-head .intro,.sec-head .close{font-size:14.5px;}
   .sec-body{padding-top:14px;}
   .sec-body > * + *{margin-top:12px;}
-  .sec-start h1{font-size:clamp(28px,2.8vw,40px);}
+  .sec-start .hl{font-size:clamp(28px,2.8vw,40px);}
   .lede{font-size:15.5px;}
   .sec-start .ctas{margin-top:16px;}
   .sec-start .trust{margin-top:18px;padding-top:12px;gap:6px 18px;}
@@ -367,7 +367,7 @@ blockquote{margin:0;}
   .pc-body p{font-size:12.5px;}
   .pc-more{padding-top:6px;}
   main.wrap{padding-top:16px;padding-bottom:8px;}
-  .sec-start h1{font-size:clamp(26px,2.5vw,34px);}
+  .sec-start .hl{font-size:clamp(26px,2.5vw,34px);}
   .lede{font-size:15px;line-height:1.45;}
   .sec-start .ctas{margin-top:12px;}
   .sec-start .trust{margin-top:14px;padding-top:10px;gap:4px 18px;}
@@ -444,4 +444,53 @@ blockquote{margin:0;}
    accessible name (font-size 0 hides it visually, not from screen readers). */
 @media (max-width:380px){
   .bd{font-size:0;gap:0;letter-spacing:0;}
+}
+
+/* Welcome screen: the first screen of the homepage. The band and footer step
+   aside while it shows, so it has the whole window under the header.
+   A (default): light and centred, a soft copper glow behind the logo.
+   B (?welcome=b): navy full-bleed with the khipu cords large and faint. */
+.at-home .band,.at-home .ft{display:none;}
+.at-home main.wrap{padding-top:0;padding-bottom:0;}
+#panel-home{height:100%;}
+.wl{position:relative;isolation:isolate;height:100%;min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 0 72px;text-align:center;}
+.wl::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 46% 52% at 50% 44%,rgba(227,151,103,.22),rgba(227,151,103,0) 70%);}
+.wl-in{display:flex;flex-direction:column;align-items:center;}
+.wl-name{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:20px;
+  font:800 clamp(44px,6.4vw,92px)/1 'Manrope',sans-serif;letter-spacing:.16em;color:var(--ink);}
+.wl-name span{margin-right:-.16em;}
+.wl-name img{width:clamp(76px,8.4vw,120px);height:auto;border-radius:22%;box-shadow:0 18px 40px rgba(10,17,25,.18);}
+.wl-line{margin-top:26px;max-width:36ch;font:600 clamp(18px,1.7vw,24px)/1.35 'Manrope',sans-serif;color:var(--ink);}
+.wl-sub{margin-top:10px;max-width:56ch;font-size:15.5px;color:var(--muted);}
+.wl-ctas{margin-top:30px;justify-content:center;}
+.wl-cue{position:absolute;left:50%;bottom:14px;display:grid;place-items:center;width:44px;height:44px;margin-left:-22px;border-radius:50%;
+  color:var(--copper-ink);}
+/* The icon bobs, not the link, so the link's box stays still under the pointer. */
+.wl-cue svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:wl-cue 2.6s ease-in-out infinite;}
+@keyframes wl-cue{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+@media (prefers-reduced-motion:reduce){.wl-cue svg{animation:none;}}
+.wl .kick{color:var(--rust);}
+
+.wl-b .wl{color:var(--cream);background:var(--navy);box-shadow:0 0 0 100vmax var(--navy);clip-path:inset(0 -100vmax);}
+.wl-b .wl::before{background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23E39767' stroke-width='1.6' opacity='.12'%3E%3Cpath d='M18 12v40M32 12v40M46 12v40M18 20h28'/%3E%3Cpath d='m14 32 4-4 4 4-4 4-4-4Zm14 10 4-4 4 4-4 4-4-4Zm14-11 4-4 4 4-4 4-4-4Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -6% center/min(64vh,640px),
+  radial-gradient(ellipse 60% 70% at 30% 40%,rgba(227,151,103,.16),rgba(227,151,103,0) 70%);}
+.wl-b .wl-name{color:var(--cream);}
+.wl-b .wl-name img{box-shadow:0 18px 50px rgba(0,0,0,.45);}
+.wl-b .wl .kick{color:var(--copper);}
+.wl-b .wl-line{color:#fff;}
+.wl-b .wl-sub{color:#C4D0D8;}
+.wl-b .wl .btn.line{color:var(--cream);border-color:var(--cream);}
+.wl-b .wl .btn.line:hover{background:var(--cream);color:var(--navy);}
+.wl-b .wl-cue{color:var(--copper);}
+.wl-b .wl :focus-visible{outline-color:var(--copper);}
+
+/* Phones and short windows: the welcome screen fills the window under the
+   header, and the page scrolls on to the band and footer as usual. */
+@media (max-width:899px), (max-height:559px){
+  #panel-home{height:auto;}
+  .wl{height:auto;min-height:calc(100svh - 69px);padding:24px 0 72px;}
+  .at-home .band,.at-home .ft{display:revert;}
 }
