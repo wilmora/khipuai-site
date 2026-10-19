@@ -25,8 +25,10 @@ const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 
 
 export function render(C, L) {
   C = tone(C, L.lang);
-  // Two looks for Alex to choose from: A (light, default) and B (?welcome=b).
-  if (new URLSearchParams(location.search).get('welcome') === 'b') document.documentElement.classList.add('wl-b');
+  // The welcome screen follows the device's light or dark mode in CSS. For
+  // checking, ?welcome=a forces the light look and ?welcome=b the dark one.
+  const look = new URLSearchParams(location.search).get('welcome');
+  if (look === 'a' || look === 'b') document.documentElement.classList.add('wl-' + look);
   const PJ = PROJECTS[L.lang];
   document.title = L.title;
   const top = document.getElementById('book-top');

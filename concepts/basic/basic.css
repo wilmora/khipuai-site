@@ -448,11 +448,12 @@ blockquote{margin:0;}
 
 /* Welcome screen: the first screen of the homepage. The band and footer step
    aside while it shows, so it has the whole window under the header.
-   A (default): light and centred, a soft copper glow behind the logo.
-   B (?welcome=b): navy full-bleed with the khipu cords large and faint. */
+   A (device in light mode): light and centred, a soft copper glow.
+   B (device in dark mode): navy full-bleed, the khipu cords large and faint. */
 .at-home .band,.at-home .ft{display:none;}
 .at-home main.wrap{padding-top:0;padding-bottom:0;}
-#panel-home{height:100%;}
+/* visible, so the dark look's navy can reach the window edges */
+#panel-home{height:100%;overflow:visible;}
 .wl{position:relative;isolation:isolate;height:100%;min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:32px 0 72px;text-align:center;}
 .wl::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
@@ -486,6 +487,23 @@ blockquote{margin:0;}
 .wl-b .wl .btn.line:hover{background:var(--cream);color:var(--navy);}
 .wl-b .wl-cue{color:var(--copper);}
 .wl-b .wl :focus-visible{outline-color:var(--copper);}
+/* The device's dark mode shows look B, light mode shows look A. The
+   ?welcome=a and ?welcome=b addresses force one look, for checking. */
+@media (prefers-color-scheme:dark){
+  html:not(.wl-a) .wl{color:var(--cream);background:var(--navy);box-shadow:0 0 0 100vmax var(--navy);clip-path:inset(0 -100vmax);}
+  html:not(.wl-a) .wl::before{background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23E39767' stroke-width='1.6' opacity='.12'%3E%3Cpath d='M18 12v40M32 12v40M46 12v40M18 20h28'/%3E%3Cpath d='m14 32 4-4 4 4-4 4-4-4Zm14 10 4-4 4 4-4 4-4-4Zm14-11 4-4 4 4-4 4-4-4Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -6% center/min(64vh,640px),
+    radial-gradient(ellipse 60% 70% at 30% 40%,rgba(227,151,103,.16),rgba(227,151,103,0) 70%);}
+  html:not(.wl-a) .wl-name{color:var(--cream);}
+  html:not(.wl-a) .wl-name img{box-shadow:0 18px 50px rgba(0,0,0,.45);}
+  html:not(.wl-a) .wl .kick{color:var(--copper);}
+  html:not(.wl-a) .wl-line{color:#fff;}
+  html:not(.wl-a) .wl-sub{color:#C4D0D8;}
+  html:not(.wl-a) .wl .btn.line{color:var(--cream);border-color:var(--cream);}
+  html:not(.wl-a) .wl .btn.line:hover{background:var(--cream);color:var(--navy);}
+  html:not(.wl-a) .wl-cue{color:var(--copper);}
+  html:not(.wl-a) .wl :focus-visible{outline-color:var(--copper);}
+}
 
 /* Phones and short windows: the welcome screen fills the window under the
    header, and the page scrolls on to the band and footer as usual. */
