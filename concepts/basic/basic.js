@@ -8,16 +8,22 @@
    scrolls.
 
    Every sentence comes from shared/content.js / shared/content.es.js, or from
-   a heading or section label the live homepage already uses (passed in as L).
+   a heading or section label the live homepage already uses (passed in as L),
+   except the trial-only project details in projects.js (draft, marked NEW).
    The diagrams use only that wording plus the site's own line icons, and no
    numbers that are not already in the copy. */
 import { featureIcon } from '/shared/kinetic.js';
+import { PROJECTS, shown } from './projects.js';
 
+// Screens and logos live next to this file, so the Spanish page (one folder
+// down) loads the same files.
+const ASSET = new URL('./', import.meta.url).href;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
 const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 
 export function render(C, L) {
+  const PJ = PROJECTS[L.lang];
   document.title = L.title;
   const top = document.getElementById('book-top');
   top.href = C.booking;
@@ -35,6 +41,11 @@ export function render(C, L) {
   const head = (kick, h, em, extra = '') => `${kick ? `<p class="kick">${esc(kick)}</p>` : ''}${h2(h, em)}${extra}`;
   const rows = (items, group, numbered) => `<ol class="rows">${items.map(([t, d], i) =>
     `<li>${numbered ? `<b class="num">0${i + 1}</b>` : featureIcon(group, i)}<h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('')}</ol>`;
+
+  const projects = PJ.items.map(x => {
+    const base = x.from === undefined ? {} : C.portfolio.items[x.from];
+    return { key: x.key, shots: x.shots, alt: x.alt || [], t: shown(x.t ?? base.t), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
+  });
 
   const tabs = [
     ['start', L.tabs.start, sec('start', `
@@ -74,22 +85,16 @@ export function render(C, L) {
       head(L.get[0], L.get[1], L.get[2], `<ul class="nolines">${C.noLines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`),
       rows(C.deliverables, 'deliverable', true))],
 
-    ['work', L.tabs.work, sec('work',
-      head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm,
-        `<p class="intro">${esc(C.portfolio.next)}</p><p class="more"><a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a></p>`), `
-        <table class="pf">
-          <thead><tr>${C.portfolio.cols.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead>
-          <tbody>${C.portfolio.items.map(w => `<tr><th scope="row">${esc(w.t)}</th>
-            <td data-label="${esc(C.portfolio.cols[1])}">${esc(w.d)}</td>
-            <td data-label="${esc(C.portfolio.cols[2])}">${esc(w.who)}</td></tr>`).join('')}</tbody>
-        </table>
-        <p class="note">${esc(C.portfolio.note)}</p>`)],
-
-    // Names as text, not logos: each brand's guidelines require a licence or
-    // written permission before a third party shows its logo.
-    ['tools', L.tabs.tools, sec('tools',
-      head(C.tools.kick, C.tools.title, C.tools.titleEm, `<p class="intro">${esc(C.tools.note)}</p>`), `
-        <ul class="tools">${C.tools.items.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>`)],
+    // Portfolio as project cards, like GeoSolv's project summaries: a screen,
+    // a title, two lines, and "Learn more" for the full summary.
+    ['work', L.tabs.work, `<div class="sec-work">
+        <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="note">${esc(C.portfolio.note)}</p></div>
+        <ul class="pcards">${projects.map(p => `<li class="pc">
+          <div class="pc-img">${p.shots.length ? `<img src="${ASSET}shots/${p.shots[0]}" alt="" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
+          <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
+            <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
+          <li class="pc pc-cta"><div class="pc-body"><p>${esc(C.portfolio.next)}</p><a class="btn" href="${C.booking}">${esc(C.portfolio.nextLink)}</a></div></li>
+        </ul></div>`],
 
     ['security', L.tabs.security, sec('security',
       head(C.security.kick, C.security.title, C.security.titleEm,
@@ -123,12 +128,74 @@ export function render(C, L) {
       aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(label)}</button>`).join('');
   // The closing strip under every tab: the page's own closing line and the
   // booking button, so each tab ends like a finished page rather than a slide.
+  // The page's small print (trial note, privacy, contact) moves from the
+  // footer into the strip, so the footer row can carry the tool logos alone.
+  const fine = [...document.querySelectorAll('.ft .wrap > p')].map(n => n.innerHTML).join(' &middot; ');
+  document.querySelectorAll('.ft .wrap > p').forEach(n => n.remove());
   document.querySelector('.ft').insertAdjacentHTML('beforebegin', `<aside class="band" aria-label="${esc(C.hero.cta)}">
-    <div class="wrap"><p>${esc(C.problem.close)}</p>${book}</div></aside>`);
+    <div class="wrap"><div><p>${esc(C.problem.close)}</p><p class="band-fine">${fine}</p></div>${book}</div></aside>`);
   document.getElementById('main').innerHTML = tabs.map(([id, , html], i) =>
     `<div class="panel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}" tabindex="0"${i === 0 ? '' : ' hidden'}>${html}</div>`).join('');
 
   mountTabs(tabs.map(([id]) => id));
+  mountLogos(C, L);
+  mountProjects(projects, PJ, C);
+}
+
+/* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
+   Tools tab's wording (each tool's line and the trademark note) sits behind
+   the row's label so nothing from it is lost. FOR TESTING: logo permission is
+   pending for every company (see logos/SOURCES.md); Microsoft's four products
+   show as names because Microsoft's icon terms do not cover this use. */
+const LOGOS = ['', '', '', 'zendesk.svg', 'monday.png', 'google.svg', 'meta.svg', 'anthropic.svg'];
+function mountLogos(C, L) {
+  const items = C.tools.items.map(([name], i) => {
+    const f = LOGOS[i];
+    const img = f ? `<img src="${ASSET}logos/${f}" alt="${esc(name)}" height="20" class="lg-${f.split('.')[0]}">` : '';
+    const label = !f ? `<span class="lg-name">${esc(name)}</span>`
+      : (f === 'zendesk.svg' ? `<span class="lg-name" aria-hidden="true">${esc(name)}</span>`
+      : f === 'google.svg' ? `<span class="lg-name" aria-hidden="true">Search Console</span>` : '');
+    return `<li title="${esc(name)}">${img}${label}</li>`;
+  }).join('');
+  document.querySelector('.ft .wrap').insertAdjacentHTML('afterbegin', `<div class="logos">
+    <details class="tools-more"><summary>${esc(C.tools.kick)}</summary>
+      <div class="tools-pop"><ul>${C.tools.items.map(([t, d]) => `<li><strong>${esc(t)}</strong> ${esc(d)}</li>`).join('')}</ul>
+      <p>${esc(C.tools.note)}</p></div></details>
+    <ul class="logo-row" aria-label="${esc(C.tools.kick)}">${items}</ul></div>`);
+  const det = document.querySelector('.tools-more');
+  document.addEventListener('click', e => { if (det.open && !det.contains(e.target)) det.open = false; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && det.open) { det.open = false; det.querySelector('summary').focus(); } });
+}
+
+/* "Learn more": the project's full summary in a modal dialog (focus is held
+   inside it, Escape and the Close button return to the card). */
+function mountProjects(projects, PJ, C) {
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="pd" id="pd" aria-labelledby="pd-h">
+    <div class="pd-in"><div class="pd-media" id="pd-media"></div>
+    <div class="pd-text"><h2 id="pd-h"></h2><dl>
+      <dt>${esc(C.portfolio.cols[1])}</dt><dd id="pd-d"></dd>
+      <dt>${esc(PJ.why)}</dt><dd id="pd-why"></dd>
+      <dt>${esc(C.portfolio.cols[2])}</dt><dd id="pd-who"></dd></dl>
+      <p class="note">${esc(C.portfolio.note)}</p>
+      <button type="button" class="btn line" id="pd-close">${esc(PJ.close)}</button></div></div></dialog>`);
+  const dlg = document.getElementById('pd');
+  let opener = null;
+  const open = (key, btn) => {
+    const p = projects.find(x => x.key === key); if (!p) return;
+    opener = btn;
+    document.getElementById('pd-h').textContent = p.t;
+    document.getElementById('pd-d').textContent = p.d;
+    document.getElementById('pd-why').textContent = p.why;
+    document.getElementById('pd-who').textContent = p.who;
+    document.getElementById('pd-media').innerHTML = p.shots.length
+      ? p.shots.map((f, i) => `<img src="${ASSET}shots/${f}" alt="${esc(p.alt[i] || p.t)}">`).join('') + `<p class="note">${esc(PJ.shotNote)}</p>`
+      : `<div class="pd-ph">${featureIcon('ai', 0)}<p>${esc(PJ.pending)}</p></div>`;
+    dlg.showModal();
+  };
+  document.querySelectorAll('.pc-more').forEach(b => b.addEventListener('click', () => open(b.dataset.p, b)));
+  document.getElementById('pd-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => opener && opener.focus());
 }
 
 /* Standard tab behaviour: click or Enter/Space selects, arrow keys move
