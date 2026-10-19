@@ -63,7 +63,7 @@ export function render(C, L) {
             ${C.steps.map(([t, d], i) => `<li><span class="node"><b>0${i + 1}</b></span>
               <div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join('')}
             <li class="end"><span class="node">${featureIcon('deliverable', 5)}</span>
-              <div><h3>${esc(C.deliverables[5][0])}</h3><p>${esc(C.deliverables[5][1])}</p></div></li>
+              <div><h3>${esc(L.own[0])}</h3><p>${esc(L.own[1])}</p></div></li>
           </ol>
           <p class="note">${esc(C.legal)}</p>
         </figure>`)],
