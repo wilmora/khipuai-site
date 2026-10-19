@@ -157,7 +157,7 @@ export function render(C, L) {
 
   mountNav(tabs.map(([id]) => id));
   mountLogos(C, L);
-  mountProjects(projects, PJ, C);
+  mountProjects(projects, PJ, C, L.lang);
 }
 
 /* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
@@ -187,33 +187,58 @@ function mountLogos(C, L) {
 
 /* "Learn more": the project's full summary in a modal dialog (focus is held
    inside it, Escape and the Close button return to the card). */
-function mountProjects(projects, PJ, C) {
+// Learn more opens a dialog with the project summary and, beside it, a small
+// click-through demo of the product (made-up data, nothing saved or sent) and
+// its screenshots. A demo's code and styles load only when its dialog opens.
+let demoCss;
+const loadDemoCss = () => demoCss ||= new Promise(done => {
+  const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${ASSET}demos/demo.css` });
+  link.onload = link.onerror = done;
+  document.head.append(link);
+});
+
+function mountProjects(projects, PJ, C, lang) {
   document.body.insertAdjacentHTML('beforeend', `<dialog class="pd" id="pd" aria-labelledby="pd-h">
-    <div class="pd-in"><div class="pd-media" id="pd-media"></div>
+    <div class="pd-in"><div class="pd-media">
+      <div class="pd-switch" id="pd-switch" role="group" aria-label="${esc(PJ.view)}">
+        <button type="button" data-view="demo" aria-pressed="true">${esc(PJ.demoView)}</button>
+        <button type="button" data-view="shots" aria-pressed="false">${esc(PJ.shotsView)}</button></div>
+      <div id="pd-demo"></div><div id="pd-shots" hidden></div></div>
     <div class="pd-text"><h2 id="pd-h"></h2><dl>
       <dt>${esc(C.portfolio.cols[1])}</dt><dd id="pd-d"></dd>
       <dt>${esc(PJ.why)}</dt><dd id="pd-why"></dd>
       <dt>${esc(C.portfolio.cols[2])}</dt><dd id="pd-who"></dd></dl>
       <p class="note">${esc(C.portfolio.note)}</p>
       <button type="button" class="btn line" id="pd-close">${esc(PJ.close)}</button></div></div></dialog>`);
-  const dlg = document.getElementById('pd');
-  let opener = null;
+  const dlg = document.getElementById('pd'), $ = id => document.getElementById(id);
+  const sw = $('pd-switch'), demo = $('pd-demo'), shots = $('pd-shots');
+  let opener = null, current = '';
+  const view = v => {
+    sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    demo.hidden = v !== 'demo'; shots.hidden = v !== 'shots';
+  };
   const open = (key, btn) => {
     const p = projects.find(x => x.key === key); if (!p) return;
-    opener = btn;
-    document.getElementById('pd-h').textContent = p.t;
-    document.getElementById('pd-d').textContent = p.d;
-    document.getElementById('pd-why').textContent = p.why;
-    document.getElementById('pd-who').textContent = p.who;
-    document.getElementById('pd-media').innerHTML = p.shots.length
-      ? p.shots.map((f, i) => `<img src="${ASSET}shots/${f}" alt="${esc(p.alt[i] || p.t)}">`).join('') + `<p class="note">${esc(PJ.shotNote)}</p>`
-      : `<div class="pd-ph">${featureIcon('ai', 0)}<p>${esc(PJ.pending)}</p></div>`;
+    opener = btn; current = key;
+    $('pd-h').textContent = p.t;
+    $('pd-d').textContent = p.d;
+    $('pd-why').textContent = p.why;
+    $('pd-who').textContent = p.who;
+    shots.innerHTML = p.shots.map((f, i) => `<img src="${ASSET}shots/${f}" alt="${esc(p.alt[i] || p.t)}" loading="lazy">`).join('') + `<p class="note">${esc(PJ.shotNote)}</p>`;
+    sw.querySelector('[data-view="shots"]').hidden = !p.shots.length;
+    sw.hidden = !p.shots.length;
+    demo.innerHTML = `<p class="pd-load">${esc(PJ.loading)}</p>`;
+    view('demo');
     dlg.showModal();
+    Promise.all([import(`${ASSET}demos/kit.js`), import(`${ASSET}demos/${key}.js`), loadDemoCss()])
+      .then(([kit, mod]) => { if (current === key && dlg.open) kit.mount(demo, mod.default, lang); })
+      .catch(() => { if (current === key) demo.innerHTML = `<div class="pd-ph">${featureIcon('ai', 0)}<p>${esc(PJ.demoFailed)}</p></div>`; });
   };
   document.querySelectorAll('.pc-more').forEach(b => b.addEventListener('click', () => open(b.dataset.p, b)));
-  document.getElementById('pd-close').addEventListener('click', () => dlg.close());
+  sw.addEventListener('click', e => { const b = e.target.closest('[data-view]'); if (b) view(b.dataset.view); });
+  $('pd-close').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
-  dlg.addEventListener('close', () => opener && opener.focus());
+  dlg.addEventListener('close', () => { current = ''; demo.innerHTML = ''; opener && opener.focus(); });
 }
 
 /* Sections are shown one at a time by address: #work, #security and so on,
@@ -242,7 +267,13 @@ function mountNav(ids) {
     const open = tops.find(b => b.getAttribute('aria-expanded') === 'true');
     if (open) close(open, true); else if (toggle.getAttribute('aria-expanded') === 'true') { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
   });
-  nav.addEventListener('focusout', e => { if (!nav.contains(e.relatedTarget)) tops.forEach(b => close(b)); });
+  // Safari does not focus a link or button when it is clicked, so focus
+  // leaves the menu on pointer down. Without this guard the menu closed
+  // before the click landed, and its links did nothing there.
+  let pressing = false;
+  nav.addEventListener('pointerdown', () => { pressing = true; });
+  window.addEventListener('pointerup', () => setTimeout(() => { pressing = false; }));
+  nav.addEventListener('focusout', e => { if (!pressing && !nav.contains(e.relatedTarget)) tops.forEach(b => close(b)); });
 
   const show = (id, moveFocus) => {
     for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;

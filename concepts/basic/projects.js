@@ -9,7 +9,7 @@
 
    Screenshots: made-up or demo data only, client logos and names cropped out
    or covered. The first shot shows on the card; all of them show in "Learn
-   more". Support keeps a placeholder until its screenshots arrive. In the
+   more", next to a click-through demo from demos/ (made-up data only). Support keeps a placeholder until its screenshots arrive. In the
    WhatsApp shots the assistant's name (it contains the client's name) is
    replaced with "Asistente". */
 export const PROJECTS = {
@@ -17,7 +17,8 @@ export const PROJECTS = {
     why: 'Why we built it',
     learn: 'Learn more',
     close: 'Close',
-    pending: 'Screenshot not shown yet.',
+    view: 'What to show', demoView: 'Try the demo', shotsView: 'Screenshots',
+    loading: 'Loading the demo…', demoFailed: 'The demo could not load. The screenshots still show the product.',
     shotNote: 'Screens show sample or empty data. Client names are removed.',
     items: [
       { key: 'payroll', from: 0,
@@ -79,7 +80,8 @@ export const PROJECTS = {
     why: 'Por qué lo construimos',
     learn: 'Ver más',
     close: 'Cerrar',
-    pending: 'Captura aún no disponible.',
+    view: 'Qué mostrar', demoView: 'Probar la demo', shotsView: 'Capturas',
+    loading: 'Cargando la demo…', demoFailed: 'La demo no pudo cargar. Las capturas igual muestran el producto.',
     shotNote: 'Las pantallas muestran datos de ejemplo o vacíos. Los nombres de clientes se eliminaron.',
     items: [
       { key: 'payroll', from: 0,
