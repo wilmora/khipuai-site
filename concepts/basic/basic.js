@@ -44,7 +44,7 @@ export function render(C, L) {
 
   const projects = PJ.items.map(x => {
     const base = x.from === undefined ? {} : C.portfolio.items[x.from];
-    return { key: x.key, shots: x.shots, alt: x.alt || [], t: shown(x.t ?? base.t), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
+    return { key: x.key, app: x.app, shots: x.shots, alt: x.alt || [], t: shown(x.t ?? base.t), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
   });
 
   const tabs = [
@@ -86,7 +86,7 @@ export function render(C, L) {
       rows(C.deliverables, 'deliverable', true))],
 
     // Portfolio as project cards, like GeoSolv's project summaries: a screen,
-    // a title, two lines, and "Learn more" for the full summary. Eight cards
+    // a title, two lines, and "Learn more" for the full summary. Seven cards
     // fill two rows of four, so the next-step link sits in the header.
     ['work', L.tabs.work, `<div class="sec-work">
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
@@ -158,7 +158,7 @@ export function render(C, L) {
 
   mountNav(tabs.map(([id]) => id));
   mountLogos(C, L);
-  mountProjects(projects, PJ, C, L.lang);
+  mountProjects(projects, PJ, C);
 }
 
 /* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
@@ -188,23 +188,24 @@ function mountLogos(C, L) {
 
 /* "Learn more": the project's full summary in a modal dialog (focus is held
    inside it, Escape and the Close button return to the card). */
-// Learn more opens a dialog with the project summary and, beside it, a small
-// click-through demo of the product (made-up data, nothing saved or sent) and
-// its screenshots. A demo's code and styles load only when its dialog opens.
-let demoCss;
-const loadDemoCss = () => demoCss ||= new Promise(done => {
-  const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${ASSET}demos/demo.css` });
-  link.onload = link.onerror = done;
-  document.head.append(link);
-});
+// Learn more opens a dialog with a working miniature of the real app: a static
+// copy of its screens in its own look, with made-up data (demos/<key>/). It is
+// drawn at a laptop size in an iframe and scaled to fit, so it looks like the
+// app shrunk into a browser window. Nothing in it is saved or sent. The page
+// loads only when the dialog opens. The screenshots stay one click away.
+const APP_W = 1280, APP_H = 800;
 
-function mountProjects(projects, PJ, C, lang) {
+function mountProjects(projects, PJ, C) {
   document.body.insertAdjacentHTML('beforeend', `<dialog class="pd" id="pd" aria-labelledby="pd-h">
     <div class="pd-in"><div class="pd-media">
-      <div class="pd-switch" id="pd-switch" role="group" aria-label="${esc(PJ.view)}">
-        <button type="button" data-view="demo" aria-pressed="true">${esc(PJ.demoView)}</button>
-        <button type="button" data-view="shots" aria-pressed="false">${esc(PJ.shotsView)}</button></div>
-      <div id="pd-demo"></div><div id="pd-shots" hidden></div></div>
+      <div class="pd-bar"><span class="pd-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="pd-addr" id="pd-addr"></span><span class="pd-tag">${esc(PJ.frameLabel)}</span>
+        <div class="pd-switch" id="pd-switch" role="group" aria-label="${esc(PJ.view)}">
+          <button type="button" data-view="demo" aria-pressed="true">${esc(PJ.demoView)}</button>
+          <button type="button" data-view="shots" aria-pressed="false">${esc(PJ.shotsView)}</button></div></div>
+      <div class="pd-stage" id="pd-stage"><div class="pd-scale" id="pd-scale"></div></div>
+      <div id="pd-shots" class="pd-shots" hidden></div>
+      <p class="pd-under"><span>${esc(PJ.frameNote)}</span> <a id="pd-full" href="#" target="_blank" rel="noopener">${esc(PJ.openFull)} &rarr;</a></p></div>
     <div class="pd-text"><h2 id="pd-h"></h2><dl>
       <dt>${esc(C.portfolio.cols[1])}</dt><dd id="pd-d"></dd>
       <dt>${esc(PJ.why)}</dt><dd id="pd-why"></dd>
@@ -212,34 +213,49 @@ function mountProjects(projects, PJ, C, lang) {
       <p class="note">${esc(C.portfolio.note)}</p>
       <button type="button" class="btn line" id="pd-close">${esc(PJ.close)}</button></div></div></dialog>`);
   const dlg = document.getElementById('pd'), $ = id => document.getElementById(id);
-  const sw = $('pd-switch'), demo = $('pd-demo'), shots = $('pd-shots');
-  let opener = null, current = '';
+  const sw = $('pd-switch'), stage = $('pd-stage'), box = $('pd-scale'), shots = $('pd-shots');
+  let opener = null;
+  // Fit the app's laptop-size page into the stage. On a phone it keeps a
+  // readable scale and the stage scrolls instead.
+  const fit = () => {
+    const frame = box.querySelector('iframe'); if (!frame || stage.hidden) return;
+    const phone = matchMedia('(max-width: 899px), (max-height: 559px)').matches;
+    const w = stage.clientWidth, h = stage.clientHeight || APP_H;
+    const k = phone ? Math.max(0.5, Math.min(1, w / APP_W)) : Math.min(1, w / APP_W, h / APP_H);
+    frame.style.transform = `scale(${k})`;
+    box.style.width = `${Math.round(APP_W * k)}px`; box.style.height = `${Math.round(APP_H * k)}px`;
+    // Phones: the stage is only as tall as the scaled app, so no empty band.
+    stage.style.height = phone ? `${Math.round(Math.min(innerHeight * 0.62, APP_H * k))}px` : '';
+  };
+  new ResizeObserver(fit).observe(stage);
   const view = v => {
     sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
-    demo.hidden = v !== 'demo'; shots.hidden = v !== 'shots';
+    stage.hidden = v !== 'demo'; shots.hidden = v !== 'shots';
+    if (v === 'demo') fit();
   };
   const open = (key, btn) => {
     const p = projects.find(x => x.key === key); if (!p) return;
-    opener = btn; current = key;
+    opener = btn;
     $('pd-h').textContent = p.t;
     $('pd-d').textContent = p.d;
     $('pd-why').textContent = p.why;
     $('pd-who').textContent = p.who;
     shots.innerHTML = p.shots.map((f, i) => `<img src="${ASSET}shots/${f}" alt="${esc(p.alt[i] || p.t)}" loading="lazy">`).join('') + `<p class="note">${esc(PJ.shotNote)}</p>`;
+    const url = `${ASSET}demos/${key}/index.html`;
+    $('pd-addr').textContent = p.app || p.t;
+    $('pd-full').href = url;
     sw.querySelector('[data-view="shots"]').hidden = !p.shots.length;
-    sw.hidden = !p.shots.length;
-    demo.innerHTML = `<p class="pd-load">${esc(PJ.loading)}</p>`;
+    box.innerHTML = `<iframe src="${url}" title="${esc(fmtTitle(PJ.frameTitle, p.app || p.t))}" width="${APP_W}" height="${APP_H}"></iframe>`;
     view('demo');
     dlg.showModal();
-    Promise.all([import(`${ASSET}demos/kit.js`), import(`${ASSET}demos/${key}.js`), loadDemoCss()])
-      .then(([kit, mod]) => { if (current === key && dlg.open) kit.mount(demo, mod.default, lang); })
-      .catch(() => { if (current === key) demo.innerHTML = `<div class="pd-ph">${featureIcon('ai', 0)}<p>${esc(PJ.demoFailed)}</p></div>`; });
+    fit();
   };
+  const fmtTitle = (s, name) => s.replace('{app}', name);
   document.querySelectorAll('.pc-more').forEach(b => b.addEventListener('click', () => open(b.dataset.p, b)));
   sw.addEventListener('click', e => { const b = e.target.closest('[data-view]'); if (b) view(b.dataset.view); });
   $('pd-close').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
-  dlg.addEventListener('close', () => { current = ''; demo.innerHTML = ''; opener && opener.focus(); });
+  dlg.addEventListener('close', () => { box.innerHTML = ''; opener && opener.focus(); });
 }
 
 /* Sections are shown one at a time by address: #work, #security and so on,

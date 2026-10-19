@@ -1,58 +1,62 @@
-// Checks for the portfolio click-through demos (concepts/basic/demos/).
+// Checks for the portfolio miniatures (concepts/basic/demos/<key>/): one
+// static copy per real app, shown in the Learn more dialog.
 // Run: node --test tests/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 
 const DIR = new URL('../concepts/basic/demos/', import.meta.url);
-const { KIT } = await import(new URL('kit.js', DIR));
 const { PROJECTS } = await import(new URL('../projects.js', DIR));
 const KEYS = PROJECTS.en.items.map(x => x.key);
 
-// Same keys, same array lengths, no empty strings, all the way down.
-function sameShape(a, b, path) {
-  assert.equal(typeof a, typeof b, `${path}: type differs`);
-  if (Array.isArray(a)) {
-    assert.ok(Array.isArray(b), `${path}: not an array in both`);
-    assert.equal(a.length, b.length, `${path}: length differs`);
-    a.forEach((x, i) => sameShape(x, b[i], `${path}[${i}]`));
-  } else if (a && typeof a === 'object') {
-    assert.deepEqual(Object.keys(a).sort(), Object.keys(b).sort(), `${path}: keys differ`);
-    for (const k of Object.keys(a)) sameShape(a[k], b[k], `${path}.${k}`);
-  } else if (typeof a === 'string') {
-    assert.ok(a.trim() && b.trim(), `${path}: empty string`);
-  }
-}
-const strings = o => typeof o === 'string' ? [o] : o && typeof o === 'object' ? Object.values(o).flatMap(strings) : [];
+const walk = url => readdirSync(url).flatMap(name => {
+  const u = new URL(name, url);
+  return statSync(u).isDirectory() ? walk(new URL(`${name}/`, url)) : [u];
+});
+const TEXT = /\.(html|js|css|md)$/;
+// Client brands, people and codes that must never appear in the public repo.
+const FORBIDDEN = /tesseon|apusito|\bapus\b|gastineau|\bglh\b|log homes|factoa|kestrel|riverside|northgate|meadowlark|krissie|\b110[0-9]\b|\b1120\b/i;
 
-test('demo kit strings match in English and Spanish', () => sameShape(KIT.en, KIT.es, 'KIT'));
-
-test('every portfolio project has a demo file', () => {
-  for (const k of KEYS) assert.ok(existsSync(new URL(`${k}.js`, DIR)), `missing demos/${k}.js`);
+test('the dialog text matches in English and Spanish', () => {
+  const [en, es] = [PROJECTS.en, PROJECTS.es];
+  assert.deepEqual(Object.keys(en).sort(), Object.keys(es).sort());
+  assert.deepEqual(en.items.map(x => [x.key, x.app, x.shots.length, (x.alt || []).length]), es.items.map(x => [x.key, x.app, x.shots.length, (x.alt || []).length]));
+  for (const k of ['frameLabel', 'frameTitle', 'frameNote', 'openFull', 'view', 'demoView', 'shotsView']) assert.ok(en[k] && es[k], k);
+  assert.ok(en.frameTitle.includes('{app}') && es.frameTitle.includes('{app}'));
 });
 
 for (const key of KEYS) {
-  test(`demo ${key}: tabs, Spanish parity and safe content`, async () => {
-    const src = readFileSync(new URL(`${key}.js`, DIR), 'utf8');
-    const def = (await import(new URL(`${key}.js`, DIR))).default;
-    assert.equal(def.key, key);
-    assert.ok(def.tabs.length >= 3 && def.tabs.length <= 5, 'three to five tabs');
-    sameShape(def.t.en, def.t.es, `${key}.t`);
-    for (const lang of ['en', 'es']) {
-      const t = def.t[lang];
-      for (const tab of def.tabs) {
-        assert.ok(t.tabs[tab], `${lang}: no label for tab ${tab}`);
-        const html = def.view[tab](def.init(lang), t, lang);
-        assert.doesNotMatch(html, /undefined|NaN|\[object/, `${lang} ${tab}: broken output`);
-        for (const [, k] of html.matchAll(/data-real="(\w+)"/g)) assert.ok(t.real[k], `${lang} ${tab}: no note for ${k}`);
-        for (const [, a] of html.matchAll(/data-act="(\w+)"/g)) assert.equal(typeof def.act[a], 'function', `${tab}: no action ${a}`);
-      }
-      const opener = lang === 'en' ? 'In the real product this would ' : 'En el producto real, esto ';
-      for (const note of Object.values(t.real)) assert.ok(note.startsWith(opener), `${lang}: note must start "${opener}"`);
-      for (const s of strings(t)) assert.ok(!s.includes('—'), `${lang}: em dash in "${s}"`);
-    }
-    // Nothing is sent or fetched, and nothing from a client app appears.
-    assert.doesNotMatch(src, /fetch\(|XMLHttpRequest|WebSocket|sendBeacon|<iframe|https?:\/\//, 'no network calls or embeds');
-    assert.doesNotMatch(src, /tesseon|apusito|apus\b|gastineau|factoa|sunlu|kestrel|riverside|northgate|\b11[0-2]\d\b/i, 'no client names or codes');
+  test(`miniature ${key}: a static, noindex page`, () => {
+    const page = new URL(`${key}/index.html`, DIR);
+    assert.ok(existsSync(page), `missing demos/${key}/index.html`);
+    const html = readFileSync(page, 'utf8');
+    assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+    assert.match(html, /<title>[^<]+ demo \| KHIPUAI<\/title>/);
+    assert.match(html, /href="\.\.\/mini\.css"/);
+    assert.match(html, /<script type="module" src="app\.js"><\/script>/);
+    assert.ok(existsSync(new URL(`${key}/app.js`, DIR)) && existsSync(new URL(`${key}/app.css`, DIR)));
+    assert.match(readFileSync(new URL(`${key}/app.js`, DIR), 'utf8'), /from '\.\.\/mini\.js'/);
   });
 }
+
+test('no miniature talks to a server, embeds a page or names a client', () => {
+  const files = walk(DIR).filter(u => TEXT.test(u.pathname));
+  assert.ok(files.length > 0);
+  for (const u of files) {
+    const src = readFileSync(u, 'utf8'), name = u.pathname.split('/demos/')[1];
+    // Licence comments in compiled CSS (Tailwind's MIT notice) name a URL but load nothing.
+    const code = /\.css$/.test(u.pathname) ? src.replace(/\/\*[\s\S]*?\*\//g, '') : src;
+    assert.doesNotMatch(code.replaceAll('http://www.w3.org/2000/svg', ''), /https?:\/\//, `${name}: outside URL`);
+    assert.doesNotMatch(src, /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|<iframe|@import/, `${name}: network call or embed`);
+    assert.doesNotMatch(src, FORBIDDEN, `${name}: client name or code`);
+    assert.ok(!src.includes('—'), `${name}: em dash`);
+  }
+});
+
+test('notes for actions the demo does not perform use the agreed wording', () => {
+  for (const u of walk(DIR).filter(u => /\.js$/.test(u.pathname))) {
+    const src = readFileSync(u, 'utf8');
+    for (const [, s] of src.matchAll(/data-real="([^"$]{12,})"/g))
+      assert.match(s, /^(In the real product this would|En el producto real, esto)/, `${u.pathname.split('/demos/')[1]}: ${s.slice(0, 60)}`);
+  }
+});

@@ -1,34 +1,35 @@
 /* Project cards for the trial's portfolio (concepts/basic/ only; the live
    homepage keeps its table from shared/content.js).
 
-   Five projects reuse the shared portfolio wording word for word (title, what
-   it does, who approves) by index into C.portfolio.items. Each card adds one
-   "why we built it" line, and three projects are new here. Everything marked
-   NEW below is draft copy awaiting Wil's fact check: no client names, no
-   results, no numbers.
+   Four projects reuse the shared portfolio wording word for word (title, what
+   it does, who approves) by index into C.portfolio.items; three are new here.
+   Each card adds one "why we built it" line. Everything marked NEW below is
+   draft copy awaiting Wil's fact check: no client names, no results, no
+   numbers.
 
-   Screenshots: made-up or demo data only, client logos and names cropped out
-   or covered. The first shot shows on the card; all of them show in "Learn
-   more", next to a click-through demo from demos/ (made-up data only). Support keeps a placeholder until its screenshots arrive. In the
-   WhatsApp shots the assistant's name (it contains the client's name) is
-   replaced with "Asistente". */
+   Pictures: each card shows the product's first screenshot. Learn more opens
+   a working miniature of the app itself (demos/<key>/),
+   with the portfolio screenshots one click away. All of it is made-up data,
+   with client logos and names removed. */
 export const PROJECTS = {
   en: {
     why: 'Why we built it',
     learn: 'Learn more',
     close: 'Close',
     view: 'What to show', demoView: 'Try the demo', shotsView: 'Screenshots',
-    loading: 'Loading the demo…', demoFailed: 'The demo could not load. The screenshots still show the product.',
+    frameLabel: 'Demo, made-up data', frameTitle: '{app}: working demo with made-up data',
+    frameNote: 'A working copy of the real app’s screens, in its own language. Click around: nothing is saved or sent.',
+    openFull: 'Open full size',
     shotNote: 'Screens show sample or empty data. Client names are removed.',
     items: [
-      { key: 'payroll', from: 0,
+      { key: 'payroll', app: 'Certified Payroll', from: 0,
         shots: ['payroll-dashboard.jpg', 'payroll-rates.jpg', 'payroll-weekly-reports.jpg', 'payroll-wage-lookup.jpg'],
         alt: ['The certified payroll dashboard: reports ready to file, sheets in the inbox, reports this month and wage determinations flagged for review',
           'A job’s prevailing wage rate table, with base, fringe and total for each trade, checked against its wage determination',
           'The weekly certified reports filed for a job, numbered by week, including a week with no work, each downloadable as a PDF',
           'The wage determination lookup by state, county and type of construction, and the daily check that flags new modifications'],
         why: 'NEW: Reports like these were assembled by hand, so an underpaid worker could slip through to a signed report.' },
-      { key: 'aca',
+      { key: 'aca', app: 'ACA Filing',
         shots: ['aca-portal-review.jpg', 'aca-codes-grid.jpg', 'aca-forms.jpg', 'aca-portal-approved.jpg'],
         alt: ['The client portal: forms ready for the client to review, each code explained in plain words, and a place to send corrected data',
           'The staff review grid: each employee’s monthly IRS codes for Lines 14, 15 and 16, worked out from the payroll upload',
@@ -38,7 +39,7 @@ export const PROJECTS = {
         d: 'NEW: Annual 1094-C and 1095-C forms built from the payroll data, with client review and approval.',
         why: 'NEW: Working out every employee’s monthly codes by hand each year is slow and easy to get wrong.',
         who: 'NEW: Staff check the codes, and the client approves the exact forms before they are filed.' },
-      { key: 'hub',
+      { key: 'hub', app: 'opshub',
         shots: ['hub-billing-agents.jpg', 'hub-review-question.jpg', 'hub-review-gap.jpg', 'hub-console-review.jpg'],
         alt: ['The supervisor’s view of a monthly billing close: where the month stands, headline numbers, the seven steps, the biggest gaps and recent activity',
           'The review screen: a client handed to a person with a question, one-click answers, and the editable invoice lines side by side',
@@ -48,9 +49,7 @@ export const PROJECTS = {
         d: 'NEW: One place for a team’s internal tools: billing exceptions, a guided monthly billing close, client profiles and dashboards.',
         why: 'NEW: So staff stop switching between separate tools and spreadsheets for every task.',
         who: 'NEW: Drafts only. Posting stays manual in the accounting system.' },
-      { key: 'workbench', from: 3, shots: [],
-        why: 'NEW: Exceptions were tracked on a separate board, away from the customer details needed to fix them.' },
-      { key: 'review',
+      { key: 'review', app: 'Billing agent',
         shots: ['review-needs-review.jpg', 'review-prices.jpg', 'review-client-emails.jpg'],
         alt: ['Monthly close, needs review: the new invoices next to the existing drafts, with the clients where totals differ or a person is needed',
           'A draft invoice checked line by line against the price record, with the one line that differs flagged',
@@ -59,15 +58,15 @@ export const PROJECTS = {
         d: 'NEW: Prepares each month’s invoice drafts and checks every one against the pricing rules, with the evidence behind each finding.',
         why: 'NEW: So the monthly close starts from checked drafts instead of a blank spreadsheet.',
         who: 'NEW: A person reviews every finding. Drafts go to the accounting system and posting happens there.' },
-      { key: 'support', from: 4, shots: [],
+      { key: 'support', app: 'Support', from: 4, shots: [],
         why: 'NEW: So urgent requests reach the right person first instead of waiting in one shared inbox.' },
-      { key: 'materials', from: 1,
+      { key: 'materials', app: 'Material List', from: 1,
         shots: ['materials-review.jpg', 'materials-grid.jpg', 'materials-documents.jpg'],
         alt: ['The review results for a sample house: ready for review, with the open questions grouped by what the reviewer needs to do',
           'The generated material list: each section shows piece, linear-foot and board-foot totals, and status chips show what was filled automatically and what still needs a person',
           'The project’s documents: one sample framing schedule uploaded and read'],
         why: 'NEW: Building a material list from plans by hand is slow and easy to get wrong.' },
-      { key: 'whatsapp', from: 2,
+      { key: 'whatsapp', app: 'Portal de ventas', from: 2,
         shots: ['whatsapp-conversation.jpg', 'whatsapp-orders.jpg', 'whatsapp-home.jpg', 'whatsapp-monthly-report.jpg'],
         alt: ['A WhatsApp conversation where the assistant quotes a price and takes the order, and the team sends the colour catalogue',
           'The orders board: each order from sale to delivery, with counts per stage, delivery dates (one late) and an owner for each order',
@@ -81,17 +80,19 @@ export const PROJECTS = {
     learn: 'Ver más',
     close: 'Cerrar',
     view: 'Qué mostrar', demoView: 'Probar la demo', shotsView: 'Capturas',
-    loading: 'Cargando la demo…', demoFailed: 'La demo no pudo cargar. Las capturas igual muestran el producto.',
+    frameLabel: 'Demo, datos inventados', frameTitle: '{app}: demo funcional con datos inventados',
+    frameNote: 'Una copia funcional de las pantallas de la app real, en su idioma original. Explora: nada se guarda ni se envía.',
+    openFull: 'Abrir en tamaño completo',
     shotNote: 'Las pantallas muestran datos de ejemplo o vacíos. Los nombres de clientes se eliminaron.',
     items: [
-      { key: 'payroll', from: 0,
+      { key: 'payroll', app: 'Certified Payroll', from: 0,
         shots: ['payroll-dashboard.jpg', 'payroll-rates.jpg', 'payroll-weekly-reports.jpg', 'payroll-wage-lookup.jpg'],
         alt: ['El tablero de nómina certificada: reportes listos para presentar, planillas recibidas, reportes del mes y determinaciones salariales marcadas para revisión',
           'La tabla de salarios prevalecientes de una obra, con base, beneficios y total por oficio, revisada contra su determinación salarial',
           'Los reportes semanales certificados de una obra, numerados por semana, incluida una semana sin trabajo, cada uno descargable en PDF',
           'La consulta de determinaciones salariales por estado, condado y tipo de construcción, y la revisión diaria que marca nuevas modificaciones'],
         why: 'NEW: Estos reportes se armaban a mano, y un trabajador mal pagado podía pasar a un reporte firmado.' },
-      { key: 'aca',
+      { key: 'aca', app: 'ACA Filing',
         shots: ['aca-portal-review.jpg', 'aca-codes-grid.jpg', 'aca-forms.jpg', 'aca-portal-approved.jpg'],
         alt: ['El portal del cliente: formularios listos para que el cliente los revise, cada código explicado en palabras simples y un lugar para enviar datos corregidos',
           'La grilla de revisión del equipo: los códigos mensuales del IRS de cada empleado para las líneas 14, 15 y 16, calculados a partir de la carga de nómina',
@@ -101,7 +102,7 @@ export const PROJECTS = {
         d: 'NEW: Formularios anuales 1094-C y 1095-C generados a partir de los datos de nómina, con revisión y aprobación del cliente.',
         why: 'NEW: Calcular a mano cada año los códigos mensuales de cada empleado es lento y fácil de equivocar.',
         who: 'NEW: El equipo revisa los códigos y el cliente aprueba los formularios exactos antes de presentarlos.' },
-      { key: 'hub',
+      { key: 'hub', app: 'opshub',
         shots: ['hub-billing-agents.jpg', 'hub-review-question.jpg', 'hub-review-gap.jpg', 'hub-console-review.jpg'],
         alt: ['La vista del supervisor de un cierre mensual de facturación: en qué punto está el mes, cifras principales, los siete pasos, las mayores diferencias y la actividad reciente',
           'La pantalla de revisión: un cliente derivado a una persona con una pregunta, respuestas de un clic y las líneas de factura editables lado a lado',
@@ -111,9 +112,7 @@ export const PROJECTS = {
         d: 'NEW: Un solo lugar para las herramientas internas del equipo: excepciones de facturación, un cierre mensual guiado, perfiles de clientes y tableros.',
         why: 'NEW: Para que el equipo deje de saltar entre herramientas y hojas de cálculo distintas para cada tarea.',
         who: 'NEW: Solo borradores. El asiento sigue siendo manual en el sistema contable.' },
-      { key: 'workbench', from: 3, shots: [],
-        why: 'NEW: Las excepciones se seguían en un tablero aparte, lejos de los datos del cliente necesarios para resolverlas.' },
-      { key: 'review',
+      { key: 'review', app: 'Billing agent',
         shots: ['review-needs-review.jpg', 'review-prices.jpg', 'review-client-emails.jpg'],
         alt: ['Cierre mensual, por revisar: las facturas nuevas junto a los borradores existentes, con los clientes cuyos totales difieren o que necesitan una persona',
           'Un borrador de factura revisado línea por línea contra el registro de precios, con la única línea distinta marcada',
@@ -122,15 +121,15 @@ export const PROJECTS = {
         d: 'NEW: Prepara los borradores de factura del mes y revisa cada uno contra las reglas de precios, con la evidencia de cada hallazgo.',
         why: 'NEW: Para que el cierre mensual empiece con borradores revisados y no con una hoja en blanco.',
         who: 'NEW: Una persona revisa cada hallazgo. Los borradores van al sistema contable y el asiento se hace ahí.' },
-      { key: 'support', from: 4, shots: [],
+      { key: 'support', app: 'Support', from: 4, shots: [],
         why: 'NEW: Para que lo urgente llegue primero a la persona correcta y no espere en una bandeja compartida.' },
-      { key: 'materials', from: 1,
+      { key: 'materials', app: 'Material List', from: 1,
         shots: ['materials-review.jpg', 'materials-grid.jpg', 'materials-documents.jpg'],
         alt: ['Los resultados de revisión de una casa de ejemplo: lista para revisar, con las preguntas abiertas agrupadas según lo que debe hacer quien revisa',
           'La lista de materiales generada: cada sección muestra totales en piezas, pies lineales y pies tablares, y las etiquetas indican qué se completó solo y qué necesita a una persona',
           'Los documentos del proyecto: un cronograma de estructura de ejemplo cargado y leído'],
         why: 'NEW: Armar una lista de materiales desde planos a mano es lento y fácil de equivocar.' },
-      { key: 'whatsapp', from: 2,
+      { key: 'whatsapp', app: 'Portal de ventas', from: 2,
         shots: ['whatsapp-conversation.jpg', 'whatsapp-orders.jpg', 'whatsapp-home.jpg', 'whatsapp-monthly-report.jpg'],
         alt: ['Una conversación de WhatsApp en la que el asistente cotiza y toma el pedido, y el equipo envía el catálogo de colores',
           'El tablero de pedidos: cada pedido de la venta a la entrega, con conteos por etapa, fechas de entrega (una vencida) y un responsable por pedido',
