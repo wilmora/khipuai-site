@@ -9,8 +9,9 @@
 
    Screenshots: made-up or demo data only, client logos and names cropped out
    or covered. The first shot shows on the card; all of them show in "Learn
-   more". Support and WhatsApp keep a placeholder until their screenshots
-   arrive. */
+   more". Support keeps a placeholder until its screenshots arrive. In the
+   WhatsApp shots the assistant's name (it contains the client's name) is
+   replaced with "Asistente". */
 export const PROJECTS = {
   en: {
     why: 'Why we built it',
@@ -65,7 +66,12 @@ export const PROJECTS = {
           'The generated material list: each section shows piece, linear-foot and board-foot totals, and status chips show what was filled automatically and what still needs a person',
           'The project’s documents: one sample framing schedule uploaded and read'],
         why: 'NEW: Building a material list from plans by hand is slow and easy to get wrong.' },
-      { key: 'whatsapp', from: 2, shots: [],
+      { key: 'whatsapp', from: 2,
+        shots: ['whatsapp-conversation.jpg', 'whatsapp-orders.jpg', 'whatsapp-home.jpg', 'whatsapp-monthly-report.jpg'],
+        alt: ['A WhatsApp conversation where the assistant quotes a price and takes the order, and the team sends the colour catalogue',
+          'The orders board: each order from sale to delivery, with counts per stage, delivery dates (one late) and an owner for each order',
+          'The portal home: each section as a tile showing what is waiting, such as payments to verify, a late order and stock alerts',
+          'The monthly report: the month’s key numbers, such as conversations, reply time and verified sales, and the sections of the analysis and plan'],
         why: 'NEW: Customers ask for prices at all hours, often outside office time.' },
     ],
   },
@@ -122,7 +128,12 @@ export const PROJECTS = {
           'La lista de materiales generada: cada sección muestra totales en piezas, pies lineales y pies tablares, y las etiquetas indican qué se completó solo y qué necesita a una persona',
           'Los documentos del proyecto: un cronograma de estructura de ejemplo cargado y leído'],
         why: 'NEW: Armar una lista de materiales desde planos a mano es lento y fácil de equivocar.' },
-      { key: 'whatsapp', from: 2, shots: [],
+      { key: 'whatsapp', from: 2,
+        shots: ['whatsapp-conversation.jpg', 'whatsapp-orders.jpg', 'whatsapp-home.jpg', 'whatsapp-monthly-report.jpg'],
+        alt: ['Una conversación de WhatsApp en la que el asistente cotiza y toma el pedido, y el equipo envía el catálogo de colores',
+          'El tablero de pedidos: cada pedido de la venta a la entrega, con conteos por etapa, fechas de entrega (una vencida) y un responsable por pedido',
+          'El inicio del portal: cada sección como un mosaico que muestra lo pendiente, como pagos por verificar, un pedido vencido y alertas de inventario',
+          'El informe mensual: las cifras clave del mes, como conversaciones, tiempo de respuesta y ventas verificadas, y las secciones del análisis y el plan'],
         why: 'NEW: Los clientes piden precios a cualquier hora, muchas veces fuera del horario de oficina.' },
     ],
   },
