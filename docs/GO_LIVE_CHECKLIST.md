@@ -28,13 +28,14 @@ yes, no or "use this wording".
 | D11 | **Spanish privacy policy.** A new translation of the English policy, with the same facts (`concepts/basic/es/privacy/`). It needs Wil's review before it is published. | Wil | Spanish pages link to it marked as a translation, or link to the English policy. |
 | D12 | **Pages with no Spanish version.** The self-assessment, its thank-you page and the blog are English only. Translate them, or keep them in English and label the link "(en inglés)". The Spanish contact page already does this. | Alex and Wil | English only, labelled. |
 | D13 | **The blog.** The live site has three blog posts and a blog index. The trial has no blog. Restyle them into the new look, or keep them in the old look. | Alex | Keep the old look, still linked. |
+| D15 | **Create hello@khipuai.co.** The trial pages now show one shared address, hello@khipuai.co, instead of personal ones. The mailbox does not exist yet. Create it before launch: a Google Workspace alias forwarding to the founder and the operations lead. | Alex | Every "email us" link on the new site bounces. Launch is blocked. |
 | D14 | **Self-assessment email form.** It is switched off on the trial. Turning it back on sends the visitor's details to the Google form endpoint, as the live site does. | Alex and Wil | It stays off. Visitors download the PDF and book a call. |
 
 ---
 
 ## 2. Before the switch (on `alex-work`)
 
-1. [ ] Apply the answers to D1 to D14, one commit per decision.
+1. [ ] Apply the answers to D1 to D15, one commit per decision. Send a test email to hello@khipuai.co and confirm it arrives.
 2. [ ] Run every check, and get each one green:
    - `node --test tests/*.test.mjs`
    - the gate (`node <agent-factory>/gate/pre-push.mjs --check .`)
@@ -90,7 +91,8 @@ Do it all in one reviewed pull request, so it can be undone in one step.
    Never delete `CNAME`.
 7. [ ] **404:** replace the root `404.html` with `concepts/basic/404.html`, links rewritten. Keep `404.md` for the edge worker.
 8. [ ] **Update `sitemap.xml`** with the new addresses, the dates and the Spanish pages (contact, privacy, portal). Keep `robots.txt` pointing to it.
-9. [ ] **Update the Markdown twins and `llms.txt`** (`index.md`, `es/index.md`, `about/index.md`, `contact/index.md`) so they say what the new pages say.
+9. [ ] **Update the Markdown twins and `llms.txt`** (`index.md`, `es/index.md`, `about/index.md`, `contact/index.md`) so they say what the new pages say. Remove the personal email addresses and "remotely" from them, and from the structured data, the same as on the pages.
+   Then search the whole repo for `@khipuai.co`: only hello@khipuai.co should remain.
 10. [ ] **Analytics,** if D9 says yes: add the chosen tag to every public page, behind consent for Meta. Leave it off the demos. Make the privacy policy match it.
 11. [ ] **Structured data:** carry the live homepage's JSON-LD over and update it.
 12. [ ] **Form endpoint,** if D14 says yes: switch the self-assessment form on, with the live endpoint, and test one real submission.

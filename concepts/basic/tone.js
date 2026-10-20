@@ -12,6 +12,8 @@ const SWAP = {
     'It is probably not for you if': 'It is not the right fit if',
     'You are a very small shop with little process.': 'You are a very small business with few established processes.',
     'What if you do not find much?': 'What if the audit finds few opportunities?',
+    'KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.': 'KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada.',
+    'wil@khipuai.co': 'hello@khipuai.co',
     'That honesty is the product.': 'A candid answer is part of the value.',
     'and we will tell you honestly if it is worth automating.': 'and we will give you a candid assessment of whether it is worth automating.',
   },
@@ -22,6 +24,8 @@ const SWAP = {
     'No van a un chatbot público.': 'Nunca se introducen en un chatbot público de IA.',
     'Probablemente no es para ti si': 'No es la opción adecuada si',
     'y te diremos con honestidad si vale la pena automatizarlo.': 'y te daremos una evaluación franca de si vale la pena automatizarlo.',
+    'KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.': 'KHIPUAI es un estudio de Ontario, Canadá, que atiende a clientes en Estados Unidos y Canadá.',
+    'wil@khipuai.co': 'hello@khipuai.co',
     '¿Y si no encuentras mucho?': '¿Qué pasa si la auditoría encuentra pocas oportunidades?',
     'Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa acordada para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.':
       'La auditoría lo dice con franqueza. Una respuesta franca es parte del valor: habrás invertido una tarifa pequeña y acordada para confirmar que tu operación es más eficiente que la mayoría.',

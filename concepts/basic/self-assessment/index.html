@@ -136,7 +136,7 @@
         <div class="field"><label for="lf-name">First name</label><input id="lf-name" name="name" autocomplete="given-name" maxlength="40"></div>
         <div class="field"><label for="lf-email">Work email</label><input id="lf-email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
         <div class="field"><label for="lf-company">Company (optional)</label><input id="lf-company" name="company" autocomplete="organization" maxlength="80"></div>
-        <label class="check"><input type="checkbox" id="lf-follow"> Wil can follow up about my result. Unsubscribe anytime.</label>
+        <label class="check"><input type="checkbox" id="lf-follow"> KHIPUAI can follow up about my result. Unsubscribe anytime.</label>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn" type="submit">Email me my result</button>
         <p class="fineprint" id="lf-msg" role="status" aria-live="polite">One email with your result. Nothing else unless you tick the box. <a href="../privacy/">Privacy</a>. Or just <a href="/self-assessment.pdf" download>download the worksheet</a>.</p>
@@ -163,8 +163,10 @@ import { C } from '/shared/content.js';
 import { page } from '../basic.js';
 import { LABELS } from '../labels.js';
 import { mountQuiz } from './quiz.js';
+import { tone } from '../tone.js';
 page(C, LABELS.en, '../');
-mountQuiz(C);
+// The quiz reads the same trial wording as the rest of the page.
+mountQuiz(tone(C, 'en'));
 </script>
 </body>
 </html>

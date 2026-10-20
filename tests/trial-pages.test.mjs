@@ -57,3 +57,18 @@ test('no duplicate titles across the trial pages', () => {
   const titles = [...PAGES, ...HOMES, ...DEMOS].map(([p]) => readFileSync(new URL(p, ROOT), 'utf8').match(/<title>([^<]+)<\/title>/)[1]);
   assert.equal(new Set(titles).size, titles.length, titles.join(' / '));
 });
+
+// Alex, 2026-10-20: one shared address on the site, no personal ones, and
+// no name-dropping in everyday lines (people are named where they are
+// introduced); "remotely" is not part of the studio line.
+test('trial pages use the shared address and neutral everyday lines', () => {
+  for (const [path] of [...PAGES, ...HOMES, ['404.html']]) {
+    const html = readFileSync(new URL(path, ROOT), 'utf8');
+    for (const m of html.matchAll(/[a-z.]+@khipuai\.co/g)) assert.equal(m[0], 'hello@khipuai.co', path);
+    assert.doesNotMatch(html, /Wil will|Wil can|Email Wil|escribe a Wil/, path);
+    assert.doesNotMatch(html, /work remotely|de forma remota con empresas/, path);
+  }
+  const tone = readFileSync(new URL('tone.js', ROOT), 'utf8');
+  assert.match(tone, /'wil@khipuai\.co': 'hello@khipuai\.co'/);
+  assert.match(tone, /studio serving clients across the United States and Canada\.'/);
+});
