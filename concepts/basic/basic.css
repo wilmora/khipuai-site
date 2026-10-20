@@ -81,7 +81,14 @@ p,ul,ol,figure{margin:0;}
    one page, not between slides. */
 main.wrap{padding-top:clamp(28px,5.5vh,56px);padding-bottom:24px;}
 .panel{min-height:0;}
-.panel:focus-visible{outline-offset:6px;}
+/* Panels, sections and headings take focus only from script (tabindex -1),
+   after the welcome scroll, a menu link, the arrow or Back, so a reader's
+   place moves with them. They never draw the ring (Alex, 2026-10-20: "the
+   orange ring that always pops up"). Links, buttons and fields keep the
+   ring for keyboard users through :focus-visible above. */
+[tabindex="-1"]:focus,[tabindex="-1"]:focus-visible{outline:none;}
+/* A button given focus back after a mouse action (see basic.js). */
+.quiet-focus:focus-visible{outline:none;}
 .sec{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:64px;align-items:start;}
 .sec-head h2{font-size:clamp(26px,2.4vw,34px);}
 .sec-head > * + *{margin-top:14px;}

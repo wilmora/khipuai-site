@@ -330,7 +330,23 @@ function mountProjects(projects, PJ, C) {
   sw.addEventListener('click', e => { const b = e.target.closest('[data-view]'); if (b) view(b.dataset.view); });
   $('pd-close').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
-  dlg.addEventListener('close', () => { box.innerHTML = ''; opener && opener.focus(); });
+  // Focus goes back to the Learn more button. After a mouse close it comes
+  // back quietly (Safari would draw the ring); the ring returns with the
+  // next key press, so keyboard users still see where they are.
+  let byPointer = false;
+  dlg.addEventListener('pointerdown', () => { byPointer = true; });
+  dlg.addEventListener('keydown', () => { byPointer = false; });
+  dlg.addEventListener('close', () => {
+    box.innerHTML = '';
+    if (!opener) return;
+    if (byPointer) {
+      const o = opener; o.classList.add('quiet-focus');
+      const done = () => { o.classList.remove('quiet-focus'); removeEventListener('keydown', done, true); o.removeEventListener('blur', done); };
+      addEventListener('keydown', done, true); o.addEventListener('blur', done);
+    }
+    byPointer = false;
+    opener.focus();
+  });
 }
 
 /* Sections are shown one at a time by address: #work, #security and so on,
