@@ -114,7 +114,7 @@ export function render(C, L) {
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
           <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a></span></p></div>
         <ul class="pcards">${projects.map(p => `<li class="pc">
-          <div class="pc-img" data-k="${p.key}">${p.card ? `<img src="${ASSET}shots/${p.card}" alt="" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
+          <div class="pc-img" data-k="${p.key}">${p.card ? `<img src="${ASSET}shots/${p.card}" alt="" width="1280" height="800" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
             <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
         </ul></div>`],
