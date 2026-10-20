@@ -45,8 +45,8 @@ export function mountPortal(root, lang, booking, bookLabel) {
   <section class="pb-plans" aria-labelledby="pb-plans-h">
     <h2 id="pb-plans-h">${esc(T.planList)}</h2>
     <ul>${T.planCards.map(([name, row, desc]) => `<li><h3>${esc(name)}</h3>
-      <p class="pb-amt">${esc(row === 'setup' ? T.from(PRICING.setupFrom, PRICING.currency.us) + ' / ' + PRICING.currency.ca
-        : row === 'monthly' ? T.monthlyTbc : row === 'custom' ? T.quoted : T.contact)} ${draftTag}</p>
+      <p class="pb-amt">${esc(row === 'portal' ? T.perMonth(PRICING.portalMonthly, `${PRICING.currency.us} / ${PRICING.currency.ca}`)
+        : row === 'hosting' ? T.hostingTbc : row === 'custom' ? T.quoted : T.contact)} ${draftTag}</p>
       <p>${esc(desc)}</p></li>`).join('')}</ul>
   </section>
   <section class="pb-next" aria-labelledby="pb-next-h">
@@ -72,8 +72,8 @@ export function mountPortal(root, lang, booking, bookLabel) {
   const lines = e => {
     const rows = [];
     if (e.plan === 'enterprise') rows.push([T.rows.enterprise, T.contact]);
-    else rows.push([T.rows.setup, T.from(e.setupFrom, e.currency)]);
-    rows.push([T.rows.monthly, T.monthlyTbc]);
+    else rows.push([T.rows.portal, T.perMonth(e.portalMonthly, e.currency)]);
+    rows.push([T.rows.hosting, T.hostingTbc]);
     if (e.custom.length) rows.push([T.rows.custom, `${T.quoted} (${e.custom.map(k => T.features[k]).join(', ')})`]);
     return rows;
   };

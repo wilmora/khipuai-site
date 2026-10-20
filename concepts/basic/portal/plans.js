@@ -10,12 +10,14 @@
 
 export const PRICING = {
   draft: true,
-  // Option A, "Build it with us in one sitting": the same starting number,
-  // shown in each region's own currency (no conversion, no multiplier).
-  setupFrom: 100,
+  // Option A, "Build it with us in one sitting": the portal itself, a
+  // monthly fee (Alex, 2026-10-20). The same number, shown in each region's
+  // own currency (no conversion, no multiplier).
+  portalMonthly: 100,
   currency: { us: 'USD', ca: 'CAD' },
-  // Monthly hosting and support: not set yet.
-  monthly: null,
+  // Hosting, a separate monthly fee because we run the server for the
+  // client: not set yet (to be confirmed).
+  hostingMonthly: null,
   // Above either limit the portal is an Enterprise conversation (draft limits).
   enterprise: { users: 100, locations: 10 },
   // Input bounds for the two counts.
@@ -59,8 +61,8 @@ export function estimate(choice) {
     features: on.map(f => f.key), custom,
     plan: enterprise ? 'enterprise' : custom.length ? 'custom' : 'a',
     currency: PRICING.currency[region],
-    setupFrom: enterprise ? null : PRICING.setupFrom,
-    monthly: PRICING.monthly,
+    portalMonthly: enterprise ? null : PRICING.portalMonthly,
+    hostingMonthly: PRICING.hostingMonthly,
     draft: PRICING.draft,
   };
 }

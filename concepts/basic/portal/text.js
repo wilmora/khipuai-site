@@ -1,7 +1,7 @@
 /* Build your portal: the page's wording in English and Spanish. Amounts and
    rules live in plans.js; the plan names match the Business Portal's plans
-   (Option A "Build it with us in one sitting", hosting and support monthly
-   "To be confirmed", Custom work "Quoted separately", Enterprise "Contact
+   (Option A "Build it with us in one sitting" per month, hosting a separate
+   monthly fee "to be confirmed", Custom work "Quoted separately", Enterprise "Contact
    us"). Neutral examples only. Both objects keep the same shape. */
 export const TEXT = {
   en: {
@@ -37,17 +37,17 @@ export const TEXT = {
       custom: ['Option A plus custom work', 'Build it with us in one sitting, plus the custom pieces'],
       enterprise: ['Enterprise', 'For larger teams and many locations'],
     },
-    rows: { setup: 'Setup', monthly: 'Hosting and support', custom: 'Custom work', enterprise: 'Price' },
-    from: (n, cur) => `Starting at $${n} ${cur}`,
-    monthlyTbc: 'Monthly fee, to be confirmed',
+    rows: { portal: 'Your portal', hosting: 'Hosting (we run the server for you)', custom: 'Custom work', enterprise: 'Price' },
+    perMonth: (n, cur) => `$${n} ${cur} / month`,
+    hostingTbc: 'To be confirmed / month',
     quoted: 'Quoted separately',
     contact: 'Contact us',
     draft: 'Draft pricing',
     note: 'Draft pricing: amounts are not final and may change. A person confirms scope and price with you on a call. Nothing you choose here is sent or stored.',
     planList: 'The plans',
     planCards: [
-      ['Build it with us in one sitting', 'setup', 'Your portal set up from the template you choose, together with us in one session.'],
-      ['Hosting and support', 'monthly', 'A monthly fee for hosting and support.'],
+      ['Build it with us in one sitting', 'portal', 'Your portal, set up from the template you choose together with us in one session, for a monthly fee.'],
+      ['Hosting', 'hosting', 'We run the server for you. A separate monthly fee, to be confirmed.'],
       ['Custom work', 'custom', 'Anything beyond the template, such as a connection to a system you already use.'],
       ['Enterprise', 'enterprise', 'For larger teams, many locations, or several portals.'],
     ],
@@ -94,17 +94,17 @@ export const TEXT = {
       custom: ['Opción A más trabajo a medida', 'Constrúyelo con nosotros en una sola sesión, más las partes a medida'],
       enterprise: ['Empresarial', 'Para equipos más grandes y muchas sedes'],
     },
-    rows: { setup: 'Configuración', monthly: 'Alojamiento y soporte', custom: 'Trabajo a medida', enterprise: 'Precio' },
-    from: (n, cur) => `Desde $${n} ${cur}`,
-    monthlyTbc: 'Cuota mensual, por confirmar',
+    rows: { portal: 'Tu portal', hosting: 'Alojamiento (operamos el servidor por ti)', custom: 'Trabajo a medida', enterprise: 'Precio' },
+    perMonth: (n, cur) => `$${n} ${cur} / mes`,
+    hostingTbc: 'Por confirmar / mes',
     quoted: 'Cotización aparte',
     contact: 'Contáctanos',
     draft: 'Precios en borrador',
     note: 'Precios en borrador: los montos no son definitivos y pueden cambiar. Una persona confirma contigo el alcance y el precio en una llamada. Nada de lo que elijas aquí se envía ni se guarda.',
     planList: 'Los planes',
     planCards: [
-      ['Constrúyelo con nosotros en una sola sesión', 'setup', 'Tu portal configurado a partir de la plantilla que elijas, junto con nosotros en una sesión.'],
-      ['Alojamiento y soporte', 'monthly', 'Una cuota mensual por el alojamiento y el soporte.'],
+      ['Constrúyelo con nosotros en una sola sesión', 'portal', 'Tu portal, configurado a partir de la plantilla que elijas junto con nosotros en una sesión, por una cuota mensual.'],
+      ['Alojamiento', 'hosting', 'Operamos el servidor por ti. Una cuota mensual aparte, por confirmar.'],
       ['Trabajo a medida', 'custom', 'Todo lo que va más allá de la plantilla, como una conexión con un sistema que ya usas.'],
       ['Empresarial', 'enterprise', 'Para equipos más grandes, muchas sedes o varios portales.'],
     ],
