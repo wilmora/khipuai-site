@@ -521,3 +521,11 @@ blockquote{margin:0;}
   .wl{height:auto;min-height:calc(100svh - 69px);padding:24px 0 72px;}
   .at-home .band,.at-home .ft{display:revert;}
 }
+
+/* Moving between the welcome screen and the Overview: the next screen slides
+   in from the direction of travel. A jump with reduced motion. */
+@keyframes panel-up{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+@keyframes panel-down{from{opacity:0;transform:translateY(-28px);}to{opacity:1;transform:none;}}
+.panel.enter-up{animation:panel-up .36s cubic-bezier(.2,.7,.2,1);}
+.panel.enter-down{animation:panel-down .36s cubic-bezier(.2,.7,.2,1);}
+@media (prefers-reduced-motion:reduce){.panel.enter-up,.panel.enter-down{animation:none;}}

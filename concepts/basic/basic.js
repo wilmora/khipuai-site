@@ -367,7 +367,15 @@ function mountNav(ids) {
   const nav = document.getElementById('nav');
   const { tops, closeAll } = mountMenus(nav);
 
+  let shown = null;
   const show = (id, moveFocus) => {
+    // Between the welcome screen and the Overview the new screen slides in
+    // from the direction of travel (no motion with reduced motion).
+    const panel = document.getElementById('panel-' + id), dir = shown === 'home' && id === 'start' ? 'enter-up' : shown === 'start' && id === 'home' ? 'enter-down' : '';
+    shown = id;
+    panel.classList.remove('enter-up', 'enter-down');
+    // Added after the zoom fit has measured, so the slide never skews it.
+    if (dir) requestAnimationFrame(() => panel.classList.add(dir));
     for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;
     document.documentElement.classList.toggle('at-home', id === 'home');
     nav.querySelectorAll('[data-sec]').forEach(a => a.toggleAttribute('aria-current', a.dataset.sec === id));
@@ -407,4 +415,59 @@ function mountNav(ids) {
   };
   window.addEventListener('hashchange', () => { closeAll(); fromHash(true); });
   fromHash(false);
+  mountStep(ids, nav);
+}
+
+/* Scrolling between the welcome screen and the Overview (Alex, 2026-10-20:
+   the arrow invites a scroll). One wheel or trackpad scroll, one swipe, or
+   Page Down, Space or the Down arrow on the welcome screen opens the
+   Overview (#start), the same as the arrow; the same gestures upward at the
+   very top of the Overview go back. Only at that boundary: listeners are
+   passive (no scroll is ever blocked), menus, dialogs and fields are left
+   alone, and a trackpad swipe's long tail of small events counts once. */
+function mountStep(ids, nav) {
+  const at = () => ids.find(id => !document.getElementById('panel-' + id).hidden);
+  const busy = t => document.querySelector('dialog[open]') || nav.querySelector('[aria-expanded="true"]')
+    || (t && t.closest && t.closest('dialog, nav, input, textarea, select, [contenteditable], .tools-more'));
+  // At the top of the Overview: neither the page nor the panel is scrolled.
+  const atTop = () => window.scrollY <= 0 && document.getElementById('panel-start').scrollTop <= 0;
+  let quietUntil = 0, sum = 0, last = 0;
+  const go = id => {
+    quietUntil = Date.now() + 700; sum = 0;
+    if (location.hash.slice(1) !== id) location.hash = id;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+  // A quick phone flick keeps gliding after the switch; hold the new screen
+  // at its top until that glide has spent itself.
+  addEventListener('scroll', () => { if (Date.now() < quietUntil && window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' }); }, { passive: true });
+  const step = dy => {
+    const here = at();
+    if (here === 'home' && dy > 0) go('start');
+    else if (here === 'start' && dy < 0 && atTop()) go('home');
+  };
+  addEventListener('wheel', e => {
+    const now = Date.now(), gap = now - last; last = now;
+    // Re-arm only after the gesture has been still for a moment.
+    if (now < quietUntil || (quietUntil && gap < 160)) { if (now >= quietUntil) quietUntil = now + 160; return; }
+    quietUntil = 0;
+    if (busy(e.target) || e.ctrlKey) return;
+    sum = gap > 220 ? e.deltaY : sum + e.deltaY;
+    if (Math.abs(sum) >= 40) { const d = sum; sum = 0; step(d); }
+  }, { passive: true });
+  addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey || busy(e.target)) return;
+    const a = document.activeElement, plain = !a || a === document.body || a.classList.contains('panel');
+    const down = e.key === 'PageDown' || e.key === 'ArrowDown' || (e.key === ' ' && !e.shiftKey && plain);
+    const up = e.key === 'PageUp' || e.key === 'ArrowUp' || (e.key === ' ' && e.shiftKey && plain);
+    if (down && at() === 'home') { e.preventDefault(); go('start'); }
+    else if (up && at() === 'start' && atTop()) { e.preventDefault(); go('home'); }
+  });
+  let y0 = null, top0 = false;
+  addEventListener('touchstart', e => { y0 = busy(e.target) || e.touches.length > 1 ? null : e.touches[0].clientY; top0 = atTop(); }, { passive: true });
+  addEventListener('touchend', e => {
+    if (y0 === null) return;
+    const dy = y0 - e.changedTouches[0].clientY; y0 = null;
+    if (at() === 'home' && dy > 50) go('start');
+    else if (at() === 'start' && top0 && atTop() && dy < -70) go('home');
+  }, { passive: true });
 }
