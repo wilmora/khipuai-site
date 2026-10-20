@@ -11,6 +11,7 @@ const PAGES = [
   ['contact/index.html', 'en'], ['privacy/index.html', 'en'],
   ['audit/index.html', 'en'], ['es/audit/index.html', 'es'],
   ['self-assessment/index.html', 'en'], ['thank-you/index.html', 'en'],
+  ['portal/index.html', 'en'], ['es/portal/index.html', 'es'],
 ];
 
 for (const [path, lang] of PAGES) {

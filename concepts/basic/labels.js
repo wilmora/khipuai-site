@@ -22,6 +22,7 @@ export const LABELS = {
     nav: { services: 'Services', menu: 'Menu', team: 'Wil Mora · Alex Pena' },
     tabs: { home: 'Home', start: 'Overview', ai: 'AI', get: 'Results', work: 'Portfolio', tools: 'Tools', security: 'Security', fit: 'Fit', questions: 'Questions', operator: 'About' },
     securityHref: '/concepts/basic/security/',
+    portal: { nav: 'Build your portal', desc: 'Pick a template and features, and see a draft price.' },
   },
   es: {
     lang: 'es',
@@ -42,5 +43,6 @@ export const LABELS = {
     nav: { services: 'Servicios', menu: 'Menú', team: 'Wil Mora · Alex Pena' },
     tabs: { home: 'Inicio', start: 'Resumen', ai: 'IA', get: 'Resultados', work: 'Portafolio', tools: 'Herramientas', security: 'Seguridad', fit: 'Encaje', questions: 'Preguntas', operator: 'Nosotros' },
     securityHref: '/concepts/basic/es/security/',
+    portal: { nav: 'Construye tu portal', desc: 'Elige una plantilla y funciones, y ve un precio en borrador.' },
   },
 };

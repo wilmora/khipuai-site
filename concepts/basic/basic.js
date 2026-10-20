@@ -112,7 +112,7 @@ export function render(C, L) {
     // fill two rows of four, so the next-step link sits in the header.
     ['work', L.tabs.work, `<div class="sec-work">
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
-          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a></span></p></div>
+          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a> <a href="portal/">${esc(L.portal.nav)} &rarr;</a></span></p></div>
         <ul class="pcards">${projects.map(p => `<li class="pc">
           <div class="pc-img" data-k="${p.key}">${p.card ? `<img src="${ASSET}shots/${p.card}" alt="" width="1280" height="800" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
@@ -175,7 +175,9 @@ function navHTML(C, L, home) {
     { label: L.nav.services, items: [
       ['ai', C.ai.kick, C.ai.title],
       ['get', L.get[0], `${L.get[1]} ${L.get[2]}`],
-      ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`] ] },
+      ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`],
+      // A page of its own, not a homepage section.
+      ['portal', L.portal.nav, L.portal.desc, `${home}portal/`] ] },
     { id: 'work', label: L.tabs.work },
     { id: 'security', label: L.tabs.security },
     { label: L.tabs.operator, items: [
@@ -186,7 +188,7 @@ function navHTML(C, L, home) {
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-list">${esc(L.nav.menu)}</button>
     <ul class="nav-list" id="nav-list">${groups.map((g, i) => g.items ? `<li class="nav-group">
       <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-${i}">${esc(g.label)}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
-      <ul class="nav-menu" id="menu-${i}">${g.items.map(([id, t, d]) => `<li><a href="${home}#${id}" data-sec="${id}"><strong>${esc(t)}</strong><span>${esc(d)}</span></a></li>`).join('')}</ul></li>`
+      <ul class="nav-menu" id="menu-${i}">${g.items.map(([id, t, d, href]) => `<li><a href="${href || `${home}#${id}`}" ${href ? `data-page="${id}"${location.pathname.endsWith(`/${id}/`) ? ' aria-current="page"' : ''}` : `data-sec="${id}"`}><strong>${esc(t)}</strong><span>${esc(d)}</span></a></li>`).join('')}</ul></li>`
       : `<li><a class="nav-top" href="${home}#${g.id}" data-sec="${g.id}">${esc(g.label)}</a></li>`).join('')}</ul>`;
 }
 
@@ -209,6 +211,8 @@ export function page(C, L, home) {
   top.textContent = L.bookShort;
   document.getElementById('nav').innerHTML = navHTML(C, L, home);
   mountMenus(document.getElementById('nav'));
+  // A page in a menu (Build your portal) marks that menu as the current one.
+  document.querySelector('#nav [data-page][aria-current]')?.closest('.nav-group')?.querySelector('.nav-top')?.classList.add('is-current');
   mountBand(C, `<a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>`);
   mountLogos(C, L);
 }
