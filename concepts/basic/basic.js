@@ -3,7 +3,7 @@
 
    Layout: a top bar with grouped section links on the right and the booking
    button; each section fills the screen below in the same layout.
-   Overview pairs the offer with a diagram of the three steps; AI shows the
+   Overview pairs the offer with a diagram of the four steps; AI shows the
    work before and after. On a phone the same pieces stack and the page
    scrolls.
 
@@ -79,7 +79,7 @@ export function render(C, L) {
         <figure class="flow" aria-labelledby="flow-h">
           <figcaption id="flow-h">${h2(L.steps[0], L.steps[1])}</figcaption>
           <ol class="timeline">
-            ${C.steps.map(([t, d], i) => `<li><span class="node"><b>0${i + 1}</b></span>
+            ${L.flow.map(([t, d], i) => `<li><span class="node"><b>0${i + 1}</b></span>
               <div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join('')}
             <li class="end"><span class="node">${featureIcon('deliverable', 5)}</span>
               <div><h3>${esc(L.own[0])}</h3><p>${esc(L.own[1])}</p></div></li>
@@ -176,7 +176,8 @@ function navHTML(C, L, home) {
       ['ai', C.ai.kick, C.ai.title],
       ['get', L.get[0], `${L.get[1]} ${L.get[2]}`],
       ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`],
-      // A page of its own, not a homepage section.
+      // Pages of their own, not homepage sections.
+      ['solution-design', L.design.nav, L.design.desc, `${home}solution-design/`],
       ['portal', L.portal.nav, L.portal.desc, `${home}portal/`] ] },
     { id: 'work', label: L.tabs.work },
     { id: 'security', label: L.tabs.security },

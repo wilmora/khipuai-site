@@ -1,5 +1,5 @@
 /* The trial's other pages (How KHIPUAI works, Security, Contact, Privacy,
-   The Audit): the homepage's header, band, footer, fonts and colours, with the
+   Solution Design): the homepage's header, band, footer, fonts and colours, with the
    page's own content in the same section layout. They scroll normally (the
    one-screen rules in basic.css apply only to the homepage). */
 .doc main.wrap{padding-top:clamp(28px,5vh,56px);padding-bottom:64px;}

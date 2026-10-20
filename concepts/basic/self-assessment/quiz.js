@@ -36,7 +36,7 @@ const PARTS = [
 
 const BANDS = [
   { max:6,        name:'Low',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
-  { max:14,       name:'Moderate',  copy:'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.' },
+  { max:14,       name:'Moderate',  copy:'You have several clear opportunities to cut repetitive work. Solution Design puts real hours and dollars on them and shows what to fix first.' },
   { max:Infinity, name:'High', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
 ];
 
@@ -66,8 +66,8 @@ export function mountQuiz(C) {
   let at = 0;
   let lastResult = null;
 
-  $('audit-book').href = C.booking;
-  $('audit-book').textContent = C.hero.cta;
+  $('design-book').href = C.booking;
+  $('design-book').textContent = C.hero.cta;
   $('legal').textContent = C.legal;
 
   const score = () => QS.reduce((s, q, i) => s + (answers[i] === 'yes' ? q.w : 0), 0);

@@ -18,7 +18,7 @@ yes, no or "use this wording".
 | D1 | **Logo permissions.** Zendesk, monday.com, Google, Meta and Anthropic logos in the "Tools we work with" row. Microsoft products show as names only. See `concepts/basic/logos/SOURCES.md`. | Wil | Show every tool as a name only, with no logos. |
 | D2 | **"It is never entered into a public AI chatbot."** This is the security wording on the trial pages, and it needs Wil's OK. | Wil | Use the live wording ("Not in a public chatbot.") instead. |
 | D3 | **Code ownership wording.** "A product you own" and "The product is yours." State what the client owns and when. | Wil | Remove the ownership section. |
-| D4 | **"Three steps. About two weeks." vs "A product you own".** These two headings describe different offers. Choose one story for the homepage. | Alex and Wil | Keep both, and accept the mixed message. |
+| D4 | **"Three steps" vs "A product you own".** Settled by ORD-20261020-23: the steps are now four (Discovery call, Walkthrough, Solution design, Build) under "From first call to a product you own." | Done | None |
 | D5 | **Draft pricing on Build your portal.** $100 per month for the portal (USD in the US, CAD in Canada). Hosting is a separate monthly fee, to be confirmed. Enterprise starts above 100 users or 10 locations. The "custom" features are the system connections. Is the same $100 figure right in both currencies? All of this is in `concepts/basic/portal/plans.js`. | Wil | Launch with every amount marked "Draft pricing", or hold the page back. |
 | D6 | **Support Tickets card claim.** "Routes it to the right person." Is that what the product does today? | Wil | Change it to "suggests who should handle it". |
 | D7 | **Material Lists demo art.** The cabin and ridge pictures in the demo: permission or replace. | Alex | Replace them with plain shapes. |
@@ -29,13 +29,14 @@ yes, no or "use this wording".
 | D12 | **Pages with no Spanish version.** The self-assessment, its thank-you page and the blog are English only. Translate them, or keep them in English and label the link "(en inglés)". The Spanish contact page already does this. | Alex and Wil | English only, labelled. |
 | D13 | **The blog.** The live site has three blog posts and a blog index. The trial has no blog. Restyle them into the new look, or keep them in the old look. | Alex | Keep the old look, still linked. |
 | D15 | **Create hello@khipuai.co.** The trial pages now show one shared address, hello@khipuai.co, instead of personal ones. The mailbox does not exist yet. Create it before launch: a Google Workspace alias forwarding to the founder and the operations lead. | Alex | Every "email us" link on the new site bounces. Launch is blocked. |
+| D16 | **Confirm the new name.** "Audit" is gone from the trial pages. The service is now "AI automation solutions", the paid first engagement is "Solution Design" ("Diseño de la solución"), and the buttons say "Book a free discovery call". The founder should confirm the name before launch. The live pages still say "AI Automation Audit" until the switch. | Alex (with Wil) | The trial keeps the new name; the live site keeps the old one. |
 | D14 | **Self-assessment email form.** It is switched off on the trial. Turning it back on sends the visitor's details to the Google form endpoint, as the live site does. | Alex and Wil | It stays off. Visitors download the PDF and book a call. |
 
 ---
 
 ## 2. Before the switch (on `alex-work`)
 
-1. [ ] Apply the answers to D1 to D15, one commit per decision. Send a test email to hello@khipuai.co and confirm it arrives.
+1. [ ] Apply the answers to D1 to D16, one commit per decision. Send a test email to hello@khipuai.co and confirm it arrives.
 2. [ ] Run every check, and get each one green:
    - `node --test tests/*.test.mjs`
    - the gate (`node <agent-factory>/gate/pre-push.mjs --check .`)
@@ -57,7 +58,7 @@ Do it all in one reviewed pull request, so it can be undone in one step.
    | `concepts/basic/` | `/` |
    | `concepts/basic/es/` | `/es/` |
    | `concepts/basic/about/` | `/about/` |
-   | `concepts/basic/audit/` | `/audit/` |
+   | `concepts/basic/solution-design/` | `/solution-design/` (and redirect `/audit/` and `/es/audit/` to it) |
    | `concepts/basic/contact/` | `/contact/` |
    | `concepts/basic/security/` | `/security/` |
    | `concepts/basic/privacy/` | `/privacy/` |

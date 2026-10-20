@@ -9,7 +9,7 @@ const PAGES = [
   ['about/index.html', 'en'], ['es/about/index.html', 'es'],
   ['security/index.html', 'en'], ['es/security/index.html', 'es'],
   ['contact/index.html', 'en'], ['privacy/index.html', 'en'],
-  ['audit/index.html', 'en'], ['es/audit/index.html', 'es'],
+  ['solution-design/index.html', 'en'], ['es/solution-design/index.html', 'es'],
   ['self-assessment/index.html', 'en'], ['thank-you/index.html', 'en'],
   ['portal/index.html', 'en'], ['es/portal/index.html', 'es'],
   ['es/contact/index.html', 'es'], ['es/privacy/index.html', 'es'],
@@ -71,4 +71,21 @@ test('trial pages use the shared address and neutral everyday lines', () => {
   const tone = readFileSync(new URL('tone.js', ROOT), 'utf8');
   assert.match(tone, /'wil@khipuai\.co': 'hello@khipuai\.co'/);
   assert.match(tone, /studio serving clients across the United States and Canada\.'/);
+});
+
+// Solution Design replaces the audit (Alex, 2026-10-20): the old trial
+// addresses forward to the new pages, and no visible text says "audit".
+test('the old audit addresses forward to Solution Design', () => {
+  for (const [path, to] of [['audit/index.html', '/concepts/basic/solution-design/'], ['es/audit/index.html', '/concepts/basic/es/solution-design/']]) {
+    const html = readFileSync(new URL(path, ROOT), 'utf8');
+    assert.match(html, new RegExp(`<meta http-equiv="refresh" content="0; url=${to}">`));
+    assert.match(html, /noindex/);
+  }
+});
+test('no page names the service an audit', () => {
+  for (const [path] of [...PAGES, ...HOMES, ['404.html']]) {
+    const text = readFileSync(new URL(path, ROOT), 'utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/href="[^"]*"/g, '');
+    assert.doesNotMatch(text, /audit|auditor/i, path);
+  }
+  for (const f of ['labels.js', 'self-assessment/quiz.js']) assert.doesNotMatch(readFileSync(new URL(f, ROOT), 'utf8'), /\baudit\b|auditoría/i, f);
 });
