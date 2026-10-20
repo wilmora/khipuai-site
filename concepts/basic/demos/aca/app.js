@@ -722,7 +722,7 @@ function render() {
   if (S.route[0] === 'signin') { app.innerHTML = signin(); } else
   app.innerHTML = `<div class="flex min-h-screen">${rail(portal)}<div class="min-w-0 flex-1">${portal ? portalTopbar() : staffTopbar()}
     <main id="main" tabindex="-1" class="${portal ? 'mx-auto max-w-[1100px] px-4 py-8 sm:px-8' : 'mx-auto max-w-[1600px] px-4 py-6 sm:px-8'} outline-none">${page()}</main></div></div>${panel(portal)}`;
-  document.title = `ACA Filing demo | KHIPUAI`;
+  document.title = `ACA Filing: working demo | KHIPUAI`;
   if (id) { const el = document.getElementById(id); if (el) { el.focus({ preventScroll: true }); if (sel && el.setSelectionRange && el.type !== 'checkbox' && el.type !== 'email') try { el.setSelectionRange(...sel); } catch { /* not a text field */ } } }
 }
 function route() {

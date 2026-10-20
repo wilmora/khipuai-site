@@ -5,7 +5,7 @@
 export const LABELS = {
   en: {
     lang: 'en',
-    title: 'Basic homepage trial | KHIPUAI',
+    title: 'KHIPUAI | The AI Automation Audit',
     bookShort: 'Book a call',
     welcome: { kick: 'Welcome', see: 'See how we work' },
     problem: ['Dozens of hours a month', 'that have never been measured.'],
@@ -26,7 +26,7 @@ export const LABELS = {
   },
   es: {
     lang: 'es',
-    title: 'Prueba de inicio básica | KHIPUAI',
+    title: 'KHIPUAI | La Auditoría de Automatización con IA',
     bookShort: 'Agenda una llamada',
     welcome: { kick: 'Te damos la bienvenida', see: 'Ver cómo trabajamos' },
     problem: ['Decenas de horas al mes', 'que nunca se han medido.'],

@@ -27,3 +27,6 @@
   .doc .items,.doc .items.three{grid-template-columns:minmax(0,1fr);}
   .doc-hero{padding-bottom:28px;}
 }
+/* Long buttons (mostly Spanish) wrap inside their column on narrow phones
+   instead of pushing the page sideways. */
+.doc .cta-row .btn{max-width:100%;white-space:normal;text-align:center;padding-top:8px;padding-bottom:8px;}

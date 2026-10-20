@@ -13,6 +13,7 @@ const SWAP = {
     'You are a very small shop with little process.': 'You are a very small business with few established processes.',
     'What if you do not find much?': 'What if the audit finds few opportunities?',
     'That honesty is the product.': 'A candid answer is part of the value.',
+    'and we will tell you honestly if it is worth automating.': 'and we will give you a candid assessment of whether it is worth automating.',
   },
   es: {
     'En algún lugar de tu negocio, ahora mismo, una persona capaz está:': 'En muchas empresas de servicios, personas capaces siguen:',
@@ -20,6 +21,7 @@ const SWAP = {
     'Antes de comprar otra herramienta, encuentra el trabajo que realmente vale la pena cambiar.': 'Antes de invertir en otra herramienta, identifica el trabajo que más conviene mejorar.',
     'No van a un chatbot público.': 'Nunca se introducen en un chatbot público de IA.',
     'Probablemente no es para ti si': 'No es la opción adecuada si',
+    'y te diremos con honestidad si vale la pena automatizarlo.': 'y te daremos una evaluación franca de si vale la pena automatizarlo.',
     '¿Y si no encuentras mucho?': '¿Qué pasa si la auditoría encuentra pocas oportunidades?',
     'Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa acordada para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.':
       'La auditoría lo dice con franqueza. Una respuesta franca es parte del valor: habrás invertido una tarifa pequeña y acordada para confirmar que tu operación es más eficiente que la mayoría.',

@@ -31,7 +31,7 @@ for (const key of KEYS) {
     assert.ok(existsSync(page), `missing demos/${key}/index.html`);
     const html = readFileSync(page, 'utf8');
     assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
-    assert.match(html, /<title>[^<]+ demo \| KHIPUAI<\/title>/);
+    assert.match(html, /<title>[^<]+ (demo|demostración) \| KHIPUAI<\/title>/);
     assert.match(html, /href="\.\.\/mini\.css"/);
     assert.match(html, /<script type="module" src="app\.js"><\/script>/);
     assert.ok(existsSync(new URL(`${key}/app.js`, DIR)) && existsSync(new URL(`${key}/app.css`, DIR)));

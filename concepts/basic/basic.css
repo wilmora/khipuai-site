@@ -94,6 +94,8 @@ main.wrap{padding-top:clamp(28px,5.5vh,56px);padding-bottom:24px;}
 .more{font-weight:700;}
 .more a{display:inline-flex;align-items:center;min-height:44px;}
 .ctas{display:flex;flex-wrap:wrap;gap:10px;}
+/* A long label (the Spanish fit-call button) wraps inside a narrow column. */
+.ctas .btn{max-width:100%;white-space:normal;text-align:center;}
 
 /* The site's own line icons, drawn plain: no tile behind them. */
 .feature-icon{width:28px;height:28px;background:none;border-radius:0;color:var(--copper-ink);}

@@ -21,7 +21,7 @@ const NAV = [
   { label: 'Marketing', icon: 'Megaphone', real: 'open the marketing tools' },
   { group: 'SOPs', icon: 'FileText', isNew: true, items: [['The playbook', 'FileText', 'open the service playbook', true], ['How-to videos', 'PlayCircle', 'open the how-to videos', true]] },
   { group: 'Planning', icon: 'Map', items: [['Roadmap', 'Map', 'open the roadmap'], ['Ideas', 'Lightbulb', 'open the ideas board']] },
-  { group: 'Coming Soon', icon: 'Sparkles', items: [['Workers comp pilot', 'ClipboardCheck', 'open the workers comp pilot', true]] },
+  { group: 'Pilots', icon: 'Sparkles', items: [['Workers comp pilot', 'ClipboardCheck', 'open the workers comp pilot', true]] },
   { label: 'Settings', icon: 'Settings', real: 'open user management and settings' },
 ];
 const ROUTES = ['home', 'agents', 'review', 'console', 'pricing', 'signin'];
@@ -191,8 +191,8 @@ function agents() {
             return `<li>${link && v ? `<button type="button" data-go="review" title="Open the review" class="flex w-full items-center gap-3 rounded-md px-1 py-0.5 hover:bg-brand-softer">${row}</button>` : `<div class="flex items-center gap-3 px-1 py-0.5">${row}</div>`}</li>`; }).join('')}</ul>`; })() : ''}</div>
           ${step.gaps ? `<div><h3 class="mb-1 text-[0.68rem] font-bold uppercase tracking-[0.08em] text-gray-500">Biggest gaps, agents vs console</h3><ul class="divide-y divide-line">${step.gaps.map(([id, n, g]) =>
             `<li><button type="button" data-client-go="${id}" class="flex w-full items-center justify-between gap-3 rounded-md px-1 py-1.5 text-left hover:bg-brand-softer"><span class="truncate text-[0.84rem] font-semibold">${esc(n)}</span><span class="tnum text-[0.84rem] font-bold text-amber-700">+${money(g)}</span></button></li>`).join('')}</ul></div>` : ''}</div></section>
-      <section aria-label="Agents right now" class="flex min-h-0 min-w-0 flex-col rounded-card border border-line bg-white px-4 py-3 shadow-e4">
-        <h2 class="mb-2 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-gray-500">Agents right now</h2>
+      <section aria-label="Agent activity" class="flex min-h-0 min-w-0 flex-col rounded-card border border-line bg-white px-4 py-3 shadow-e4">
+        <h2 class="mb-2 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-gray-500">Agent activity</h2>
         <p class="mb-2 flex items-center gap-2 text-[0.84rem] font-semibold"><span class="h-2 w-2 rounded-full bg-brand"></span>${left ? 'Waiting on your review' : 'Review finished'}</p>
         <ul class="min-h-0 flex-1 divide-y divide-line overflow-y-auto">${feed.map(([at, t]) => `<li class="grid grid-cols-[6.4rem_minmax(0,1fr)] gap-2 py-1.5 text-[0.8rem]"><span class="tnum text-gray-400">${esc(at)}</span><span class="truncate font-semibold text-ink">${esc(t)}</span></li>`).join('')}</ul>
         <button type="button" data-feed class="mt-1 self-start text-[0.8rem] font-semibold text-brand hover:underline">${S.feedAll ? 'Show fewer' : `Show all (${ACTIVITY.length})`}</button></section></div></div>`;

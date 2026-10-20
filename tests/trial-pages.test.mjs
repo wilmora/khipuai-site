@@ -12,6 +12,7 @@ const PAGES = [
   ['audit/index.html', 'en'], ['es/audit/index.html', 'es'],
   ['self-assessment/index.html', 'en'], ['thank-you/index.html', 'en'],
   ['portal/index.html', 'en'], ['es/portal/index.html', 'es'],
+  ['es/contact/index.html', 'es'], ['es/privacy/index.html', 'es'],
 ];
 
 for (const [path, lang] of PAGES) {
@@ -30,3 +31,29 @@ for (const [path, lang] of PAGES) {
     assert.ok(!html.includes('—'), 'no em dash');
   });
 }
+
+// Launch readiness: every trial page (and the homepages, demos and 404) has
+// a title, a description and the icons; shareable pages carry Open Graph
+// tags with an existing image of the page's language.
+const HOMES = [['index.html', 'en'], ['es/index.html', 'es']];
+const DEMOS = ['payroll', 'aca', 'hub', 'review', 'support', 'materials', 'whatsapp'].map(k => [`demos/${k}/index.html`]);
+for (const [path, lang] of [...PAGES, ...HOMES, ...DEMOS, ['404.html']]) {
+  test(`trial page ${path}: title, description and icons`, () => {
+    const html = readFileSync(new URL(path, ROOT), 'utf8');
+    const title = html.match(/<title>([^<]+)<\/title>/)?.[1] || '';
+    assert.ok(title.includes('KHIPUAI') && !/trial|prueba/i.test(title), `title "${title}"`);
+    assert.match(html, /<meta name="description" content="[^"]{40,}">/);
+    assert.match(html, /<link rel="icon" href="\/shared\/assets\/mark\.svg"/);
+    assert.match(html, /<link rel="apple-touch-icon" href="\/concepts\/basic\/icons\/apple-touch-icon\.png">/);
+    if (!lang) return;
+    for (const prop of ['og:title', 'og:description', 'og:image']) assert.match(html, new RegExp(`<meta property="${prop}" content="[^"]+">`), prop);
+    const img = html.match(/<meta property="og:image" content="https:\/\/khipuai\.co\/concepts\/basic\/og\/og-(en|es)\.png">/);
+    assert.ok(img, 'og:image path'); assert.equal(img[1], lang);
+    assert.ok(existsSync(new URL(`og/og-${lang}.png`, ROOT)));
+  });
+}
+
+test('no duplicate titles across the trial pages', () => {
+  const titles = [...PAGES, ...HOMES, ...DEMOS].map(([p]) => readFileSync(new URL(p, ROOT), 'utf8').match(/<title>([^<]+)<\/title>/)[1]);
+  assert.equal(new Set(titles).size, titles.length, titles.join(' / '));
+});
