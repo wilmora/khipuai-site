@@ -10,7 +10,32 @@
         mini({ label: 'Demo, made-up data', ok: 'OK' });   // once, on load
         mini.note('In the real product this would...');     // from code */
 
-let box, opts = { label: 'Demo, made-up data', ok: 'OK' };
+let box, opts = { label: 'Demo, made-up data', ok: 'OK', soon: 'Coming soon' };
+
+/* Held at Home (Alex and Wil, 2026-10-21): each miniature shows only its
+   Home screen. The sidebar stays visible, but nothing can be clicked, typed
+   into or opened yet; sidebar items say "Coming soon" on hover. Set HOLD to
+   false to make the miniatures clickable again. */
+export const HOLD = true;
+const ACTIVE = 'a[href], button, input, select, textarea, summary, label, [role="button"], [role="tab"], [role="link"], [data-real], [data-go], [onclick]';
+const SIDE = 'aside a[href], aside button, nav#menu-principal a[href], nav#menu-principal button';
+function hold() {
+  const stop = e => { if (e.target.closest?.(ACTIVE)) { e.preventDefault(); e.stopImmediatePropagation(); } };
+  for (const t of ['click', 'dblclick', 'auxclick', 'pointerdown', 'mousedown', 'submit', 'input', 'change']) addEventListener(t, stop, true);
+  // Keys: Tab still moves; nothing is activated or typed.
+  addEventListener('keydown', e => {
+    if (e.key === 'Tab') return;
+    if (e.key === 'Enter' || e.key === ' ' || e.target.closest?.('input, select, textarea')) { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
+  const mark = () => document.querySelectorAll(SIDE).forEach(el => {
+    if (el.dataset.soon) return;
+    el.dataset.soon = '1'; el.title = opts.soon; el.setAttribute('aria-disabled', 'true');
+  });
+  const css = document.createElement('style');
+  css.textContent = `${ACTIVE.split(', ').map(x => x + ',' + x + ' *').join(',')}{cursor:default!important;}`;
+  document.head.append(css);
+  mark(); new MutationObserver(mark).observe(document.body, { childList: true, subtree: true });
+}
 
 function note(text, from) {
   if (!box) {
@@ -31,6 +56,7 @@ function note(text, from) {
 
 export function mini(o = {}) {
   Object.assign(opts, o);
+  if (HOLD) hold();
   // Opened full size (not inside the site's dialog): show the demo label.
   if (window.top === window) {
     const tag = document.createElement('div');

@@ -35,51 +35,50 @@
 <main id="main" class="wrap">
   <section class="doc-hero">
     <h1>Seguridad y gobierno de datos</h1>
-    <p class="lede">Usamos IA para construir software que ayuda a tu equipo a rendir más y a tus clientes a recibir mejor servicio. Construir con IA no significa entregar tus registros a un tercero. Esta página explica cómo protegemos la información sensible, durante el Diseño de la solución y en todo lo que construimos después.</p>
+    <p class="lede">Construir con IA no significa entregar tus registros a un tercero. Así protegemos la información sensible, mientras diseñamos y en todo lo que construimos.</p>
   </section>
 
   <section class="sec" aria-labelledby="h-ai">
     <div class="sec-head"><h2 id="h-ai">Cómo usamos la IA</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>Construido con datos de prueba.</strong> Usamos IA para escribir y probar el código, con datos inventados o anonimizados. Tus registros nunca se envían a un modelo de IA mientras construimos.</li>
-      <li><strong>El código hace el trabajo.</strong> Lo que entregamos es código que lee, clasifica y redacta siempre de la misma forma, dentro de tus sistemas.</li>
-      <li><strong>IA en sistemas en uso.</strong> Si un sistema usa IA mientras funciona, como al responder mensajes de clientes o clasificar tickets de soporte, lo hace por la API empresarial de Anthropic, cuyos términos no permiten usar los datos para entrenar modelos de IA. Nunca apps de chat para consumidores.</li>
-      <li><strong>Datos sensibles fuera.</strong> En esos sistemas, datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.</li>
-      <li><strong>Las personas aprueban.</strong> El sistema prepara el trabajo. Una persona aprueba todo lo importante antes de que ocurra: todo lo que mueve dinero, cambia un registro o te compromete con un cliente.</li>
-      <li><strong>Registro completo de actividad.</strong> Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.</li>
-    </ul></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="0"><h3>Construido con datos de prueba</h3><p>La IA escribe y prueba el código con datos inventados o anonimizados. Tus registros nunca van a un modelo de IA mientras construimos.</p></li>
+        <li data-icon="1"><h3>El código hace el trabajo</h3><p>Lo que entregamos lee, clasifica y redacta siempre de la misma forma, dentro de tus sistemas.</p></li>
+        <li data-icon="0"><h3>IA en sistemas en producción</h3><p>Si un sistema usa IA mientras funciona, lo hace por la API empresarial de Anthropic, cuyos términos no permiten usar los datos para entrenar modelos de IA. Nunca apps de chat para consumidores.</p></li>
+        <li data-icon="3"><h3>Datos sensibles fuera</h3><p>Datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.</p></li>
+        <li><h3>Las personas aprueban</h3><p>Una persona aprueba todo lo que mueve dinero, cambia un registro o te compromete con un cliente.</p></li>
+        <li data-icon="4"><h3>Registro completo de actividad</h3><p>Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.</p></li>
+      </ul>
+    </div>
   </section>
 
   <section class="sec" aria-labelledby="h-access">
     <div class="sec-head"><h2 id="h-access">Acceso y almacenamiento</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>Tus sistemas, tus datos.</strong> Siempre que es posible construimos dentro de tu propio entorno, como tu Microsoft Azure, y no guardamos copias.</li>
-      <li><strong>Acceso de mínimo privilegio.</strong> Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.</li>
-      <li><strong>Solo lectura mientras diseñamos.</strong> Durante el Diseño de la solución nuestro acceso es de solo lectura. Nada cambia en tus sistemas mientras diseñamos.</li>
-      <li><strong>Secretos en una bóveda.</strong> Las claves de API y contraseñas se guardan en el servidor, por ejemplo en Azure Key Vault, nunca en el código.</li>
-    </ul></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="1"><h3>Tus sistemas, tus datos</h3><p>Siempre que es posible construimos dentro de tu propio entorno, como Microsoft Azure, y no guardamos copias.</p></li>
+        <li data-icon="2"><h3>Acceso de mínimo privilegio</h3><p>Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.</p></li>
+        <li data-icon="3"><h3>Solo lectura mientras diseñamos</h3><p>Nada cambia en tus sistemas durante el Diseño de la solución.</p></li>
+        <li data-icon="2"><h3>Secretos en una bóveda</h3><p>Las claves de API y contraseñas se guardan en el servidor, por ejemplo en Azure Key Vault, nunca en el código.</p></li>
+      </ul>
+    </div>
   </section>
 
   <section class="sec" aria-labelledby="h-end">
     <div class="sec-head"><h2 id="h-end">Acuerdos y cierre del proyecto</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>NDA si lo pides.</strong> Firmamos un acuerdo de confidencialidad o un acuerdo de tratamiento de datos si lo solicitas.</li>
-      <li><strong>Devueltos o eliminados.</strong> Al terminar el proyecto, tus datos se devuelven o se eliminan.</li>
-    </ul></div>
-  </section>
-
-  <section class="sec" aria-labelledby="h-policies">
-    <div class="sec-head"><h2 id="h-policies">Políticas que estamos escribiendo</h2></div>
     <div class="sec-body">
-      <p>Estamos convirtiendo estas prácticas en políticas y procedimientos operativos estándar (SOP) que tu equipo de TI puede revisar. Cada uno aparecerá en esta página cuando esté listo.</p>
+      <ul class="items" data-icons="security">
+        <li><h3>NDA si lo pides</h3><p>Firmamos un acuerdo de confidencialidad o de tratamiento de datos si lo solicitas.</p></li>
+        <li data-icon="5"><h3>Devueltos o eliminados</h3><p>Al terminar el proyecto, tus datos se devuelven o se eliminan.</p></li>
+      </ul>
     </div>
   </section>
 
   <section class="sec" aria-labelledby="h-questions">
     <div class="sec-head"><h2 id="h-questions">Preguntas de tu equipo de TI o de seguridad</h2></div>
     <div class="sec-body">
-      <p>Envíalas a <a href="mailto:hello@khipuai.co">hello@khipuai.co</a>, o plantéalas en una <a href="https://calendly.com/wmorapal/30min">llamada de descubrimiento gratuita</a>. Por favor no envíes contraseñas, registros de clientes ni otros datos sensibles por correo. Si un proyecto necesita esa información, primero acordamos una forma segura de compartirla.</p>
-      <p>Cómo el sitio web maneja los datos que compartes se explica en la <a href="../../privacy/">política de privacidad</a> (en inglés).</p>
+      <p>Envíalas a <a href="mailto:alexp@khipuai.co">alexp@khipuai.co</a> o plantéalas en una <a href="https://calendly.com/wmorapal/30min">llamada de descubrimiento gratuita</a>. Por favor no envíes contraseñas ni registros de clientes por correo; primero acordamos una forma segura de compartirlos.</p>
+      <p class="fine">Estamos convirtiendo estas prácticas en políticas y procedimientos que tu equipo de TI puede revisar; cada uno aparecerá aquí cuando esté listo. Cómo este sitio maneja tus datos se explica en la <a href="../privacy/">política de privacidad</a>.</p>
     </div>
   </section>
 </main>

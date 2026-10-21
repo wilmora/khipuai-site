@@ -35,51 +35,50 @@
 <main id="main" class="wrap">
   <section class="doc-hero">
     <h1>Security and data governance</h1>
-    <p class="lede">We use AI to build software that helps your staff get more done and your customers get better service. Building with AI does not mean handing your records to a third party. This page sets out how we keep sensitive information safe, during Solution Design and in anything we build afterward.</p>
+    <p class="lede">Building with AI does not mean handing your records to a third party. This is how we keep sensitive information safe, while we design and in everything we build.</p>
   </section>
 
   <section class="sec" aria-labelledby="h-ai">
     <div class="sec-head"><h2 id="h-ai">How we use AI</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>Built with test data.</strong> We use AI to write and test the code, with made-up or redacted data. Your records are never sent to an AI model while we build.</li>
-      <li><strong>The code does the work.</strong> What we deliver is code that reads, sorts and drafts the same way every time, inside your systems.</li>
-      <li><strong>AI in live systems.</strong> Where a system uses AI while it runs, such as answering customer messages or sorting support tickets, it goes through Anthropic&rsquo;s business API, under terms that do not use the data to train AI models. Never consumer chat apps.</li>
-      <li><strong>Sensitive fields kept out.</strong> In those systems, details like social security numbers and bank accounts are masked or left out of what the AI sees.</li>
-      <li><strong>People approve.</strong> The system prepares the work. A person approves anything that matters before it happens: anything that moves money, changes a record or commits you to a customer.</li>
-      <li><strong>A complete activity record.</strong> Every action the system prepares is logged with who approved it and when.</li>
-    </ul></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="0"><h3>Built with test data</h3><p>AI writes and tests the code with made-up or redacted data. Your records never go to an AI model while we build.</p></li>
+        <li data-icon="1"><h3>The code does the work</h3><p>What we deliver reads, sorts and drafts the same way every time, inside your systems.</p></li>
+        <li data-icon="0"><h3>AI in live systems</h3><p>Where a running system uses AI, it goes through Anthropic’s business API, under terms that do not use the data to train AI models. Never consumer chat apps.</p></li>
+        <li data-icon="3"><h3>Sensitive fields kept out</h3><p>Details like social security numbers and bank accounts are masked or left out of what the AI sees.</p></li>
+        <li><h3>People approve</h3><p>A person approves anything that moves money, changes a record or commits you to a customer.</p></li>
+        <li data-icon="4"><h3>A complete activity record</h3><p>Every action the system prepares is logged with who approved it and when.</p></li>
+      </ul>
+    </div>
   </section>
 
   <section class="sec" aria-labelledby="h-access">
     <div class="sec-head"><h2 id="h-access">Access and storage</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>Your systems, your data.</strong> Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.</li>
-      <li><strong>Least-privilege access.</strong> Separate accounts with only the access the job needs, removed when the work ends.</li>
-      <li><strong>Read-only while we design.</strong> During Solution Design our access is read-only. Nothing changes in your systems while we design.</li>
-      <li><strong>Secrets in a vault.</strong> API keys and passwords are stored server-side, for example in Azure Key Vault, never in code.</li>
-    </ul></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="1"><h3>Your systems, your data</h3><p>Wherever possible we build inside your own environment, such as Microsoft Azure, and keep no copies.</p></li>
+        <li data-icon="2"><h3>Least-privilege access</h3><p>Separate accounts with only the access the job needs, removed when the work ends.</p></li>
+        <li data-icon="3"><h3>Read-only while we design</h3><p>Nothing changes in your systems during Solution Design.</p></li>
+        <li data-icon="2"><h3>Secrets in a vault</h3><p>API keys and passwords stay server-side, for example in Azure Key Vault, never in code.</p></li>
+      </ul>
+    </div>
   </section>
 
   <section class="sec" aria-labelledby="h-end">
     <div class="sec-head"><h2 id="h-end">Agreements and the end of an engagement</h2></div>
-    <div class="sec-body"><ul class="list">
-      <li><strong>NDA on request.</strong> We sign a non-disclosure agreement or a data processing agreement on request.</li>
-      <li><strong>Returned or deleted.</strong> At the end of an engagement, your data is returned or deleted.</li>
-    </ul></div>
-  </section>
-
-  <section class="sec" aria-labelledby="h-policies">
-    <div class="sec-head"><h2 id="h-policies">Policies we are writing</h2></div>
     <div class="sec-body">
-      <p>We are writing these practices up as policies and standard operating procedures (SOPs) your IT team can review. Each one will be listed on this page as it is finished.</p>
+      <ul class="items" data-icons="security">
+        <li><h3>NDA on request</h3><p>We sign a non-disclosure agreement or a data processing agreement on request.</p></li>
+        <li data-icon="5"><h3>Returned or deleted</h3><p>At the end of an engagement, your data is returned or deleted.</p></li>
+      </ul>
     </div>
   </section>
 
   <section class="sec" aria-labelledby="h-questions">
     <div class="sec-head"><h2 id="h-questions">Questions from your IT or security team</h2></div>
     <div class="sec-body">
-      <p>Send them to <a href="mailto:hello@khipuai.co">hello@khipuai.co</a>, or raise them on a free <a href="https://calendly.com/wmorapal/30min">discovery call</a>. Please do not send passwords, client records, or other sensitive data by email. If a project needs that information, we agree on a secure way to share it first.</p>
-      <p>How the website itself handles the details you share is covered in the <a href="../privacy/">privacy policy</a>.</p>
+      <p>Send them to <a href="mailto:alexp@khipuai.co">alexp@khipuai.co</a> or raise them on a free <a href="https://calendly.com/wmorapal/30min">discovery call</a>. Please do not send passwords or client records by email; we agree on a secure way to share them first.</p>
+      <p class="fine">We are writing these practices up as policies and procedures your IT team can review; each will be listed here when finished. How this website handles your details is in the <a href="../privacy/">privacy policy</a>.</p>
     </div>
   </section>
 </main>

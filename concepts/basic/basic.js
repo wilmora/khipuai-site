@@ -15,10 +15,15 @@
 import { featureIcon } from '/shared/kinetic.js';
 import { PROJECTS, shown } from './projects.js';
 import { tone } from './tone.js';
+import { mountPager } from './pager.js';
 
 // Screens and logos live next to this file, so the Spanish page (one folder
 // down) loads the same files.
 const ASSET = new URL('./', import.meta.url).href;
+// Held back for now (Alex and Wil, 2026-10-21); the code stays ready.
+const SHOW_INTEGRATIONS = false;   // the Integrations row (logos and list)
+const SHOW_PORTAL = false;         // Build your portal: menu item and links
+const SHOW_SHOTS = false;          // the screenshots view in Learn more
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
 const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
@@ -51,9 +56,9 @@ export function render(C, L) {
   // English card titles capitalize every word (Alex, 2026-10-19); Spanish keeps
   // its normal sentence capitals. Letters already capitalized (AI, WhatsApp) stay.
   const title = t => L.lang === 'en' ? t.replace(/(^|[\s-])(\p{Ll})/gu, (m, a, b) => a + b.toUpperCase()) : t;
-  const projects = PJ.items.map(x => {
+  const projects = PJ.items.filter(x => !x.hidden).map(x => {
     const base = x.from === undefined ? {} : C.portfolio.items[x.from];
-    return { key: x.key, card: x.card, app: x.app, shots: x.shots, alt: x.alt || [], t: title(shown(x.t ?? base.t)), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
+    return { key: x.key, home: x.home || '', card: x.card, app: x.app, shots: SHOW_SHOTS ? x.shots : [], alt: x.alt || [], t: title(shown(x.t ?? base.t)), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
   });
 
   const tabs = [
@@ -112,9 +117,9 @@ export function render(C, L) {
     // fill two rows of four, so the next-step link sits in the header.
     ['work', L.tabs.work, `<div class="sec-work">
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
-          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a> <a href="portal/">${esc(L.portal.nav)} &rarr;</a></span></p></div>
+          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a>${SHOW_PORTAL ? ` <a href="portal/">${esc(L.portal.nav)} &rarr;</a>` : ''}</span></p></div>
         <ul class="pcards">${projects.map(p => `<li class="pc">
-          <div class="pc-img" data-k="${p.key}">${p.card ? `<img src="${ASSET}shots/${p.card}" alt="" width="1280" height="800" loading="lazy">` : `<span class="pc-ph">${featureIcon('ai', 0)}</span>`}</div>
+          <div class="pc-img" data-k="${p.key}"><iframe src="${ASSET}demos/${p.key}/index.html${p.home}" title="" aria-hidden="true" tabindex="-1" loading="lazy" width="${APP_W}" height="${APP_H}"></iframe></div>
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
             <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
         </ul></div>`],
@@ -128,7 +133,6 @@ export function render(C, L) {
       head(L.fit[0], L.fit[1], L.fit[2], `<div class="ctas">${book}</div>`), `
         <div class="fit">
           <div class="yes"><h3>${esc(C.fit.forTitle)}</h3><ul>${C.fit.forYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-          <div class="no"><h3>${esc(C.fit.notTitle)}</h3><ul>${C.fit.notForYou.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
         </div>`)],
 
     ['questions', L.tabs.questions, sec('questions',
@@ -159,9 +163,23 @@ export function render(C, L) {
   document.getElementById('main').innerHTML = tabs.map(([id, label, html], i) =>
     `<section class="panel" id="panel-${id}" aria-label="${esc(label)}" tabindex="-1"${i === 0 ? '' : ' hidden'}>${html}</section>`).join('');
 
-  mountNav(tabs.map(([id]) => id));
   mountLogos(C, L);
+  let edge = () => false;
+  const pager = mountPager({ labels: L.pager, onEdge: d => edge(d) });
+  edge = mountNav(tabs.map(([id]) => id), pager);
   mountProjects(projects, PJ, C);
+  mountPreviews();
+}
+
+/* Card pictures: each miniature's Home screen, live, drawn at laptop size and
+   scaled to the card's width. They cannot be clicked or reached by Tab (the
+   card's Learn more opens the same screen), and screen readers skip them. */
+function mountPreviews() {
+  const ro = new ResizeObserver(es => es.forEach(e => {
+    const f = e.target.querySelector('iframe');
+    if (f) f.style.transform = `scale(${e.contentRect.width / APP_W})`;
+  }));
+  document.querySelectorAll('.pc-img').forEach(b => ro.observe(b));
 }
 
 // Navigation after BotLogix and Fractional AI: the logo on the left, a few
@@ -175,10 +193,10 @@ function navHTML(C, L, home) {
     { label: L.nav.services, items: [
       ['ai', C.ai.kick, C.ai.title],
       ['get', L.get[0], `${L.get[1]} ${L.get[2]}`],
-      ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`],
+      ['fit', L.fit[0], `${L.fit[1]} ${L.fit[2]}`.trim()],
       // Pages of their own, not homepage sections.
       ['solution-design', L.design.nav, L.design.desc, `${home}solution-design/`],
-      ['portal', L.portal.nav, L.portal.desc, `${home}portal/`] ] },
+      ...(SHOW_PORTAL ? [['portal', L.portal.nav, L.portal.desc, `${home}portal/`]] : []) ] },
     { id: 'work', label: L.tabs.work },
     { id: 'security', label: L.tabs.security },
     { label: L.tabs.operator, items: [
@@ -216,6 +234,15 @@ export function page(C, L, home) {
   document.querySelector('#nav [data-page][aria-current]')?.closest('.nav-group')?.querySelector('.nav-top')?.classList.add('is-current');
   mountBand(C, `<a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>`);
   mountLogos(C, L);
+  // Visuals in place of long text (Alex and Wil, 2026-10-21): lists marked
+  // data-icons="group" get the site's line icons (data-icon="n" picks one),
+  // and a step timeline ends on the deliverable mark.
+  document.querySelectorAll('[data-icons]').forEach(list => [...list.children].forEach((li, i) =>
+    li.insertAdjacentHTML('afterbegin', featureIcon(list.dataset.icons, li.dataset.icon ? +li.dataset.icon : i))));
+  document.querySelectorAll('.node-own').forEach(n => { n.innerHTML = featureIcon('deliverable', 5); });
+  // Pages instead of scrolling, except where the page asks to scroll
+  // (Privacy and Terms carry class="doc scroll").
+  if (!document.documentElement.classList.contains('scroll')) mountPager({ labels: L.pager });
 }
 
 /* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
@@ -225,6 +252,10 @@ export function page(C, L, home) {
    show as names because Microsoft's icon terms do not cover this use. */
 const LOGOS = ['', '', '', 'zendesk.svg', 'monday.png', 'google.svg', 'meta.svg', 'anthropic.svg'];
 function mountLogos(C, L) {
+  // Integrations are on hold (Alex and Wil, 2026-10-21): nothing is drawn
+  // until SHOW_INTEGRATIONS is switched on. The list and logos stay ready.
+  if (!SHOW_INTEGRATIONS) return;
+  C = { ...C, tools: { ...C.tools, items: [...C.tools.items, ...(L.integrations || [])] } };
   const items = C.tools.items.map(([name], i) => {
     const f = LOGOS[i];
     const img = f ? `<img src="${ASSET}logos/${f}" alt="${esc(name)}" height="20" class="lg-${f.split('.')[0]}">` : '';
@@ -239,6 +270,7 @@ function mountLogos(C, L) {
       <p>${esc(C.tools.note)}</p></div></details>
     <ul class="logo-row" aria-label="${esc(C.tools.kick)}">${items}</ul></div>`);
   const det = document.querySelector('.tools-more');
+  if (!det) return;
   document.addEventListener('click', e => { if (det.open && !det.contains(e.target)) det.open = false; });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && det.open) { det.open = false; det.querySelector('summary').focus(); } });
 }
@@ -316,10 +348,11 @@ function mountProjects(projects, PJ, C) {
     $('pd-why').textContent = p.why;
     $('pd-who').textContent = p.who;
     shots.innerHTML = p.shots.map((f, i) => `<img src="${ASSET}shots/${f}" alt="${esc(p.alt[i] || p.t)}" loading="lazy">`).join('') + `<p class="note">${esc(PJ.shotNote)}</p>`;
-    const url = `${ASSET}demos/${key}/index.html`;
+    const url = `${ASSET}demos/${key}/index.html${p.home}`;
     $('pd-addr').textContent = p.app || p.t;
     $('pd-full').href = url;
     sw.querySelector('[data-view="shots"]').hidden = !p.shots.length;
+    sw.hidden = !p.shots.length;
     box.innerHTML = `<iframe src="${url}" title="${esc(fmtTitle(PJ.frameTitle, p.app || p.t))}" width="${APP_W}" height="${APP_H}"></iframe>`;
     view('demo');
     dlg.showModal();
@@ -384,7 +417,7 @@ function mountMenus(nav) {
   return { tops, closeAll };
 }
 
-function mountNav(ids) {
+function mountNav(ids, pager) {
   const nav = document.getElementById('nav');
   const { tops, closeAll } = mountMenus(nav);
 
@@ -404,27 +437,28 @@ function mountNav(ids) {
     tops.forEach(b => b.classList.toggle('is-current', !!b.nextElementSibling.querySelector(`[data-sec="${id}"]`)));
     if (moveFocus) document.getElementById('panel-' + id).focus({ preventScroll: true });
   };
-  // Laptop one-screen layout: a section designed to fit the smallest laptop
-  // window left a lot of empty space on taller ones. Each section is zoomed up
-  // to the largest size that still fits without scrolling (at most 1.25x), and
-  // fitted again when the window changes or a question is opened.
+  // Laptop: a section is zoomed to the largest size that still fits the
+  // window (0.9x to 1.25x), so it fills a tall screen and still fits a short
+  // one; when it cannot fit even at 0.9x it keeps its normal size and the
+  // pager cuts it into pages. Fitted again when the window changes or a
+  // question is opened. Phones keep the normal size and page.
   const oneScreen = matchMedia('(min-width:900px) and (min-height:560px)');
-  const fit = () => {
+  const fit = keep => {
     const p = ids.map(id => document.getElementById('panel-' + id)).find(x => !x.hidden);
     if (!p) return;
     p.style.zoom = '';
-    if (p.id === 'panel-home') return;
-    if (!oneScreen.matches) return;
-    const doc = document.documentElement;
-    const fits = z => { p.style.zoom = z; return p.scrollHeight <= p.clientHeight + 1 && doc.scrollHeight <= innerHeight + 1; };
-    if (!fits(1)) { p.style.zoom = ''; return; }
-    let lo = 1, hi = 1.25;
-    for (let n = 0; n < 7; n++) { const mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
-    p.style.zoom = String(Math.floor(lo * 100) / 100);
-    if (!fits(p.style.zoom)) p.style.zoom = '';
+    if (p.id !== 'panel-home' && oneScreen.matches) {
+      pager.prepare();
+      const W = pager.window, inner = pager.inner;
+      const fits = z => { p.style.zoom = z; return inner.scrollHeight <= W.clientHeight + 1; };
+      const best = (lo, hi) => { for (let n = 0; n < 7; n++) { const mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; } return Math.floor(lo * 100) / 100; };
+      const z = fits(1) ? best(1, 1.25) : fits(0.9) ? best(0.9, 1) : 0;
+      p.style.zoom = z && fits(z) ? String(z) : '';
+    }
+    if (keep) pager.layout(); else pager.reset();
   };
   let raf = 0;
-  const refit = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); };
+  const refit = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => fit(true)); };
   addEventListener('resize', refit);
   document.getElementById('main').addEventListener('toggle', refit, true);
   document.fonts?.ready.then(refit);
@@ -432,63 +466,17 @@ function mountNav(ids) {
   const fromHash = moveFocus => {
     const id = location.hash.slice(1);
     show(ids.includes(id) ? id : ids[0], moveFocus && ids.includes(id));
-    fit();
+    fit(false);
   };
   window.addEventListener('hashchange', () => { closeAll(); fromHash(true); });
   fromHash(false);
-  mountStep(ids, nav);
-}
-
-/* Scrolling between the welcome screen and the Overview (Alex, 2026-10-20:
-   the arrow invites a scroll). One wheel or trackpad scroll, one swipe, or
-   Page Down, Space or the Down arrow on the welcome screen opens the
-   Overview (#start), the same as the arrow; the same gestures upward at the
-   very top of the Overview go back. Only at that boundary: listeners are
-   passive (no scroll is ever blocked), menus, dialogs and fields are left
-   alone, and a trackpad swipe's long tail of small events counts once. */
-function mountStep(ids, nav) {
+  // Past the welcome screen's last page, the next gesture opens the Overview
+  // (the arrow's move, Alex 2026-10-20); before the Overview's first page,
+  // it goes back to the welcome screen.
   const at = () => ids.find(id => !document.getElementById('panel-' + id).hidden);
-  const busy = t => document.querySelector('dialog[open]') || nav.querySelector('[aria-expanded="true"]')
-    || (t && t.closest && t.closest('dialog, nav, input, textarea, select, [contenteditable], .tools-more'));
-  // At the top of the Overview: neither the page nor the panel is scrolled.
-  const atTop = () => window.scrollY <= 0 && document.getElementById('panel-start').scrollTop <= 0;
-  let quietUntil = 0, sum = 0, last = 0;
-  const go = id => {
-    quietUntil = Date.now() + 700; sum = 0;
-    if (location.hash.slice(1) !== id) location.hash = id;
-    window.scrollTo({ top: 0, behavior: 'instant' });
+  return d => {
+    if (at() === 'home' && d > 0) { location.hash = 'start'; return true; }
+    if (at() === 'start' && d < 0) { location.hash = 'home'; return true; }
+    return false;
   };
-  // A quick phone flick keeps gliding after the switch; hold the new screen
-  // at its top until that glide has spent itself.
-  addEventListener('scroll', () => { if (Date.now() < quietUntil && window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' }); }, { passive: true });
-  const step = dy => {
-    const here = at();
-    if (here === 'home' && dy > 0) go('start');
-    else if (here === 'start' && dy < 0 && atTop()) go('home');
-  };
-  addEventListener('wheel', e => {
-    const now = Date.now(), gap = now - last; last = now;
-    // Re-arm only after the gesture has been still for a moment.
-    if (now < quietUntil || (quietUntil && gap < 160)) { if (now >= quietUntil) quietUntil = now + 160; return; }
-    quietUntil = 0;
-    if (busy(e.target) || e.ctrlKey) return;
-    sum = gap > 220 ? e.deltaY : sum + e.deltaY;
-    if (Math.abs(sum) >= 40) { const d = sum; sum = 0; step(d); }
-  }, { passive: true });
-  addEventListener('keydown', e => {
-    if (e.altKey || e.ctrlKey || e.metaKey || busy(e.target)) return;
-    const a = document.activeElement, plain = !a || a === document.body || a.classList.contains('panel');
-    const down = e.key === 'PageDown' || e.key === 'ArrowDown' || (e.key === ' ' && !e.shiftKey && plain);
-    const up = e.key === 'PageUp' || e.key === 'ArrowUp' || (e.key === ' ' && e.shiftKey && plain);
-    if (down && at() === 'home') { e.preventDefault(); go('start'); }
-    else if (up && at() === 'start' && atTop()) { e.preventDefault(); go('home'); }
-  });
-  let y0 = null, top0 = false;
-  addEventListener('touchstart', e => { y0 = busy(e.target) || e.touches.length > 1 ? null : e.touches[0].clientY; top0 = atTop(); }, { passive: true });
-  addEventListener('touchend', e => {
-    if (y0 === null) return;
-    const dy = y0 - e.changedTouches[0].clientY; y0 = null;
-    if (at() === 'home' && dy > 50) go('start');
-    else if (at() === 'start' && top0 && atTop() && dy < -70) go('home');
-  }, { passive: true });
 }

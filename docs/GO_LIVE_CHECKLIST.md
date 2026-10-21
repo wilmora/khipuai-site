@@ -15,11 +15,11 @@ yes, no or "use this wording".
 
 | # | Decision | Who | What happens until then |
 |---|---|---|---|
-| D1 | **Logo permissions.** Zendesk, monday.com, Google, Meta and Anthropic logos in the "Tools we work with" row. Microsoft products show as names only. See `concepts/basic/logos/SOURCES.md`. | Wil | Show every tool as a name only, with no logos. |
+| D1 | **Integrations row and logo permissions.** The row is renamed "Integrations" and now lists WhatsApp, GitHub and 3D modelling software too, but it is switched off on the site until Alex and Wil decide (2026-10-21; `SHOW_INTEGRATIONS` in `concepts/basic/basic.js`). Before it is switched on: logo permissions for Zendesk, monday.com, Google, Meta and Anthropic (see `concepts/basic/logos/SOURCES.md`). | Alex and Wil | The row stays hidden. |
 | D2 | **"It is never entered into a public AI chatbot."** This is the security wording on the trial pages, and it needs Wil's OK. | Wil | Use the live wording ("Not in a public chatbot.") instead. |
 | D3 | **Code ownership wording.** "A product you own" and "The product is yours." State what the client owns and when. | Wil | Remove the ownership section. |
 | D4 | **"Three steps" vs "A product you own".** Settled by ORD-20261020-23: the steps are now four (Discovery call, Walkthrough, Solution design, Build) under "From first call to a product you own." | Done | None |
-| D5 | **Draft pricing on Build your portal.** $100 per month for the portal (USD in the US, CAD in Canada). Hosting is a separate monthly fee, to be confirmed. Enterprise starts above 100 users or 10 locations. The "custom" features are the system connections. Is the same $100 figure right in both currencies? All of this is in `concepts/basic/portal/plans.js`. | Wil | Launch with every amount marked "Draft pricing", or hold the page back. |
+| D5 | **Build your portal.** Held back (2026-10-21): the page and its code stay, but nothing links to it (`SHOW_PORTAL` in `concepts/basic/basic.js`). Before it is shown: the draft pricing ($100 per month for the portal, hosting a separate monthly fee to be confirmed, Enterprise above 100 users or 10 locations, the same $100 in USD and CAD; `concepts/basic/portal/plans.js`). | Alex and Wil | The page stays unlinked. |
 | D6 | **Support Tickets card claim.** "Routes it to the right person." Is that what the product does today? | Wil | Change it to "suggests who should handle it". |
 | D7 | **Material Lists demo art.** The cabin and ridge pictures in the demo: permission or replace. | Alex | Replace them with plain shapes. |
 | D8 | **Older figures still on the live pages.** These were deliberately left off the trial: es/about 80%, $150K, $1M and flagship 95%, E&O insurance, Net 15, the audit "finance degree" and "one firm's outcome", and the thank-you "fixed fee" line. Confirm they stay off, or provide the evidence and permission to keep them. | Wil | They stay off. |
@@ -28,15 +28,17 @@ yes, no or "use this wording".
 | D11 | **Spanish privacy policy.** A new translation of the English policy, with the same facts (`concepts/basic/es/privacy/`). It needs Wil's review before it is published. | Wil | Spanish pages link to it marked as a translation, or link to the English policy. |
 | D12 | **Pages with no Spanish version.** The self-assessment, its thank-you page and the blog are English only. Translate them, or keep them in English and label the link "(en inglés)". The Spanish contact page already does this. | Alex and Wil | English only, labelled. |
 | D13 | **The blog.** The live site has three blog posts and a blog index. The trial has no blog. Restyle them into the new look, or keep them in the old look. | Alex | Keep the old look, still linked. |
-| D15 | **Create hello@khipuai.co.** The trial pages now show one shared address, hello@khipuai.co, instead of personal ones. The mailbox does not exist yet. Create it before launch: a Google Workspace alias forwarding to the founder and the operations lead. | Alex | Every "email us" link on the new site bounces. Launch is blocked. |
+| D15 | **Contact address.** Settled 2026-10-21 at Alex's word: the site shows alexp@khipuai.co everywhere (this replaced the hello@khipuai.co plan, so no new mailbox is needed). | Done | None |
 | D16 | **Confirm the new name.** "Audit" is gone from the trial pages. The service is now "AI automation solutions", the paid first engagement is "Solution Design" ("Diseño de la solución"), and the buttons say "Book a free discovery call". The founder should confirm the name before launch. The live pages still say "AI Automation Audit" until the switch. | Alex (with Wil) | The trial keeps the new name; the live site keeps the old one. |
+| D17 | **Held portfolio pieces.** The billing agent card is hidden, and each working miniature shows only its Home screen with its sidebar visible but not clickable ("Coming soon"; `HOLD` in `concepts/basic/demos/mini.js`). Decide when each opens up. | Alex and Wil | Cards show Home only. |
+| D18 | **Pages instead of scrolling.** Every page except Privacy turns pages (Back, Next, dots, wheel, swipe, keys) instead of scrolling (`concepts/basic/pager.js`). A Terms page, if one is added (D10), should scroll like Privacy (`class="doc scroll"`). | Alex | None |
 | D14 | **Self-assessment email form.** It is switched off on the trial. Turning it back on sends the visitor's details to the Google form endpoint, as the live site does. | Alex and Wil | It stays off. Visitors download the PDF and book a call. |
 
 ---
 
 ## 2. Before the switch (on `alex-work`)
 
-1. [ ] Apply the answers to D1 to D16, one commit per decision. Send a test email to hello@khipuai.co and confirm it arrives.
+1. [ ] Apply the answers to D1 to D16, one commit per decision. Send a test email to alexp@khipuai.co from the contact page link and confirm it arrives.
 2. [ ] Run every check, and get each one green:
    - `node --test tests/*.test.mjs`
    - the gate (`node <agent-factory>/gate/pre-push.mjs --check .`)
@@ -93,7 +95,7 @@ Do it all in one reviewed pull request, so it can be undone in one step.
 7. [ ] **404:** replace the root `404.html` with `concepts/basic/404.html`, links rewritten. Keep `404.md` for the edge worker.
 8. [ ] **Update `sitemap.xml`** with the new addresses, the dates and the Spanish pages (contact, privacy, portal). Keep `robots.txt` pointing to it.
 9. [ ] **Update the Markdown twins and `llms.txt`** (`index.md`, `es/index.md`, `about/index.md`, `contact/index.md`) so they say what the new pages say. Remove the personal email addresses and "remotely" from them, and from the structured data, the same as on the pages.
-   Then search the whole repo for `@khipuai.co`: only hello@khipuai.co should remain.
+   Then search the whole repo for `@khipuai.co`: only alexp@khipuai.co should remain on the pages.
 10. [ ] **Analytics,** if D9 says yes: add the chosen tag to every public page, behind consent for Meta. Leave it off the demos. Make the privacy policy match it.
 11. [ ] **Structured data:** carry the live homepage's JSON-LD over and update it.
 12. [ ] **Form endpoint,** if D14 says yes: switch the self-assessment form on, with the live endpoint, and test one real submission.

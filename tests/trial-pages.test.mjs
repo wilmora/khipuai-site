@@ -20,7 +20,7 @@ for (const [path, lang] of PAGES) {
     const url = new URL(path, ROOT);
     assert.ok(existsSync(url), `missing concepts/basic/${path}`);
     const html = readFileSync(url, 'utf8');
-    assert.match(html, new RegExp(`<html lang="${lang}" class="doc">`));
+    assert.match(html, new RegExp(`<html lang="${lang}" class="doc( scroll)?">`));
     assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
     assert.match(html, /basic\.css">/);
     assert.match(html, /page\.css">/);
@@ -58,18 +58,19 @@ test('no duplicate titles across the trial pages', () => {
   assert.equal(new Set(titles).size, titles.length, titles.join(' / '));
 });
 
-// Alex, 2026-10-20: one shared address on the site, no personal ones, and
+// Alex, 2026-10-21: one contact address on the site, alexp@khipuai.co (this
+// replaces the hello@ address of 2026-10-20), and
 // no name-dropping in everyday lines (people are named where they are
 // introduced); "remotely" is not part of the studio line.
 test('trial pages use the shared address and neutral everyday lines', () => {
   for (const [path] of [...PAGES, ...HOMES, ['404.html']]) {
     const html = readFileSync(new URL(path, ROOT), 'utf8');
-    for (const m of html.matchAll(/[a-z.]+@khipuai\.co/g)) assert.equal(m[0], 'hello@khipuai.co', path);
+    for (const m of html.matchAll(/[a-z.]+@khipuai\.co/g)) assert.equal(m[0], 'alexp@khipuai.co', path);
     assert.doesNotMatch(html, /Wil will|Wil can|Email Wil|escribe a Wil/, path);
     assert.doesNotMatch(html, /work remotely|de forma remota con empresas/, path);
   }
   const tone = readFileSync(new URL('tone.js', ROOT), 'utf8');
-  assert.match(tone, /'wil@khipuai\.co': 'hello@khipuai\.co'/);
+  assert.match(tone, /'wil@khipuai\.co': 'alexp@khipuai\.co'/);
   assert.match(tone, /studio serving clients across the United States and Canada\.'/);
 });
 

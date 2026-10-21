@@ -30,7 +30,10 @@ const SWAP = {
     'What happens after the audit?': 'What happens after Solution Design?',
     'You decide after seeing the roadmap.': 'You decide after seeing the design and the price.',
     'KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.': 'KHIPUAI is an Ontario, Canada studio serving clients across the United States and Canada.',
-    'wil@khipuai.co': 'hello@khipuai.co',
+    'wil@khipuai.co': 'alexp@khipuai.co',
+    // Alex and Wil, 2026-10-21.
+    'No new platform forced on you.': 'Centralize all your applications in one place.',
+    'Tools we work with': 'Integrations',
     'That honesty is the product.': 'A candid answer is part of the value.',
     'and we will tell you honestly if it is worth automating.': 'and we will give you a candid assessment of whether it is worth automating.',
   },
@@ -42,7 +45,9 @@ const SWAP = {
     'Probablemente no es para ti si': 'No es la opción adecuada si',
     'y te diremos con honestidad si vale la pena automatizarlo.': 'y te daremos una evaluación franca de si vale la pena automatizarlo.',
     'KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.': 'KHIPUAI es un estudio de Ontario, Canadá, que atiende a clientes en Estados Unidos y Canadá.',
-    'wil@khipuai.co': 'hello@khipuai.co',
+    'wil@khipuai.co': 'alexp@khipuai.co',
+    'Sin obligarte a usar una plataforma nueva.': 'Centraliza todas tus aplicaciones en un solo lugar.',
+    'Herramientas con las que trabajamos': 'Integraciones',
     '¿Y si no encuentras mucho?': '¿Qué pasa si hay pocas oportunidades?',
     'En unas dos semanas, la Auditoría de Automatización con IA mapea los flujos de tu operación, cuantifica los cuellos de botella y entrega a operaciones, finanzas y TI un primer paso defendible.':
       'En unas dos semanas, el Diseño de la solución mapea los flujos de tu operación, cuantifica los cuellos de botella y diseña la solución que será tuya, con un plan y un precio claros para construirla.',
@@ -63,12 +68,19 @@ const SWAP = {
   },
 };
 
+// Whole sentences the trial leaves out (Alex and Wil, 2026-10-21): a list
+// item equal to one of these is dropped from its list.
+const DROP = {
+  en: ['You lead a 20 to 300-person recurring-service business with complex back-office work.'],
+  es: ['Diriges una empresa de servicios recurrentes de 20 a 300 personas con trabajo administrativo complejo.'],
+};
+
 // A copy of the content with each listed sentence replaced, wherever it sits
 // (a whole string or a sentence inside a longer one).
 export function tone(C, lang) {
-  const swaps = Object.entries(SWAP[lang] || {});
+  const swaps = Object.entries(SWAP[lang] || {}), drop = DROP[lang] || [];
   const walk = v => typeof v === 'string' ? swaps.reduce((s, [a, b]) => s.split(a).join(b), v)
-    : Array.isArray(v) ? v.map(walk)
+    : Array.isArray(v) ? v.filter(x => !drop.includes(x)).map(walk)
     : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]))
     : v;
   return walk(C);

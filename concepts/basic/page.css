@@ -30,3 +30,15 @@
 /* Long buttons (mostly Spanish) wrap inside their column on narrow phones
    instead of pushing the page sideways. */
 .doc .cta-row .btn{max-width:100%;white-space:normal;text-align:center;padding-top:8px;padding-bottom:8px;}
+
+/* Icon cards and step timelines in place of long text (2026-10-21). */
+.doc .items li > .feature-icon{display:flex;margin-bottom:8px;}
+.doc .items li > .feature-icon + h3{margin-top:0;}
+.doc .items li h3:only-of-type:last-child{font-weight:600;}
+.doc .timeline{margin-top:2px;}
+.doc .timeline h3{font-size:17px;}
+.doc .timeline p{font-size:15px;max-width:60ch;}
+.doc .timeline .node-own .feature-icon{color:#140A04;width:20px;height:20px;}
+.doc .timeline .node-own .feature-icon svg{width:18px;height:18px;}
+.doc .team{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+@media (max-width:899px){.doc .team{grid-template-columns:minmax(0,1fr);}}

@@ -4,6 +4,7 @@
    Inventario and Informes. The other menu entries, and anything that would send,
    save, export or call the assistant, show a note. */
 import { mini, esc, svg } from '../mini.js';
+import { english } from './en.js';
 import { I } from './icons.js';
 import { HOY, HOY_TEXTO, PEDIDOS, CONVERSACIONES, INVENTARIO, INFORME } from './data.js';
 
@@ -470,5 +471,6 @@ window.addEventListener('hashchange', () => { const r = location.hash.replace('#
 const start = location.hash.replace('#/', '');
 if (isRoute(start)) S.route = start;
 if (S.route === 'conversaciones') S.bottom = true;
-mini({ label: 'Demo, datos inventados', ok: 'Entendido' });
+mini({ label: 'Demo, made-up data', ok: 'OK' });
+english();
 render();
