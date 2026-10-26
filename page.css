@@ -1,0 +1,84 @@
+/* The trial's other pages (How KHIPUAI works, Security, Contact, Privacy,
+   Solution Design): the homepage's header, band, footer, fonts and colours, with the
+   page's own content in the same section layout. They scroll normally (the
+   one-screen rules in basic.css apply only to the homepage). */
+.doc main.wrap{padding-top:clamp(28px,5vh,56px);padding-bottom:64px;}
+.doc-hero{max-width:920px;padding-bottom:44px;}
+.doc-hero h1{margin-top:12px;font-size:clamp(34px,4.6vw,60px);line-height:1.05;}
+.doc-hero .lede{margin-top:18px;font-size:18px;max-width:62ch;}
+.doc-hero .meta{margin-top:14px;font-size:14px;color:var(--muted);}
+.doc .sec{padding:28px 0 36px;}
+.doc .sec-body p{font-size:16px;line-height:1.6;max-width:72ch;}
+.doc .sec-body .fine,.doc .fine{font-size:13.5px;color:var(--muted);}
+.doc .sec-body ul.list{margin:0;padding-left:20px;max-width:72ch;}
+.doc .sec-body ul.list li{margin-top:8px;font-size:15.5px;line-height:1.55;}
+.doc .sec-body ul.list li strong{color:var(--ink);}
+.doc .member{gap:20px;}
+.doc .member p{font-size:16px;line-height:1.6;}
+.doc .items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 36px;}
+.doc .items.three{grid-template-columns:repeat(3,minmax(0,1fr));}
+.doc .items li{padding-top:14px;border-top:1px solid var(--line);}
+.doc .items .num{display:block;font:800 13px/1 'Manrope',sans-serif;color:var(--copper-ink);letter-spacing:.04em;}
+.doc .items h3{font-size:17px;margin-top:8px;}
+.doc .items p{margin-top:6px;font-size:15px;color:var(--muted);}
+.doc .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+@media (max-width:899px){
+  .doc .sec{grid-template-columns:minmax(0,1fr);gap:16px;padding:22px 0 28px;}
+  .doc .items,.doc .items.three{grid-template-columns:minmax(0,1fr);}
+  .doc-hero{padding-bottom:28px;}
+}
+/* Long buttons (mostly Spanish) wrap inside their column on narrow phones
+   instead of pushing the page sideways. */
+.doc .cta-row .btn{max-width:100%;white-space:normal;text-align:center;padding-top:8px;padding-bottom:8px;}
+/* A plain link beside the main button reads as the second button, outlined,
+   the same pair as the homepage (Book a call, then the outlined choice). */
+.doc .cta-row > a:not(.btn){display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:8px 20px;border-radius:6px;
+  max-width:100%;white-space:normal;text-align:center;background:transparent;color:var(--ink);border:2px solid var(--ink);font-weight:700;font-size:15px;text-decoration:none;}
+.doc .cta-row > a:not(.btn):hover{background:var(--ink);color:var(--paper);}
+
+/* Icon cards and step timelines in place of long text (2026-10-21). */
+.doc .items li > .feature-icon{display:flex;margin-bottom:8px;}
+.doc .items li > .feature-icon + h3{margin-top:0;}
+.doc .items li h3:only-of-type:last-child{font-weight:600;}
+/* The "worth it" signs are short one-liners: a single checklist column with
+   the icon beside each line reads cleaner than a two-column grid. */
+.doc .items[data-icons="problem"]{grid-template-columns:minmax(0,1fr);gap:0;max-width:720px;}
+.doc .items[data-icons="problem"] li{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:0;border-bottom:1px solid var(--line);}
+.doc .items[data-icons="problem"] li > .feature-icon{flex:none;margin-bottom:0;}
+.doc .items[data-icons="problem"] h3{margin:0;font-size:17px;text-wrap:pretty;}
+.doc .timeline{margin-top:2px;}
+.doc .timeline h3{font-size:17px;}
+.doc .timeline p{font-size:15px;max-width:60ch;}
+.doc .timeline .node-own .feature-icon{color:#140A04;width:20px;height:20px;}
+.doc .timeline .node-own .feature-icon svg{width:18px;height:18px;}
+.doc .team{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+@media (max-width:899px){.doc .team{grid-template-columns:minmax(0,1fr);}}
+/* Policy pages that scroll (Privacy, Security): one readable column like a
+   formal document, a contents list under the title, numbered sections
+   (Alex, 2026-10-26: "more professional", one scrolling page each). */
+.doc.scroll main{counter-reset:sec;}
+.doc.scroll main > *{max-width:none;}
+.doc.scroll .doc-hero{padding-bottom:28px;}
+.doc.scroll .doc-hero h1{font-size:clamp(32px,3.6vw,46px);}
+.doc.scroll .doc-hero{max-width:none;}
+.doc.scroll .doc-hero .lede{font-size:17px;max-width:none;}
+.doc.scroll .toc{margin:0 0 8px;padding:0 0 18px;}
+.doc.scroll .toc .kick{margin:0 0 10px;}
+.doc.scroll .toc ol{margin:0;padding:0;list-style:none;columns:4 200px;column-gap:40px;counter-reset:toc;}
+.doc.scroll .toc li{counter-increment:toc;break-inside:avoid;padding:4px 0;font-size:15px;}
+.doc.scroll .toc li::before{content:counter(toc) ".";display:inline-block;min-width:1.7em;color:var(--copper-ink);font-weight:700;}
+.doc.scroll .toc a{color:var(--ink);text-decoration:none;}
+.doc.scroll .toc a:hover{text-decoration:underline;}
+.doc.scroll .sec{display:block;padding:30px 0 6px;border-top:1px solid var(--line);margin-top:24px;}
+.doc.scroll .sec-head{margin-bottom:14px;}
+.doc.scroll .sec-head h2{font-size:24px;}
+.doc.scroll .sec h2[id]{counter-increment:sec;scroll-margin-top:90px;}
+.doc.scroll .sec h2[id]::before{content:counter(sec) ".";display:inline-block;min-width:1.4em;color:var(--copper-ink);}
+.doc.scroll .sec-body{border-top:0;padding-top:0;}
+.doc.scroll .sec-body p,.doc.scroll .sec-body ul.list{max-width:none;}
+.doc.scroll .items{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;}
+.doc.scroll .items li{padding:14px 0 16px;border-top:1px solid var(--line);}
+.doc.scroll .items li > .feature-icon{display:none;}
+.doc.scroll .items h3{margin-top:0;font-size:16.5px;}
+@media (max-width:900px){ .doc.scroll .items{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media (max-width:700px){ .doc.scroll .toc ol{columns:1;} .doc.scroll .sec-head h2{font-size:21px;} .doc.scroll .items{grid-template-columns:minmax(0,1fr);} }

@@ -294,6 +294,13 @@ body.at-start .hint{opacity:0;}
 .say{font-size:min(5.2vw,8vh,4.3rem);max-width:15ch;}
 .say em{color:var(--copper);}
 .sub{color:var(--muted);max-width:56ch;font-size:1.01rem;margin-top:20px;}
+/* The positioning line: louder than a .sub, quieter than a .say. The copper
+   rule marks it as a statement rather than one more line of body copy. */
+.stance{position:relative;margin:26px 0 0;padding-left:18px;border-left:2px solid var(--hot);
+  max-width:46ch;font-size:clamp(1.15rem,min(1.9vw,3.2vh),1.6rem);line-height:1.25;
+  color:var(--ink);text-shadow:0 2px 18px rgba(0,0,0,.55);}
+.stance strong{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.01em;}
+.stance em{color:var(--copper);}
 .fine{color:var(--dim);font-size:.75rem;margin-top:20px;max-width:74ch;}
 
 
@@ -461,6 +468,10 @@ body.at-start .hint{opacity:0;}
   /* The founder portrait is the tallest fixed element on the page; at 258px it
      pushed the Founder section 11px into the ticker band. */
   .face img{width:190px;height:190px;}
+  /* Results' second row of deliverables sat 60px below the first (a 30px
+     margin plus 30px padding around its rule). Halved here, that brings the
+     section back above the ticker on a 1366x768 laptop. */
+  .cols.c6:not(.work-cols) > div:nth-child(n+4){padding-top:18px;margin-top:18px;}
 }
 
 /* A second, tighter tier. At 1280x720 the frame above still leaves only 524px
@@ -483,6 +494,7 @@ body.at-start .hint{opacity:0;}
   .process-mark .feature-icon{width:35px;height:35px;}
   .process-cols::before{top:18px;}
   .face img{width:168px;height:168px;}
+  .cols.c6:not(.work-cols) > div:nth-child(n+4){padding-top:14px;margin-top:14px;}
   .p-start h1{font-size:clamp(3rem,4.5vw,3.9rem);}
   .hero-proof{bottom:22px;}
   .hero-aside{bottom:84px;}
@@ -1018,3 +1030,60 @@ html[lang="es"] .lede{max-width:40ch;}
    tools/prerender.py. */
 .js .prerender{display:none}
 .prerender{max-width:760px;margin:0 auto;padding:48px 24px;}
+
+/* ---- portfolio, tools and security screens -------------------------------
+   They reuse .cols for the cards. Only two things are new: the "who approves"
+   line on each portfolio card, which is the point of the card for a buyer, and
+   the tools grid, which is text tiles rather than logos. */
+.pf{width:100%;margin-top:28px;border-collapse:collapse;text-align:left;}
+.pf th,.pf td{padding:13px 22px 13px 0;border-bottom:1px solid var(--line);vertical-align:top;}
+.pf thead th{padding-top:0;padding-bottom:9px;font-family:'Manrope',sans-serif;font-size:.62rem;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
+.pf tbody th{width:23%;font-family:'Manrope',sans-serif;font-size:.98rem;font-weight:800;letter-spacing:-.01em;color:var(--ink);}
+.pf td{width:46%;color:var(--muted);font-size:.86rem;}
+.pf td.who{width:31%;padding-right:0;color:var(--ink);}
+.pf-next,.pf-note{max-width:none;}
+.inline-link{color:var(--copper);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;}
+/* Security cards: the icon sits beside the heading, which buys the row of
+   height the six cards need to fit one screen on a short laptop. */
+.inline-icons.visual-cols .feature-icon{display:inline-flex;vertical-align:middle;margin:0 9px 0 0;}
+.inline-icons h3{display:inline;vertical-align:middle;}
+.tool-grid{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-top:1px solid var(--line);}
+.tool-grid li{padding:22px 24px 22px 0;border-bottom:1px solid var(--line);}
+.tool-grid li:not(:nth-child(4n+1)){padding-left:24px;border-left:1px solid var(--line);}
+.tool-grid strong{display:block;font-family:'Manrope',sans-serif;font-size:1.15rem;letter-spacing:-.02em;color:var(--ink);}
+.tool-grid span{display:block;margin-top:6px;color:var(--muted);font-size:.84rem;}
+.sec-link{margin:18px 0 0;}
+.sec-link .inline-link{display:inline-flex;align-items:center;min-height:44px;}
+
+@media (min-width:901px) and (max-height:860px) and (min-height:501px){
+  .tool-grid{margin-top:20px;}
+  .tool-grid li{padding-top:15px;padding-bottom:15px;}
+  .pf th,.pf td{padding-top:9px;padding-bottom:9px;}
+  .pf td{font-size:.82rem;}
+  .pf tbody th{font-size:.92rem;}
+  .sec-link{margin-top:2px;}
+}
+@media (min-width:901px) and (max-height:740px) and (min-height:501px){
+  .tool-grid li{padding-top:11px;padding-bottom:11px;}
+  .tool-grid strong{font-size:1rem;}
+  .tool-grid span{font-size:.78rem;}
+  .pf td{font-size:.8rem;}
+  .pf th,.pf td{padding-top:6px;padding-bottom:6px;}
+  .pf td{font-size:.78rem;}
+}
+@media (max-width:900px), (max-width:1100px) and (orientation:portrait), (max-height:500px){
+  .tool-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .tool-grid li,.tool-grid li:not(:nth-child(4n+1)){padding:16px 14px 16px 0;border-left:0;}
+  .tool-grid li:nth-child(even){padding-left:14px;border-left:1px solid var(--line);}
+  .tool-grid strong{font-size:1rem;}
+  .tool-grid span{font-size:.8rem;}
+  .pf thead{display:none;}
+  .pf,.pf tbody,.pf tr,.pf th,.pf td,.pf tbody th,.pf td.who{display:block;width:auto;}
+  .pf tr{padding:14px 0;border-bottom:1px solid var(--line);}
+  .pf th,.pf td,.pf td.who{padding:0;border:0;}
+  .pf td{margin-top:8px;}
+  .pf td::before{content:attr(data-label);display:block;margin-bottom:2px;font-family:'Manrope',sans-serif;
+    font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
+}

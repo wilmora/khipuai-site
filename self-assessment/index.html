@@ -1,28 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="doc">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Title and description carried over from the live /self_assessment.html
-     rather than rewritten. Same worksheet, new shell. -->
-<title>Where Is Your Team Losing Hours? | KHIPUAI Self-Assessment</title>
-<meta name="description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Score where your team loses hours to manual work.">
-
+<meta name="description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Identify where your team loses hours to manual work.">
+<title>Automation Self-Assessment | KHIPUAI</title>
 <link rel="canonical" href="https://khipuai.co/self-assessment/">
-<link rel="alternate" hreflang="en" href="https://khipuai.co/self-assessment/">
-<link rel="alternate" hreflang="x-default" href="https://khipuai.co/self-assessment/">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="Where is your team losing hours?">
-<meta property="og:description" content="A 5-minute automation self-assessment for back-office and professional-services teams. 15 questions, one score.">
 <meta property="og:url" content="https://khipuai.co/self-assessment/">
-<meta property="og:image" content="https://khipuai.co/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KHIPUAI">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Automation Self-Assessment | KHIPUAI">
+<meta property="og:description" content="A 5-minute automation self-assessment for back-office and professional-services teams. Identify where your team loses hours to manual work.">
+<meta property="og:image" content="https://khipuai.co/og/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Where is your team losing hours?">
-<meta name="twitter:description" content="A 5-minute automation self-assessment. 15 questions, one score.">
-<meta name="twitter:image" content="https://khipuai.co/og-image.png">
-
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="../basic.css">
+<link rel="stylesheet" href="../page.css">
+<link rel="icon" href="/shared/assets/mark.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<style>
+/* Page-only styles for the one-question card, the result and the form. */
+.doc-hero .lede + .lede{margin-top:10px;}
+.doc-hero .cta-row{margin-top:26px;}
+.qcard{max-width:760px;margin:0 0 44px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:clamp(20px,3.5vw,36px);}
+.qcard:focus{outline:none;}
+.qcard{scroll-margin-top:96px;}
+.qtop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;font-size:14px;color:var(--muted);}
+.qtop b{color:var(--ink);font-family:'Manrope',sans-serif;}
+.qbar{height:4px;background:var(--cream);border-radius:2px;margin-top:10px;overflow:hidden;}
+.qbar i{display:block;height:100%;width:0;background:var(--copper-ink);transition:width .2s;}
+.qcard .kick{margin-top:24px;}
+.qcard h2{margin-top:8px;font-size:clamp(24px,2.4vw,30px);}
+.qtext{margin-top:18px;font-size:18px;line-height:1.5;max-width:60ch;}
+.qtext:focus{outline:none;}
+.yn{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.yn button{min-width:110px;min-height:46px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:transparent;
+  color:var(--ink);font:700 15px/1 'DM Sans',sans-serif;cursor:pointer;}
+.yn button:hover{background:var(--cream);}
+.yn button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+.yn button[aria-pressed="true"]::before{content:"\2713\00a0";}
+.qnav{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);}
+.qnav .btn{min-width:110px;}
+.qnav .btn[disabled]{opacity:.45;cursor:default;}
+.bignum{font:800 clamp(52px,7vw,84px)/1 'Manrope',sans-serif;letter-spacing:-.03em;}
+.bignum small{font-size:.38em;color:var(--muted);margin-left:8px;letter-spacing:0;}
+.res-band{max-width:62ch;}
+.res-band b{color:var(--copper-ink);text-transform:uppercase;letter-spacing:.04em;font-family:'Manrope',sans-serif;}
+.leaks{list-style:none;padding:0;max-width:70ch;border-top:1px solid var(--line);}
+.leaks li{padding:12px 0 12px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--muted);font-size:15px;line-height:1.5;}
+.leaks li::before{content:"";position:absolute;left:0;top:19px;width:8px;height:8px;background:var(--copper-ink);}
+.leaks li b{color:var(--ink);}
+.lead{display:grid;gap:15px;max-width:460px;}
+.lead .field{display:grid;gap:5px;}
+.lead label{font-weight:700;font-size:14px;}
+.lead input:not([type=checkbox]){font:inherit;min-height:46px;padding:10px 13px;border:1px solid var(--muted);border-radius:6px;background:var(--white);color:var(--ink);width:100%;}
+.lead label.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:var(--muted);cursor:pointer;}
+.lead label.check input{margin-top:4px;width:18px;height:18px;accent-color:var(--copper-ink);}
+.lead button{justify-self:start;cursor:pointer;}
+.lead .fineprint{font-size:13.5px;color:var(--muted);}
+.lead .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+.lead[hidden]{display:none;}
+@media (max-width:480px){.yn button,.qnav .btn{flex:1;}}
+</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0ENQ1NBS"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -30,347 +73,104 @@
   gtag('js', new Date());
   gtag('config', 'G-8M0ENQ1NBS');
 </script>
-
-<link rel="stylesheet" href="../shared/assets/fonts.css">
-<link rel="stylesheet" href="../shared/kinetic.css">
 <link rel="stylesheet" href="/shared/meta-pixel.css">
-<link rel="icon" href="../shared/assets/mark.svg">
 <script defer src="/shared/meta-pixel.js"></script>
-<style>
-/* v2: every question gets an explicit Yes / No, so "not tapped" never has to mean "no". */
-.ask li.q{display:flex;gap:16px;align-items:center;padding:14px 4px;}
-.ask li.q .txt{flex:1;color:var(--muted);font-size:.97rem;line-height:1.5;transition:color .18s;}
-.ask li.q.done .txt{color:var(--ink);}
-.yn{display:flex;gap:8px;flex:0 0 auto;}
-.yn button{min-width:58px;padding:9px 12px;border:1px solid var(--line);background:none;color:var(--muted);
-  font-family:'Manrope',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;transition:all .18s;}
-.yn button:hover{color:var(--ink);border-color:var(--muted);}
-.yn button.yes[aria-pressed="true"]{background:var(--hot);border-color:var(--hot);color:#0A1119;}
-.yn button.no[aria-pressed="true"]{background:var(--line);border-color:var(--muted);color:var(--ink);}
-@media (max-width:640px){ .ask li.q{flex-direction:column;align-items:stretch;gap:10px;} .yn button{flex:1;} }
-/* v2 result: score, the one band you landed in, your top leaks, then the call. */
-.res-band{margin-top:14px;max-width:62ch;color:var(--ink);line-height:1.5;}
-.res-band b{font-family:'Manrope',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--hot);}
-.leaks{list-style:none;padding:0;margin:18px 0 0;max-width:70ch;border-top:1px solid var(--line);}
-.leaks li{padding:12px 0 12px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--muted);line-height:1.45;font-size:.95rem;}
-.leaks li:before{content:"";position:absolute;left:0;top:18px;width:8px;height:8px;background:var(--hot);}
-.leaks li b{color:var(--ink);}
-.res-cta{margin-top:22px;}
-.res-cta .alt{margin-top:12px;font-size:.85rem;color:var(--dim);}
-.res-cta .alt a{color:var(--muted);text-decoration:underline;}
-/* Result by email: the tick box reads as body text, not as a field label. */
-.lead label.check{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;letter-spacing:0;text-transform:none;font-weight:400;color:var(--muted);cursor:pointer;}
-.lead label.check input{margin-top:3px;accent-color:var(--hot);}
-#pdfonly{margin-top:22px;}
-/* .lead sets display:grid, which would beat the hidden attribute. */
-.lead[hidden]{display:none;}
-</style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="../"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+  <p class="lang"><span aria-current="true">EN</span></p>
+  <a class="btn sm" id="book-top" href="#"></a>
+</div></header>
+<main id="main" class="wrap">
+  <section class="doc-hero">
+    <p class="kick">Five Minutes, Fifteen Questions</p>
+    <h1>Find where your team loses hours.</h1>
+    <p class="lede">Most businesses lose dozens of hours each month to work that software should handle. The challenge is not fixing it but identifying it, because manual work accumulates one workaround at a time until it becomes invisible.</p>
+    <p class="lede">These are the questions we ask when we first review a team's workflows. Answer yes or no to each. If you are unsure, the answer is usually yes.</p>
+    <div class="cta-row">
+      <button type="button" class="btn" id="start">Start the Assessment</button>
+      <a class="btn line" href="../">Back to the Site</a>
+    </div>
+  </section>
 
-<a class="skip" href="#p-reentry">Skip to content</a>
-
-<header class="hd">
-  <a class="bd" href="/"><img src="../shared/assets/mark.svg" alt="">KHIPUAI</a>
-  <nav id="nav" aria-label="Sections"></nav>
-</header>
-
-<div class="cordwrap"><svg class="cord" id="cord" aria-hidden="true" preserveAspectRatio="none"></svg></div>
-
-<main class="track" id="track"></main>
-
-<div class="rail"><i id="railfill"></i></div>
-
-<div class="foot">
-  <!-- The running total sits opposite the scroll hint. It is a live region so
-       a screen reader hears the score change rather than only finding it on
-       the last screen. -->
-  <div class="tally" id="tally" role="status" aria-live="polite">
-    <b id="tallynum">0</b><span>of 24 points</span>
-  </div>
-  <div class="hint" id="hint"><span>Scroll</span><span class="ar">&rarr;</span></div>
-</div>
-
-<script type="module">
-import { buildKinetic, esc } from '../shared/kinetic.js';
-import { C } from '../shared/content.js';
-
-/* The 15 questions and their weights are lifted verbatim from the live
-   worksheet. They are the scoring instrument - reworded questions would not
-   score the same, and the printable PDF that people take to their team has
-   these exact ones on it. The five parts become five screens because that is
-   already how the worksheet is grouped. */
-const PARTS = [
-  { id:'reentry', n:'Re-entry', kick:'Part one', at:'at-mid',
-    head:'Data re-entry, <em>the silent hours.</em>', q:[
-    [2,'Does anyone retype information from PDFs, emails, or one system into another?'],
-    [2,'Do you enter the same customer, vendor, or client data into more than one system?'],
-    [1,'Do people download data from one tool just to upload or paste it into another?'],
-  ]},
-  { id:'approvals', n:'Approvals', kick:'Part two', at:'at-top',
-    head:'Approvals <em>and handoffs.</em>', q:[
-    [2,'Do approvals (invoices, time off, purchases, onboarding) live in email or chat instead of a tracked workflow?'],
-    [1,'Has work ever stalled because someone did not know it was waiting on them?'],
-    [2,'When a new client or employee is onboarded, does the same information get handed between people and re-keyed?'],
-  ]},
-  { id:'reporting', n:'Reporting', kick:'Part three', at:'at-low',
-    head:'Reporting, <em>and who waits for it.</em>', q:[
-    [2,'Does someone rebuild the same report (weekly, monthly) by hand from multiple sources?'],
-    [1,'Do leaders wait on a person to assemble numbers before they can see how the business is doing?'],
-    [1,'Have you ever made a decision on a stale number because the fresh one was too much work to pull?'],
-  ]},
-  { id:'accuracy', n:'Accuracy', kick:'Part four', at:'at-mid',
-    head:'Reconciliation <em>and accuracy.</em>', q:[
-    [2,'Does anyone reconcile two systems or spreadsheets line by line to catch mismatches?'],
-    [2,'Do billing or invoicing errors slip through and get caught later (or by the client)?'],
-    [1,'Is there a &ldquo;person who just knows&rdquo; how a critical process works, with little written down?'],
-  ]},
-  { id:'tells', n:'Tells', kick:'Part five', at:'at-top',
-    head:'The tells.', q:[
-    [2,'Do you have a process everyone agrees is painful but &ldquo;that&rsquo;s just how we do it&rdquo;?'],
-    [1,'Have you looked at an AI or automation tool, felt it could help, but not known where to start?'],
-    [2,'If your busiest person took two weeks off, would routine work pile up because only they can do it?'],
-  ]},
-];
-
-/* Bands are the live page's, unchanged: the thresholds are the instrument as
-   much as the questions are. */
-const BANDS = [
-  { max:6,        name:'Lean',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
-  { max:14,       name:'Leaking',  copy:'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.' },
-  { max:Infinity, name:'Bleeding', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
-];
-
-/* v2: what each area usually means, in plain words, for the personal result. */
-const LEAK = {
-  reentry:  ['Data re-entry', 'people retype the same information into more than one system. Usually the first thing worth automating: the system moves it, a person checks it.'],
-  approvals:['Approvals and handoffs', 'work waits in inboxes and chats. A tracked approval flow with reminders removes most of the chasing.'],
-  reporting:['Reporting', 'numbers get rebuilt by hand before anyone can decide. Reports can assemble themselves from the systems you already use.'],
-  accuracy: ['Reconciliation and accuracy', 'mismatches get caught late, by hand. Automatic checks can flag them before a client does.'],
-  tells:    ['Key-person dependency', 'routine work lives in one person\u2019s head. Writing it down and automating the routine part protects you when they are away.'],
-};
-
-const TOTAL = PARTS.reduce((s,p) => s + p.q.reduce((t,[w]) => t + w, 0), 0);
-
-/* A question is a button carrying its own weight, so the tally is summed from
-   the DOM and there is no second copy of the state to fall out of step. */
-const askList = (part, offset) => `<ul class="ask" data-rv>${part.q.map(([w,t],i) => `
-  <li class="q" id="q${offset+i+1}" data-w="${w}" data-part="${part.id}">
-    <span class="txt">${t}</span>
-    <span class="yn" role="group" aria-label="Answer">
+  <!-- One question at a time. Filled in by quiz.js. -->
+  <section class="qcard" id="quiz" aria-labelledby="q-part" tabindex="-1" hidden>
+    <div class="qtop">
+      <span id="q-count">Question 1 of 15</span>
+      <span id="tally" role="status" aria-live="polite"><b id="tallynum">0</b> <span>of 24 points</span></span>
+    </div>
+    <div class="qbar" aria-hidden="true"><i id="q-bar"></i></div>
+    <p class="kick" id="q-kick"></p>
+    <h2 id="q-part"></h2>
+    <p class="qtext" id="q-text" tabindex="-1"></p>
+    <div class="yn" role="group" aria-labelledby="q-text">
       <button type="button" class="yes" aria-pressed="false">Yes</button>
       <button type="button" class="no" aria-pressed="false">No</button>
-    </span>
-  </li>`).join('')}</ul>`;
-
-let n = 0;
-const P = [
-  { id:'start', n:'Start', at:'at-mid', html:`
-    <div class="knot" id="knot">
-      <img src="../shared/assets/khipu-knot-v2.webp" alt="A sculptural copper knot, a contemporary reading of an Andean khipu">
     </div>
-    <div class="inner">
-      <div class="kick" data-rv>Five minutes, fifteen questions</div>
-      <h1 data-rv>Where is your team <em>losing hours?</em></h1>
-      <p class="lede" data-rv>Most businesses lose dozens of hours a month to work a computer should be doing. The hard part is not fixing it, it is seeing it, because the manual work grew one workaround at a time until it became invisible.</p>
-      <p class="lede" data-rv style="margin-top:-8px;">This is the same lens used walking into a firm for an audit. Answer yes or no to each. If you are not sure, the answer is usually yes.</p>
-      <div class="row" data-rv>
-        <button class="btn" data-to="reentry">Start the assessment</button>
-        <a class="btn line" href="/">Back to the site</a>
+    <div class="qnav">
+      <button type="button" class="btn line" id="q-back">Back</button>
+      <button type="button" class="btn line" id="q-next">Next</button>
+    </div>
+  </section>
+
+  <section class="qcard" id="result" aria-labelledby="h-result" tabindex="-1" hidden>
+    <p class="kick">Your Result</p>
+    <h2 class="bignum" id="h-result" style="margin-top:10px;"><span id="scorenum">0</span><small>/ 24</small></h2>
+    <p class="res-band" id="resband" style="margin-top:16px;">Answer the questions and your result appears here.</p>
+    <ul class="leaks" id="leaks" style="margin-top:18px;" hidden></ul>
+    <div id="rescta" style="margin-top:22px;" hidden>
+      <a class="btn" id="bookbtn" href="#">Book a Free Discovery Call</a>
+      <p class="note" style="margin-top:12px;">We review your answers together and identify the first area to address. Alternatively: <a href="#email">Get Your Result by Email</a>.</p>
+    </div>
+    <p class="note" id="scorenote" style="margin-top:16px;"></p>
+    <div class="qnav">
+      <button type="button" class="btn line" id="r-back">Back</button>
+      <button type="button" class="btn line" id="r-restart">Start Over</button>
+    </div>
+  </section>
+
+  <section class="sec" id="email" aria-labelledby="h-email">
+    <div class="sec-head"><p class="kick">Save Your Result</p><h2 id="h-email">Receive it by email.</h2></div>
+    <div class="sec-body">
+      <p>Your score, your top areas, and the worksheet PDF to complete with the team members who perform the work.</p>
+      <form class="lead" id="leadform" novalidate>
+        <div class="field"><label for="lf-name">First name</label><input id="lf-name" name="name" autocomplete="given-name" maxlength="40"></div>
+        <div class="field"><label for="lf-email">Work email</label><input id="lf-email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
+        <div class="field"><label for="lf-company">Company (optional)</label><input id="lf-company" name="company" autocomplete="organization" maxlength="80"></div>
+        <label class="check"><input type="checkbox" id="lf-follow"> KHIPUAI may follow up about my result. I can unsubscribe at any time.</label>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">Email My Result</button>
+        <p class="fineprint" id="lf-msg" role="status" aria-live="polite">One email with your result. No further emails unless you check the box. <a href="../privacy/">Privacy</a>. Alternatively, <a href="/self-assessment.pdf" download>download the worksheet</a>.</p>
+      </form>
+      <div class="lead" id="pdfonly" hidden>
+        <a class="btn" href="/self-assessment.pdf" download>Download the PDF</a>
+        <p class="fineprint">No form required. The worksheet downloads directly to your device.</p>
       </div>
-    </div>` },
-
-  ...PARTS.map(part => {
-    const offset = n; n += part.q.length;
-    return { id:part.id, n:part.n, at:part.at, html:`
-    <div class="kick" data-rv>${esc(part.kick)}</div>
-    <h2 class="say" data-rv style="max-width:19ch;">${part.head}</h2>
-    ${askList(part, offset)}` };
-  }),
-
-  { id:'score', n:'Score', at:'at-mid', html:`
-    <div class="kick" data-rv>Your result</div>
-    <div class="bignum" data-rv><span id="scorenum">0</span><small>/ ${TOTAL}</small></div>
-    <p class="res-band" data-rv id="resband">Answer the questions and your result appears here.</p>
-    <ul class="leaks" id="leaks" data-rv hidden></ul>
-    <div class="res-cta" data-rv id="rescta" hidden>
-      <a class="btn" id="bookbtn" href="${C.booking}">Book a 30-minute fit call</a>
-      <p class="alt">We go through your answers together and pick the first thing worth fixing. Not ready? <a href="#p-pdf">Get your result by email</a>.</p>
     </div>
-    <p class="fine" data-rv id="scorenote"></p>` },
+  </section>
 
-  /* Two asks, two screens, in this order - which is the live page's own
-     reasoning: the PDF is the lower-commitment step for someone not ready to
-     give up 30 minutes, so it comes before the call. Putting both on one
-     screen also overflowed it by 122px. */
-  { id:'pdf', n:'Email', at:'at-top', html:`
-    <div class="kick" data-rv>Keep your result</div>
-    <h2 class="say" data-rv style="max-width:20ch;">Get it <em>by email.</em></h2>
-    <p class="sub" data-rv>Your score, your top areas, and the worksheet PDF to score with the people who actually do the work.</p>
-    <form class="lead" id="leadform" data-rv novalidate hidden>
-      <div class="field"><label for="lf-name">First name</label><input id="lf-name" name="name" autocomplete="given-name" maxlength="40"></div>
-      <div class="field"><label for="lf-email">Work email</label><input id="lf-email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
-      <div class="field"><label for="lf-company">Company (optional)</label><input id="lf-company" name="company" autocomplete="organization" maxlength="80"></div>
-      <label class="check"><input type="checkbox" id="lf-follow"> Wil can follow up about my result. Unsubscribe anytime.</label>
-      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn" type="submit">Email me my result</button>
-      <p class="fineprint" id="lf-msg" role="status" aria-live="polite">One email with your result. Nothing else unless you tick the box. <a href="/privacy.html">Privacy</a>. Or just <a href="/self-assessment.pdf" download>download the worksheet</a>.</p>
-    </form>
-    <div class="lead" data-rv id="pdfonly">
-      <a class="btn" href="/self-assessment.pdf" download>Download the PDF</a>
-      <p class="fineprint">No form required. The worksheet downloads directly to your device.</p>
-    </div>` },
-
-  { id:'audit', n:'Audit', at:'at-mid', html:`
-    <div class="kick" data-rv>The next step</div>
-    <h2 class="say" data-rv style="max-width:19ch;">Put real numbers <em>on it.</em></h2>
-    <p class="sub" data-rv>How many hours, how many dollars, and what to fix first. That is what the AI Automation Audit does: about two weeks, priced to your situation, and the fee credits toward the build if you go ahead with KHIPUAI within 30 days.</p>
-    <div class="row" data-rv style="margin-top:26px;">
-      <a class="btn" href="${C.booking}">${esc(C.hero.cta)}</a>
-      <a class="btn line" href="/#fee">See what it costs</a>
+  <section class="sec" aria-labelledby="h-next">
+    <div class="sec-head"><p class="kick">The Next Step</p><h2 id="h-next">Quantify the opportunity.</h2></div>
+    <div class="sec-body">
+      <p>Solution Design quantifies the hours and dollars involved, identifies what to fix first, and delivers the solution design and the price to build it. It takes about two weeks, is priced to your situation, and the fee credits toward the build if you proceed with KHIPUAI within 30 days.</p>
+      <div class="cta-row"><a class="btn" id="design-book" href="#"></a><a class="btn line" href="../solution-design/#pricing">View Pricing</a></div>
+      <p class="fine" id="legal"></p>
     </div>
-    <p class="fine" data-rv>${esc(C.legal)}</p>` },
-];
-
-buildKinetic(P);
-
-/* ---- scoring -------------------------------------------------------------
-   Deliberately no storage. A score is a snapshot of an honest sitting, and a
-   half-finished one restored three days later on a different screen would be
-   presented as a result without being one. Reloading starts over, which is
-   the correct behaviour for a worksheet. */
-const rows      = [...document.querySelectorAll('.ask li.q')];
-const tallynum  = document.getElementById('tallynum');
-const scorenum  = document.getElementById('scorenum');
-const resband   = document.getElementById('resband');
-const leaksEl   = document.getElementById('leaks');
-const rescta    = document.getElementById('rescta');
-const bookbtn   = document.getElementById('bookbtn');
-const scorenote = document.getElementById('scorenote');
-const scorePanel = document.getElementById('p-score');
-const PARTNAME  = Object.fromEntries(PARTS.map(p => [p.id, LEAK[p.id][0]]));
-let lastResult = null;
-
-const answerOf = row => row.querySelector('.yes').getAttribute('aria-pressed') === 'true' ? 'yes'
-                      : row.querySelector('.no').getAttribute('aria-pressed') === 'true' ? 'no' : null;
-
-/* The call link carries the result, so the booking shows it before the call.
-   Campaign tags the visitor arrived with are passed through; the score goes in utm_content. */
-function bookingUrl(score, band, top){
-  const u = new URL(C.booking);
-  const here = new URLSearchParams(location.search);
-  u.searchParams.set('utm_source', here.get('utm_source') || 'khipuai_site');
-  u.searchParams.set('utm_medium', here.get('utm_medium') || 'self_assessment');
-  u.searchParams.set('utm_campaign', here.get('utm_campaign') || 'self_assessment');
-  u.searchParams.set('utm_content', `score-${score}-${band.toLowerCase()}${top.length ? '-' + top.join('-') : ''}`);
-  u.searchParams.set('a1', `Self-assessment: ${score}/${TOTAL} (${band}). Biggest leaks: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`);
-  return u.toString();
-}
-
-function render(){
-  const answers = rows.map(r => [r, answerOf(r)]);
-  const done = answers.filter(([,a]) => a);
-  const score = answers.reduce((s,[r,a]) => s + (a === 'yes' ? Number(r.dataset.w) : 0), 0);
-  rows.forEach(r => r.classList.toggle('done', !!answerOf(r)));
-  tallynum.textContent = score;
-  scorenum.textContent = score;
-
-  if (done.length < rows.length){
-    lastResult = null;
-    resband.textContent = 'Answer all 15 questions to see your result.';
-    leaksEl.hidden = true;
-    rescta.hidden = true;
-    scorenote.textContent = `${done.length} of ${rows.length} answered. Your answers stay in this browser unless you book a call or ask for your result by email.`;
-    return;
-  }
-  const band = BANDS.find(b => score <= b.max);
-  resband.innerHTML = `<b>${esc(band.name)}.</b> ${esc(band.copy)}`;
-
-  // Top leak areas: share of each part's points answered yes; up to two, strongest first.
-  const byPart = PARTS.map(p => {
-    const rs = rows.filter(r => r.dataset.part === p.id);
-    const got = rs.reduce((s,r) => s + (answerOf(r) === 'yes' ? Number(r.dataset.w) : 0), 0);
-    const max = rs.reduce((s,r) => s + Number(r.dataset.w), 0);
-    return { id:p.id, share: got / max };
-  }).filter(x => x.share > 0).sort((a,b) => b.share - a.share);
-  const top = byPart.filter((x,i) => i === 0 || x.share >= 0.4).slice(0,2).map(x => x.id);
-
-  leaksEl.innerHTML = top.length
-    ? top.map(id => `<li><b>${esc(LEAK[id][0])}:</b> ${esc(LEAK[id][1])}</li>`).join('')
-    : `<li><b>No big leaks flagged.</b> Your answers point to a tidy back office.</li>`;
-  leaksEl.hidden = false;
-  rescta.hidden = false;
-  bookbtn.href = bookingUrl(score, band.name, top);
-  lastResult = { score, band: band.name.toLowerCase(), top };
-  const scoreBounds = scorePanel.getBoundingClientRect();
-  if (scoreBounds.top < innerHeight * 0.75 && scoreBounds.bottom > innerHeight * 0.25) {
-    window.KHIPUAIMeta?.scoreViewed();
-  }
-
-  scorenote.textContent = `All ${rows.length} answered. Your answers stay in this browser unless you book a call or ask for your result by email.`;
-}
-
-rows.forEach(r => r.querySelectorAll('.yn button').forEach(btn => btn.addEventListener('click', () => {
-  const on = btn.getAttribute('aria-pressed') === 'true';
-  r.querySelectorAll('.yn button').forEach(x => x.setAttribute('aria-pressed', 'false'));
-  btn.setAttribute('aria-pressed', on ? 'false' : 'true');
-  render();
-})));
-render();
-
-if (scorePanel) {
-  const scoreObserver = new IntersectionObserver(entries => {
-    if (!entries.some(entry => entry.isIntersecting)) return;
-    if (!rows.every(row => answerOf(row))) return;
-    window.KHIPUAIMeta?.scoreViewed();
-    scoreObserver.disconnect();
-  }, { threshold: 0.25 });
-  scoreObserver.observe(scorePanel);
-}
-
-/* ---- result by email -----------------------------------------------------
-   Posts to the Apps Script in edge/leads/. text/plain keeps it a "simple"
-   request (no CORS preflight, which Apps Script cannot answer), and no-cors
-   makes the reply unreadable, so a request that went out counts as sent. The
-   script builds the email from ids only, so nothing typed here is mailed back
-   out except the first name. Hidden until C.leads is set. */
-const leadform = document.getElementById('leadform');
-if (leadform && C.leads) {
-  leadform.hidden = false;
-  // One call to action on this screen; the PDF becomes a text link so the
-  // form still fits a 1366x768 laptop above the footer band.
-  document.getElementById('pdfonly').hidden = true;
-  const msg = document.getElementById('lf-msg');
-  const btn = leadform.querySelector('button[type="submit"]');
-  leadform.addEventListener('submit', async event => {
-    event.preventDefault();
-    const email = leadform.email.value.trim();
-    if (!lastResult) { msg.textContent = 'Answer all 15 questions first, then your result can be sent.'; return; }
-    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { msg.textContent = 'Please check the email address.'; leadform.email.focus(); return; }
-    const here = new URLSearchParams(location.search);
-    const body = JSON.stringify({
-      name: leadform.name.value.trim(), email, company: leadform.company.value.trim(),
-      followUp: document.getElementById('lf-follow').checked, hp: leadform.website.value,
-      ...lastResult,
-      utm: { source: here.get('utm_source') || '', medium: here.get('utm_medium') || '',
-             campaign: here.get('utm_campaign') || '', content: here.get('utm_content') || '' },
-    });
-    btn.disabled = true; btn.textContent = 'Sending...';
-    try {
-      await fetch(C.leads, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
-      leadform.querySelectorAll('input').forEach(i => { i.disabled = true; });
-      btn.textContent = 'Sent';
-      msg.textContent = `Done. Your result is on its way to ${email}. If it is not there in a few minutes, check spam.`;
-      window.KHIPUAIMeta?.lead();
-      if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'self_assessment_email' });
-    } catch {
-      btn.disabled = false; btn.textContent = 'Email me my result';
-      msg.textContent = 'That did not go through. Please try again, or email wil@khipuai.co.';
-    }
-  });
-}
-
+  </section>
+</main>
+<footer class="ft"><div class="wrap"><p><a href="../privacy/">Privacy</a> &middot; <a href="../contact/">Contact</a> &middot; <a href="../security/">Security</a></p></div></footer>
+<script type="module">
+import { C } from '/shared/content.js';
+import { page } from '../basic.js';
+import { LABELS } from '../labels.js';
+import { mountQuiz } from './quiz.js';
+import { tone } from '../tone.js';
+page(C, LABELS.en, '../');
+// The quiz uses the same wording as the rest of the page.
+mountQuiz(tone(C, 'en'));
 </script>
 </body>
 </html>

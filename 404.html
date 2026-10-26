@@ -1,32 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="doc">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page not found | KHIPUAI</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="/shared/assets/mark.svg">
+<meta name="description" content="There is no page at this address on khipuai.co.">
+<title>Page Not Found | KHIPUAI</title>
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="/basic.css">
+<link rel="stylesheet" href="/page.css">
+<link rel="icon" href="/shared/assets/mark.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <style>
-  body{margin:0;color:#12263A;background:#fff;font-family:'Source Sans 3',-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px;}
-  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
-  .logo{font-weight:800;letter-spacing:.14em;color:#12263A;text-decoration:none;}
-  .logo .dot{color:#D8743B;}
-  h1{font-size:2rem;margin:24px 0 4px;}
-  a{color:#AD5627;}
-  a:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
+.nf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;max-width:980px;}
+.nf ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:4px;}
+.nf a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;}
+.nf h2{font-size:22px;}
+@media (max-width:700px){.nf{grid-template-columns:minmax(0,1fr);}}
 </style>
+<link rel="help" href="/llms.txt">
 </head>
 <body>
-<main class="wrap">
-  <a class="logo" href="/">KHIPU<span class="dot">A</span>I</a>
-  <h1>404: Page not found</h1>
-  <p>There is no page at this address on khipuai.co. It may have moved, or the link may be mistyped.</p>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/sitemap.xml">Site map</a></li>
-    <li><a href="/llms.txt">Guide for AI agents (llms.txt)</a></li>
-    <li><a href="/contact/">Contact</a></li>
-  </ul>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="/"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <a class="btn sm" href="https://calendly.com/wmorapal/30min">Book a Call</a>
+</div></header>
+<main id="main" class="wrap">
+  <section class="doc-hero">
+    <p class="kick">404</p>
+    <h1>Page not found.</h1>
+    <p class="lede">There is no page at this address. It may have moved, or the link may be mistyped.</p>
+  </section>
+  <div class="nf">
+    <section aria-labelledby="nf-en">
+      <h2 id="nf-en">Where to Go Next</h2>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/solution-design/">Solution Design</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </section>
+    <section aria-labelledby="nf-es" lang="es">
+      <h2 id="nf-es">Página no encontrada</h2>
+      <p>No hay ninguna página en esta dirección. Puede que se haya movido o que el enlace tenga un error.</p>
+      <ul>
+        <li><a href="/es/">Inicio</a></li>
+        <li><a href="/es/solution-design/">Diseño de la solución</a></li>
+        <li><a href="/es/contact/">Contacto</a></li>
+      </ul>
+    </section>
+  </div>
 </main>
+<footer class="ft"><div class="wrap"><p><a href="/privacy/">Privacy</a> &middot; <a href="/contact/">Contact</a> &middot; <a href="/security/">Security</a></p></div></footer>
 </body>
 </html>

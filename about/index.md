@@ -1,100 +1,33 @@
-About
+# Built on real operations experience.
 
-# An operator, not an agency.
+Who is behind KHIPUAI, how the work is done, and how we keep it reliable.
 
-Most automation advice comes from people who have never run the operation they are automating. This is who is behind KHIPUAI, how the work is done, and what “finance-grade” actually means.
+## The people behind the work.
 
-Founder
+- **Wil Mora, Founder.** 15 years running operations in high-demand businesses across Canada and the US. Bilingual, English and Spanish.
+- **Alex Pena, Developer.** Builds and tests the systems behind the work, from the client-facing screens to the checks that run before every release.
 
-## Wil Mora
+## The cost of manual work, from both sides.
 
-I have spent 15 years running operations in high-demand businesses across Canada and the US, where the work never stopped and every delay landed on a customer. Bilingual, English and Spanish.
+A decade running high-volume production, logistics and customer service, paying for manual work every day in overtime, errors and missed handoffs. Then, at a North American building-materials enterprise, leading the projects that brought AI tooling into core workflows.
 
-The first decade
-
-## I paid the cost of manual work every day.
-
-Running operations directly: high-volume production, then logistics and customer service for a multi-site business that ran around the clock, leading a team through daily deadlines, tight margins and constant change.
-
-That work taught me what manual processes cost, because I paid that cost every day in overtime, errors, and missed handoffs.
-
-Then the other side of it
-
-## The same problem, from the inside.
-
-At a North American building-materials enterprise I led the projects that introduced AI tooling into core workflows.
-
-AI-assisted review
-
-Introduced structured AI review into a technical workflow where accuracy and traceability mattered.
-
-Executive analytics
-
-Built decision tools on the company's own SQL, Qlik, and AWS data stack.
-
-Process redesign
-
-Rebuilt operational and commercial work around clear steps, ownership, and measurable decisions.
-
-Founder experience from a prior operating role, not a KHIPUAI client case study.
-
-Today
-
-## Built for operating teams, not demos.
-
-KHIPUAI builds working systems that connect documents, business rules, dashboards, and approvals inside the tools a team already relies on.
-
-Specific client stories and measured outcomes will be published after evidence and permission are reviewed.
-
-Developer
-
-## Alex Pena
-
-Alex builds and tests the systems behind the work: KHIPUAI's website and the internal tools the automation is delivered through. He works across the build, from the interface a client sees to the checks that run before anything ships.
-
-Methodology
+- **AI-assisted review.** Structured AI review where accuracy and traceability mattered.
+- **Executive analytics.** Decision tools on the company's own SQL, Qlik and AWS data.
+- **Process redesign.** Clear steps, ownership and measurable decisions.
 
 ## How the work is done.
 
-### Map the real workflow
+1. **Map the real workflow.** The actual steps, systems and workarounds, seen in working sessions.
+2. **Measure the cost.** Hours and dollars assigned to every manual step, based on your team's actual volumes.
+3. **Rank by value against effort.** Quick wins first; larger builds only when the numbers justify them.
+4. **Build with human approval.** The system prepares the work; a person reviews and approves it.
 
-Not the org chart version. The actual steps, systems, handoffs, and workarounds your team uses, observed in working sessions.
+## How we keep the work reliable.
 
-### Measure it
+- **Human approval.** Automations prepare drafts in your own systems. A person approves everything that matters.
+- **Every record is traceable.** Every record traces back to its source document, so your accountant or client can follow it.
+- **Ready for IT review.** Built to run inside your security controls: Microsoft Entra sign-in, Azure Key Vault and least-privilege access.
 
-Hours per month and dollars per year on every manual step, using your team's real volumes and conservative assumptions, so the numbers survive scrutiny.
+KHIPUAI builds working systems inside the tools a team already relies on. This is a working standard, not a certification; client stories and measured outcomes will be published after evidence and permission are reviewed.
 
-### Rank by value against effort
-
-Quick wins first, big builds only when the math earns them. The output is a sequence, not a wish list.
-
-### Build with a human in the loop
-
-Anything that matters is draft-not-auto-post: the system prepares the work, a person reviews and approves. Nothing runs on its own.
-
-The standard
-
-## What “finance-grade” means here.
-
-### Accuracy-checked
-
-Machine output is graded for confidence (GREEN / YELLOW / RED) so reviewers know exactly where to look, instead of trusting a black box.
-
-### Human-approved
-
-Automations create draft records in your own systems. A person approves every post that matters. That is a design principle, not a limitation.
-
-### Auditable
-
-Every record traces back to its source document, so your accountant, auditor, or client can follow the trail.
-
-### Survives your IT review
-
-Built to run inside enterprise security controls: application allowlisting, Microsoft Entra identity, Azure Key Vault, least-privilege access. Your IT team gets a security one-pager.
-
-It is a working standard, not a certification.
-
----
-
-Canonical page: https://khipuai.co/about/
-[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
+[Book a free discovery call](https://calendly.com/wmorapal/30min) · [Solution Design](https://khipuai.co/solution-design/) · [Home](https://khipuai.co/)

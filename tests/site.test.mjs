@@ -1,6 +1,5 @@
 // Static checks for what AI agents read without running JavaScript.
-// Run: node --test tests/   (also run `python tools/prerender.py --check`
-// to confirm the no-JavaScript copy matches the current content).
+// Run: node --test tests/
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
@@ -26,34 +25,21 @@ const headings = html => {
 const jsonLd = html => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
   .map(m => JSON.parse(m[1]));
 
-const PRERENDERED = ['index.html', 'es/index.html', 'about/index.html'];
-
-for (const page of PRERENDERED) {
+// The homepages build their content in the browser. A crawler or AI agent
+// that runs no JavaScript reads the <noscript> copy instead (written from the
+// Markdown twins at go-live, 2026-10-26).
+for (const page of ['index.html', 'es/index.html']) {
   test(`${page}: readable without JavaScript`, () => {
     const html = read(page);
-    assert.ok(html.includes('<!-- prerender:start -->') && html.includes('<!-- prerender:end -->'));
-    assert.ok(rawText(html).length >= 500, `only ${rawText(html).length} chars`);
-  });
-
-  test(`${page}: one H1 and no skipped heading levels`, () => {
-    const levels = headings(read(page));
-    assert.equal(levels.filter(l => l === 1).length, 1);
-    assert.equal(levels[0], 1);
-    for (let i = 1; i < levels.length; i++) {
-      assert.ok(levels[i] <= levels[i - 1] + 1, `h${levels[i - 1]} followed by h${levels[i]}`);
-    }
-  });
-
-  test(`${page}: the copy is hidden once JavaScript runs`, () => {
-    assert.match(read(page), /<script>document\.documentElement\.classList\.add\("js"\)<\/script>/);
+    const copy = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] || '';
+    assert.ok(rawText(copy).length >= 3000, `only ${rawText(copy).length} chars`);
+    const levels = headings(copy);
+    assert.equal(levels.filter(l => l === 1).length, 1, 'one H1');
+    for (let i = 1; i < levels.length; i++) assert.ok(levels[i] <= levels[i - 1] + 1, `h${levels[i - 1]} followed by h${levels[i]}`);
   });
 }
 
-test('kinetic.css hides the no-JavaScript copy for script-enabled visitors', () => {
-  assert.match(read('shared/kinetic.css'), /\.js \.prerender\{display:none\}/);
-});
-
-for (const md of ['index.md', 'es/index.md', 'about/index.md', 'contact/index.md']) {
+for (const md of ['index.md', 'es/index.md', 'about/index.md', 'contact/index.md', 'security/index.md', 'es/security/index.md', 'solution-design/index.md']) {
   test(`${md}: Markdown twin exists with an H1`, () => {
     const s = read(md);
     assert.ok(s.length >= 500);
@@ -74,7 +60,7 @@ test('404.html exists for GitHub Pages and links to llms.txt', () => {
   assert.match(s, /noindex/);
 });
 
-for (const page of ['about/index.html', 'contact/index.html', 'privacy.html']) {
+for (const page of ['about/index.html', 'contact/index.html', 'privacy/index.html', 'security/index.html', 'solution-design/index.html']) {
   test(`${page}: trust page has at least 500 characters without JavaScript`, () => {
     assert.ok(rawText(read(page)).length >= 500);
   });
@@ -92,8 +78,21 @@ test('llms.txt follows the llmstxt.org shape and says when to use KHIPUAI', () =
   assert.doesNotMatch(s, /—/, 'no em dashes');
 });
 
-test('sitemap lists the contact page', () => {
-  assert.match(read('sitemap.xml'), /<loc>https:\/\/khipuai\.co\/contact\/<\/loc>/);
+test('sitemap lists every public page and no moved address', () => {
+  const sm = read('sitemap.xml');
+  const locs = [...sm.matchAll(/<loc>https:\/\/khipuai\.co(\/[^<]*)<\/loc>/g)].map(m => m[1]);
+  for (const p of ['/', '/es/', '/solution-design/', '/es/solution-design/', '/about/', '/es/about/', '/security/',
+    '/es/security/', '/contact/', '/es/contact/', '/privacy/', '/es/privacy/', '/self-assessment/']) assert.ok(locs.includes(p), p);
+  for (const p of locs) {
+    assert.ok(existsSync(new URL((p.slice(1) || '') + 'index.html', ROOT)), `${p} has a page`);
+    assert.doesNotMatch(read((p.slice(1) || '') + 'index.html'), /http-equiv="refresh"|noindex/, `${p} is a real, indexable page`);
+  }
+});
+
+test('nothing on the site points at the old trial address', () => {
+  for (const f of ['index.html', 'es/index.html', 'basic.js', 'labels.js', 'projects.js', '404.html', 'sitemap.xml', 'llms.txt']) {
+    assert.doesNotMatch(read(f), /concepts\/basic/, f);
+  }
 });
 
 test('every Person in JSON-LD has a description and jobTitle, worksFor or sameAs', () => {
@@ -117,7 +116,9 @@ test('every Person in JSON-LD has a description and jobTitle, worksFor or sameAs
 
 test('pages advertise their Markdown twin', () => {
   for (const [page, md] of [['index.html', '/index.md'], ['es/index.html', '/es/index.md'],
-    ['about/index.html', '/about/index.md'], ['contact/index.html', '/contact/index.md']]) {
+    ['about/index.html', '/about/index.md'], ['contact/index.html', '/contact/index.md'],
+    ['security/index.html', '/security/index.md'], ['es/security/index.html', '/es/security/index.md'],
+    ['solution-design/index.html', '/solution-design/index.md']]) {
     assert.ok(read(page).includes(`<link rel="alternate" type="text/markdown" href="${md}">`), page);
     assert.ok(existsSync(new URL(md.slice(1), ROOT)), md);
   }

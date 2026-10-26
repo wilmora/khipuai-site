@@ -1,170 +1,103 @@
-AI automation for recurring-service operations
+KHIPUAI | AI Automations
 
-# Find the manual work costing your team the most.
+# KHIPUAI
 
-In about two weeks, the AI Automation Audit maps the workflows behind your operation, quantifies the bottlenecks, and gives your operations, finance, and IT leaders a defensible first move.
+KHIPUAI is an Ontario, Canada studio serving clients across North and South America.
+
+## Automate what costs you the most.
+
+We map the workflows behind your operation, quantify the bottlenecks, and design the solution you will own, with a clear plan and price to build it.
+
+[Book a free discovery call](https://calendly.com/wmorapal/30min)
 
 [Take the 5-minute self-assessment](https://khipuai.co/self-assessment/)
 
-[Book a 30-minute fit call](https://calendly.com/wmorapal/30min)
+- **Operator-led:** 15 years improving operations
+- **Human-approved:** important actions stay under your control
+- **Read-only during design:** no changes to your systems
+- **Existing systems:** compatible with the tools your team already uses
 
-Ancient wisdom. Modern intelligence. Real impact.
+## From the first call to a product you own.
 
-15 years: improving operations
+1. **Discovery call.** Free, 20 to 30 minutes. We confirm the fit and identify the areas worth reviewing.
+2. **Walkthrough.** About one week. Working sessions to review the actual workflows: systems, handoffs and manual steps.
+3. **Solution Design.** Week two. The design of a solution you will own, the plan and the price to build it.
+4. **Build.** Optional. Built by us, your team or another provider.
 
-Human-approved: actions, not black boxes
+## The hidden cost of manual work.
 
-Built for: real operators
+We use Claude, by Anthropic, and other large language models (LLMs) to write and test the software, not to handle your records. The code we deliver handles reading, sorting and first drafts consistently, inside your systems. Your team makes the decisions.
 
-## Dozens of hours a month. Nobody has counted them.
+Capable staff are still:
 
-- Retyping data from PDFs and emails into your systems
-- Chasing approvals across inboxes and spreadsheets
-- Rebuilding the same report every week by hand
+- Manually re-entering data from PDFs and emails into your systems
+- Following up on approvals across inboxes and spreadsheets
+- Rebuilding the same report manually every week
 - Copying the same customer data into three different tools
-- Reconciling numbers line by line because the systems do not talk
+- Reconciling numbers line by line because the systems are not integrated
 
-Before you buy another tool, find the work that is actually worth changing.
+Your staff accomplish more. Your customers receive better service.
 
-The deliverable
+- **For your staff:** the code reads the PDFs, emails and spreadsheets, fills in the fields, and drafts the report or the reply. Your team reviews and approves instead of re-entering data.
+- **For your customers:** faster, consistent answers at any hour, using your own prices, rules and policies, with a clear handoff to a person when it matters.
+- **For you:** a person approves every important action: anything that moves money, changes a record or commits you to a customer. Every approval is logged.
 
-## A short, concrete plan you can act on.
+## An action plan to put in place.
 
-### A prioritized opportunity map
+1. **A prioritized opportunity map.** The top 5 to 10 automation opportunities, ranked.
+2. **The numbers.** Hours saved per month, dollar value per year, effort to build.
+3. **One or two quick wins.** Improvements you can act on immediately, without a full project.
+4. **A recommended sequence.** What to do first, second and third, with approximate investment.
+5. **A live readout call.** A plain-language walkthrough with you and your team.
+6. **A document you own.** The design is yours. Build it with KHIPUAI, your own team or another provider.
 
-The top 5 to 10 things worth automating, ranked.
+## What we have built.
 
-### The numbers
+- **Support tickets with AI triage:** reads each new ticket, tags its topic and urgency, and routes it to the right person.
+- **Payroll compliance reporting:** builds certified payroll reports from payroll data and checks each worker's pay against the required wage rates.
+- **ACA filing:** annual 1094-C and 1095-C forms built from the payroll data, with client review and approval.
+- **Operations web hub:** one place for a team's internal tools: billing exceptions, a guided monthly billing close, client profiles and dashboards.
+- **Material lists from drawings:** reads building plans and drafts the material list, each line traced to its drawing.
+- **WhatsApp sales and orders assistant:** answers questions, quotes from the business's own price list and takes orders on WhatsApp at any hour. The team tracks every order in one portal.
 
-Hours saved per month, dollar value per year, effort to build.
+## Your data remains yours. It is never shared with public AI tools.
 
-### One or two quick wins
+- **Built with test data.** We use AI to write and test the code with synthetic or redacted data. Your records are never sent to an AI model during the build.
+- **Your systems, your data.** Wherever possible we build inside your own environment, such as your Microsoft Azure, and we do not keep copies.
+- **Least-privilege access.** Separate accounts with only the access the work requires, removed when the engagement ends.
+- **AI in live systems.** Where a system uses AI in operation, such as answering customer messages, it runs through Anthropic's business API, and sensitive details such as Social Security numbers are masked or excluded.
+- **A complete activity record.** Every action the system prepares is logged with who approved it and when.
+- **Returned or deleted.** At the end of an engagement, your data is returned or deleted.
 
-Things you can act on right away, no project required.
+[Security and data governance](https://khipuai.co/security/)
 
-### A recommended sequence
+## Who we are for.
 
-What to do first, second, third, with rough investment.
+KHIPUAI is the right fit if:
 
-### A live readout call
-
-A plain-language walkthrough with you and your team.
-
-### A document you own
-
-The roadmap is yours. Build it with KHIPUAI, your team, or anyone else.
-
-## Three steps. About two weeks.
-
-### Discovery call
-
-Free, 20 to 30 minutes. We confirm there is a fit and pick the areas worth looking at.
-
-### Walkthrough
-
-About one week. Working sessions to see the real workflows: the systems, the handoffs, the manual steps.
-
-### Roadmap and readout
-
-Week two. The written roadmap, and a live call through the top opportunities and the first move.
-
-KHIPUAI is an Ontario, Canada studio serving clients remotely across the United States and Canada.
-
-Ways we help
-
-## Built around the work your team already does.
-
-Reconcile, draft, approve, report
-
-### Finance and operations
-
-Connect recurring operational and financial work across the systems your team already uses, with exceptions routed to the right person.
-
-Read, structure, calculate, review
-
-### Document-heavy decisions
-
-Turn PDFs, drawings, specifications, emails, and spreadsheets into structured outputs with source evidence and uncertainty clearly flagged.
-
-Answer, qualify, quote, hand off
-
-### Customer conversations
-
-Give customers faster answers while keeping pricing rules, sensitive decisions, and human takeover under your control.
-
-One role-aware place to work
-
-### Internal operations hubs
-
-Bring workflows, documents, dashboards, approvals, and audit history into an interface built around how each team actually works.
-
-
-Who it is for
-
-## Worth doing, or worth saying no to.
-
-### This is built for you if
-
-- You lead a 20 to 300-person recurring-service business with complex back-office work.
 - Your team moves documents, customer data, billing information, or approvals between several systems.
 - A repetitive workflow consumes meaningful staff time or creates financial, service, or compliance risk.
 - You need a practical plan and do not have a dedicated internal automation team.
 
-### It is probably not for you if
+## Frequently asked questions.
 
-- You are a pure-product software company with clean self-serve operations.
-- You are a very small shop with little process.
-- You have no repetitive back-office work to remove.
+**What do you need from us?** A couple of hours of your team's time over one week, and a review of the workflows involved. Access is read-only, and nothing changes in your systems during design.
 
-## The things people actually ask.
+**Is our data safe?** Yes. Access is read-only during design. We build and test with synthetic or redacted data, so your records are never sent to an AI model during the build. What we deliver runs inside your own security controls, with least-privilege access and a person approving every important action.
 
-### What do you need from us?
+**Will AI make changes on its own?** No. Everything is built draft-first: the system prepares the work, and a person approves every material entry.
 
-A couple of hours of your team’s time across a week, and a look at the workflows involved. Access is read-only. Nothing is automated or changed during the audit.
+**What if there are few opportunities?** We will say so directly. If there is little worth automating, you will have learned it for a small, agreed fee rather than over a year.
 
-### Is our data safe?
+**Are we required to build with KHIPUAI?** No. The design is yours to implement with any provider, including your own team.
 
-Access is read-only and nothing is changed during the audit. Automations are designed to run inside your existing security controls and create drafts a person approves.
+**What happens after Solution Design?** If the first opportunity is worth building, KHIPUAI can scope a fixed implementation and stay on for managed improvement. You decide after seeing the design and the price.
 
-### Will AI make changes on its own?
+## The team
 
-No. Everything is built draft-first: the machine prepares the work, a person approves every entry that matters.
+> "I created this service because I saw the same pattern in every business I worked in: capable people occupied with work that a computer should handle." Wil Mora, Founder, KHIPUAI
 
-### What if you do not find much?
+- **Wil Mora, Founder.** 15 years leading operations in high-demand businesses across Canada and the US, where deadlines drove every day and every delay carried a cost.
+- **Alex Pena, Developer.** Builds and tests the underlying systems: the website and the internal tools through which the automation is delivered.
 
-The audit says so. That honesty is the product. If there is not much worth automating, you have spent a small, agreed fee to find out instead of a year.
-
-### Do we have to build with you?
-
-No. The roadmap is yours to act on with anyone, including your own team.
-
-### What happens after the audit?
-
-If the first opportunity is worth building, KHIPUAI can scope a fixed implementation and stay on for managed improvement. You decide after seeing the roadmap.
-
-Who runs it
-
-## “I built this offer because I kept seeing the same thing in every business I worked in: good people stuck doing work a computer should do.”
-
-### Wil Mora
-
-Founder
-
-15 years running operations in high-demand businesses across Canada and the US, where every day ran on deadlines and every delay cost money. I know what manual work really costs because I paid for it in overtime, errors and dropped handoffs. Now I build the automation I wished I had.
-
-### Alex Pena
-
-Developer
-
-Builds and tests the systems behind the work: the website and the internal tools the automation is delivered through.
-
-[Book a 30-minute fit call](https://calendly.com/wmorapal/30min)
-
-[How KHIPUAI works](https://khipuai.co/about/)
-
-[Take the self-assessment](https://khipuai.co/self-assessment/)
-
----
-
-Canonical page: https://khipuai.co/
-[Contact](https://khipuai.co/contact/) | [About](https://khipuai.co/about/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
+[How KHIPUAI works](https://khipuai.co/about/) · [Solution Design](https://khipuai.co/solution-design/) · [Contact](https://khipuai.co/contact/) · [Español](https://khipuai.co/es/)

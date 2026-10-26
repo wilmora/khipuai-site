@@ -1,34 +1,27 @@
 # Contact KHIPUAI
 
-KHIPUAI is an Ontario, Canada studio founded by Wil Mora. We work remotely with recurring-service businesses across the United States and Canada, in English and Spanish.
+KHIPUAI is an Ontario, Canada studio. We work with recurring-service businesses across North and South America, in English and Spanish.
 
-## Book a free fit call
+## Book a free discovery call
 
-The fastest way to start is a free 30-minute fit call. We look at where your team's manual hours are going, confirm whether the AI Automation Audit is a good fit, and agree on the areas worth looking at. There is no obligation and no software to buy.
+The fastest way to begin is a free 30-minute discovery call. We review where your team's manual hours are spent, confirm whether Solution Design is the right fit, and agree on the areas to examine. There is no obligation and no software to purchase.
 
-[Book a 30-minute fit call on Calendly](https://calendly.com/wmorapal/30min)
+[Book a free discovery call](https://calendly.com/wmorapal/30min)
 
 ## Email
 
-Write to [wil@khipuai.co](mailto:wil@khipuai.co). Your email goes directly to the founder, not to a sales queue.
+Write to [alexp@khipuai.co](mailto:alexp@khipuai.co).
 
-It helps to include:
+Helpful details to include:
 
 - Your company, its size, and what kind of recurring service it provides.
 - The workflow that takes the most manual time, and the systems it runs through.
 - What you have already tried, and any deadline you are working to.
 
-Please do not send passwords, client records, or other sensitive data by email. If a project needs that information, we agree on a secure way to share it first.
+## Other ways to start
 
-## Not ready to talk yet?
-
-Take the free [self-assessment](https://khipuai.co/self-assessment/) to see where your team's hours are likely going, or read [how KHIPUAI works](https://khipuai.co/about/) and what the [AI Automation Audit](https://khipuai.co/audit/) includes.
+Take the [free self-assessment](https://khipuai.co/self-assessment/) to identify where your team's hours are likely spent, or read [how KHIPUAI works](https://khipuai.co/about/) and [what Solution Design includes](https://khipuai.co/solution-design/).
 
 ## Privacy
 
-How we handle the details you share is described in the [privacy policy](https://khipuai.co/privacy.html). You can ask us to access, correct, or delete your information at any time.
-
----
-
-Canonical page: https://khipuai.co/contact/
-[Home](https://khipuai.co/) | [About](https://khipuai.co/about/) | [Privacy](https://khipuai.co/privacy.html) | [Guide for AI agents (llms.txt)](https://khipuai.co/llms.txt)
+How we handle the details you share is described in the [privacy policy](https://khipuai.co/privacy/). You can ask us to access, correct, or delete your information at any time.
