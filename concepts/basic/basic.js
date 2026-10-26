@@ -248,8 +248,21 @@ export function page(C, L, home) {
     li.insertAdjacentHTML('afterbegin', featureIcon(list.dataset.icons, li.dataset.icon ? +li.dataset.icon : i))));
   document.querySelectorAll('.node-own').forEach(n => { n.innerHTML = featureIcon('deliverable', 5); });
   // Pages instead of scrolling, except where the page asks to scroll
-  // (Privacy and Terms carry class="doc scroll").
-  if (!document.documentElement.classList.contains('scroll')) mountPager({ labels: L.pager });
+  // (Privacy and Terms carry class="doc scroll"). Security reads as one
+  // scrolling page too (Alex, 2026-10-26), set here so its text keeps its place.
+  const root = document.documentElement;
+  if (/\/security\/(index\.html)?$/.test(location.pathname)) root.classList.add('scroll');
+  // A long policy page opens with a short contents list of its sections.
+  if (root.classList.contains('scroll')) {
+    const heads = [...document.querySelectorAll('main .sec h2[id]')];
+    const hero = document.querySelector('main .doc-hero');
+    if (heads.length > 2 && hero) {
+      const es = root.lang === 'es';
+      hero.insertAdjacentHTML('afterend', `<nav class="toc" aria-label="${es ? 'En esta página' : 'On this page'}"><p class="kick">${es ? 'En esta página' : 'On this page'}</p><ol>${
+        heads.map(h => `<li><a href="#${h.id}">${esc(h.textContent)}</a></li>`).join('')}</ol></nav>`);
+    }
+  }
+  if (!root.classList.contains('scroll')) mountPager({ labels: L.pager });
 }
 
 /* The tool logos, GeoSolv-style, as a row near the bottom of every tab. The
