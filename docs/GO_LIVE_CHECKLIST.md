@@ -6,6 +6,15 @@ Spanish) onto the live site at khipuai.co (`main`). Written for ORD-20261020-18,
 
 `main` is the live site. It changes only with Wil's yes.
 
+**Status, 2026-10-26 (ORD-20261026-06):** Wil said go. The switch (section 3)
+was done on the `go-live` branch: pages moved to their live addresses, links
+rewritten, indexing on, canonical and hreflang, old addresses forwarding (the
+blog forwards to the homepage, Alex's call), new 404, sitemap, Markdown twins
+and llms.txt, structured data, Google Analytics and the opt-in Meta Pixel kept
+(Alex's call), the self-assessment email form posting to the same endpoint as
+before. Client miniatures and screenshots were left off until Tesseon, APUS and
+GLH give permission (Wil, 2026-10-26).
+
 ---
 
 ## 1. Decisions needed first (Alex and Wil)

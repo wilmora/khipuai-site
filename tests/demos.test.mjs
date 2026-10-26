@@ -1,13 +1,16 @@
-// Checks for the portfolio miniatures (concepts/basic/demos/<key>/): one
+// Checks for the portfolio miniatures (demos/<key>/): one
 // static copy per real app, shown in the Learn more dialog.
 // Run: node --test tests/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 
-const DIR = new URL('../concepts/basic/demos/', import.meta.url);
+const DIR = new URL('../demos/', import.meta.url);
 const { PROJECTS } = await import(new URL('../projects.js', DIR));
-const KEYS = PROJECTS.en.items.map(x => x.key);
+// Only KHIPUAI's own products have a published miniature; client work waits
+// for each client's permission (Wil, 2026-10-26).
+const OWN = new Set(['support']);
+const KEYS = PROJECTS.en.items.map(x => x.key).filter(k => OWN.has(k));
 
 const walk = url => readdirSync(url).flatMap(name => {
   const u = new URL(name, url);

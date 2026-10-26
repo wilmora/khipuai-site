@@ -4,10 +4,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { PROJECTS } from '../concepts/basic/projects.js';
-import { LABELS } from '../concepts/basic/labels.js';
+import { PROJECTS } from '../projects.js';
+import { LABELS } from '../labels.js';
 
-const ROOT = new URL('../concepts/basic/', import.meta.url);
+const ROOT = new URL('../', import.meta.url);
 const read = p => readFileSync(new URL(p, ROOT), 'utf8');
 const PAGES = ['index.html', 'es/index.html', 'about/index.html', 'es/about/index.html', 'security/index.html', 'es/security/index.html',
   'solution-design/index.html', 'es/solution-design/index.html', 'contact/index.html', 'es/contact/index.html',
@@ -31,23 +31,23 @@ test('the billing agent card is held back; the sales assistant is named for what
     const items = PROJECTS[lang].items;
     assert.equal(items.find(x => x.key === 'review').hidden, true);
     const wa = items.find(x => x.key === 'whatsapp');
-    assert.match(wa.t, lang === 'en' ? /^WhatsApp sales and orders assistant$/ : /^Asistente de ventas y pedidos por WhatsApp$/);
+    assert.match(wa.t, lang === 'en' ? /^WhatsApp sales and orders assistant$/i : /^Asistente de ventas y pedidos por WhatsApp$/);
     assert.match(wa.who, lang === 'en' ? /never confirms a payment/ : /nunca confirma un pago/);
     for (const x of items) assert.match(x.home, /^#\//, `${x.key} has a home address`);
   }
 });
 
-test('the miniatures are held at Home and the sales portal is in English', () => {
+test('the miniatures are held at Home, and only KHIPUAI\'s own is published', () => {
   const mini = read('demos/mini.js');
   assert.match(mini, /export const HOLD = true;/);
   assert.match(mini, /if \(HOLD\) hold\(\);/);
-  const wa = read('demos/whatsapp/index.html');
-  assert.match(wa, /<html lang="en">/);
-  assert.match(read('demos/whatsapp/app.js'), /english\(\);/);
+  // Client work waits for each client's permission (Wil, 2026-10-26).
+  const own = PROJECTS.en.items.filter(x => x.key === 'support').map(x => x.key);
+  assert.deepEqual(readdirSync(new URL('demos/', ROOT), { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name), own);
 });
 
 test('no screenshots on the portfolio cards', () => {
-  assert.deepEqual(readdirSync(new URL('shots/', ROOT)).filter(f => f.startsWith('card-')), []);
+  assert.ok(!existsSync(new URL('shots/', ROOT)), 'no client screenshots published');
   assert.match(read('basic.js'), /const SHOW_SHOTS = false;/);
 });
 

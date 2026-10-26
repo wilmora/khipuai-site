@@ -1,220 +1,105 @@
-Automatización con IA para operaciones de servicios recurrentes
+KHIPUAI | Automatización con IA para operaciones de servicios recurrentes
 
-# Encuentra el trabajo manual que más le cuesta a tu equipo.
+# KHIPUAI
 
-En unas dos semanas, la Auditoría de Automatización con IA mapea los flujos de tu operación, cuantifica los cuellos de botella y entrega a operaciones, finanzas y TI un primer paso defendible.
+KHIPUAI es un estudio de Ontario, Canadá, que atiende a clientes en Norteamérica y Sudamérica.
 
-[Haz la autoevaluación de 5 minutos](https://khipuai.co/self-assessment/)
+## Automatice lo que más le cuesta.
 
-[Agenda una llamada de encaje de 30 minutos](https://calendly.com/wmorapal/30min)
+En unas dos semanas, el Diseño de la solución mapea los flujos de su operación, cuantifica los cuellos de botella y diseña la solución que será suya, con un plan y un precio claros para construirla.
 
-Sabiduría ancestral. Inteligencia moderna. Impacto real.
+[Agende una llamada de descubrimiento gratuita](https://calendly.com/wmorapal/30min)
 
-15 años: mejorando operaciones
+[Realice la autoevaluación de 5 minutos](https://khipuai.co/self-assessment/) (en inglés)
 
-Aprobado por personas: acciones, no cajas negras
+- **Dirigido por un operador:** 15 años mejorando operaciones
+- **Aprobado por personas:** las acciones importantes siguen bajo su control
+- **Solo lectura durante el diseño:** sin cambios en sus sistemas
+- **Sistemas existentes:** compatible con las herramientas que su equipo ya utiliza
 
-Creado para: operadores reales
+## De la primera llamada a un producto de su propiedad.
 
-## Decenas de horas al mes. Nadie las ha contado.
+1. **Llamada de descubrimiento.** Gratuita, de 20 a 30 minutos. Confirmamos la compatibilidad e identificamos las áreas que conviene revisar.
+2. **Recorrido.** Alrededor de una semana. Sesiones de trabajo para revisar los flujos reales: sistemas, traspasos y pasos manuales.
+3. **Diseño de la solución.** Semana dos. El diseño de una solución que será de su propiedad, el plan y el precio para construirla.
+4. **Construcción.** Opcional. La construimos nosotros, su equipo u otro proveedor.
 
-- Volviendo a escribir datos de PDFs y correos en tus sistemas
-- Persiguiendo aprobaciones entre bandejas de entrada y hojas de cálculo
-- Rehaciendo el mismo reporte cada semana a mano
+## Decenas de horas al mes que nunca se han medido.
+
+Usamos Claude, de Anthropic, y otros modelos de lenguaje de gran tamaño (LLM) para escribir y probar el software, no para manejar sus registros. El código que entregamos realiza la lectura, la clasificación y los primeros borradores de forma consistente, dentro de sus sistemas. Las decisiones las toma su equipo.
+
+En muchas empresas de servicios, personas capaces siguen:
+
+- Ingresando manualmente datos de PDF y correos en sus sistemas
+- Dando seguimiento a aprobaciones entre bandejas de entrada y hojas de cálculo
+- Rehaciendo manualmente el mismo informe cada semana
 - Copiando los mismos datos de clientes o proveedores en tres herramientas distintas
-- Conciliando cifras línea por línea porque los sistemas no se comunican entre sí
+- Conciliando cifras línea por línea porque los sistemas no están integrados
 
-No vendemos IA.: Rediseñamos procesos de negocio y usamos la IA donde genera valor medible.
+Su equipo rinde más. Sus clientes reciben un mejor servicio.
 
-Cómo usamos la IA
+- **Para su equipo:** el código lee los PDF, correos y hojas de cálculo, completa los campos y redacta el informe o la respuesta. Su equipo revisa y aprueba en lugar de volver a capturar los datos.
+- **Para sus clientes:** respuestas más rápidas y consistentes a cualquier hora, con sus propios precios, reglas y políticas, y un traspaso claro a una persona cuando hace falta.
+- **Para usted:** una persona aprueba cada acción importante: todo lo que mueve dinero, cambia un registro o lo compromete con un cliente. Cada aprobación queda registrada.
 
-## Tu equipo rinde más. Tus clientes reciben mejor servicio.
+## Un plan de acción para poner en marcha.
 
-Usamos Claude, de Anthropic, y otros modelos de lenguaje (LLM) para escribir y probar el software, no para manejar tus registros. El código que entregamos hace la lectura, la clasificación y los primeros borradores siempre de la misma forma, dentro de tus sistemas. Las decisiones las toma tu gente.
-
-### Para tu equipo
-
-El código lee los PDFs, correos y hojas de cálculo, completa los campos y redacta el reporte o la respuesta. Tu equipo revisa y aprueba en lugar de volver a escribir.
-
-### Para tus clientes
-
-Respuestas más rápidas y consistentes a cualquier hora, con tus propios precios, reglas y políticas, y un traspaso claro a una persona cuando hace falta.
-
-### Para ti
-
-Una persona aprueba cada acción importante: todo lo que mueve dinero, cambia un registro o te compromete con un cliente. Cada aprobación queda registrada.
-
-Qué recibes
-
-## Un plan corto y concreto sobre el que puedes actuar.
-
-### Un mapa de oportunidades priorizado
-
-Las 5 a 10 cosas que más vale la pena automatizar, en orden de prioridad.
-
-### Las cifras
-
-Horas ahorradas al mes, valor en dólares al año y esfuerzo de construcción.
-
-### Una o dos victorias rápidas
-
-Cosas sobre las que puedes actuar de inmediato, sin necesidad de un proyecto.
-
-### Una secuencia recomendada
-
-Qué hacer primero, segundo y tercero, con una inversión aproximada.
-
-### Una llamada de presentación
-
-Un recorrido en lenguaje claro contigo y tu equipo.
-
-### Un documento que es tuyo
-
-La hoja de ruta es tuya. Constrúyela con KHIPUAI, con tu equipo o con quien quieras.
-
-## Tres pasos. Alrededor de dos semanas.
-
-### Llamada de descubrimiento
-
-Gratis, de 20 a 30 minutos. Confirmamos que encajamos y elegimos las áreas que vale la pena revisar.
-
-### Recorrido
-
-Alrededor de una semana. Sesiones de trabajo para ver los flujos reales: los sistemas, los traspasos y los pasos manuales.
-
-### Hoja de ruta y presentación
-
-Semana dos. La hoja de ruta por escrito y una llamada en vivo sobre las principales oportunidades y el primer paso.
-
-KHIPUAI es un estudio de Ontario, Canadá, que atiende de forma remota a clientes en Estados Unidos y Canadá.
-
-Portafolio
+1. **Un mapa de oportunidades priorizado.** Las 5 a 10 principales oportunidades de automatización, en orden de prioridad.
+2. **Las cifras.** Horas ahorradas al mes, valor en dólares al año y esfuerzo de construcción.
+3. **Una o dos victorias rápidas.** Mejoras que puede aplicar de inmediato, sin necesidad de un proyecto completo.
+4. **Una secuencia recomendada.** Qué hacer primero, segundo y tercero, con una inversión aproximada.
+5. **Una llamada de presentación.** Un recorrido en lenguaje claro con usted y su equipo.
+6. **Un documento de su propiedad.** El diseño es suyo. Constrúyalo con KHIPUAI, con su propio equipo o con otro proveedor.
 
 ## Lo que hemos construido.
 
-- Reportes de cumplimiento de nómina: Genera reportes de nómina certificada desde los datos de nómina y revisa el pago de cada trabajador contra las tarifas exigidas. Quién aprueba: Nómina revisa las alertas y firma.
-- Listas de materiales desde planos: Lee los planos y prepara la lista de materiales, cada línea vinculada a su plano. Quién aprueba: Expertos en producto la revisan antes de cotizar o pedir.
-- Asistente de cotización por WhatsApp: Responde preguntas y prepara cotizaciones por WhatsApp con los precios del negocio, a cualquier hora. Quién aprueba: El equipo toma lo que queda fuera de las reglas.
-- Mesa de excepciones de facturación: Una sola cola para cada excepción de facturación, con datos del cliente de varios sistemas en una pantalla. Quién aprueba: Facturación resuelve cada una.
-- Tickets de soporte con clasificación por IA: Lee cada ticket nuevo, marca tema y urgencia, y lo dirige a la persona correcta. Quién aprueba: Los agentes responden cada ticket. La IA solo ordena.
-
-Cuéntanos qué flujo le cuesta más a tu equipo y te diremos con honestidad si vale la pena automatizarlo.
-
-[Agenda una llamada →](https://calendly.com/wmorapal/30min)
-
 Los nombres de los clientes y los resultados medidos se mantienen privados hasta que cada cliente apruebe su publicación.
 
-Herramientas con las que trabajamos
+- **Tickets de soporte con clasificación por IA:** lee cada ticket nuevo, marca tema y urgencia, y lo dirige a la persona correcta.
+- **Reportes de cumplimiento de nómina:** genera reportes de nómina certificada desde los datos de nómina y revisa el pago de cada trabajador contra las tarifas exigidas.
+- **Presentación ACA:** formularios anuales 1094-C y 1095-C generados a partir de los datos de nómina, con revisión y aprobación del cliente.
+- **Centro web de operaciones:** un solo lugar para las herramientas internas del equipo: excepciones de facturación, un cierre mensual guiado, perfiles de clientes y tableros.
+- **Listas de materiales desde planos:** lee los planos y prepara la lista de materiales, cada línea vinculada a su plano.
+- **Asistente de ventas y pedidos por WhatsApp:** responde preguntas, cotiza con la lista de precios del negocio y toma pedidos por WhatsApp a cualquier hora. El equipo sigue cada pedido en un solo portal.
 
-## Integrado en los sistemas que ya usas.
+## Sus datos siguen siendo suyos. Nunca se comparten con herramientas públicas de IA.
 
-- Business Central: Contabilidad y ERP, parte de Microsoft Dynamics 365
-- Outlook: Correo, calendario y aprobaciones en Microsoft 365
-- Azure: Alojamiento, identidad y seguridad en la nube de Microsoft
-- Zendesk: Tickets de atención al cliente
-- monday.com: Proyectos y flujos de trabajo del equipo
-- Google Search Console: Cómo aparece tu sitio en las búsquedas de Google
-- Meta: WhatsApp, Facebook e Instagram para empresas
-- Claude de Anthropic: La IA con la que escribimos y probamos el código
+- **Construido con datos de prueba.** Usamos IA para escribir y probar el código con datos ficticios o anonimizados. Sus registros nunca se envían a un modelo de IA durante la construcción.
+- **Sus sistemas, sus datos.** Siempre que es posible construimos dentro de su propio entorno, como su Microsoft Azure, y no guardamos copias.
+- **Acceso de mínimo privilegio.** Cuentas separadas con solo el acceso que el trabajo requiere, que se eliminan al finalizar el proyecto.
+- **IA en sistemas en uso.** Cuando un sistema usa IA en operación, como al responder mensajes de clientes, funciona a través de la API empresarial de Anthropic, y los datos sensibles como los números de seguro social se ocultan o se excluyen.
+- **Registro completo de actividad.** Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.
+- **Devueltos o eliminados.** Al terminar el proyecto, sus datos se devuelven o se eliminan.
 
-¿No está en la lista? En la llamada de encaje confirmamos si tu sistema se puede conectar. Los nombres de productos son marcas de sus dueños; mencionarlos no implica una alianza ni un respaldo.
+[Seguridad y gobierno de datos](https://khipuai.co/es/security/)
 
-Seguridad y gobierno de datos
+## Para quién es el Diseño de la solución.
 
-## Tus datos siguen siendo tuyos. No van a un chatbot público.
+Es la opción adecuada si:
 
-### Construido con datos de prueba
+- Su equipo mueve documentos, datos de clientes, información de facturación o aprobaciones entre varios sistemas.
+- Un flujo de trabajo repetitivo consume un tiempo considerable del personal o genera riesgos financieros, de servicio o de cumplimiento.
+- Necesita un plan práctico y no cuenta con un equipo interno dedicado a la automatización.
 
-Usamos IA para escribir y probar el código, con datos inventados o anonimizados. Tus registros nunca se envían a un modelo de IA mientras construimos.
+## Preguntas frecuentes.
 
-### Tus sistemas, tus datos
+**¿Qué necesitan de nosotros?** Un par de horas del tiempo de su equipo a lo largo de una semana, y una revisión de los flujos de trabajo involucrados. El acceso es de solo lectura y nada cambia en sus sistemas durante el diseño.
 
-Siempre que es posible construimos dentro de tu propio entorno, como tu Microsoft Azure, y no guardamos copias.
+**¿Están seguros nuestros datos?** Sí. Durante el diseño, el acceso es de solo lectura. Construimos y probamos con datos ficticios o anonimizados, por lo que sus registros nunca se envían a un modelo de IA durante la construcción.
 
-### Acceso de mínimo privilegio
+**¿La IA hará cambios por su cuenta?** No. Todo se construye primero como borrador: el sistema prepara el trabajo y una persona aprueba cada registro importante.
 
-Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.
+**¿Qué pasa si hay pocas oportunidades?** Se lo diremos directamente. Si hay poco que valga la pena automatizar, lo habrá sabido por una tarifa pequeña y acordada, en lugar de después de un año.
 
-### IA en sistemas en uso
+**¿Estamos obligados a construir con KHIPUAI?** No. El diseño es suyo. Si construye con KHIPUAI dentro de los 30 días, la tarifa del Diseño de la solución se acredita a ese trabajo.
 
-Si un sistema usa IA al funcionar, como al responder a clientes, va por la API empresarial de Anthropic y oculta datos como números de seguro social.
+**¿Qué pasa después del Diseño de la solución?** Si vale la pena construir la primera oportunidad, KHIPUAI puede definir una implementación de alcance fijo y continuar con mejora administrada. Usted decide después de ver el diseño y el precio.
 
-### Registro de auditoría completo
+## Liderazgo
 
-Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.
+> "Creé este servicio porque vi el mismo patrón en cada empresa en la que trabajé: personas capaces ocupadas en tareas que debería realizar una computadora." Wil Mora, Fundador, KHIPUAI
 
-### Devueltos o eliminados
+- **Wil Mora, Fundador.** 15 años dirigiendo operaciones en empresas de alta demanda en Canadá y Estados Unidos, donde los plazos marcaban cada jornada y cada retraso tenía un costo.
+- **Alex Pena, Desarrollador.** Construye y prueba los sistemas de base: el sitio web y las herramientas internas mediante las cuales se entrega la automatización.
 
-Al terminar el proyecto, tus datos se devuelven o se eliminan.
-
-[Lee la página de seguridad completa →](https://khipuai.co/es/security/)
-
-Para quién es
-
-## Vale la pena hacerlo, o vale la pena decir que no.
-
-### Esto es para ti si
-
-- Diriges una empresa de servicios recurrentes de 20 a 300 personas con trabajo administrativo complejo.
-- Tu equipo mueve documentos, datos de clientes, información de facturación o aprobaciones entre varios sistemas.
-- Un flujo repetitivo consume tiempo importante o crea riesgo financiero, de servicio o de cumplimiento.
-- Necesitas un plan práctico y no tienes un equipo interno dedicado a automatización.
-
-### Probablemente no es para ti si
-
-- Eres una empresa de software puro con operaciones limpias y de autoservicio.
-- Eres un negocio muy pequeño con pocos procesos.
-- No tienes trabajo administrativo repetitivo que eliminar.
-
-## Lo que la gente realmente pregunta.
-
-### ¿Qué necesitas de nosotros?
-
-Un par de horas del tiempo de tu equipo a lo largo de una semana, y una mirada a los flujos de trabajo y sistemas involucrados. Nada se automatiza ni se cambia durante la auditoría; primero es el diagnóstico.
-
-### ¿Están seguros nuestros datos?
-
-Sí. Durante la auditoría el acceso es de solo lectura. Construimos y probamos con datos inventados o anonimizados, así que tus registros nunca se envían a un modelo de IA mientras construimos. Lo que entregamos corre dentro de tus propios controles de seguridad, con acceso de mínimo privilegio y una persona aprobando cada acción importante. La página de seguridad detalla cada práctica.
-
-### ¿La IA hará cambios por su cuenta?
-
-No. Todo funciona como borrador, no como asiento automático: el sistema prepara el trabajo, y una persona revisa y aprueba. Es algo deliberado, y es la salvaguarda.
-
-### ¿Y si no encuentras mucho?
-
-Entonces te lo digo con honestidad, y habrás invertido una pequeña tarifa acordada para saber que tu operación es más eficiente que la mayoría. Ese es un buen problema que tener.
-
-### ¿Tenemos que construir contigo?
-
-No. La hoja de ruta es tuya. Si construyes con KHIPUAI dentro de los 30 días, la tarifa de la auditoría se acredita a ese trabajo.
-
-### ¿Qué pasa después de la auditoría?
-
-Si vale la pena construir la primera oportunidad, KHIPUAI puede definir una implementación de alcance fijo y continuar con mejora administrada. Tú decides después de ver la hoja de ruta.
-
-Quién lo dirige
-
-## “Creé esta propuesta porque seguía viendo lo mismo en cada empresa en la que trabajé: buena gente atrapada haciendo trabajo que debería hacer una computadora.”
-
-### Wil Mora
-
-Fundador
-
-15 años dirigiendo operaciones en empresas de alta demanda en Canadá y Estados Unidos, donde cada día corría contra el reloj y cada retraso costaba dinero. Sé lo que de verdad cuesta el trabajo manual porque lo pagué en horas extra, errores y traspasos que se caían. Hoy construyo la automatización que me hubiera gustado tener.
-
-### Alex Pena
-
-Desarrollador
-
-Construye y prueba los sistemas detrás del trabajo: el sitio web y las herramientas internas con las que se entrega la automatización.
-
-[Agenda una llamada de encaje de 30 minutos](https://calendly.com/wmorapal/30min)
-
-[Cómo trabaja KHIPUAI](https://khipuai.co/about/)
-
-[Haz la autoevaluación](https://khipuai.co/self-assessment/)
-
----
-
-Canonical page: https://khipuai.co/es/
-[Contacto](https://khipuai.co/contact/) | [Nosotros](https://khipuai.co/es/about/) | [Seguridad](https://khipuai.co/es/security/) | [Privacidad](https://khipuai.co/privacy.html) | [Guía para agentes de IA (llms.txt, en inglés)](https://khipuai.co/llms.txt)
+[Cómo trabaja KHIPUAI](https://khipuai.co/es/about/) · [Diseño de la solución](https://khipuai.co/es/solution-design/) · [Contacto](https://khipuai.co/es/contact/) · [English](https://khipuai.co/)

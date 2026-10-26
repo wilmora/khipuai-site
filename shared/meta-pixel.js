@@ -71,10 +71,10 @@ function showConsent() {
   banner.className = 'meta-consent';
   if (document.documentElement.lang.startsWith('es')) {
     banner.setAttribute('aria-label', 'Preferencia de medición de Meta');
-    banner.innerHTML = `<p>¿Permites que KHIPUAI use Meta Pixel para medir visitas, vistas de la autoevaluación y llamadas agendadas? No enviamos tus respuestas ni puntuación a Meta. Si abres la reserva desde la autoevaluación, Calendly recibe un resumen de tu resultado. <a href="/privacy.html">Detalles de privacidad</a></p><div class="meta-consent-actions"><button type="button" data-meta-choice="denied">No, gracias</button><button type="button" data-meta-choice="allowed">Permitir medición</button></div>`;
+    banner.innerHTML = `<p>¿Permite que KHIPUAI use Meta Pixel para medir visitas, vistas de la autoevaluación y llamadas agendadas? No enviamos sus respuestas ni su puntuación a Meta. Si abre la reserva desde la autoevaluación, Calendly recibe un resumen de su resultado. <a href="/es/privacy/">Detalles de privacidad</a></p><div class="meta-consent-actions"><button type="button" data-meta-choice="denied">No, gracias</button><button type="button" data-meta-choice="allowed">Permitir medición</button></div>`;
   } else {
     banner.setAttribute('aria-label', 'Meta measurement choice');
-    banner.innerHTML = `<p>May KHIPUAI use Meta Pixel to measure visits, assessment views, and booked calls? We do not send your answers or score to Meta. If you open booking from the assessment, Calendly receives a summary of your result. <a href="/privacy.html">Privacy details</a></p><div class="meta-consent-actions"><button type="button" data-meta-choice="denied">No thanks</button><button type="button" data-meta-choice="allowed">Allow measurement</button></div>`;
+    banner.innerHTML = `<p>May KHIPUAI use Meta Pixel to measure visits, assessment views, and booked calls? We do not send your answers or score to Meta. If you open booking from the assessment, Calendly receives a summary of your result. <a href="/privacy/">Privacy details</a></p><div class="meta-consent-actions"><button type="button" data-meta-choice="denied">No thanks</button><button type="button" data-meta-choice="allowed">Allow measurement</button></div>`;
   }
   banner.addEventListener('click', event => {
     const choice = event.target.closest('[data-meta-choice]')?.dataset.metaChoice;

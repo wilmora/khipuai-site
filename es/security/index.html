@@ -1,9 +1,30 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="doc">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Google Analytics (GA4) -->
+<meta name="description" content="Cómo KHIPUAI protege los datos de sus clientes: la IA escribe y prueba el código con datos sintéticos o anonimizados, acceso de mínimo privilegio, un registro completo de actividad y aprobación humana para cada acción importante.">
+<title>Seguridad y gobierno de datos | KHIPUAI</title>
+<link rel="canonical" href="https://khipuai.co/es/security/">
+<link rel="alternate" hreflang="en" href="https://khipuai.co/security/">
+<link rel="alternate" hreflang="es" href="https://khipuai.co/es/security/">
+<link rel="alternate" hreflang="x-default" href="https://khipuai.co/security/">
+<meta property="og:url" content="https://khipuai.co/es/security/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KHIPUAI">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Seguridad y gobierno de datos | KHIPUAI">
+<meta property="og:description" content="Cómo KHIPUAI protege los datos de sus clientes: la IA escribe y prueba el código con datos sintéticos o anonimizados, acceso de mínimo privilegio, un registro completo de actividad y aprobación humana para cada acción importante.">
+<meta property="og:image" content="https://khipuai.co/og/og-es.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/shared/assets/fonts.css">
+<link rel="stylesheet" href="../../basic.css">
+<link rel="stylesheet" href="../../page.css">
+<link rel="icon" href="/shared/assets/mark.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0ENQ1NBS"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -11,91 +32,74 @@
   gtag('js', new Date());
   gtag('config', 'G-8M0ENQ1NBS');
 </script>
-<title>Seguridad y gobierno de datos | KHIPUAI</title>
-<meta name="description" content="Cómo KHIPUAI protege los datos de sus clientes: la IA escribe y prueba el código con datos inventados o anonimizados, acceso de mínimo privilegio, registro de auditoría completo y una persona que aprueba cada acción importante.">
-<link rel="canonical" href="https://khipuai.co/es/security/">
-<link rel="alternate" type="text/markdown" href="/es/security/index.md">
-<link rel="alternate" hreflang="en" href="https://khipuai.co/security/">
-<link rel="alternate" hreflang="es" href="https://khipuai.co/es/security/">
-<link rel="alternate" hreflang="x-default" href="https://khipuai.co/security/">
-<link rel="icon" href="/shared/assets/mark.svg">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Seguridad y gobierno de datos en KHIPUAI",
-  "url": "https://khipuai.co/es/security/",
-  "inLanguage": "es",
-  "about": {"@type": "ProfessionalService", "name": "KHIPUAI", "url": "https://khipuai.co", "email": "wil@khipuai.co"}
-}
-</script>
-<style>
-  body{margin:0;color:#12263A;background:#fff;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px;}
-  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
-  .logo{font-weight:800;letter-spacing:.14em;color:#12263A;text-decoration:none;}
-  .logo .dot{color:#D8743B;}
-  h1{font-size:2rem;margin:24px 0 4px;}
-  h2{font-size:1.2rem;margin:28px 0 6px;}
-  .muted{color:#566472;}
-  a{color:#AD5627;}
-  hr{border:0;border-top:1px solid #E6E2DC;margin:24px 0;}
-</style>
-<!-- Same type and accessibility polish as privacy.html -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  body{font-family:'Source Sans 3',-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-  h1,h2,h3,.logo{font-family:'Lexend','Source Sans 3',-apple-system,"Segoe UI",sans-serif;}
-  a:focus-visible{outline:3px solid #D8743B;outline-offset:2px;border-radius:4px;}
-  .skip{position:absolute;left:-999px;top:8px;background:#12263A;color:#fff;padding:8px 12px;}
-  .skip:focus{left:8px;}
-</style>
-<link rel="stylesheet" href="/shared/page-responsive.css">
 <link rel="stylesheet" href="/shared/meta-pixel.css">
 <script defer src="/shared/meta-pixel.js"></script>
+<link rel="alternate" type="text/markdown" href="/es/security/index.md">
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<main class="wrap" id="main">
-  <a class="logo" href="/es/">KHIPU<span class="dot">A</span>I</a>
-  <h1>Seguridad y gobierno de datos</h1>
-  <p class="muted">Usamos IA para construir software que ayuda a tu equipo a rendir más y a tus clientes a recibir mejor servicio. Construir con IA no significa entregar tus registros a un tercero. Esta página explica cómo protegemos la información sensible, durante la Auditoría de Automatización con IA y en todo lo que construimos después.</p>
-  <hr>
+<header class="hd"><div class="wrap">
+  <a class="bd" href="../"><img src="/shared/assets/mark.svg" alt="">KHIPUAI</a>
+  <nav class="nav" id="nav" aria-label="Secciones"></nav>
+  <p class="lang"><a href="../../security/" hreflang="en" lang="en" aria-label="View this page in English">EN</a> / <span aria-current="true">ES</span></p>
+  <a class="btn sm" id="book-top" href="#"></a>
+</div></header>
+<main id="main" class="wrap">
+  <section class="doc-hero">
+    <h1>Seguridad y gobierno de datos</h1>
+    <p class="lede">Construir con IA no implica entregar sus registros a un tercero. Así protegemos la información sensible durante el diseño y en todo lo que construimos.</p>
+  </section>
 
-  <h2>Cómo usamos la IA</h2>
-  <ul>
-    <li><strong>Construido con datos de prueba.</strong> Usamos IA para escribir y probar el código, con datos inventados o anonimizados. Tus registros nunca se envían a un modelo de IA mientras construimos.</li>
-    <li><strong>El código hace el trabajo.</strong> Lo que entregamos es código que lee, clasifica y redacta siempre de la misma forma, dentro de tus sistemas.</li>
-    <li><strong>IA en sistemas en uso.</strong> Si un sistema usa IA mientras funciona, como al responder mensajes de clientes o clasificar tickets de soporte, lo hace por la API empresarial de Anthropic, cuyos términos no permiten usar los datos para entrenar modelos de IA. Nunca apps de chat para consumidores.</li>
-    <li><strong>Datos sensibles fuera.</strong> En esos sistemas, datos como números de seguro social y cuentas bancarias se ocultan o se dejan fuera de lo que ve la IA.</li>
-    <li><strong>Las personas aprueban.</strong> El sistema prepara el trabajo. Una persona aprueba todo lo importante antes de que ocurra: todo lo que mueve dinero, cambia un registro o te compromete con un cliente.</li>
-    <li><strong>Registro de auditoría completo.</strong> Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.</li>
-  </ul>
+  <section class="sec" aria-labelledby="h-ai">
+    <div class="sec-head"><h2 id="h-ai">Cómo usamos la IA</h2></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="0"><h3>Construido con datos de prueba</h3><p>La IA escribe y prueba el código con datos sintéticos o anonimizados. Sus registros nunca se envían a un modelo de IA durante la construcción.</p></li>
+        <li data-icon="1"><h3>El código hace el trabajo</h3><p>Nuestras entregas leen, clasifican y redactan siempre de la misma forma, dentro de sus sistemas.</p></li>
+        <li data-icon="0"><h3>IA en sistemas en producción</h3><p>Cuando un sistema en funcionamiento usa IA, lo hace a través de la API empresarial de Anthropic, cuyos términos no permiten usar los datos para entrenar modelos de IA. Nunca se utilizan aplicaciones de chat para consumidores.</p></li>
+        <li data-icon="3"><h3>Datos sensibles excluidos</h3><p>Datos como números de seguro social y cuentas bancarias se ocultan o se excluyen de lo que ve la IA.</p></li>
+        <li><h3>Aprobación humana</h3><p>Una persona aprueba todo lo que mueve dinero, modifica un registro o lo compromete con un cliente.</p></li>
+        <li data-icon="4"><h3>Registro completo de actividad</h3><p>Cada acción que prepara el sistema queda registrada con quién la aprobó y cuándo.</p></li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>Acceso y almacenamiento</h2>
-  <ul>
-    <li><strong>Tus sistemas, tus datos.</strong> Siempre que es posible construimos dentro de tu propio entorno, como tu Microsoft Azure, y no guardamos copias.</li>
-    <li><strong>Acceso de mínimo privilegio.</strong> Cuentas separadas con solo el acceso que el trabajo necesita, que se eliminan al terminar.</li>
-    <li><strong>Auditoría de solo lectura.</strong> Durante la auditoría nuestro acceso es de solo lectura. Nada se automatiza ni se cambia mientras diagnosticamos.</li>
-    <li><strong>Secretos en una bóveda.</strong> Las claves de API y contraseñas se guardan en el servidor, por ejemplo en Azure Key Vault, nunca en el código.</li>
-  </ul>
+  <section class="sec" aria-labelledby="h-access">
+    <div class="sec-head"><h2 id="h-access">Acceso y almacenamiento</h2></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li data-icon="1"><h3>Sus sistemas, sus datos</h3><p>Siempre que es posible construimos dentro de su propio entorno, como Microsoft Azure, y no guardamos copias.</p></li>
+        <li data-icon="2"><h3>Acceso de mínimo privilegio</h3><p>Cuentas separadas con solo el acceso que el trabajo requiere, que se eliminan al finalizar el proyecto.</p></li>
+        <li data-icon="3"><h3>Solo lectura durante el diseño</h3><p>Nada cambia en sus sistemas durante el Diseño de la solución.</p></li>
+        <li data-icon="2"><h3>Secretos en una bóveda</h3><p>Las claves de API y contraseñas se guardan en el servidor, por ejemplo en Azure Key Vault, nunca en el código.</p></li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>Acuerdos y cierre del proyecto</h2>
-  <ul>
-    <li><strong>NDA si lo pides.</strong> Firmamos un acuerdo de confidencialidad o un acuerdo de tratamiento de datos si lo solicitas.</li>
-    <li><strong>Devueltos o eliminados.</strong> Al terminar el proyecto, tus datos se devuelven o se eliminan.</li>
-  </ul>
+  <section class="sec" aria-labelledby="h-end">
+    <div class="sec-head"><h2 id="h-end">Acuerdos y cierre del proyecto</h2></div>
+    <div class="sec-body">
+      <ul class="items" data-icons="security">
+        <li><h3>NDA a solicitud</h3><p>Firmamos un acuerdo de confidencialidad o de tratamiento de datos si usted lo solicita.</p></li>
+        <li data-icon="5"><h3>Datos devueltos o eliminados</h3><p>Al finalizar el proyecto, sus datos se devuelven o se eliminan.</p></li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>Políticas que estamos escribiendo</h2>
-  <p>Estamos convirtiendo estas prácticas en políticas y procedimientos operativos estándar (SOP) que tu equipo de TI puede revisar. Cada uno aparecerá en esta página cuando esté listo.</p>
-
-  <h2>Preguntas de tu equipo de TI o de seguridad</h2>
-  <p>Envíalas a <a href="mailto:wil@khipuai.co">wil@khipuai.co</a>, o plantéalas en una <a href="https://calendly.com/wmorapal/30min">llamada de encaje gratuita de 30 minutos</a>. Por favor no envíes contraseñas, registros de clientes ni otros datos sensibles por correo. Si un proyecto necesita esa información, primero acordamos una forma segura de compartirla.</p>
-  <p>Cómo el sitio web maneja los datos que compartes se explica en la <a href="/privacy.html">política de privacidad</a> (en inglés).</p>
-
-  <hr>
-  <p class="muted"><a href="/es/">Inicio</a> | <a href="/es/about/">Nosotros</a> | <a href="/contact/">Contacto</a> | <a href="/privacy.html">Privacidad</a> | <a href="/llms.txt">Guía para agentes de IA</a> | <a href="/security/" hreflang="en" lang="en">English</a></p>
+  <section class="sec" aria-labelledby="h-questions">
+    <div class="sec-head"><h2 id="h-questions">Preguntas de su equipo de TI o de seguridad</h2></div>
+    <div class="sec-body">
+      <p>Envíelas a <a href="mailto:alexp@khipuai.co">alexp@khipuai.co</a> o plantéelas en una <a href="https://calendly.com/wmorapal/30min">llamada de descubrimiento gratuita</a>. Por favor, no envíe contraseñas ni registros de clientes por correo electrónico; primero acordaremos una forma segura de compartirlos.</p>
+      <p class="fine">Estamos documentando estas prácticas como políticas y procedimientos formales que su equipo de TI podrá revisar; cada uno aparecerá aquí cuando esté terminado. La forma en que este sitio trata sus datos se describe en la <a href="../privacy/">política de privacidad</a>.</p>
+    </div>
+  </section>
 </main>
+<footer class="ft"><div class="wrap"><p><a href="../privacy/">Privacidad</a> &middot; <a href="../contact/">Contacto</a> &middot; <a href="../security/">Seguridad</a></p></div></footer>
+<script type="module">
+import { C } from '/shared/content.es.js';
+import { page } from '../../basic.js';
+import { LABELS } from '../../labels.js';
+page(C, LABELS.es, '../');
+</script>
 </body>
 </html>

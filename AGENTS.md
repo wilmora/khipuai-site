@@ -4,7 +4,7 @@
 
 This repository contains the public KHIPUAI website. Its primary job is to help leaders of 20 to 300-person recurring-service businesses understand the offer, assess fit, receive a responsible estimate, and book a fit call.
 
-The production site is static and the Kinetic design is served from the repository root. Do not imply that the project uses Next.js, React, TypeScript, or Tailwind. Any migration to that stack is a separate, reviewed project.
+The production site is static and is served from the repository root (the design that replaced Kinetic on 2026-10-26; see README.md). Do not imply that the project uses Next.js, React, TypeScript, or Tailwind. Any migration to that stack is a separate, reviewed project.
 
 ## Working rules
 
@@ -18,8 +18,8 @@ The production site is static and the Kinetic design is served from the reposito
 
 - Shared English content lives in `shared/content.js`.
 - Spanish content lives in `shared/content.es.js` and must match the English object shape.
-- Shared behavior belongs in `shared/kinetic.js` or a focused shared module.
-- Shared styling belongs in `shared/kinetic.css`.
+- Homepage behavior belongs in `basic.js`; page labels in `labels.js`; approved wording changes in `tone.js`.
+- Shared styling belongs in `basic.css` (homepage) and `page.css` (content pages).
 - Quote rules belong in `shared/quote.js`. Page templates must not duplicate pricing logic.
 - Reuse the shared page builder and existing patterns before adding page-specific code.
 - Keep UI rendering, quote rules, content, and external-service configuration separate.
@@ -54,7 +54,7 @@ The production site is static and the Kinetic design is served from the reposito
 
 ## Design system
 
-- Extend the existing navy, copper, ink, and cream visual system through the tokens in `kinetic.css`.
+- Extend the existing navy, copper, ink, and cream visual system through the tokens in `basic.css`.
 - Reuse the existing typography, buttons, cards, spacing rhythm, and motion patterns.
 - Do not add arbitrary one-off colors, fonts, or inline styles when a shared class or token is appropriate.
 - Preserve the khipu knot as a meaningful brand element, not decoration repeated on every screen.

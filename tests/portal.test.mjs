@@ -1,11 +1,11 @@
-// Build your portal (concepts/basic/portal/): draft pricing in one data file,
+// Build your portal (portal/): draft pricing in one data file,
 // deterministic plan rules, English and Spanish parity, nothing sent.
 // Run: node --test tests/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { PRICING, TEMPLATES, REGIONS, estimate, clampCount } from '../concepts/basic/portal/plans.js';
-import { TEXT } from '../concepts/basic/portal/text.js';
+import { PRICING, TEMPLATES, REGIONS, estimate, clampCount } from '../portal/plans.js';
+import { TEXT } from '../portal/text.js';
 
 const all = key => TEMPLATES.find(t => t.key === key).features.map(f => f.key);
 const core = key => TEMPLATES.find(t => t.key === key).features.filter(f => !f.custom).map(f => f.key);
@@ -72,6 +72,6 @@ test('English and Spanish wording has the same shape and covers every key', () =
 });
 
 test('the configurator sends and stores nothing', () => {
-  const src = ['portal.js', 'plans.js', 'text.js'].map(f => readFileSync(new URL(`../concepts/basic/portal/${f}`, import.meta.url), 'utf8')).join('\n');
+  const src = ['portal.js', 'plans.js', 'text.js'].map(f => readFileSync(new URL(`../portal/${f}`, import.meta.url), 'utf8')).join('\n');
   assert.doesNotMatch(src, /fetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|indexedDB|document\.cookie|<form|\.submit\(/);
 });

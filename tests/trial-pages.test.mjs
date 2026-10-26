@@ -1,10 +1,9 @@
-// Checks for the trial's other pages (concepts/basic/<page>/): the live pages
-// in the trial homepage's look. Run: node --test tests/*.test.mjs
+// Checks for the site's pages (<page>/), live since 2026-10-26 (ORD-20261026-06). Run: node --test tests/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 
-const ROOT = new URL('../concepts/basic/', import.meta.url);
+const ROOT = new URL('../', import.meta.url);
 const PAGES = [
   ['about/index.html', 'en'], ['es/about/index.html', 'es'],
   ['security/index.html', 'en'], ['es/security/index.html', 'es'],
@@ -16,44 +15,55 @@ const PAGES = [
 ];
 
 for (const [path, lang] of PAGES) {
-  test(`trial page ${path}: noindex, shared look, nothing sent`, () => {
+  test(`page ${path}: indexing, shared look, analytics only as agreed`, () => {
     const url = new URL(path, ROOT);
-    assert.ok(existsSync(url), `missing concepts/basic/${path}`);
+    assert.ok(existsSync(url), `missing ${path}`);
     const html = readFileSync(url, 'utf8');
     assert.match(html, new RegExp(`<html lang="${lang}" class="doc( scroll)?">`));
-    assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+    const held = /^(es\/)?portal\/|^thank-you\//.test(path);
+    if (held) assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+    else {
+      assert.doesNotMatch(html, /noindex/);
+      const addr = 'https://khipuai.co/' + path.replace(/index\.html$/, '');
+      assert.ok(html.includes(`<link rel="canonical" href="${addr}">`), 'canonical');
+      assert.ok(html.includes(`<meta property="og:url" content="${addr}">`), 'og:url');
+    }
     assert.match(html, /basic\.css">/);
     assert.match(html, /page\.css">/);
     assert.match(html, /<nav class="nav" id="nav"/);
     assert.match(html, new RegExp(`page\\(C, LABELS\\.${lang}, '`));
     assert.equal((html.match(/<h1[\s>]/g) || []).length, 1, 'exactly one h1');
-    assert.doesNotMatch(html, /googletagmanager|gtag\(|meta-pixel|fbq\(|script\.google|fetch\(|sendBeacon|application\/ld\+json/, 'no analytics, structured data or sending');
+    // Google Analytics and the opt-in Meta Pixel, as before the switch (Alex, 2026-10-26); none on the held portal.
+    const tracked = /googletagmanager\.com\/gtag\/js\?id=G-8M0ENQ1NBS/.test(html) && /<script defer src="\/shared\/meta-pixel\.js"><\/script>/.test(html);
+    assert.equal(tracked, !/portal\//.test(path), 'analytics');
+    assert.doesNotMatch(html, /fbq\(|script\.google|fetch\(|sendBeacon/, 'nothing sent from the page itself');
     assert.ok(!html.includes('—'), 'no em dash');
   });
 }
 
-// Launch readiness: every trial page (and the homepages, demos and 404) has
+// Launch readiness: every page (and the homepages, demos and 404) has
 // a title, a description and the icons; shareable pages carry Open Graph
 // tags with an existing image of the page's language.
 const HOMES = [['index.html', 'en'], ['es/index.html', 'es']];
-const DEMOS = ['payroll', 'aca', 'hub', 'review', 'support', 'materials', 'whatsapp'].map(k => [`demos/${k}/index.html`]);
+// Client miniatures wait for each client's permission (Wil, 2026-10-26); only KHIPUAI's own is published.
+const DEMOS = ['support'].map(k => [`demos/${k}/index.html`]);
 for (const [path, lang] of [...PAGES, ...HOMES, ...DEMOS, ['404.html']]) {
-  test(`trial page ${path}: title, description and icons`, () => {
+  test(`page ${path}: title, description and icons`, () => {
     const html = readFileSync(new URL(path, ROOT), 'utf8');
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1] || '';
     assert.ok(title.includes('KHIPUAI') && !/trial|prueba/i.test(title), `title "${title}"`);
     assert.match(html, /<meta name="description" content="[^"]{40,}">/);
     assert.match(html, /<link rel="icon" href="\/shared\/assets\/mark\.svg"/);
-    assert.match(html, /<link rel="apple-touch-icon" href="\/concepts\/basic\/icons\/apple-touch-icon\.png">/);
+    assert.match(html, /<link rel="apple-touch-icon" href="\/icons\/apple-touch-icon\.png">/);
     if (!lang) return;
     for (const prop of ['og:title', 'og:description', 'og:image']) assert.match(html, new RegExp(`<meta property="${prop}" content="[^"]+">`), prop);
-    const img = html.match(/<meta property="og:image" content="https:\/\/khipuai\.co\/concepts\/basic\/og\/og-(en|es)\.png">/);
+    const img = html.match(/<meta property="og:image" content="https:\/\/khipuai\.co\/og\/og-(en|es)\.png">/);
     assert.ok(img, 'og:image path'); assert.equal(img[1], lang);
     assert.ok(existsSync(new URL(`og/og-${lang}.png`, ROOT)));
   });
 }
 
-test('no duplicate titles across the trial pages', () => {
+test('no duplicate titles across the pages', () => {
   const titles = [...PAGES, ...HOMES, ...DEMOS].map(([p]) => readFileSync(new URL(p, ROOT), 'utf8').match(/<title>([^<]+)<\/title>/)[1]);
   assert.equal(new Set(titles).size, titles.length, titles.join(' / '));
 });
@@ -62,7 +72,7 @@ test('no duplicate titles across the trial pages', () => {
 // replaces the hello@ address of 2026-10-20), and
 // no name-dropping in everyday lines (people are named where they are
 // introduced); "remotely" is not part of the studio line.
-test('trial pages use the shared address and neutral everyday lines', () => {
+test('pages use the shared address and neutral everyday lines', () => {
   for (const [path] of [...PAGES, ...HOMES, ['404.html']]) {
     const html = readFileSync(new URL(path, ROOT), 'utf8');
     for (const m of html.matchAll(/[a-z.]+@khipuai\.co/g)) assert.equal(m[0], 'alexp@khipuai.co', path);
@@ -71,13 +81,17 @@ test('trial pages use the shared address and neutral everyday lines', () => {
   }
   const tone = readFileSync(new URL('tone.js', ROOT), 'utf8');
   assert.match(tone, /'wil@khipuai\.co': 'alexp@khipuai\.co'/);
-  assert.match(tone, /studio serving clients across the United States and Canada\.'/);
+  assert.match(tone, /studio serving clients across North and South America\."/);
 });
 
-// Solution Design replaces the audit (Alex, 2026-10-20): the old trial
-// addresses forward to the new pages, and no visible text says "audit".
-test('the old audit addresses forward to Solution Design', () => {
-  for (const [path, to] of [['audit/index.html', '/concepts/basic/solution-design/'], ['es/audit/index.html', '/concepts/basic/es/solution-design/']]) {
+// Solution Design replaces the audit (Alex, 2026-10-20), and the old live
+// addresses forward to their new pages (go-live, 2026-10-26).
+test('the old addresses forward to the new pages', () => {
+  for (const [path, to] of [['audit/index.html', '/solution-design/'], ['es/audit/index.html', '/es/solution-design/'],
+    ['work/index.html', '/#work'], ['es/work/index.html', '/es/#work'], ['privacy.html', '/privacy/'],
+    ['self_assessment.html', '/self-assessment/'], ['thank-you.html', '/thank-you/'], ['blog/index.html', '/'],
+    ['blog/hidden-cost-of-manual-work/index.html', '/'], ['blog/ai-you-can-trust-with-your-books/index.html', '/'],
+    ['blog/automate-accounts-payable/index.html', '/']]) {
     const html = readFileSync(new URL(path, ROOT), 'utf8');
     assert.match(html, new RegExp(`<meta http-equiv="refresh" content="0; url=${to}">`));
     assert.match(html, /noindex/);
