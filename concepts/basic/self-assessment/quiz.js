@@ -72,11 +72,32 @@ export function mountQuiz(C) {
 
   const score = () => QS.reduce((s, q, i) => s + (answers[i] === 'yes' ? q.w : 0), 0);
 
+  // Every question gets the room of the longest one, so the card keeps one
+  // size and Yes, No, Back and Next never move between questions (Alex,
+  // 2026-10-26). Measured at the card's width, again when the window resizes.
+  let reservedAt = 0;
+  function reserve() {
+    const part = $('q-part'), text = $('q-text');
+    if (quiz.hidden || reservedAt === quiz.clientWidth) return;
+    const keep = [part.innerHTML, text.innerHTML];
+    part.style.minHeight = text.style.minHeight = '';
+    let hp = 0, ht = 0;
+    for (const q of QS) {
+      part.innerHTML = q.part.head; text.innerHTML = q.t;
+      hp = Math.max(hp, part.offsetHeight); ht = Math.max(ht, text.offsetHeight);
+    }
+    [part.innerHTML, text.innerHTML] = keep;
+    part.style.minHeight = `${hp}px`; text.style.minHeight = `${ht}px`;
+    reservedAt = quiz.clientWidth;
+  }
+  addEventListener('resize', () => { reservedAt = 0; requestAnimationFrame(reserve); });
+
   function show(i, focus = true) {
     at = i;
     const q = QS[i];
     result.hidden = true;
     quiz.hidden = false;
+    reserve();
     $('q-count').textContent = `Question ${i + 1} of ${QS.length}`;
     $('q-bar').style.width = `${(answers.filter(Boolean).length / QS.length) * 100}%`;
     $('q-kick').textContent = q.part.kick;

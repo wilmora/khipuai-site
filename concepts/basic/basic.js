@@ -29,7 +29,35 @@ const SHOW_SHOTS = false;          // the screenshots view in Learn more
 // KHIPUAI's own products keep their live demo.
 const OWN_PRODUCTS = new Set(['support']);
 // The plain picture for each client project: one line icon on the dark card.
-// Khipu Support's card shows its Today screen close up (greeting, the four
+// Khipu Support's card picture: what it does at a glance. New tickets come in
+// (email, chat, phone), the AI reads and sorts them, and each lands with the
+// right team and priority (Alex, 2026-10-26: "something that encompasses what
+// it is").
+const supportArt = es => {
+  const lanes = es ? [['Urgente', '#FF7A3D'], ['Facturación', '#E39767'], ['Técnico', '#7FB8A4']]
+    : [['Urgent', '#FF7A3D'], ['Billing', '#E39767'], ['Technical', '#7FB8A4']];
+  const ticket = (y, icon) => `<g transform="translate(22 ${y})"><rect width="92" height="30" rx="5" fill="#F4EFE7"/>
+    <g transform="translate(8 8)" fill="none" stroke="#0E1A24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${icon}</g>
+    <rect x="30" y="9" width="50" height="4" rx="2" fill="#0E1A24" opacity=".55"/><rect x="30" y="17" width="34" height="4" rx="2" fill="#0E1A24" opacity=".25"/></g>`;
+  const mail = '<rect x="0" y="1" width="14" height="11" rx="2"/><path d="m0 3 7 5 7-5"/>';
+  const chat = '<path d="M1 1h12v8H6l-4 3V9H1z"/>';
+  const phone = '<path d="M3 1h3l1 4-2 1a8 8 0 0 0 4 4l1-2 4 1v3a1 1 0 0 1-1 1A12 12 0 0 1 2 2a1 1 0 0 1 1-1z"/>';
+  const lane = ([name, c], i) => { const y = 32 + i * 46; return `<g transform="translate(206 ${y})">
+    <rect width="96" height="34" rx="6" fill="#132131" stroke="${c}" stroke-width="1.5"/>
+    <circle cx="16" cy="17" r="5" fill="${c}"/>
+    <text x="28" y="21.5" font-family="DM Sans,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#F4EFE7">${name}</text></g>`; };
+  const wires = [49, 95, 141].map(y => `<path d="M114 ${y} C138 ${y} 136 100 152 100" fill="none" stroke="#E39767" stroke-width="1.5" opacity=".7"/>`).join('')
+    + [49, 95, 141].map(y => `<path d="M188 100 C204 100 194 ${y} 206 ${y}" fill="none" stroke="#E39767" stroke-width="1.5" opacity=".7"/>`).join('');
+  return `<svg class="pc-art" viewBox="0 0 320 200" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    <rect width="320" height="200" fill="#0F1C29"/>
+    <path d="M0 0h320v200H0z" fill="url(#pcg)" opacity=".5"/><defs><radialGradient id="pcg" cx="55%" cy="50%" r="60%"><stop offset="0" stop-color="#E39767" stop-opacity=".22"/><stop offset="1" stop-color="#E39767" stop-opacity="0"/></radialGradient></defs>
+    ${wires}${ticket(34, mail)}${ticket(80, chat)}${ticket(126, phone)}
+    <circle cx="170" cy="100" r="20" fill="#E39767"/><circle cx="170" cy="100" r="27" fill="none" stroke="#E39767" stroke-width="1" opacity=".45"/>
+    <path d="M170 89l3 7.5 7.5 3.5-7.5 3.5-3 7.5-3-7.5-7.5-3.5 7.5-3.5z" fill="#0E1A24"/>
+    ${lanes.map(lane).join('')}</svg>`;
+};
+const CARD_ART = { support: supportArt };
+// (Kept for reference: a close-up of Khipu Support's Today screen) (greeting, the four
 // counts and the replies waiting), without the side menu: [left, top, width]
 // of the 1280x800 screen.
 const CARD_CROP = { support: [222, 66, 720] };
@@ -129,7 +157,8 @@ export function render(C, L) {
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
           <span class="work-next">${esc(C.portfolio.next)}</span></p></div>
         <ul class="pcards">${projects.map((p, i) => `<li class="pc">
-          ${p.own ? `<div class="pc-img" data-k="${p.key}"><iframe src="${ASSET}demos/${p.key}/index.html${p.home}" title="" aria-hidden="true" tabindex="-1" loading="lazy" width="${APP_W}" height="${APP_H}"></iframe></div>`
+          ${CARD_ART[p.key] ? `<div class="pc-img pc-artbox" aria-hidden="true">${CARD_ART[p.key](L.lang === 'es')}</div>`
+            : p.own ? `<div class="pc-img" data-k="${p.key}"><iframe src="${ASSET}demos/${p.key}/index.html${p.home}" title="" aria-hidden="true" tabindex="-1" loading="lazy" width="${APP_W}" height="${APP_H}"></iframe></div>`
             : `<div class="pc-img pc-ph" aria-hidden="true">${featureIcon(...(CARD_ICON[p.key] || ['work', i]))}</div>`}
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
             <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
