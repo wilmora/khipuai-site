@@ -61,18 +61,28 @@
 .doc section[aria-labelledby="h-who"],
 .doc section[aria-labelledby="h-final"]{display:none;}
 
-/* Policy pages that scroll (Privacy, Security): a contents list under the
-   title, numbered sections, and a little more air, like a formal document
+/* Policy pages that scroll (Privacy, Security): one readable column like a
+   formal document, a contents list under the title, numbered sections
    (Alex, 2026-10-26: "more professional", one scrolling page each). */
 .doc.scroll main{counter-reset:sec;}
-.doc.scroll .toc{margin:0 0 12px;padding:16px 20px;border:1px solid var(--line);border-radius:6px;background:var(--cream);max-width:920px;}
-.doc.scroll .toc .kick{margin:0 0 8px;}
-.doc.scroll .toc ol{margin:0;padding:0;list-style:none;columns:2;column-gap:32px;counter-reset:toc;}
-.doc.scroll .toc li{counter-increment:toc;break-inside:avoid;padding:3px 0;font-size:15px;}
-.doc.scroll .toc li::before{content:counter(toc) ".";display:inline-block;min-width:1.6em;color:var(--copper-ink);font-weight:700;}
+.doc.scroll main > *{max-width:860px;}
+.doc.scroll .doc-hero{padding-bottom:28px;}
+.doc.scroll .doc-hero h1{font-size:clamp(32px,3.6vw,46px);}
+.doc.scroll .doc-hero .lede{font-size:17px;}
+.doc.scroll .toc{margin:0 0 8px;padding:18px 22px;border:1px solid var(--line);border-radius:8px;background:var(--cream);}
+.doc.scroll .toc .kick{margin:0 0 10px;}
+.doc.scroll .toc ol{margin:0;padding:0;list-style:none;columns:2;column-gap:40px;counter-reset:toc;}
+.doc.scroll .toc li{counter-increment:toc;break-inside:avoid;padding:4px 0;font-size:15px;}
+.doc.scroll .toc li::before{content:counter(toc) ".";display:inline-block;min-width:1.7em;color:var(--copper-ink);font-weight:700;}
 .doc.scroll .toc a{color:var(--ink);text-decoration:none;}
 .doc.scroll .toc a:hover{text-decoration:underline;}
+.doc.scroll .sec{display:block;padding:30px 0 6px;border-top:1px solid var(--line);margin-top:24px;}
+.doc.scroll .sec-head{margin-bottom:14px;}
+.doc.scroll .sec-head h2{font-size:24px;}
 .doc.scroll .sec h2[id]{counter-increment:sec;scroll-margin-top:90px;}
-.doc.scroll .sec h2[id]::before{content:counter(sec) ". ";color:var(--copper-ink);}
-.doc.scroll .sec{padding:32px 0 40px;}
-@media (max-width:700px){ .doc.scroll .toc ol{columns:1;} }
+.doc.scroll .sec h2[id]::before{content:counter(sec) ".";display:inline-block;min-width:1.4em;color:var(--copper-ink);}
+.doc.scroll .sec-body{border-top:0;padding-top:0;}
+.doc.scroll .sec-body p,.doc.scroll .sec-body ul.list{max-width:none;}
+.doc.scroll .items{gap:18px 28px;}
+.doc.scroll .items li{border-top:0;padding:16px 18px;border:1px solid var(--line);border-radius:8px;background:#fff;}
+@media (max-width:700px){ .doc.scroll .toc ol{columns:1;} .doc.scroll .sec-head h2{font-size:21px;} }
