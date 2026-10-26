@@ -291,9 +291,34 @@ blockquote{margin:0;}
 .pd-text dd{margin:2px 0 0;font-size:14.5px;}
 .pd-text .btn{align-self:flex-start;margin-top:auto;}
 /* Client work opens as its description alone (no demo or screenshots). */
-.pd.pd-textonly{width:min(560px,94vw);}
+/* Client work opens as a tidy summary card: the project's icon and name on
+   the dark band like its card, then what it does, why, and who approves. */
+.pd.pd-textonly{width:min(640px,94vw);height:fit-content;}
 .pd.pd-textonly .pd-in{grid-template-columns:minmax(0,1fr);}
 .pd.pd-textonly .pd-media{display:none;}
+.pd.pd-textonly .pd-text{padding:0;gap:0;max-height:none;overflow:visible;}
+.pd-head{display:contents;}
+.pd.pd-textonly .pd-head{display:flex;align-items:center;gap:14px;padding:20px 24px;background:var(--navy);color:var(--cream);}
+.pd.pd-textonly .pd-head h2{color:var(--cream);font-size:22px;}
+.pd-ico:empty{display:none;}
+.pd.pd-textonly .pd-ico{display:flex;align-items:center;justify-content:center;flex:none;width:48px;height:48px;border-radius:8px;
+  background:repeating-linear-gradient(135deg,#132131 0 8px,#17283a 8px 16px);}
+.pd.pd-textonly .pd-ico .feature-icon{color:var(--copper);width:26px;height:26px;}
+.pd.pd-textonly .pd-ico .feature-icon svg{width:24px;height:24px;}
+.pd.pd-textonly dl{margin:0;padding:6px 24px 4px;display:grid;grid-template-columns:150px minmax(0,1fr);}
+.pd.pd-textonly dt,.pd.pd-textonly dd{margin:0;padding:14px 0;border-top:1px solid var(--line);}
+.pd.pd-textonly dl > :nth-child(-n+2){border-top:0;}
+.pd.pd-textonly dt{padding-right:16px;}
+.pd.pd-textonly dd{font-size:15px;line-height:1.55;}
+.pd-foot{display:contents;}
+.pd.pd-textonly .pd-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px 20px;border-top:1px solid var(--line);}
+.pd.pd-textonly .pd-foot .note{margin:0;font-size:13px;color:var(--muted);}
+.pd.pd-textonly .pd-foot .btn{margin:0;flex:none;}
+@media (max-width:600px){
+  .pd.pd-textonly dl{grid-template-columns:minmax(0,1fr);}
+  .pd.pd-textonly dd{padding-top:2px;border-top:0;}
+  .pd.pd-textonly .pd-foot{flex-direction:column;align-items:stretch;}
+}
 /* No closing band on the Portfolio screen (Alex, 2026-10-26). */
 html.at-work .band{display:none;}
 

@@ -315,12 +315,12 @@ function mountProjects(projects, PJ, C) {
       <div class="pd-stage" id="pd-stage"><div class="pd-scale" id="pd-scale"></div></div>
       <div id="pd-shots" class="pd-shots" hidden></div>
       <p class="pd-under"><span>${esc(PJ.frameNote)}</span> <a id="pd-full" href="#" target="_blank" rel="noopener">${esc(PJ.openFull)} &rarr;</a></p></div>
-    <div class="pd-text"><h2 id="pd-h"></h2><dl>
+    <div class="pd-text"><div class="pd-head"><span class="pd-ico" id="pd-ico" aria-hidden="true"></span><h2 id="pd-h"></h2></div><dl>
       <dt>${esc(C.portfolio.cols[1])}</dt><dd id="pd-d"></dd>
       <dt>${esc(PJ.why)}</dt><dd id="pd-why"></dd>
       <dt>${esc(C.portfolio.cols[2])}</dt><dd id="pd-who"></dd></dl>
-      <p class="note">${esc(C.portfolio.note)}</p>
-      <button type="button" class="btn line" id="pd-close">${esc(PJ.close)}</button></div></div></dialog>`);
+      <div class="pd-foot"><p class="note">${esc(C.portfolio.note)}</p>
+      <button type="button" class="btn line" id="pd-close">${esc(PJ.close)}</button></div></div></div></dialog>`);
   const dlg = document.getElementById('pd'), $ = id => document.getElementById(id);
   const sw = $('pd-switch'), stage = $('pd-stage'), box = $('pd-scale'), shots = $('pd-shots');
   let opener = null;
@@ -377,6 +377,8 @@ function mountProjects(projects, PJ, C) {
     dlg.classList.toggle('pd-textonly', !p.own);
     media.hidden = !p.own;
     text.style.maxHeight = '';
+    if (!p.own) dlg.style.width = dlg.style.height = '';   // a demo's sizing never carries over
+    $('pd-ico').innerHTML = p.own ? '' : featureIcon(...(CARD_ICON[p.key] || ['work', 0]));
     box.innerHTML = p.own ? `<iframe src="${url}" title="${esc(fmtTitle(PJ.frameTitle, p.app || p.t))}" width="${APP_W}" height="${APP_H}"></iframe>` : '';
     view('demo');
     dlg.showModal();
