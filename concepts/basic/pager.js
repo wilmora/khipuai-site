@@ -97,7 +97,8 @@ export function mountPager({ labels, onEdge = () => false }) {
     // A page may start at the top of any piece where no other piece is cut.
     // The closing band and footer always share the last page with content:
     // the last page leaves room for them, and they sit at its bottom.
-    tailTop = tail.length ? Math.min(...tail.map(el => el.getBoundingClientRect().top - ir.top)) : total;
+    const shownTail = tail.filter(el => el.getClientRects().length && el.getBoundingClientRect().height > 0);
+    tailTop = shownTail.length ? Math.min(...shownTail.map(el => el.getBoundingClientRect().top - ir.top)) : total;
     tailH = total - tailTop;
     // Where the content ends, not counting the blank gap above the band.
     const contentEnd = Math.max(0, ...boxes.filter(b => b[0] < tailTop - 1).map(b => b[1]));
@@ -116,7 +117,8 @@ export function mountPager({ labels, onEdge = () => false }) {
       const roomy = fits.filter(c => c > y0 + room * 0.3);
       // Prefer a section start when the page is still at least 45% full.
       const atStart = starts.filter(c => c < tailTop - 1 && c > y0 + room * 0.45 && c <= y0 + room && clear(c)).pop();
-      const end = Math.min(atStart ?? (roomy.length ? roomy : fits).pop() ?? y0 + room, tailTop);
+      let end = Math.min(atStart ?? (roomy.length ? roomy : fits).pop() ?? y0 + room, tailTop);
+      if (end <= y0 + 1) end = Math.min(y0 + room, total);   // never stall on one spot
       out.push([y0, end, pad]); y0 = end;
     }
     return out;
@@ -139,7 +141,7 @@ export function mountPager({ labels, onEdge = () => false }) {
     const [a, b, pad] = pages[cur];
     const H = W.clientHeight;
     // On the last page the band's bottom meets the window's bottom.
-    const last = cur === pages.length - 1 && tail.length > 0;
+    const last = cur === pages.length - 1 && tailH > 0;
     const shift = last ? Math.round(a - pad + H - tailH - tailTop) : 0;
     tail.forEach(el => { el.style.transform = shift ? `translateY(${shift}px)` : ''; });
     inner.style.transform = pages.length > 1 ? `translateY(${pad - a}px)` : '';

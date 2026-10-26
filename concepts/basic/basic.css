@@ -229,8 +229,8 @@ blockquote{margin:0;}
   padding-bottom:14px;border-bottom:2px solid var(--ink);}
 .work-head h2{font-size:clamp(26px,2.4vw,34px);}
 .work-head .kick{margin-bottom:8px;}
-.work-side{max-width:72ch;margin:0;text-align:right;font-size:13px;}
-.work-next{font-weight:600;color:var(--ink);}
+.work-side{flex:1 1 100%;margin:0;font-size:13.5px;color:var(--muted);}
+.work-next{color:inherit;}
 .work-next a{color:var(--copper-ink);white-space:nowrap;}
 .pcards{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 .pc{display:flex;flex-direction:column;background:var(--navy);color:var(--cream);border-radius:4px;overflow:hidden;}
@@ -290,6 +290,12 @@ blockquote{margin:0;}
 .pd-text dt{margin-top:10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--copper-ink);}
 .pd-text dd{margin:2px 0 0;font-size:14.5px;}
 .pd-text .btn{align-self:flex-start;margin-top:auto;}
+/* Client work opens as its description alone (no demo or screenshots). */
+.pd.pd-textonly{width:min(560px,94vw);}
+.pd.pd-textonly .pd-in{grid-template-columns:minmax(0,1fr);}
+.pd.pd-textonly .pd-media{display:none;}
+/* No closing band on the Portfolio screen (Alex, 2026-10-26). */
+html.at-work .band{display:none;}
 
 /* Tool logos, after GeoSolv's logo row: a quiet row near the bottom. */
 .logos{display:flex;align-items:center;gap:8px 22px;flex-wrap:wrap;position:relative;}

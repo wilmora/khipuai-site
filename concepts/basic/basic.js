@@ -24,6 +24,12 @@ const ASSET = new URL('./', import.meta.url).href;
 const SHOW_INTEGRATIONS = false;   // the Integrations row (logos and list)
 const SHOW_PORTAL = false;         // Build your portal: menu item and links
 const SHOW_SHOTS = false;          // the screenshots view in Learn more
+// Client work is shown by name, a plain picture and a description only, with no
+// screenshots or demos until each client gives permission (Alex, 2026-10-26).
+// KHIPUAI's own products keep their live demo.
+const OWN_PRODUCTS = new Set(['support']);
+// The plain picture for each client project: one line icon on the dark card.
+const CARD_ICON = { payroll: ['work', 1], aca: ['deliverable', 0], hub: ['work', 0], review: ['work', 3], materials: ['problem', 0], whatsapp: ['work', 2] };
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
 const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
@@ -58,7 +64,7 @@ export function render(C, L) {
   const title = t => L.lang === 'en' ? t.replace(/(^|[\s-])(\p{Ll})/gu, (m, a, b) => a + b.toUpperCase()) : t;
   const projects = PJ.items.filter(x => !x.hidden).map(x => {
     const base = x.from === undefined ? {} : C.portfolio.items[x.from];
-    return { key: x.key, home: x.home || '', card: x.card, app: x.app, shots: SHOW_SHOTS ? x.shots : [], alt: x.alt || [], t: title(shown(x.t ?? base.t)), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
+    return { key: x.key, own: OWN_PRODUCTS.has(x.key), home: x.home || '', card: x.card, app: x.app, shots: SHOW_SHOTS ? x.shots : [], alt: x.alt || [], t: title(shown(x.t ?? base.t)), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
   });
 
   const tabs = [
@@ -117,9 +123,10 @@ export function render(C, L) {
     // fill two rows of four, so the next-step link sits in the header.
     ['work', L.tabs.work, `<div class="sec-work">
         <div class="work-head"><div>${head(C.portfolio.kick, C.portfolio.title, C.portfolio.titleEm)}</div><p class="work-side"><span class="note">${esc(C.portfolio.note)}</span>
-          <span class="work-next">${esc(C.portfolio.next)} <a href="${C.booking}">${esc(C.portfolio.nextLink)} &rarr;</a>${SHOW_PORTAL ? ` <a href="portal/">${esc(L.portal.nav)} &rarr;</a>` : ''}</span></p></div>
-        <ul class="pcards">${projects.map(p => `<li class="pc">
-          <div class="pc-img" data-k="${p.key}"><iframe src="${ASSET}demos/${p.key}/index.html${p.home}" title="" aria-hidden="true" tabindex="-1" loading="lazy" width="${APP_W}" height="${APP_H}"></iframe></div>
+          <span class="work-next">${esc(C.portfolio.next)}</span></p></div>
+        <ul class="pcards">${projects.map((p, i) => `<li class="pc">
+          ${p.own ? `<div class="pc-img" data-k="${p.key}"><iframe src="${ASSET}demos/${p.key}/index.html${p.home}" title="" aria-hidden="true" tabindex="-1" loading="lazy" width="${APP_W}" height="${APP_H}"></iframe></div>`
+            : `<div class="pc-img pc-ph" aria-hidden="true">${featureIcon(...(CARD_ICON[p.key] || ['work', i]))}</div>`}
           <div class="pc-body"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
             <button type="button" class="pc-more" data-p="${p.key}" aria-haspopup="dialog">${esc(PJ.learn)}<span class="visually-hidden">: ${esc(p.t)}</span> &rarr;</button></div></li>`).join('')}
         </ul></div>`],
@@ -353,7 +360,11 @@ function mountProjects(projects, PJ, C) {
     $('pd-full').href = url;
     sw.querySelector('[data-view="shots"]').hidden = !p.shots.length;
     sw.hidden = !p.shots.length;
-    box.innerHTML = `<iframe src="${url}" title="${esc(fmtTitle(PJ.frameTitle, p.app || p.t))}" width="${APP_W}" height="${APP_H}"></iframe>`;
+    // Client work: the description only, no demo (no permission yet).
+    dlg.classList.toggle('pd-textonly', !p.own);
+    media.hidden = !p.own;
+    text.style.maxHeight = '';
+    box.innerHTML = p.own ? `<iframe src="${url}" title="${esc(fmtTitle(PJ.frameTitle, p.app || p.t))}" width="${APP_W}" height="${APP_H}"></iframe>` : '';
     view('demo');
     dlg.showModal();
     fit();
@@ -432,6 +443,7 @@ function mountNav(ids, pager) {
     if (dir) requestAnimationFrame(() => panel.classList.add(dir));
     for (const other of ids) document.getElementById('panel-' + other).hidden = other !== id;
     document.documentElement.classList.toggle('at-home', id === 'home');
+    document.documentElement.classList.toggle('at-work', id === 'work');
     nav.querySelectorAll('[data-sec]').forEach(a => a.toggleAttribute('aria-current', a.dataset.sec === id));
     nav.querySelectorAll('[data-sec]').forEach(a => { if (a.hasAttribute('aria-current')) a.setAttribute('aria-current', 'page'); });
     tops.forEach(b => b.classList.toggle('is-current', !!b.nextElementSibling.querySelector(`[data-sec="${id}"]`)));
