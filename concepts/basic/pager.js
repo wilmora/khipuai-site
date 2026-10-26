@@ -40,17 +40,43 @@ export function mountPager({ labels, onEdge = () => false }) {
   root.classList.add('paged');
   const prev = bar.querySelector('.pg-prev'), next = bar.querySelector('.pg-next'), dots = bar.querySelector('.pg-dots'), count = bar.querySelector('.pg-count');
 
-  let pages = [[0, 0, 0]], cur = 0, total = 0;
+  let pages = [[0, 0, 0]], cur = 0, total = 0, tailTop = 0, tailH = 0;
 
   // Nothing here may scroll: a browser that scrolls a clipped box to show a
   // focused or linked element is put back, and the pager turns the page.
   W.addEventListener('scroll', () => { W.scrollTop = 0; W.scrollLeft = 0; });
   addEventListener('scroll', () => { if (scrollY || scrollX) scrollTo(0, 0); });
 
-  const unclip = () => { inner.style.transform = ''; inner.style.clipPath = ''; };
+  // The closing band and footer sit at the bottom of the window on the last
+  // page, instead of floating under the content with blank space below
+  // (Alex, 2026-10-26: "get the black bar at the bottom").
+  const tail = [inner.querySelector('.band'), inner.querySelector('.ft')].filter(Boolean);
+  const unclip = () => { inner.style.transform = ''; inner.style.clipPath = ''; tail.forEach(el => { el.style.transform = ''; }); };
+
+  // Questions open one at a time, and each list keeps the height of its
+  // tallest open answer, so opening a question never pushes the page onto a
+  // new one (Alex, 2026-10-26).
+  const accordions = [...new Set([...inner.querySelectorAll('details')].map(d => d.parentElement))]
+    .map(box => ({ box, items: [...box.children].filter(c => c.tagName === 'DETAILS') }))
+    .filter(g => g.items.length > 1);
+  accordions.forEach(g => g.items.forEach(d => {
+    // Close the others the moment a closed question is clicked open.
+    d.querySelector('summary')?.addEventListener('click', () => { if (!d.open) g.items.forEach(x => { if (x !== d) x.open = false; }); });
+  }));
+  function reserveAccordions() {
+    for (const g of accordions) {
+      g.box.style.minHeight = '';
+      const was = g.items.map(d => d.open);
+      let max = 0;
+      for (const d of g.items) { g.items.forEach(x => { x.open = x === d; }); max = Math.max(max, g.box.getBoundingClientRect().height); }
+      g.items.forEach((x, i) => { x.open = was[i]; });
+      g.box.style.minHeight = `${Math.ceil(max)}px`;
+    }
+  }
 
   function measure() {
     unclip();
+    reserveAccordions();
     const H = W.clientHeight;
     root.style.setProperty('--pageh', `${H}px`);
     const ir = inner.getBoundingClientRect();
@@ -69,7 +95,13 @@ export function mountPager({ labels, onEdge = () => false }) {
       .filter(el => el.getClientRects().length).map(el => Math.floor(el.getBoundingClientRect().top - ir.top));
     const clear = y => boxes.every(([t, b]) => !(t < y - 0.5 && b > y + 0.5));
     // A page may start at the top of any piece where no other piece is cut.
-    const tops = [...new Set(boxes.map(b => Math.floor(b[0])))].sort((a, b) => a - b).filter(clear);
+    // The closing band and footer always share the last page with content:
+    // the last page leaves room for them, and they sit at its bottom.
+    tailTop = tail.length ? Math.min(...tail.map(el => el.getBoundingClientRect().top - ir.top)) : total;
+    tailH = total - tailTop;
+    // Where the content ends, not counting the blank gap above the band.
+    const contentEnd = Math.max(0, ...boxes.filter(b => b[0] < tailTop - 1).map(b => b[1]));
+    const tops = [...new Set(boxes.map(b => Math.floor(b[0])))].sort((a, b) => a - b).filter(clear).filter(t => t < tailTop - 1);
     const out = [];
     let y0 = 0;
     for (let guard = 0; guard < 200; guard++) {
@@ -79,12 +111,12 @@ export function mountPager({ labels, onEdge = () => false }) {
       const above = Math.max(0, ...boxes.filter(b => b[0] < y0).map(b => b[1]));
       const pad = y0 ? Math.min(20, Math.max(0, y0 - above - 6)) : 0;
       const room = H - pad;
-      if (total - y0 <= room + 1) { out.push([y0, total, pad]); break; }
+      if (contentEnd - y0 <= room - tailH + 1 || (tailH >= room && contentEnd - y0 <= 1)) { out.push([y0, total, pad]); break; }
       const fits = tops.filter(c => c > y0 + 1 && c <= y0 + room);
       const roomy = fits.filter(c => c > y0 + room * 0.3);
       // Prefer a section start when the page is still at least 45% full.
-      const atStart = starts.filter(c => c > y0 + room * 0.45 && c <= y0 + room && clear(c)).pop();
-      const end = atStart ?? (roomy.length ? roomy : fits).pop() ?? y0 + room;
+      const atStart = starts.filter(c => c < tailTop - 1 && c > y0 + room * 0.45 && c <= y0 + room && clear(c)).pop();
+      const end = Math.min(atStart ?? (roomy.length ? roomy : fits).pop() ?? y0 + room, tailTop);
       out.push([y0, end, pad]); y0 = end;
     }
     return out;
@@ -105,14 +137,20 @@ export function mountPager({ labels, onEdge = () => false }) {
   function show(i) {
     cur = Math.max(0, Math.min(pages.length - 1, i));
     const [a, b, pad] = pages[cur];
+    const H = W.clientHeight;
+    // On the last page the band's bottom meets the window's bottom.
+    const last = cur === pages.length - 1 && tail.length > 0;
+    const shift = last ? Math.round(a - pad + H - tailH - tailTop) : 0;
+    tail.forEach(el => { el.style.transform = shift ? `translateY(${shift}px)` : ''; });
     inner.style.transform = pages.length > 1 ? `translateY(${pad - a}px)` : '';
-    inner.style.clipPath = pages.length > 1 ? `inset(${Math.max(0, a - pad)}px 0 ${Math.max(0, total - b)}px 0)` : '';
+    const clipBottom = last ? Math.round(total - (a - pad + H)) : Math.max(0, total - b);
+    inner.style.clipPath = pages.length > 1 ? `inset(${Math.max(0, a - pad)}px 0 ${clipBottom}px 0)` : '';
     W.dataset.shown = String(Math.round(b - a + pad));   // visible height of this page (for checks)
     drawBar();
   }
 
   const pageOf = y => { const i = pages.findIndex(([a, b]) => y >= a - 1 && y < b - 1); return i < 0 ? pages.length - 1 : i; };
-  const yOf = el => { const t = inner.style.transform, c = inner.style.clipPath; unclip(); const y = el.getBoundingClientRect().top - inner.getBoundingClientRect().top; inner.style.transform = t; inner.style.clipPath = c; return y; };
+  const yOf = el => { const t = inner.style.transform, c = inner.style.clipPath, tt = tail.map(x => x.style.transform); unclip(); const y = el.getBoundingClientRect().top - inner.getBoundingClientRect().top; inner.style.transform = t; inner.style.clipPath = c; tail.forEach((x, i) => { x.style.transform = tt[i]; }); return y; };
 
   let busyLayout = false;
   function layout(keepY = pages[cur] ? pages[cur][0] : 0) {
