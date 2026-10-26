@@ -70,3 +70,17 @@ test('the removed wording stays removed', () => {
   assert.doesNotMatch(read('basic.js'), /C\.fit\.notForYou/);
   assert.equal(LABELS.en.get[1] + ' ' + LABELS.en.get[2], 'An action plan to put in place.');
 });
+
+// The leads script (edge/leads/Code.gs) only accepts its own band ids; a
+// renamed band once made it reject every submission (2026-10-26).
+test('the self-assessment sends band ids the leads script accepts', () => {
+  const quiz = read('self-assessment/quiz.js');
+  const gs = readFileSync(new URL('edge/leads/Code.gs', ROOT), 'utf8');
+  const known = Object.keys(Function(`return ${gs.match(/const BANDS = (\{[\s\S]*?\n\});/)[1]}`)());
+  const sent = [...quiz.matchAll(/id:'(lean|leaking|bleeding|[a-z]+)',\s+name:/g)].map(m => m[1]);
+  assert.deepEqual(sent, known);
+  assert.match(quiz, /band: band\.id/);
+  const leak = Object.keys(Function(`return ${gs.match(/const LEAK = (\{[\s\S]*?\n\});/)[1]}`)());
+  const parts = [...quiz.matchAll(/\{ id:'([a-z]+)', kick:/g)].map(m => m[1]);
+  assert.deepEqual(parts, leak);
+});
