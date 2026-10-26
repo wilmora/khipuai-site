@@ -30,11 +30,22 @@
 /* Long buttons (mostly Spanish) wrap inside their column on narrow phones
    instead of pushing the page sideways. */
 .doc .cta-row .btn{max-width:100%;white-space:normal;text-align:center;padding-top:8px;padding-bottom:8px;}
+/* A plain link beside the main button reads as the second button, outlined,
+   the same pair as the homepage (Book a call, then the outlined choice). */
+.doc .cta-row > a:not(.btn){display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:8px 20px;border-radius:6px;
+  max-width:100%;white-space:normal;text-align:center;background:transparent;color:var(--ink);border:2px solid var(--ink);font-weight:700;font-size:15px;text-decoration:none;}
+.doc .cta-row > a:not(.btn):hover{background:var(--ink);color:var(--paper);}
 
 /* Icon cards and step timelines in place of long text (2026-10-21). */
 .doc .items li > .feature-icon{display:flex;margin-bottom:8px;}
 .doc .items li > .feature-icon + h3{margin-top:0;}
 .doc .items li h3:only-of-type:last-child{font-weight:600;}
+/* The "worth it" signs are short one-liners: a single checklist column with
+   the icon beside each line reads cleaner than a two-column grid. */
+.doc .items[data-icons="problem"]{grid-template-columns:minmax(0,1fr);gap:0;max-width:720px;}
+.doc .items[data-icons="problem"] li{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:0;border-bottom:1px solid var(--line);}
+.doc .items[data-icons="problem"] li > .feature-icon{flex:none;margin-bottom:0;}
+.doc .items[data-icons="problem"] h3{margin:0;font-size:17px;text-wrap:pretty;}
 .doc .timeline{margin-top:2px;}
 .doc .timeline h3{font-size:17px;}
 .doc .timeline p{font-size:15px;max-width:60ch;}
@@ -42,3 +53,7 @@
 .doc .timeline .node-own .feature-icon svg{width:18px;height:18px;}
 .doc .team{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
 @media (max-width:899px){.doc .team{grid-template-columns:minmax(0,1fr);}}
+/* Solution Design: the "Who leads it" block is hidden (Alex, 2026-10-26).
+   Hidden in CSS so the page text keeps its place for the wording tool; remove
+   the section from the HTML when the wording edits are applied. */
+.doc section[aria-labelledby="h-who"]{display:none;}
