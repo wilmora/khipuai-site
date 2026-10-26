@@ -155,7 +155,7 @@ export function render(C, L) {
             <div><h3>Alex Pena</h3><p class="role">${esc(L.alex.role)}</p><p>${esc(L.alex.bio)}</p></div></div>
         </div>
         <ul class="principles">${C.trust.map(([t, d]) => `<li><strong>${esc(t)}</strong><span>${esc(d)}</span></li>`).join('')}</ul>
-        <p class="more"><a href="${L.aboutHref}">${esc(L.aboutLink)} &rarr;</a></p>`)],
+        <p class="more"><a class="btn line" href="${L.aboutHref}">${esc(L.aboutLink)}</a></p>`)],
   ];
 
   // Navigation after BotLogix and Fractional AI: the logo on the left, a few
