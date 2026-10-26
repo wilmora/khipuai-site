@@ -53,7 +53,10 @@
 .doc .timeline .node-own .feature-icon svg{width:18px;height:18px;}
 .doc .team{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
 @media (max-width:899px){.doc .team{grid-template-columns:minmax(0,1fr);}}
-/* Solution Design: the "Who leads it" block is hidden (Alex, 2026-10-26).
+/* Solution Design: the "Who leads it" block and the closing "See what your
+   business should automate" block are hidden (Alex, 2026-10-26); the dark
+   band below already carries the call to action.
    Hidden in CSS so the page text keeps its place for the wording tool; remove
    the section from the HTML when the wording edits are applied. */
-.doc section[aria-labelledby="h-who"]{display:none;}
+.doc section[aria-labelledby="h-who"],
+.doc section[aria-labelledby="h-final"]{display:none;}
