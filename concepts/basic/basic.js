@@ -29,6 +29,10 @@ const SHOW_SHOTS = false;          // the screenshots view in Learn more
 // KHIPUAI's own products keep their live demo.
 const OWN_PRODUCTS = new Set(['support']);
 // The plain picture for each client project: one line icon on the dark card.
+// Khipu Support's card shows its Today screen close up (greeting, the four
+// counts and the replies waiting), without the side menu: [left, top, width]
+// of the 1280x800 screen.
+const CARD_CROP = { support: [222, 66, 720] };
 const CARD_ICON = { payroll: ['work', 1], aca: ['deliverable', 0], hub: ['work', 0], review: ['work', 3], materials: ['problem', 0], whatsapp: ['work', 2] };
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const h2 = (h, em) => `<h2>${esc(h)}${em ? ` <em>${esc(em)}</em>` : ''}</h2>`;
@@ -65,7 +69,7 @@ export function render(C, L) {
   const projects = PJ.items.filter(x => !x.hidden).map(x => {
     const base = x.from === undefined ? {} : C.portfolio.items[x.from];
     return { key: x.key, own: OWN_PRODUCTS.has(x.key), home: x.home || '', card: x.card, app: x.app, shots: SHOW_SHOTS ? x.shots : [], alt: x.alt || [], t: title(shown(x.t ?? base.t)), d: shown(x.d ?? base.d), who: shown(x.who ?? base.who), why: shown(x.why) };
-  });
+  }).sort((a, b) => b.own - a.own);   // KHIPUAI's own products lead the portfolio
 
   const tabs = [
     // The welcome screen (Alex, 2026-10-19): the logo, who we are in the
@@ -183,8 +187,11 @@ export function render(C, L) {
    card's Learn more opens the same screen), and screen readers skip them. */
 function mountPreviews() {
   const ro = new ResizeObserver(es => es.forEach(e => {
-    const f = e.target.querySelector('iframe');
-    if (f) f.style.transform = `scale(${e.contentRect.width / APP_W})`;
+    const f = e.target.querySelector('iframe'); if (!f) return;
+    // A product's card can zoom in on its most telling part of the screen.
+    const [x, y, w] = CARD_CROP[e.target.dataset.k] || [0, 0, APP_W];
+    const k = e.contentRect.width / w;
+    f.style.transform = `translate(${-x * k}px, ${-y * k}px) scale(${k})`;
   }));
   document.querySelectorAll('.pc-img').forEach(b => ro.observe(b));
 }
