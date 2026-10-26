@@ -33,9 +33,9 @@ const PARTS = [
 ];
 
 const BANDS = [
-  { max:6,        name:'Low',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
-  { max:14,       name:'Moderate',  copy:'You have several clear opportunities to cut repetitive work. Solution Design puts real hours and dollars on them and shows what to fix first.' },
-  { max:Infinity, name:'High', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
+  { max:6,        id:'lean',     name:'Low',     copy:'Your back office is in good shape. A quick win or two, but automation is not urgent.' },
+  { max:14,       id:'leaking',  name:'Moderate',  copy:'You have several clear opportunities to cut repetitive work. Solution Design puts real hours and dollars on them and shows what to fix first.' },
+  { max:Infinity, id:'bleeding', name:'High', copy:'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.' },
 ];
 
 const LEAK = {
@@ -165,7 +165,9 @@ export function mountQuiz(C) {
     $('leaks').hidden = false;
     $('rescta').hidden = false;
     $('bookbtn').href = bookingUrl(sc, band.name, top);
-    lastResult = { score: sc, band: band.name.toLowerCase(), top };
+    // The leads script knows the bands by these ids (edge/leads/Code.gs BANDS),
+    // not by the names shown on the page.
+    lastResult = { score: sc, band: band.id, top };
     window.KHIPUAIMeta?.scoreViewed();
     $('scorenote').textContent = `All ${QS.length} answered. Your answers stay in this browser unless you book a call or ask for your result by email.`;
   }
