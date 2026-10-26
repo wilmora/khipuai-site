@@ -65,13 +65,14 @@
    formal document, a contents list under the title, numbered sections
    (Alex, 2026-10-26: "more professional", one scrolling page each). */
 .doc.scroll main{counter-reset:sec;}
-.doc.scroll main > *{max-width:860px;}
+.doc.scroll main > *{max-width:none;}
 .doc.scroll .doc-hero{padding-bottom:28px;}
 .doc.scroll .doc-hero h1{font-size:clamp(32px,3.6vw,46px);}
-.doc.scroll .doc-hero .lede{font-size:17px;}
+.doc.scroll .doc-hero{max-width:none;}
+.doc.scroll .doc-hero .lede{font-size:17px;max-width:none;}
 .doc.scroll .toc{margin:0 0 8px;padding:18px 22px;border:1px solid var(--line);border-radius:8px;background:var(--cream);}
 .doc.scroll .toc .kick{margin:0 0 10px;}
-.doc.scroll .toc ol{margin:0;padding:0;list-style:none;columns:2;column-gap:40px;counter-reset:toc;}
+.doc.scroll .toc ol{margin:0;padding:0;list-style:none;columns:4 200px;column-gap:40px;counter-reset:toc;}
 .doc.scroll .toc li{counter-increment:toc;break-inside:avoid;padding:4px 0;font-size:15px;}
 .doc.scroll .toc li::before{content:counter(toc) ".";display:inline-block;min-width:1.7em;color:var(--copper-ink);font-weight:700;}
 .doc.scroll .toc a{color:var(--ink);text-decoration:none;}
