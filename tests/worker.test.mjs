@@ -1,15 +1,20 @@
-// Unit tests for edge/worker.js. Run: node --test tests/
+// Unit tests for edge/worker.js. Run: node --test tests/worker.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { handle, prefersMarkdown, markdownPath } from '../edge/worker.js';
+import { handle, prefersMarkdown, markdownPath, isPrivatePath } from '../edge/worker.js';
 
 // A fake GitHub Pages origin: a few files, 404 for the rest, Vary like Pages.
 const FILES = {
   '/': ['text/html; charset=utf-8', '<h1>Home</h1>'],
   '/index.md': ['text/markdown; charset=utf-8', '# Home\n\nHello agents.\n'],
   '/privacy.html': ['text/html; charset=utf-8', '<h1>Privacy</h1>'],
+  '/404.html': ['text/html; charset=utf-8', '<h1>404</h1>'],
   '/404.md': ['text/markdown; charset=utf-8', '# 404: Page not found\n\n[llms.txt](https://khipuai.co/llms.txt)\n'],
   '/llms.txt': ['text/plain; charset=utf-8', '# KHIPUAI'],
+  '/AGENTS.md': ['text/markdown; charset=utf-8', '# Internal Instructions'],
+  '/README.md': ['text/markdown; charset=utf-8', '# Repo Readme'],
+  '/docs/GO_LIVE_CHECKLIST.md': ['text/markdown; charset=utf-8', '# Checklist'],
+  '/edge/leads/Code.gs': ['text/plain; charset=utf-8', 'function doPost() {}'],
 };
 const origin = async req => {
   const { pathname } = new URL(req.url);
@@ -42,20 +47,52 @@ test('markdownPath maps pages and skips assets', () => {
   assert.equal(markdownPath('/shared/kinetic.js'), null);
 });
 
-test('homepage returns Markdown with Vary: Accept', async () => {
+test('isPrivatePath identifies internal repo files and directories', () => {
+  assert.equal(isPrivatePath('/AGENTS.md'), true);
+  assert.equal(isPrivatePath('/agents.md'), true);
+  assert.equal(isPrivatePath('/README.md'), true);
+  assert.equal(isPrivatePath('/demos/README.md'), true);
+  assert.equal(isPrivatePath('/logos/SOURCES.md'), true);
+  assert.equal(isPrivatePath('/docs/GO_LIVE_CHECKLIST.md'), true);
+  assert.equal(isPrivatePath('/edge/leads/Code.gs'), true);
+  assert.equal(isPrivatePath('/tools/prerender.py'), true);
+  assert.equal(isPrivatePath('/tests/site.test.mjs'), true);
+  assert.equal(isPrivatePath('/'), false);
+  assert.equal(isPrivatePath('/index.md'), false);
+  assert.equal(isPrivatePath('/demos/support/index.html'), false);
+  assert.equal(isPrivatePath('/llms.txt'), false);
+});
+
+test('internal repo paths return 404 even if present on origin', async () => {
+  for (const p of ['/AGENTS.md', '/README.md', '/docs/GO_LIVE_CHECKLIST.md', '/edge/leads/Code.gs']) {
+    const r = await get(p, 'text/html');
+    assert.equal(r.status, 404, p);
+    assert.equal(r.headers.get('X-Frame-Options'), 'SAMEORIGIN');
+    assert.equal(r.headers.get('X-Content-Type-Options'), 'nosniff');
+  }
+});
+
+test('homepage returns Markdown with Vary: Accept and security headers', async () => {
   const r = await get('/', 'text/markdown');
   assert.equal(r.status, 200);
   assert.match(r.headers.get('Content-Type'), /^text\/markdown/);
   assert.match(r.headers.get('Vary'), /\bAccept\b/);
+  assert.equal(r.headers.get('X-Content-Type-Options'), 'nosniff');
+  assert.equal(r.headers.get('X-Frame-Options'), 'SAMEORIGIN');
+  assert.equal(r.headers.get('Referrer-Policy'), 'strict-origin-when-cross-origin');
   const body = await r.text();
   assert.ok(body.startsWith('# Home'));
 });
 
-test('homepage returns HTML for browsers, with Vary: Accept added', async () => {
+test('homepage returns HTML for browsers, with Vary: Accept and CSP added', async () => {
   const r = await get('/', 'text/html');
   assert.equal(r.status, 200);
   assert.match(r.headers.get('Content-Type'), /^text\/html/);
   assert.equal(r.headers.get('Vary'), 'Accept-Encoding, Accept');
+  assert.equal(r.headers.get('X-Frame-Options'), 'SAMEORIGIN');
+  assert.equal(r.headers.get('X-Content-Type-Options'), 'nosniff');
+  assert.equal(r.headers.get('Referrer-Policy'), 'strict-origin-when-cross-origin');
+  assert.ok(r.headers.get('Content-Security-Policy')?.includes("frame-ancestors 'self'"));
   assert.equal(await r.text(), '<h1>Home</h1>');
 });
 
@@ -82,10 +119,12 @@ test('existing page without a Markdown twin falls back to HTML', async () => {
   assert.match(r.headers.get('Vary'), /\bAccept\b/);
 });
 
-test('non-HTML files pass through untouched', async () => {
+test('non-HTML files pass through with baseline security headers', async () => {
   const r = await get('/llms.txt', 'text/markdown');
   assert.equal(r.status, 200);
   assert.equal(r.headers.get('Vary'), 'Accept-Encoding');
+  assert.equal(r.headers.get('X-Content-Type-Options'), 'nosniff');
+  assert.equal(r.headers.get('X-Frame-Options'), 'SAMEORIGIN');
 });
 
 test('HEAD gets Markdown headers and no body', async () => {
