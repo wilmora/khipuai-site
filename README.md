@@ -36,3 +36,5 @@ Meta Pixel uses dataset `1112143148017821` through `shared/meta-pixel.js`. It lo
 ## Deployment
 
 Production deploys automatically from `main` through GitHub Pages. Do not push unreviewed work directly to `main`. The custom domain is configured by `CNAME`.
+
+The Pages workflow runs `node --test tests/*.test.mjs` first; if any test fails, nothing is deployed. The same tests run on every pull request (`.github/workflows/tests.yml`). `tests/security.test.mjs` blocks client names anywhere in the repository (listed as hashes in `tests/confidential.mjs`), links to local files in anything that ships, and non-https links in published PDFs.
