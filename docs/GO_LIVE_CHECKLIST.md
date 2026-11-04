@@ -12,8 +12,8 @@ rewritten, indexing on, canonical and hreflang, old addresses forwarding (the
 blog forwards to the homepage, Alex's call), new 404, sitemap, Markdown twins
 and llms.txt, structured data, Google Analytics and the opt-in Meta Pixel kept
 (Alex's call), the self-assessment email form posting to the same endpoint as
-before. Client miniatures and screenshots were left off until Tesseon, APUS and
-GLH give permission (Wil, 2026-10-26).
+before. Client miniatures and screenshots were left off until each client gives
+permission (Wil, 2026-10-26).
 
 ---
 

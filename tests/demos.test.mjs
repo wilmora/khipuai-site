@@ -4,6 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { confidentialLines, NAMES, CODES } from './confidential.mjs';
 
 const DIR = new URL('../demos/', import.meta.url);
 const { PROJECTS } = await import(new URL('../projects.js', DIR));
@@ -17,8 +18,8 @@ const walk = url => readdirSync(url).flatMap(name => {
   return statSync(u).isDirectory() ? walk(new URL(`${name}/`, url)) : [u];
 });
 const TEXT = /\.(html|js|css|md)$/;
-// Client brands, people and codes that must never appear in the public repo.
-const FORBIDDEN = /tesseon|apusito|\bapus\b|gastineau|\bglh\b|log homes|factoa|kestrel|riverside|northgate|meadowlark|krissie|\b110[0-9]\b|\b1120\b/i;
+// Client brands, people and codes that must never appear in the public repo
+// are listed in tests/confidential.mjs, as hashes only.
 
 test('the dialog text matches in English and Spanish', () => {
   const [en, es] = [PROJECTS.en, PROJECTS.es];
@@ -51,7 +52,7 @@ test('no miniature talks to a server, embeds a page or names a client', () => {
     const code = /\.css$/.test(u.pathname) ? src.replace(/\/\*[\s\S]*?\*\//g, '') : src;
     assert.doesNotMatch(code.replaceAll('http://www.w3.org/2000/svg', ''), /https?:\/\//, `${name}: outside URL`);
     assert.doesNotMatch(src, /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|<iframe|@import/, `${name}: network call or embed`);
-    assert.doesNotMatch(src, FORBIDDEN, `${name}: client name or code`);
+    assert.deepEqual(confidentialLines(src, [NAMES, CODES]), [], `${name}: client name or code on these lines`);
     assert.ok(!src.includes('—'), `${name}: em dash`);
   }
 });
