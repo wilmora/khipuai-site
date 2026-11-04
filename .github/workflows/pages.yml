@@ -5,24 +5,51 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+# Least privilege: the token can only read the repository, except in the
+# deploy job, which also gets the two permissions Pages needs.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
+  # The site's checks run before every deploy. If any test fails, the deploy
+  # job never starts and the live site stays as it was.
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run the site tests
+        run: node --test tests/*.test.mjs
+
   deploy:
+    needs: test
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Stage public files only (strip internal docs, scripts, and tests)
         run: |
@@ -39,6 +66,21 @@ jobs:
             --exclude='tools/' \
             --exclude='tests/' \
             ./ _site/
+
+      # A second line of defence behind the excludes above: stop the deploy if
+      # an internal file, or a link to a file on someone's computer, would ship.
+      - name: Check the artifact holds no internal files or local links
+        run: |
+          for p in AGENTS.md README.md docs edge tools tests .github .gitignore demos/README.md logos/SOURCES.md; do
+            if [ -e "_site/$p" ]; then
+              echo "::error::Internal path in the Pages artifact: $p"
+              exit 1
+            fi
+          done
+          if grep -rl 'file:///' _site; then
+            echo "::error::Files above link to file:/// addresses (local paths)."
+            exit 1
+          fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
