@@ -2,7 +2,9 @@
    bands, area notes and wording are the earlier live page's, unchanged, with
    one question per card and Back, Next and Start over. The email form posts
    to the same leads endpoint (C.leads) as before, and the score view and the
-   lead are counted the same way (Meta only with consent, Google Analytics). */
+   lead are counted the same way (Meta only with consent, Google Analytics).
+   With a site key in C.turnstile, the form also carries a Cloudflare
+   Turnstile check, which the leads script verifies (edge/leads/Code.gs). */
 
 const PARTS = [
   { id:'reentry', kick:'Part one', head:'Data re-entry, <em>the silent hours.</em>', q:[
@@ -47,6 +49,58 @@ const LEAK = {
 };
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+/* Optional Cloudflare Turnstile check on the email form. siteKey is
+   C.turnstile; empty or missing means off, so nothing loads and the form is
+   unchanged. Cloudflare's script loads the first time someone uses the form
+   (focus, tap or submit), so a visitor who never asks for the result by
+   email never reaches Cloudflare. The widget goes in a new box just before
+   the submit button. A token works once: reset() asks for a fresh one. */
+const TURNSTILE_JS = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+function turnstileCheck(siteKey, form, btn) {
+  if (typeof siteKey !== 'string' || !siteKey.trim()) return null;
+  let token = '', widget, loading = false;
+  const load = () => {
+    if (loading) return;
+    loading = true;
+    const script = document.createElement('script');
+    script.src = TURNSTILE_JS;
+    script.async = true;
+    script.addEventListener('load', () => {
+      const box = document.createElement('div');
+      box.id = 'lf-check';
+      btn.before(box);
+      try {
+        widget = window.turnstile.render(box, {
+          sitekey: siteKey.trim(),
+          theme: 'light',
+          callback: t => { token = t; },
+          'expired-callback': () => { token = ''; },
+          'error-callback': () => { token = ''; },
+          'timeout-callback': () => { token = ''; },
+        });
+      } catch (err) {
+        console.warn('The Turnstile check could not start.', err);
+      }
+    });
+    document.head.append(script);
+  };
+  for (const type of ['focusin', 'pointerdown']) form.addEventListener(type, load, { once: true });
+  return {
+    load,
+    token: () => token,
+    reset() { token = ''; if (widget !== undefined) window.turnstile.reset(widget); },
+  };
+}
+
+// The worksheet link the status line offers when an email may not arrive.
+function worksheetLink() {
+  const a = document.createElement('a');
+  a.href = '/self-assessment.pdf';
+  a.download = '';
+  a.textContent = 'download the worksheet';
+  return a;
+}
 
 // Flat list of the 15 questions: { part, w, t }.
 const QS = PARTS.flatMap(p => p.q.map(([w, t]) => ({ part: p, w, t })));
@@ -204,11 +258,17 @@ export function mountQuiz(C) {
   if (!C.leads) { form.hidden = true; $('pdfonly').hidden = false; return; }
   const btn = form.querySelector('button[type="submit"]');
   const label = btn.textContent;
+  const check = turnstileCheck(C.turnstile, form, btn);   // null when C.turnstile is empty
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const email = form.email.value.trim();
     if (!lastResult) { msg.textContent = 'Answer all 15 questions first, then your result can be sent.'; return; }
     if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { msg.textContent = 'Please check the email address.'; form.email.focus(); return; }
+    if (check && !check.token()) {
+      check.load();
+      msg.replaceChildren('Please complete the security check above the button, then try again. If no check appears, you can ', worksheetLink(), ' instead.');
+      return;
+    }
     const here = new URLSearchParams(location.search);
     const body = JSON.stringify({
       name: form.name.value.trim(), email, company: form.company.value.trim(),
@@ -216,18 +276,25 @@ export function mountQuiz(C) {
       ...lastResult,
       utm: { source: here.get('utm_source') || '', medium: here.get('utm_medium') || '',
              campaign: here.get('utm_campaign') || '', content: here.get('utm_content') || '' },
+      ...(check ? { cf: check.token() } : {}),
     });
     btn.disabled = true; btn.textContent = 'Sending...';
     try {
       await fetch(C.leads, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
       form.querySelectorAll('input').forEach(i => { i.disabled = true; });
       btn.textContent = 'Sent';
-      msg.textContent = `Your result is on its way to ${email}. If it has not arrived in a few minutes, please check your spam folder.`;
+      // The page cannot read the script's reply (no-cors), and a request a
+      // daily cap or the check drops looks the same as one that was sent, so
+      // the worksheet is offered too. Text nodes only: the address is shown
+      // as typed, never parsed as HTML.
+      msg.replaceChildren(`Your result is on its way to ${email}. If it has not arrived in a few minutes, please check your spam folder or `, worksheetLink(), '.');
       window.KHIPUAIMeta?.lead();
       if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'self_assessment_email' });
     } catch {
       btn.disabled = false; btn.textContent = label;
       msg.textContent = 'The request did not go through. Please try again, or email alexp@khipuai.co.';
+    } finally {
+      check?.reset();
     }
   });
 }
