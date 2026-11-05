@@ -13,34 +13,77 @@ any new permission and deploys a new version (see "Changing the script").
 
 ## One-time setup (about 5 minutes, in the Google account that should own the leads)
 
-1. Create a Google Sheet named **KHIPUAI Leads**.
+1. Create a Google Sheet named **KHIPUAI Leads** and share it with no one
+   (see "Keep the sheet private").
 2. In the sheet: **Extensions > Apps Script**. Delete the starter code, paste
    all of `Code.gs`, and save.
 3. Pick `testSetup` in the function list and press **Run**. Approve the
-   permissions (Sheets, send email, connect to an external service). It
-   creates the `Leads` tab and sends nothing.
+   permissions (this spreadsheet only, send email, connect to an external
+   service). It creates the `Leads` tab and sends nothing.
 4. **Deploy > New deployment > Web app**. Execute as: **Me**. Who has access:
    **Anyone**. Deploy and copy the URL ending in `/exec`.
-5. Put that URL in `shared/content.js` as `leads: '<url>'`, then run a real
-   test from the live page with your own address.
+5. Put that URL in `shared/content.js` as `leads: '<url>'`, then make the
+   test submission (step 5 of "Changing the script").
 
 ## Changing the script (redeploy, keeps the same URL)
 
+The script sends email as you, so read what changed before you paste it: on
+GitHub, open the pull request or commit that changed `edge/leads/Code.gs` and
+read every changed line. Paste only a version from the `main` branch.
+
 1. Open the **KHIPUAI Leads** sheet, then **Extensions > Apps Script**.
 2. In `Code.gs` in the editor, select everything, delete it, paste all of the
-   new `Code.gs` from this folder, and save (Ctrl+S, or Cmd+S on a Mac).
+   new `Code.gs` from this folder, and save (Ctrl+S, or Cmd+S on a Mac). Its
+   first line is `/** @OnlyCurrentDoc */`.
 3. Pick `testSetup` in the function list and press **Run**. If Google asks
-   for permission, review and approve it. The log line ends with whether the
-   Turnstile check is on or off.
+   for permission, review and approve it. The log line shows how many emails
+   the script can still send today and ends with whether the Turnstile check
+   is on or off.
 4. **Deploy > Manage deployments**, select the active web app deployment,
    press **Edit** (the pencil), set **Version: New version**, and press
    **Deploy**. Editing that same deployment keeps the `/exec` URL, so the
    site does not change. Do not use **Deploy > New deployment** for an
    update: a new deployment gets a new URL that the site does not know.
-5. From the live page, send your own result to your own address. Check that
-   the email arrives and the row appears in the sheet.
+5. Test submission: from the live page, send your own result to your own
+   address. Check all three: the result email arrives; the row appears with
+   **Result emailed** set to `yes`; and the owner notice arrives, with a
+   subject like `New KHIPUAI lead: 18/24 (Bleeding)` and `Sheet:` as its
+   first line. If one is missing, open **Executions** in the Apps Script
+   editor and read the error for `doPost`.
 
-## What the November 2026 hardening changed
+### The narrower Sheets permission
+
+The first line of `Code.gs`, `/** @OnlyCurrentDoc */`, asks Google for access
+to this one spreadsheet instead of every spreadsheet in your account. Google
+keeps the broader permission an earlier version was given until you remove
+it. Once the five steps above work:
+
+1. At myaccount.google.com, go to **Security > Third-party connections** (it
+   may be called "Your connections to third-party apps & services"), open
+   this Apps Script project (listed under its project name) and remove its
+   access. From now until step 2 the form fails while the page still shows
+   "Sent", so go straight on.
+2. In the Apps Script editor, run `testSetup` again and approve. The Sheets
+   permission should now cover only the spreadsheet the script belongs to,
+   not all your spreadsheets.
+3. Make the test submission again (step 5 above).
+
+If either test submission fails with a permission problem (no row; a notice
+with `NOT SAVED` in its subject and a permission error; or a `doPost` error
+in **Executions** about `getActiveSpreadsheet` or a missing permission), the
+narrower permission does not work for this web app. Delete the first line,
+`/** @OnlyCurrentDoc */`, save, run `testSetup`, approve, deploy a new
+version (step 4), and test again. The rest of the script works the same
+without that line.
+
+### Keep the sheet private
+
+Share the KHIPUAI Leads sheet with no one. Anyone who can edit the sheet can
+also open and change this script, which sends email as you, and the sheet
+holds visitors' names and addresses. To give someone the leads, send a copy
+or an export instead.
+
+## What the first November 2026 hardening changed
 
 - **First name.** Only letters (any alphabet, with accents), spaces,
   apostrophes (`'` and `’`) and hyphens are kept. Digits, dots, slashes, `@`
@@ -65,6 +108,19 @@ any new permission and deploys a new version (see "Changing the script").
   site sends.
 - **Tests:** `node --test tests/leads.test.mjs` runs this `Code.gs` against
   small fakes of the Google services. CI runs it with the other site tests.
+
+## What the second round changed (November 2026)
+
+- **Permission:** Sheets access covers only this spreadsheet (see "The
+  narrower Sheets permission").
+- **Owner notice:** nothing the visitor typed in the subject; the sheet link
+  and a warning come first, and typed text is shown so it cannot be a link.
+- **Failed sends** are recorded on the row and in the owner notice instead of
+  losing the lead, and the last 5 emails of the day are kept for notices.
+- **Address check:** addresses Gmail refuses (a dot at the start, two dots in
+  a row, a dot right before the `@`, commas and similar) are refused, with
+  the same rule as the form on the site.
+- **Turnstile:** at most 30 calls to Cloudflare a minute.
 
 ## New permission: connect to an external service
 
@@ -125,19 +181,47 @@ To switch it off: delete the `TURNSTILE_SECRET` script property first, then
 empty `turnstile` in `shared/content.js`.
 
 Refused requests are logged in Apps Script under **Executions** (for example
-"Turnstile refused a request" with Cloudflare's error codes); the secret and
-the token are never logged.
+"Turnstile refused a request" with Cloudflare's error codes, or one line when
+the per-minute cap below is reached); the secret and the token are never
+logged.
 
 ## Limits worth knowing
 
 - The visitor email is built only from text in `Code.gs`. The site sends a
   score, a band id and area ids, never free text that gets mailed out, except
   the first name, which keeps only letters, spaces, apostrophes and hyphens.
+- The owner notice comes from your own account, so mail filters trust it.
+  Its subject is fixed text and numbers only, for example
+  `New KHIPUAI lead: 18/24 (Bleeding), follow-up OK`. Its body starts with
+  the `Sheet:` link and a warning. Below the warning, the company and the
+  campaign values (and an address holding a slash) show every dot as `[.]`,
+  with slashes, colons and `@` removed, so none of them is a working link.
+  The sheet keeps them as typed. Treat everything below the warning as the
+  visitor's words, not instructions.
+- **Result emailed** is written as `pending` when the row is saved, then set
+  to what happened: `yes`, `no (repeat within 10 min)`, `no (daily cap)`,
+  `no (mail quota low)` or `no (send failed: <reason>)`. The owner notice
+  says the same. For the last two, send the result by hand from the row.
+  `yes` means Gmail accepted the email; a bounce, if any, arrives later in
+  your inbox. A row still showing `pending` means the script stopped before
+  it could record the outcome; check **Executions**.
+- If the row itself cannot be saved, the owner notice still goes out, with
+  `NOT SAVED` in its subject and the error near the top. That email is then
+  the only record of the lead, and no result is sent to the visitor.
 - One result per address every 10 minutes; at most 60 result emails a day.
+- Google also limits the emails a script can send a day (about 100 for a
+  personal Gmail account, about 1,500 for Google Workspace). The script
+  keeps the last 5 for owner notices: with 5 or fewer left, it saves the
+  lead, skips the result email and records `no (mail quota low)`.
 - At most 40 "new lead" notices to the owner a day. The first submission past
   that sends one warning email, then notices stay quiet until the next day.
-- At most 200 rows saved a day; past that, requests are dropped without
-  writing. Days are UTC. The counters live in the script property `counters`.
+- At most 200 rows saved a day (failed writes count too); past that,
+  requests are dropped without writing. Days are UTC. The counters live in
+  the script property `counters`.
+- With Turnstile on, at most 30 tokens a minute go to Cloudflare. Past that,
+  requests are refused for the rest of the minute without a call, so a flood
+  of fake tokens cannot use up the script's daily quota of outside calls.
+  Real visitors in that minute are refused too.
 - The site cannot read the script's reply (the request is sent with
   `no-cors`), so the page shows "Sent" once the request leaves the browser,
   even when a cap or the Turnstile check dropped it. The success message

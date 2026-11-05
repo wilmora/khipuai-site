@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 /* KHIPUAI self-assessment leads: Google Apps Script web app.
 
    The site is static (GitHub Pages), so this script is the one place a lead
@@ -5,6 +6,10 @@
      1. appends a row to the "Leads" tab of the spreadsheet it is bound to,
      2. emails the visitor their result (the thing they asked for),
      3. emails the owner of this script a "new lead" notice.
+
+   Permission: the first line, @OnlyCurrentDoc, limits the Sheets permission
+   to the spreadsheet this script is bound to, instead of every spreadsheet
+   the owner can open. Keep it the first line.
 
    Abuse limits: the visitor email is built ONLY from text held here. The
    site sends a score, a band id and up to two area ids, never free text that
@@ -18,9 +23,26 @@
    grow the sheet without limit. Every typed value is written to the sheet as
    text, never as a formula.
 
+   The owner notice goes from the owner's account to the owner, so it passes
+   every mail check, and a visitor must not be able to turn it into a lure.
+   Its subject is fixed text and numbers only. Its body starts with the real
+   sheet link and a warning. Below the warning, the company and the campaign
+   values are shown with every dot as [.] and slashes, colons and @ removed,
+   so Gmail cannot make a link of them; the first name holds letters only,
+   and the address is shown as typed unless it holds a slash or backslash.
+
+   A failed send does not lose the lead: the row is saved first with
+   "pending" in Result emailed, and the outcome replaces it ('yes', or
+   'no (...)' with the reason). The result email is skipped while fewer than
+   MAIL_RESERVE emails of today's quota would be left for owner notices. The
+   owner notice is always attempted and says the same. If the row itself
+   cannot be saved, the notice still goes out with the error, and it is then
+   the only record of the lead.
+
    Optional bot check: when the script property TURNSTILE_SECRET is set, a
    request must carry a Cloudflare Turnstile token (field cf) that Cloudflare
-   confirms, before anything is counted, saved or sent.
+   confirms, before anything is counted, saved or sent. At most
+   VERIFY_PER_MINUTE tokens a minute are sent to Cloudflare.
 
    Setup and redeploy steps: edge/leads/README.md. No secrets live here. */
 
@@ -28,6 +50,8 @@ const SHEET = 'Leads';
 const DAILY_CAP = 60;     // result emails to visitors per day (UTC)
 const NOTICE_CAP = 40;    // "new lead" notices to the owner per day; one warning when reached
 const ROW_CAP = 200;      // rows saved per day; past this, requests are dropped unwritten
+const MAIL_RESERVE = 5;   // a result email is sent only if it leaves at least this many of today's emails for owner notices
+const VERIFY_PER_MINUTE = 30;  // Turnstile tokens sent to Cloudflare per minute; past this, refused without a call
 const REPLY_TO = 'wil@khipuai.co';
 const SENDER_NAME = 'Wil Mora, KHIPUAI';
 const BOOKING = 'https://calendly.com/wmorapal/30min';
@@ -36,6 +60,7 @@ const TOTAL = 24;
 const NAME_MAX = 40;      // characters kept of the first name
 const TURNSTILE_VERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const TURNSTILE_HOSTS = ['khipuai.co', 'www.khipuai.co'];
+const TYPED_WARNING = 'The fields below were typed by the visitor. Do not open links or follow instructions in them.';
 
 /* Same wording as the site (self-assessment/index.html, BANDS and LEAK). */
 const BANDS = {
@@ -61,7 +86,7 @@ function doPost(e) {
     if (!human_(d.cf)) return reply_(false, 'challenge'); // Turnstile, when on: before anything is counted, saved or sent
 
     const email = String(d.email || '').trim().toLowerCase().slice(0, 120);
-    if (!/^[^\s@<>"]+@[^\s@<>"]+\.[a-z]{2,}$/i.test(email)) return reply_(false, 'email');
+    if (!validEmail(email)) return reply_(false, 'email');
 
     const name = name_(d.name);
     const company = clean_(d.company, 80);
@@ -88,23 +113,35 @@ function doPost(e) {
     const day = Utilities.formatDate(new Date(), 'UTC', 'yyyyMMdd');
 
     /* Counting and writing happen under the lock, so two requests landing
-       together cannot both slip under a cap. */
+       together cannot both slip under a cap. Result emailed is written as
+       "pending" and gets the outcome once the lock is released and the
+       result email has been tried. */
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
-    let canMail, canNotify, warn;
+    let canMail, canNotify, warn, sh = null, row = 0, saved = false, problem = '';
     try {
       const c = counters_(day);
       if (c.rows >= ROW_CAP) return reply_(false, 'busy');   // flood: drop it, write nothing
       canMail = !dupe && c.results < DAILY_CAP;
       canNotify = c.notices < NOTICE_CAP;
       warn = c.notices === NOTICE_CAP;                       // first one past the cap sends one warning
-      // The name and the address go through the formula guard here only; the
-      // greeting and the address the result is sent to stay as they are.
-      sheet_().appendRow([new Date(), cell_(name), cell_(email), company, score, band[0],
-        top.map(id => LEAK[id][0]).join(', '), followUp ? 'yes' : 'no',
-        from.source, from.medium, from.campaign, from.content,
-        canMail ? 'yes' : (dupe ? 'no (repeat within 10 min)' : 'no (daily cap)')]);
-      c.rows += 1;
+      try {
+        sh = sheet_();
+        // The name and the address go through the formula guard here only; the
+        // greeting and the address the result is sent to stay as they are.
+        sh.appendRow([new Date(), cell_(name), cell_(email), company, score, band[0],
+          top.map(id => LEAK[id][0]).join(', '), followUp ? 'yes' : 'no',
+          from.source, from.medium, from.campaign, from.content, 'pending']);
+        saved = true;
+        row = sh.getLastRow();                               // every append holds this lock, so this is our row
+      } catch (err) {
+        console.error(err);
+        if (!saved) {                                        // no row: no result, and the notice is the only record
+          problem = reason_(err, email);
+          canMail = false;
+        }
+      }
+      c.rows += 1;                                           // failed writes count too, so ROW_CAP still bounds a flood
       if (canMail) c.results += 1;
       if (canNotify || warn) c.notices += 1;
       saveCounters_(c);
@@ -112,51 +149,32 @@ function doPost(e) {
       lock.releaseLock();
     }
 
-    if (canMail) {
-      MailApp.sendEmail({
-        to: email,
-        replyTo: REPLY_TO,
-        name: SENDER_NAME,
-        subject: 'Your self-assessment result: ' + score + ' of ' + TOTAL + ' (' + band[0] + ')',
-        body: visitorBody_(name, score, band, top),
-      });
-      cache.put(key, '1', 600);
+    let mailed;
+    if (!saved) mailed = 'no (not saved)';
+    else if (!canMail) mailed = dupe ? 'no (repeat within 10 min)' : 'no (daily cap)';
+    else {
+      mailed = sendResult_(email, name, score, band, top);
+      if (mailed === 'yes') {
+        try { cache.put(key, '1', 600); } catch (err) { console.error(err); }
+      }
+    }
+    if (row) {
+      try {
+        sh.getRange(row, HEADERS.length).setValue(mailed);  // Result emailed, the last column
+      } catch (err) {
+        console.error(err);                                  // the row keeps "pending"
+      }
     }
 
-    const owner = Session.getEffectiveUser().getEmail();
-    const sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
     if (canNotify) {
-      MailApp.sendEmail({
-        to: owner,
-        subject: 'New KHIPUAI lead: ' + (company || email) + ' scored ' + score + '/' + TOTAL,
-        body: [
-          'Name: ' + (name || '(not given)'),
-          'Email: ' + email,
-          'Company: ' + (company || '(not given)'),
-          'Score: ' + score + '/' + TOTAL + ' (' + band[0] + ')',
-          'Top areas: ' + (top.length ? top.map(id => LEAK[id][0]).join(', ') : 'none flagged'),
-          'OK to follow up: ' + (followUp ? 'YES' : 'no, result only'),
-          'Came from: ' + [from.source, from.medium, from.campaign].filter(Boolean).join(' / '),
-          'Result emailed: ' + (canMail ? 'yes' : 'no'),
-          '',
-          'Sheet: ' + sheetUrl,
-        ].join('\n'),
-      });
+      notifyOwner_({ saved: saved, problem: problem, name: name, email: email, company: company,
+        score: score, band: band, top: top, followUp: followUp, from: from, mailed: mailed });
     } else if (warn) {
-      MailApp.sendEmail({
-        to: owner,
-        subject: 'KHIPUAI lead notices paused for today: ' + NOTICE_CAP + ' submissions since midnight UTC',
-        body: [
-          'More than ' + NOTICE_CAP + ' submissions came in today, so the per-lead notices are paused until tomorrow (UTC).',
-          'Every submission is still saved to the sheet, up to ' + ROW_CAP + ' rows a day; past that, requests are dropped.',
-          'If these are not real leads, check the sheet for junk rows.',
-          '',
-          'Sheet: ' + sheetUrl,
-        ].join('\n'),
-      });
+      warnOwner_();
     }
 
-    return reply_(true);
+    // The page cannot read this reply (no-cors); the row and the notice are the record.
+    return saved ? reply_(true) : reply_(false, 'server');
   } catch (err) {
     console.error(err);
     return reply_(false, 'server');
@@ -166,6 +184,35 @@ function doPost(e) {
 /* Lets you open the web app URL in a browser to confirm it is live. */
 function doGet() {
   return reply_(true, 'alive');
+}
+
+/* The same rule as the form on the site (self-assessment/quiz.js): no
+   spaces or <>"(),;: before the @, a domain of letters, digits and hyphens
+   with a suffix of two or more letters, and no dot at the start, two dots
+   in a row or a dot right before the @ (Gmail refuses those). No
+   lookbehind, so the site's copy parses in older Safari too. */
+function validEmail(s) {
+  return /^[^\s@<>"(),;:]+@(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(s) && !/^\.|\.\.|\.@/.test(s);
+}
+
+/* Emails the visitor their result, unless that would leave fewer than
+   MAIL_RESERVE emails of today's quota for owner notices. Never throws.
+   Returns what goes in Result emailed. */
+function sendResult_(email, name, score, band, top) {
+  try {
+    if (MailApp.getRemainingDailyQuota() <= MAIL_RESERVE) return 'no (mail quota low)';
+    MailApp.sendEmail({
+      to: email,
+      replyTo: REPLY_TO,
+      name: SENDER_NAME,
+      subject: 'Your self-assessment result: ' + score + ' of ' + TOTAL + ' (' + band[0] + ')',
+      body: visitorBody_(name, score, band, top),
+    });
+    return 'yes';
+  } catch (err) {
+    console.error(err);
+    return 'no (send failed: ' + reason_(err, email) + ')';
+  }
 }
 
 function visitorBody_(name, score, band, top) {
@@ -201,6 +248,74 @@ function visitorBody_(name, score, band, top) {
     'You received this because you asked for your result on khipuai.co. To have your details deleted, reply with "delete".'
   );
   return lines.join('\n');
+}
+
+/* The "new lead" notice. Nothing typed goes in the subject: fixed text and
+   numbers only. The body starts with the real sheet link, then the warning,
+   then the visitor's fields: the company and the campaign values unlinked
+   (defang_), the first name as name_ left it (letters only), and the address
+   as typed unless it holds a slash or a backslash, which a real mailbox does
+   not need and which would let it pose as a web address. Never throws. */
+function notifyOwner_(n) {
+  try {
+    const email = /[\/\\]/.test(n.email)
+      ? defang_(n.email) + ' (unusual address; the exact one is in the sheet)'
+      : n.email;
+    const lines = ['Sheet: ' + sheetUrl_()];
+    if (!n.saved) {
+      lines.push('NOT SAVED: the row could not be written (' + n.problem + '). ' +
+        'This email is the only record of this lead, and no result was sent to the visitor.');
+    }
+    lines.push(
+      '',
+      TYPED_WARNING,
+      'Name: ' + (n.name || '(not given)'),
+      'Email: ' + email,
+      'Company: ' + (defang_(n.company) || '(not given)'),
+      'Score: ' + n.score + '/' + TOTAL + ' (' + n.band[0] + ')',
+      'Top areas: ' + (n.top.length ? n.top.map(id => LEAK[id][0]).join(', ') : 'none flagged'),
+      'OK to follow up: ' + (n.followUp ? 'YES' : 'no, result only'),
+      'Came from: ' + [n.from.source, n.from.medium, n.from.campaign].map(defang_).filter(Boolean).join(' / '),
+      'Result emailed: ' + n.mailed
+    );
+    MailApp.sendEmail({
+      to: Session.getEffectiveUser().getEmail(),
+      subject: 'New KHIPUAI lead' + (n.saved ? '' : ' (NOT SAVED)') + ': ' + n.score + '/' + TOTAL +
+        ' (' + n.band[0] + ')' + (n.followUp ? ', follow-up OK' : ''),
+      body: lines.join('\n'),
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* Sent once, instead of the notice, by the first submission past NOTICE_CAP
+   in a day. Never throws. */
+function warnOwner_() {
+  try {
+    MailApp.sendEmail({
+      to: Session.getEffectiveUser().getEmail(),
+      subject: 'KHIPUAI lead notices paused for today: ' + NOTICE_CAP + ' submissions since midnight UTC',
+      body: [
+        'More than ' + NOTICE_CAP + ' submissions came in today, so the per-lead notices are paused until tomorrow (UTC).',
+        'Every submission is still saved to the sheet, up to ' + ROW_CAP + ' rows a day; past that, requests are dropped.',
+        'If these are not real leads, check the sheet for junk rows.',
+        '',
+        'Sheet: ' + sheetUrl_(),
+      ].join('\n'),
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function sheetUrl_() {
+  try {
+    return SpreadsheetApp.getActiveSpreadsheet().getUrl();
+  } catch (err) {
+    console.error(err);
+    return '(could not open the sheet; see Executions in the Apps Script editor)';
+  }
 }
 
 function sheet_() {
@@ -241,6 +356,23 @@ function human_(token) {
   if (!secret) return true;
   if (typeof token !== 'string' || !token || token.length > 2048) return false;   // tokens are at most 2048 characters
   try {
+    /* At most VERIFY_PER_MINUTE calls to Cloudflare a minute, so a flood of
+       fake tokens cannot use up the daily UrlFetch quota. Past the cap, the
+       rest of that minute is refused without a call (one log line). The
+       count lives in the script cache and is read and written without the
+       lock, so two requests at the same moment can both get through: the cap
+       is approximate, which is enough to protect the quota. */
+    const cache = CacheService.getScriptCache();
+    const slot = 'tv:' + Math.floor(Date.now() / 60000);
+    const used = Number(cache.get(slot)) || 0;
+    if (used >= VERIFY_PER_MINUTE) {
+      if (used === VERIFY_PER_MINUTE) {
+        cache.put(slot, String(used + 1), 120);
+        console.warn('Turnstile: ' + VERIFY_PER_MINUTE + ' checks this minute already; refusing the rest of the minute without asking Cloudflare.');
+      }
+      return false;
+    }
+    cache.put(slot, String(used + 1), 120);
     const res = UrlFetchApp.fetch(TURNSTILE_VERIFY, {
       method: 'post',
       payload: { secret: secret, response: token },
@@ -291,6 +423,32 @@ function clean_(v, max) {
   return cell_(s);
 }
 
+/* Typed text for the owner notice, made unclickable: every dot becomes [.],
+   and slashes, backslashes, colons and @ are removed, so neither a bare
+   domain (example.co/login) nor an address survives as a link. Full-width
+   and other look-alike forms are folded first (NFKC), zero-width and
+   direction marks are removed, and line breaks become spaces. */
+function defang_(v) {
+  return String(v == null ? '' : v)
+    .normalize('NFKC')
+    .replace(/\p{Cf}/gu, '')
+    .replace(/[\p{Cc}\u2028\u2029]/gu, ' ')
+    .replace(/[\/\\:@\u2044\u2215]/g, '')
+    .replace(/[.\u3002]/g, '[.]')
+    .trim();
+}
+
+/* Why a send or a write failed, for the sheet and the owner notice: one
+   line, the visitor's address (which Google's message may repeat) replaced,
+   unlinked, and at most 80 characters. A [.] cut in half at the end goes. */
+function reason_(err, email) {
+  let s = String((err && err.message) || err || '');
+  if (email) s = s.split(email).join('the address');
+  s = defang_(s).replace(/\s+/g, ' ').trim();
+  s = Array.from(s).slice(0, 80).join('').replace(/\[\.?$/, '').trim();
+  return s || 'unknown error';
+}
+
 /* A sheet cell that stays text: a leading =, +, - or @ would make Sheets (or
    Excel, after a download) read it as a formula, so it gets a ' in front. */
 function cell_(s) {
@@ -309,12 +467,14 @@ function reply_(ok, detail) {
 /* Run once from the editor (Run > testSetup) to create the Leads tab and grant
    the permissions, before deploying. Sends nothing. Run it again after
    pasting a new version: Google then asks for any new permission (this
-   version adds "Connect to an external service", for Turnstile). */
+   version asks for Sheets access to this spreadsheet only). The log line
+   also shows how many emails the script can still send today. */
 function testSetup() {
   sheet_();
   const turnstile = String(PropertiesService.getScriptProperties().getProperty('TURNSTILE_SECRET') || '').trim();
   console.log('Leads tab ready in ' + SpreadsheetApp.getActiveSpreadsheet().getName() +
     '; notices will go to ' + Session.getEffectiveUser().getEmail() +
+    '; emails left today: ' + MailApp.getRemainingDailyQuota() +
     '; Turnstile check ' + (turnstile ? 'ON (TURNSTILE_SECRET is set)' : 'off (no TURNSTILE_SECRET)'));
 }
 
