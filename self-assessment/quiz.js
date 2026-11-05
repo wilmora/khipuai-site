@@ -266,6 +266,29 @@ export function mountQuiz(C) {
   });
   render();
 
+  /* The result still reaches Calendly when shared/meta-pixel.js (which opens
+     the popup with it) did not load, for example under a content blocker, and
+     when the visitor opens the call link in a new tab or window. The full
+     address is built here at click time, so the href never holds the result.
+     A plain click with meta-pixel.js running is left to it (the popup). */
+  const bookFull = () => {
+    const link = $('bookbtn'), u = new URL(link.href);
+    if (link.dataset.utmContent) u.searchParams.set('utm_content', link.dataset.utmContent);
+    if (link.dataset.a1) u.searchParams.set('a1', link.dataset.a1);
+    return u.href;
+  };
+  const openFull = (event, newTab) => {
+    event.preventDefault();
+    if (newTab) window.open(bookFull(), '_blank', 'noopener');
+    else location.href = bookFull();
+  };
+  $('bookbtn').addEventListener('click', event => {
+    if (event.button !== 0 || event.altKey) return;
+    if (event.ctrlKey || event.metaKey || event.shiftKey) openFull(event, true);
+    else if (!window.KHIPUAIMeta) openFull(event, false);
+  });
+  $('bookbtn').addEventListener('auxclick', event => { if (event.button === 1) openFull(event, true); });
+
   /* ---- result by email -------------------------------------------------
      Same fields and payload as the earlier live page, with a stricter
      address check (validEmail). The script behind C.leads builds the email

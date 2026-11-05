@@ -281,3 +281,17 @@ test('the email form refuses a bad address, and a good one reaches Google Analyt
     assert.ok(!metaCalls.includes('lead'), 'no Meta Lead for an email request');
   });
 });
+
+// The result still reaches Calendly without shared/meta-pixel.js (a content
+// blocker) and on new-tab opens: quiz.js builds the full address at click
+// time. Checked in Chromium for plain, ctrl and middle clicks, with the Pixel
+// script loaded and blocked; this guards the code path.
+test('the call link keeps the result for new tabs and when the Pixel script is missing', () => {
+  const quiz = readFileSync(new URL('../self-assessment/quiz.js', import.meta.url), 'utf8');
+  assert.match(quiz, /addEventListener\('auxclick'/, 'middle click opens the full address');
+  assert.match(quiz, /if \(!window\.KHIPUAIMeta\) openFull\(event, false\)/, 'plain click without meta-pixel.js goes to the full address');
+  assert.match(quiz, /window\.open\(bookFull\(\), '_blank', 'noopener'\)/, 'new tabs get the full address, without opener access');
+  const setLink = quiz.slice(quiz.indexOf('function bookingLink'), quiz.indexOf('function render'));
+  assert.ok(setLink.includes('link.href = u.toString()'), 'bookingLink sets the href');
+  assert.doesNotMatch(setLink, /searchParams\.set\('(a1|utm_content)'/, 'the href itself never holds the result');
+});
