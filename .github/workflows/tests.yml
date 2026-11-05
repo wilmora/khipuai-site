@@ -1,0 +1,40 @@
+name: Site tests
+
+# The same checks the Pages workflow runs before it deploys, run on every
+# pull request and on every push to a branch other than main, so a problem
+# shows up before it reaches main. In the main branch ruleset, make
+# "Site tests / test" a required status check.
+on:
+  pull_request:
+  push:
+    branches-ignore: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The client-name check reads its list from the CONFIDENTIAL_TERMS
+      # secret, given to this step only. Pull requests from forks and
+      # Dependabot runs get no Actions secrets, so they skip that check and
+      # the run shows a warning (add the same secret under Dependabot secrets
+      # to check Dependabot's pull requests too). The other tests still run.
+      # The spec reporter prints the warning where GitHub reads it.
+      - name: Run the site tests
+        env:
+          CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
+        run: node --test --test-reporter=spec tests/*.test.mjs

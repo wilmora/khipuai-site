@@ -4,6 +4,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { confidentialLines, SKIP_REASON, warnIfSkipped } from './confidential.mjs';
+
+// Without the CONFIDENTIAL_TERMS secret the client-name check below is
+// skipped; in GitHub Actions this also puts a warning on the run.
+warnIfSkipped();
 
 const DIR = new URL('../demos/', import.meta.url);
 const { PROJECTS } = await import(new URL('../projects.js', DIR));
@@ -17,8 +22,9 @@ const walk = url => readdirSync(url).flatMap(name => {
   return statSync(u).isDirectory() ? walk(new URL(`${name}/`, url)) : [u];
 });
 const TEXT = /\.(html|js|css|md)$/;
-// Client brands, people and codes that must never appear in the public repo.
-const FORBIDDEN = /tesseon|apusito|\bapus\b|gastineau|\bglh\b|log homes|factoa|kestrel|riverside|northgate|meadowlark|krissie|\b110[0-9]\b|\b1120\b/i;
+// Client brands, people and billing codes must never appear in the public
+// repository. Their list is not in it: it comes from the CONFIDENTIAL_TERMS
+// secret or the gitignored tests/.confidential-terms (see tests/confidential.mjs).
 
 test('the dialog text matches in English and Spanish', () => {
   const [en, es] = [PROJECTS.en, PROJECTS.es];
@@ -42,7 +48,7 @@ for (const key of KEYS) {
   });
 }
 
-test('no miniature talks to a server, embeds a page or names a client', () => {
+test('no miniature talks to a server or embeds a page', () => {
   const files = walk(DIR).filter(u => TEXT.test(u.pathname));
   assert.ok(files.length > 0);
   for (const u of files) {
@@ -51,9 +57,28 @@ test('no miniature talks to a server, embeds a page or names a client', () => {
     const code = /\.css$/.test(u.pathname) ? src.replace(/\/\*[\s\S]*?\*\//g, '') : src;
     assert.doesNotMatch(code.replaceAll('http://www.w3.org/2000/svg', ''), /https?:\/\//, `${name}: outside URL`);
     assert.doesNotMatch(src, /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|<iframe|@import/, `${name}: network call or embed`);
-    assert.doesNotMatch(src, FORBIDDEN, `${name}: client name or code`);
     assert.ok(!src.includes('—'), `${name}: em dash`);
   }
+});
+
+// Every file in demos/, text or not, by path, and each text file by content:
+// names and billing codes. Only line numbers are reported, and the part of a
+// path that names a client is hidden.
+test('no miniature names a client or holds a client billing code', { skip: SKIP_REASON }, () => {
+  const found = [];
+  for (const u of walk(DIR)) {
+    const name = u.pathname.split('/demos/')[1];
+    const path = decodeURIComponent(name);
+    if (confidentialLines(path, { codes: true }).length) {
+      const parts = path.split('/').map(p => (confidentialLines(p, { codes: true }).length ? '<hidden>' : p));
+      found.push(`${parts.join('/')}: the path names a client or a code`);
+      continue;
+    }
+    if (!TEXT.test(u.pathname)) continue;
+    const lines = confidentialLines(readFileSync(u, 'utf8'), { codes: true });
+    if (lines.length) found.push(`${name}:${lines.join(',')}`);
+  }
+  assert.deepEqual(found, [], 'Client names or billing codes on these lines of demos/');
 });
 
 test('notes for actions the demo does not perform use the agreed wording', () => {

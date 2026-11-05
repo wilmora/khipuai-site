@@ -5,25 +5,68 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+# Least privilege: the token can only read the repository, except in the
+# deploy job, which also gets the two permissions Pages needs.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
+  # The site's checks run before every deploy. If any test fails, the deploy
+  # job never starts and the live site stays as it was.
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The client-name check reads its list from the CONFIDENTIAL_TERMS
+      # secret, given to this step only (never to the deploy job). Without it
+      # the check is skipped and the run shows a warning, which the spec
+      # reporter prints where GitHub reads it. Runs that get no Actions
+      # secrets skip it: pull requests from forks and runs started by
+      # Dependabot (tests.yml covers pull requests).
+      - name: Run the site tests
+        env:
+          CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
+        run: node --test --test-reporter=spec tests/*.test.mjs
+
   deploy:
+    needs: test
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
+      # 'portal/' has no leading slash, so rsync leaves out every folder named
+      # portal: portal/ and es/portal/, the held "Build your portal" pages,
+      # whose pricing is a draft the owner has not approved. shared/quote.js,
+      # the quote engine, is used by no page and holds placeholder prices,
+      # unapproved regional discounts and internal notes, so it stays out too.
+      # The check below also stops the deploy if any of them reaches the
+      # artifact. tests/security.test.mjs keeps this list, its own copy and
+      # the approved top-level paths in step.
       - name: Stage public files only (strip internal docs, scripts, and tests)
         run: |
           mkdir -p _site
@@ -38,7 +81,29 @@ jobs:
             --exclude='edge/' \
             --exclude='tools/' \
             --exclude='tests/' \
+            --exclude='portal/' \
+            --exclude='shared/quote.js' \
             ./ _site/
+
+      # A second line of defence behind the excludes above: stop the deploy if
+      # an internal file, or a link to a file on someone's computer, would ship.
+      - name: Check the artifact holds no internal files or local links
+        run: |
+          for p in AGENTS.md README.md docs edge tools tests portal es/portal shared/quote.js .github .gitignore demos/README.md logos/SOURCES.md; do
+            if [ -e "_site/$p" ]; then
+              echo "::error::Internal path in the Pages artifact: $p"
+              exit 1
+            fi
+          done
+          # Dot files hold settings or secrets; only .nojekyll and .well-known/ ship.
+          if find _site -name '.*' ! -name '.nojekyll' ! -path '_site/.well-known' ! -path '_site/.well-known/*' | grep .; then
+            echo "::error::Dot files above would be published."
+            exit 1
+          fi
+          if grep -rl 'file:///' _site; then
+            echo "::error::Files above link to file:/// addresses (local paths)."
+            exit 1
+          fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
