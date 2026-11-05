@@ -26,9 +26,10 @@ run, but a `<meta>` tag cannot:
   `X-Frame-Options` work only as headers), or
 - set `X-Content-Type-Options` or `Permissions-Policy`.
 
-While the site is hosted on GitHub Pages, deploying this worker is the only way
-to get real HTTP security headers, including HSTS and `frame-ancestors`, on
-khipuai.co.
+While the site is hosted on GitHub Pages, putting Cloudflare in front of it
+(this worker, or the zone settings in "Workers Free plan: the daily request
+limit" below) is the only way to get real HTTP security headers, including
+HSTS and `frame-ancestors`, on khipuai.co.
 
 ## What it does
 
@@ -130,6 +131,42 @@ cannot, change `HSTS` in `worker.js` to `max-age=31536000` without
 `includeSubDomains` (and update the HSTS tests) until it can.
 
 Email delivery (MX, SPF, DKIM, DMARC) is not affected by HSTS.
+
+## Workers Free plan: the daily request limit
+
+On the Workers Free plan a worker can handle 100,000 requests a day; the
+count resets at midnight UTC. The route in `wrangler.toml` (`khipuai.co/*`)
+sends every request for the site through the worker, pages, images and fonts
+alike, so heavy traffic or a deliberate flood of requests can use up the day's
+quota. What happens next depends on the route's request limit failure mode
+(in the Cloudflare dashboard, on the worker's routes):
+
+- Fail closed: visitors get a Cloudflare error page (error 1027) instead of
+  the site until the quota resets.
+- Fail open: requests skip the worker and go straight to GitHub Pages. The
+  site stays up, but responses lose the worker's security headers and its
+  blocking of internal paths (the Pages workflow already leaves those files
+  out), and agents get HTML instead of Markdown.
+
+Once the zone is on Cloudflare, put the security headers where no quota
+applies:
+
+1. SSL/TLS > Edge Certificates: turn on HSTS (the same values as `HSTS` in
+   `worker.js`, after "Before deploying: check every subdomain" above) and
+   Always Use HTTPS.
+2. Rules > Transform Rules > Modify Response Header: one rule for khipuai.co
+   that sets `Content-Security-Policy` (the value in `worker.js`, which
+   includes `frame-ancestors 'self'`), `X-Frame-Options`,
+   `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy`, with
+   the values in the table above. Use "Set", not "Add", so each header appears
+   once. Afterwards, check that `self-assessment.pdf` still opens in the
+   browser; if it does not, leave paths that contain `.pdf` out of the rule.
+
+Neither needs a worker. Then keep the worker only for Markdown negotiation,
+with its route set to fail open, so running out of quota costs agents their
+Markdown and nothing else; or, to keep everything the worker does, run it on
+Workers Paid, which has no daily request limit. After either change, run the
+`curl` checks in step 8 below.
 
 ## To deploy (needs approval and Cloudflare access)
 

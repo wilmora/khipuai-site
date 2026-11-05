@@ -28,5 +28,13 @@ jobs:
         with:
           node-version: 22
 
+      # The client-name check reads its list from the CONFIDENTIAL_TERMS
+      # secret, given to this step only. Pull requests from forks and
+      # Dependabot runs get no Actions secrets, so they skip that check and
+      # the run shows a warning (add the same secret under Dependabot secrets
+      # to check Dependabot's pull requests too). The other tests still run.
+      # The spec reporter prints the warning where GitHub reads it.
       - name: Run the site tests
-        run: node --test tests/*.test.mjs
+        env:
+          CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
+        run: node --test --test-reporter=spec tests/*.test.mjs

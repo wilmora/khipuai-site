@@ -1,67 +1,149 @@
-// Client names, people and billing codes that must never appear in this
-// repository. The repository is public, so the list itself must not name
-// anyone: it holds the SHA-256 of each lower-case word or two-word phrase,
-// never the words. A check hashes every word and pair of adjacent words in a
-// file and looks them up here.
+// Client names, people at clients and client billing codes must never appear
+// in this repository. The repository is public, so the list of those terms is
+// not kept in it in any form: not as words, and not as hashes (short names and
+// 4-digit codes fall to a brute-force search in minutes, and dictionary-word
+// names to a wordlist at once). The terms come from outside the repository:
 //
-// To add a term, hash it lower-case and add the hash with a comment saying
-// what kind of term it is (client, person, code), not what it is:
-//   node -e "console.log(require('node:crypto').createHash('sha256').update('the term').digest('hex'))"
-// A hash cannot be read back, but anyone who already suspects a name can
-// test it against this list. Keep the list short and specific.
-import { createHash } from 'node:crypto';
+//   - in GitHub Actions, from the CONFIDENTIAL_TERMS repository secret, which
+//     the workflows pass to the test step only;
+//   - on your computer, from the file tests/.confidential-terms, which
+//     .gitignore keeps out of git. Never commit it, and never paste a term
+//     into an issue, a pull request, a commit message or a test.
+//
+// Format: one term per line (| also separates terms on a line). Blank lines and
+// lines that start with # are ignored. A term written code:1234 is a client
+// billing code, checked only in the demo miniatures (plain numbers like these
+// also turn up in SVG path data). Every other term is a name or a two-word
+// phrase. Case and accents are ignored.
+//
+// How a term matches, after regex escapes such as \b \s \w \d (and \B \S \W \D)
+// become a space and camelCase is split ("getAcmeData" -> "get Acme Data"):
+//   - a name of 5 or more letters matches anywhere, even inside another word
+//     or glued into a file name;
+//   - a shorter name matches only where the characters on both sides are not
+//     letters, so it is not flagged inside an ordinary longer word, but it is
+//     in "name2026" or "name-portal";
+//   - a two-word phrase matches with any run of non-letters, or none, between
+//     the words; each end word follows the rule above for its own length;
+//   - a code matches only where the characters on both sides are not digits.
+// Text is also checked as written, before those two changes, so neither can
+// hide a term.
+//
+// When no terms are available, `available` is false and the tests that use
+// this module skip their name checks. A check returns line numbers only, and
+// nothing here prints a term: the CI logs of a public repository are public.
+import { readFileSync } from 'node:fs';
 
-// Client and project names, and people at clients (whole words or two-word phrases).
-export const NAMES = new Set([
-  'b8a5516ee8e50c9cc6bb89598c6cc404dded5cf48a0d9390cf6215641a233e6e',
-  '8b5ac3579a1b698fb6167820d12b8458ece4f2de6581fd52d3a389029066b199',
-  '478ba9965f38aaad7af3fe3a4bdd107d9cb68a35e398f53e3bcb40a00771fd3a',
-  '7091d993cb3475877654d63c3d87a6ed309b8a2cbc4fae54f53e291d3d71b6ae',
-  '831c07d25d377ae70687d549017ba5356446ebaa3546bec4b0054e8f723c1886',
-  '2ce8d05aa723e28e3bcd65f7fc4680a62ecd07a2e4fae46392279a6940318295',
-  '66b2bf140f8711dd494d61f171846c41f7dc7e91cca02297226967e2c82df2dd',
-  '07f15cde5b181425db8524becd96263d600c9652c7de5b89fe1a644f8fd0724b',
-  '12aea5f4cd614e6bbcdd214c0e2286e75d62d5c6c348096d56b8bd20393226d8',
-  'c252c99dc7f6d49d3faa4a43643cc55e3149534c2ddfcf12549d13284a7d2542',
-  '351fda740bdbb2faf4dd107c83b7772a7001a443b07acb52081e66f678bf37a3',
-  '9ae74ff8dba1429658f9e6aeb52a3c04c4255bb5898d12228dda1ee84f0fd3fe',
-]);
+export const TERMS_FILE = new URL('./.confidential-terms', import.meta.url);
 
-// A client's billing item codes. Plain numbers like these also turn up in
-// unrelated files (SVG path data), so only the demo miniatures check them.
-export const CODES = new Set([
-  'ab9828ca390581b72629069049793ba3c99bb8e5e9e7b97a55c71957e04df9a3',
-  '36ab771eba23f49d7ae43af88c601f3de8fccb201250906a4085444ae765f2db',
-  '277375b99e186c72ac38ac47b03199038342fe0389be8765476fa2be0c5b5649',
-  'f0d588a225e6e6ba0501a3f787230abf579f6db2dd55be0fa3450f8acd54e6f3',
-  'd74fe97872d8a425b5263add13d51a1066bf0b2cdd5e368d316dfe31048b2104',
-  '47c5fbf51c636da0b48309ad799e2e4d0443b9c25b055c6b762d6b6f6d95fc52',
-  'fb7bab9edf08f024aabf3501518399e82ab590666207a8b0ab7963b181ecf4b8',
-  '86cb35a822329fe1de40eb82a1791be1f66f8bd327446686bdd859a89e436853',
-  '737c6b9773fa031bee4787ad780d2c9c9ecb3375a7c1f4dbd8047a6cd5c67b4c',
-  '6711597a2bc4e5878638c2115353f0792a9bec6ff55a84f283c4be5d897fe110',
-  '829f00a11ddfdebb51b67a913981eddb7937c3f8f01f4140415a24ff1cc29609',
-]);
+// Lower case, with accents and look-alike characters folded ("Peña" and
+// "Pena" compare equal, a fullwidth letter becomes a plain one), and with
+// invisible characters such as soft hyphens and zero-width spaces removed.
+const fold = s => s.toLowerCase().normalize('NFKD').replace(/[\p{M}\p{Cf}]+/gu, '').toLowerCase();
 
-const seen = new Map();
-const sha = s => {
-  let h = seen.get(s);
-  if (h === undefined) { h = createHash('sha256').update(s).digest('hex'); seen.set(s, h); }
-  return h;
+// The terms in a CONFIDENTIAL_TERMS value or a tests/.confidential-terms file.
+export function parseTerms(source = '') {
+  const names = [], codes = [];
+  for (const line of String(source).split(/\r\n|\n|\r/)) {
+    if (line.trim().startsWith('#')) continue;
+    for (const piece of line.split('|')) {
+      const term = fold(piece).trim().replace(/\s+/g, ' ');
+      if (!term || term.startsWith('#')) continue;
+      if (term.startsWith('code:')) {
+        const code = term.slice('code:'.length).trim();
+        if (code) codes.push(code);
+      } else if (/\p{L}/u.test(term)) {
+        names.push(term);
+      }
+    }
+  }
+  return { names, codes };
+}
+
+// Escapes regex syntax characters (only those: the patterns use the u flag,
+// which rejects needless escapes such as \-).
+const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+
+function namePattern(term) {
+  const words = term.split(/\P{L}+/u).filter(Boolean);
+  if (!words.length) return null;
+  const left = words[0].length >= 5 ? '' : '(?<!\\p{L})';
+  const right = words.at(-1).length >= 5 ? '' : '(?!\\p{L})';
+  return `${left}${words.map(escapeRe).join('\\P{L}*')}${right}`;
+}
+
+const codePattern = code => `(?<!\\d)${escapeRe(code)}(?!\\d)`;
+
+const combine = patterns => {
+  const parts = patterns.filter(Boolean);
+  return parts.length ? new RegExp(parts.map(p => `(?:${p})`).join('|'), 'gu') : null;
 };
 
-// Lower-case words of a line, with camelCase split ("AcmeCorp" -> acme, corp).
-const words = line => line.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+// The forms of a text that are checked. None adds or removes a line break, so
+// a match's position gives the same line number in every form.
+const REGEX_ESCAPE = /\\[bBsSwWdD]/g;
+const splitCamel = s => s.replace(/(\p{Ll})(\p{Lu})/gu, '$1 $2').replace(/(\p{Lu})(\p{Lu}\p{Ll})/gu, '$1 $2');
+const forms = text => {
+  const plain = String(text), unescaped = plain.replace(REGEX_ESCAPE, ' ');
+  return [...new Set([plain, unescaped, splitCamel(plain), splitCamel(unescaped)].map(fold))];
+};
 
-// Line numbers (1-based) of the text that hold a listed word or two-word
-// phrase. Only line numbers come back, so a failing check never prints the
-// term it found (CI logs of a public repository are public too).
-export function confidentialLines(text, lists = [NAMES]) {
-  const hit = s => lists.some(list => list.has(sha(s)));
-  const lines = [];
-  text.split('\n').forEach((line, i) => {
-    const w = words(line);
-    if (w.some((x, j) => hit(x) || (j + 1 < w.length && hit(`${x} ${w[j + 1]}`)))) lines.push(i + 1);
-  });
-  return lines;
+// 1-based line number of a position in a text.
+const lineAt = (breaks, index) => {
+  let lo = 0, hi = breaks.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (breaks[mid] < index) lo = mid + 1; else hi = mid; }
+  return lo + 1;
+};
+
+// A matcher for the terms in `source` (the same format as the secret).
+// The tests' own checks use the terms from the secret or the local file,
+// below; the matcher's self-test passes invented terms in directly.
+export function makeMatcher(source = '') {
+  const { names, codes } = parseTerms(source);
+  const nameRe = combine(names.map(namePattern));
+  const codeRe = combine(codes.map(codePattern));
+  return {
+    available: names.length + codes.length > 0,
+    // Line numbers (1-based, ascending) of the text that hold a name, or with
+    // { codes: true } a name or a billing code. Only numbers come back, so a
+    // failing check never shows the term it found.
+    confidentialLines(text, { codes: withCodes = false } = {}) {
+      const res = [nameRe, withCodes ? codeRe : null].filter(Boolean);
+      const lines = new Set();
+      if (!res.length) return [];
+      for (const form of forms(text)) {
+        const breaks = [];
+        for (let i = form.indexOf('\n'); i !== -1; i = form.indexOf('\n', i + 1)) breaks.push(i);
+        for (const re of res) for (const m of form.matchAll(re)) {
+          lines.add(lineAt(breaks, m.index));
+          lines.add(lineAt(breaks, m.index + Math.max(m[0].length - 1, 0)));
+        }
+      }
+      return [...lines].sort((a, b) => a - b);
+    },
+  };
+}
+
+// The terms for this run: the CONFIDENTIAL_TERMS environment variable when it
+// holds any, otherwise tests/.confidential-terms when it exists.
+function source() {
+  const env = process.env.CONFIDENTIAL_TERMS ?? '';
+  const { names, codes } = parseTerms(env);
+  if (names.length + codes.length) return env;
+  try { return readFileSync(TERMS_FILE, 'utf8'); } catch { return ''; }
+}
+
+const matcher = makeMatcher(source());
+export const available = matcher.available;
+export const confidentialLines = matcher.confidentialLines;
+
+// For test(name, { skip: SKIP_REASON }, ...): false when the terms are
+// available, otherwise the reason the check is skipped.
+export const SKIP_REASON = available ? false
+  : 'no confidential terms: set the CONFIDENTIAL_TERMS secret (GitHub Actions) or create tests/.confidential-terms (local runs); see README.md, Security upkeep';
+
+// In GitHub Actions, a skipped check also shows as a warning on the run.
+export function warnIfSkipped() {
+  if (!available && process.env.GITHUB_ACTIONS === 'true')
+    console.log('::warning::The CONFIDENTIAL_TERMS secret is not set, so the client-name check was skipped.');
 }

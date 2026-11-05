@@ -31,8 +31,16 @@ jobs:
         with:
           node-version: 22
 
+      # The client-name check reads its list from the CONFIDENTIAL_TERMS
+      # secret, given to this step only (never to the deploy job). Without it
+      # the check is skipped and the run shows a warning, which the spec
+      # reporter prints where GitHub reads it. Runs that get no Actions
+      # secrets skip it: pull requests from forks and runs started by
+      # Dependabot (tests.yml covers pull requests).
       - name: Run the site tests
-        run: node --test tests/*.test.mjs
+        env:
+          CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
+        run: node --test --test-reporter=spec tests/*.test.mjs
 
   deploy:
     needs: test
@@ -53,8 +61,12 @@ jobs:
 
       # 'portal/' has no leading slash, so rsync leaves out every folder named
       # portal: portal/ and es/portal/, the held "Build your portal" pages,
-      # whose pricing is a draft the owner has not approved. The check below
-      # also stops the deploy if either folder reaches the artifact.
+      # whose pricing is a draft the owner has not approved. shared/quote.js,
+      # the quote engine, is used by no page and holds placeholder prices,
+      # unapproved regional discounts and internal notes, so it stays out too.
+      # The check below also stops the deploy if any of them reaches the
+      # artifact. tests/security.test.mjs keeps this list, its own copy and
+      # the approved top-level paths in step.
       - name: Stage public files only (strip internal docs, scripts, and tests)
         run: |
           mkdir -p _site
@@ -70,13 +82,14 @@ jobs:
             --exclude='tools/' \
             --exclude='tests/' \
             --exclude='portal/' \
+            --exclude='shared/quote.js' \
             ./ _site/
 
       # A second line of defence behind the excludes above: stop the deploy if
       # an internal file, or a link to a file on someone's computer, would ship.
       - name: Check the artifact holds no internal files or local links
         run: |
-          for p in AGENTS.md README.md docs edge tools tests portal es/portal .github .gitignore demos/README.md logos/SOURCES.md; do
+          for p in AGENTS.md README.md docs edge tools tests portal es/portal shared/quote.js .github .gitignore demos/README.md logos/SOURCES.md; do
             if [ -e "_site/$p" ]; then
               echo "::error::Internal path in the Pages artifact: $p"
               exit 1
