@@ -1,7 +1,8 @@
 // Unit tests for edge/worker.js. Run: node --test tests/worker.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { REPO_FILES, leftOutByPages } from './files.mjs';
 import { handle, prefersMarkdown, markdownPath, isPrivatePath, normalizePath } from '../edge/worker.js';
 
 // A fake GitHub Pages origin: a few files, 404 for the rest, Vary like Pages.
@@ -300,17 +301,9 @@ test('the Markdown twin lookup never leaves the site', async () => {
 // site (the rsync --exclude list in .github/workflows/pages.yml: a name without
 // a slash matches in every folder, a name with a slash matches the end of a
 // path), plus dot files other than /.well-known/, and nothing else.
+// REPO_FILES and leftOutByPages come from tests/files.mjs, which reads the
+// excludes from pages.yml itself, so this test follows every future exclude.
 const ROOT = new URL('../', import.meta.url);
-const walk = (dir = '') => readdirSync(new URL(dir, ROOT), { withFileTypes: true }).flatMap(e =>
-  e.isDirectory() ? (['.git', 'node_modules', '_site'].includes(e.name) ? [] : walk(`${dir}${e.name}/`)) : [`${dir}${e.name}`]);
-const REPO_FILES = walk();
-const leftOutByPages = f => {
-  const parts = f.split('/');
-  return parts.some(p => p.startsWith('.git'))
-    || parts.slice(0, -1).some(p => ['docs', 'edge', 'tools', 'tests'].includes(p))
-    || ['AGENTS.md', 'README.md'].includes(parts.at(-1))
-    || /(^|\/)(demos\/README|logos\/SOURCES)\.md$/.test(f);
-};
 const dotFile = f => f.split('/').some((p, i) => p.startsWith('.') && !(i === 0 && p === '.well-known'));
 
 test('every file in the repository is blocked exactly when the Pages workflow leaves it out, or it is a dot file', () => {

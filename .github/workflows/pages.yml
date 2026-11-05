@@ -95,6 +95,11 @@ jobs:
               exit 1
             fi
           done
+          # Dot files hold settings or secrets; only .nojekyll and .well-known/ ship.
+          if find _site -name '.*' ! -name '.nojekyll' ! -path '_site/.well-known' ! -path '_site/.well-known/*' | grep .; then
+            echo "::error::Dot files above would be published."
+            exit 1
+          fi
           if grep -rl 'file:///' _site; then
             echo "::error::Files above link to file:/// addresses (local paths)."
             exit 1

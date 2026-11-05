@@ -30,7 +30,8 @@ const MD_TYPE = 'text/markdown; charset=utf-8';
    in case one ever reaches the origin. Like the workflow's rsync excludes,
    the rules apply in every folder. They are checked against the normalized,
    lower-case path. */
-const PRIVATE_DIRS = new Set(['docs', 'edge', 'tools', 'tests']);
+// 'portal' is the held Build your portal (draft pricing), left out like the rest.
+const PRIVATE_DIRS = new Set(['docs', 'edge', 'tools', 'tests', 'portal']);
 const PRIVATE_FILES = new Set(['readme.md', 'agents.md']);
 // Dot files and folders (.git, .github, .gitignore, .nojekyll, .env and so on)
 // are internal too, except a top-level /.well-known/, which holds public files
@@ -96,6 +97,7 @@ export function isPrivatePath(pathname) {
     PRIVATE_DIRS.has(s)
     || PRIVATE_FILES.has(s)
     || (s === 'sources.md' && segments[i - 1] === 'logos')
+    || (s === 'quote.js' && segments[i - 1] === 'shared')   // the unused quote engine (placeholder prices)
     || (s.startsWith('.') && !(i === 0 && s === PUBLIC_DOT_DIR)));
 }
 

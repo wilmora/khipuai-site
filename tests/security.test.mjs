@@ -12,6 +12,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { inflateSync, deflateSync, constants as zlib } from 'node:zlib';
 import { confidentialLines, makeMatcher, SKIP_REASON, warnIfSkipped } from './confidential.mjs';
+import { REPO_FILES } from './files.mjs';
 
 // Without the CONFIDENTIAL_TERMS secret the client-name check is skipped; in
 // GitHub Actions this also puts a warning on the run.
@@ -23,21 +24,9 @@ const SKIP_DIRS = new Set(['.git', 'node_modules', '_site']);
 // holds the terms by design.
 const TERMS_PATH = 'tests/.confidential-terms';
 
-// Every file in the repository, as paths relative to its root: the files git
-// tracks plus new files it does not ignore (what a commit could add), so
-// ignored local files such as .DS_Store or mobile-preview.html, which never
-// reach the deploy's checkout, do not count. Without git, every file in the
-// working copy.
-const walk = (dir = '') => readdirSync(new URL(dir, ROOT), { withFileTypes: true }).flatMap(e =>
-  e.isDirectory() ? (SKIP_DIRS.has(e.name) ? [] : walk(`${dir}${e.name}/`)) : [`${dir}${e.name}`]);
-const gitFiles = () => {
-  try {
-    return execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'],
-      { cwd: fileURLToPath(ROOT), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 << 20 })
-      .split('\0').filter(f => f && existsSync(new URL(f, ROOT)));
-  } catch { return null; }
-};
-const FILES = (gitFiles() ?? walk()).filter(f => f !== TERMS_PATH).sort();
+// Every file in the repository (git's tracked and not-ignored files), from
+// tests/files.mjs, without the local terms file.
+const FILES = REPO_FILES;
 const TEXT = /\.(html?|m?js|cjs|css|md|txt|json|xml|gs|toml|ya?ml|svg|csv|webmanifest)$/i;
 const read = f => readFileSync(new URL(f, ROOT), 'utf8');
 
@@ -272,6 +261,12 @@ const shownPath = f => {
 
 // A file that holds text: a text extension, or no NUL byte in its first 8 KB.
 const isText = (f, buf) => TEXT.test(f) || !buf.subarray(0, 8192).includes(0);
+
+test('the secret may separate terms with new lines, |, commas or semicolons (invented terms)', () => {
+  const m = makeMatcher('Zorvanta, Brix Halden; Qent | code:4242\nFlimwick');
+  assert.deepEqual(m.confidentialLines('ok\nWe worked with Zorvanta.\nthe Qent team\nbrix-halden\nflimwick\nfine'), [2, 3, 4, 5]);
+  assert.deepEqual(m.confidentialLines('ref 4242', { codes: true }), [1]);
+});
 
 test('the client-name matcher catches every form it should (invented terms)', () => {
   // Made-up words only. The real terms never appear in the repository.
@@ -509,17 +504,39 @@ test('every top-level path that ships is on the approved list', () => {
 // Files that should never be on a public site: secrets and keys, logs, data
 // exports and office documents, archives, backups, editor swap files, browser
 // network captures, OS folder files and local tool settings.
-const RISKY = /^(\.env(\..*)?|\.dev\.vars|\.ds_store|thumbs\.db|settings\.local\.json)$|\.(pem|key|p12|pfx|log|sqlite|db|csv|tsv|xlsx?|docx?|zip|tar|gz|7z|bak|swp|har)$/i;
+const RISKY = new RegExp([
+  /^(\.env(\..*)?|\.dev\.vars|\.ds_store|thumbs\.db|settings\.local\.json)$/.source,
+  /\.env$/.source,                                                     // prod.env and the like
+  /^id_(rsa|dsa|ecdsa|ed25519)(\.pub)?$/.source,                       // SSH keys
+  /^(credentials|service[-_]?account|secrets?)[^/]*\.(json|ya?ml)$/.source,
+  /\.(pem|key|p12|pfx|jks|keystore|kdbx|asc|gpg|ovpn)$/.source,         // keys, keystores, password vaults
+  /\.(log|sqlite|db|sql|dump|csv|tsv|xlsx?|ods|docx?|odt|pptx?|odp|eml|mbox|har)$/.source,   // data, documents, mail, captures
+  /\.(zip|tar|gz|tgz|bz2|xz|7z|rar)$/.source,                           // archives
+  /\.(bak|swp|orig|old)$|~$/.source,                                    // backups and editor leftovers
+].join('|'), 'i');
 
 test('nothing that ships has a risky file name or type', () => {
   for (const name of ['.env', '.env.production', '.dev.vars', 'id.pem', 'tls.key', 'cert.p12', 'cert.pfx', 'debug.log', 'data.sqlite', 'app.db',
     'leads.csv', 'leads.tsv', 'book.xls', 'book.xlsx', 'brief.doc', 'brief.docx', 'site.zip', 'site.tar', 'site.tar.gz', 'site.7z',
-    'index.html.bak', '.index.html.swp', 'session.har', '.DS_Store', 'Thumbs.db', 'settings.local.json'])
+    'index.html.bak', '.index.html.swp', 'session.har', '.DS_Store', 'Thumbs.db', 'settings.local.json',
+    'prod.env', 'id_rsa', 'id_ed25519.pub', 'credentials.json', 'service-account.json', 'secrets.yml', 'keystore.jks',
+    'dump.sql', 'site-backup.tgz', 'site.rar', 'pitch.pptx', 'leads.ods', 'index.html.orig', 'basic.js~'])
     assert.match(name, RISKY, `the risky-name rule covers ${name}`);
   for (const name of ['index.html', 'basic.js', 'og-image.png', 'self-assessment.pdf', 'security.txt', 'environment.md', 'keys.js'])
     assert.doesNotMatch(name, RISKY, `${name} is an ordinary site file`);
   const risky = SHIPPED.filter(f => RISKY.test(f.split('/').at(-1)));
   assert.deepEqual(risky, [], 'These files would be published. Delete them, or keep them out of git (.gitignore) and out of the deploy (pages.yml).');
+});
+
+// Dot files (.npmrc, .netrc, .htpasswd, .envrc and the like) hold settings or
+// secrets, and upload-pages-artifact v3 publishes them. Only .nojekyll and
+// .well-known/ belong on the site (the edge worker blocks the rest too).
+test('no dot file or dot folder ships except .nojekyll and .well-known/', () => {
+  const dot = SHIPPED.filter(f => f.split('/').some((p, i, all) => p.startsWith('.')
+    && !(i === 0 && (p === '.well-known' || (p === '.nojekyll' && all.length === 1)))));
+  assert.deepEqual(dot, [], 'These dot files would be published. Delete them or keep them out of git (.gitignore).');
+  const wf = read('.github/workflows/pages.yml');
+  assert.match(wf, /find _site -name '\.\*'/, 'the deploy step also refuses dot files');
 });
 
 // RFC 9116: how to report a vulnerability, at https://khipuai.co/.well-known/security.txt.

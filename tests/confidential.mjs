@@ -10,7 +10,7 @@
 //     .gitignore keeps out of git. Never commit it, and never paste a term
 //     into an issue, a pull request, a commit message or a test.
 //
-// Format: one term per line (| also separates terms on a line). Blank lines and
+// Format: one term per line (| , and ; also separate terms on a line). Blank lines and
 // lines that start with # are ignored. A term written code:1234 is a client
 // billing code, checked only in the demo miniatures (plain numbers like these
 // also turn up in SVG path data). Every other term is a name or a two-word
@@ -46,7 +46,7 @@ export function parseTerms(source = '') {
   const names = [], codes = [];
   for (const line of String(source).split(/\r\n|\n|\r/)) {
     if (line.trim().startsWith('#')) continue;
-    for (const piece of line.split('|')) {
+    for (const piece of line.split(/[|,;]/)) {
       const term = fold(piece).trim().replace(/\s+/g, ' ');
       if (!term || term.startsWith('#')) continue;
       if (term.startsWith('code:')) {
@@ -133,7 +133,9 @@ function source() {
   try { return readFileSync(TERMS_FILE, 'utf8'); } catch { return ''; }
 }
 
-const matcher = makeMatcher(source());
+const SOURCE = source();
+const matcher = makeMatcher(SOURCE);
+const TERM_COUNT = (({ names, codes }) => names.length + codes.length)(parseTerms(SOURCE));
 export const available = matcher.available;
 export const confidentialLines = matcher.confidentialLines;
 
@@ -143,7 +145,10 @@ export const SKIP_REASON = available ? false
   : 'no confidential terms: set the CONFIDENTIAL_TERMS secret (GitHub Actions) or create tests/.confidential-terms (local runs); see README.md, Security upkeep';
 
 // In GitHub Actions, a skipped check also shows as a warning on the run.
+// When the terms are there, only how many were loaded is printed (never the
+// terms), so a secret that parses into too few terms is visible on the run.
 export function warnIfSkipped() {
-  if (!available && process.env.GITHUB_ACTIONS === 'true')
-    console.log('::warning::The CONFIDENTIAL_TERMS secret is not set, so the client-name check was skipped.');
+  if (process.env.GITHUB_ACTIONS !== 'true') return;
+  if (!available) console.log('::warning::The CONFIDENTIAL_TERMS secret is not set, so the client-name check was skipped.');
+  else console.log(`client-name check: ${TERM_COUNT} terms loaded`);
 }

@@ -7,7 +7,8 @@
 // Run: node --test tests/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { REPO_FILES } from './files.mjs';
 import { createHash } from 'node:crypto';
 import { C } from '../shared/content.js';
 
@@ -17,14 +18,11 @@ const read = f => readFileSync(new URL(f, ROOT), 'utf8');
 
 // Every page that ships: .html files outside the folders the Pages workflow
 // leaves out, except Google's ownership token (a bare text file, not a page).
-const SKIP = new Set(['.git', 'node_modules', '_site']);
-const UNPUBLISHED = /^(docs|edge|tools|tests|\.github)\/$/;
-const walk = (dir = '') => readdirSync(new URL(dir, ROOT), { withFileTypes: true }).flatMap(e => {
-  if (!e.isDirectory()) return [`${dir}${e.name}`];
-  const sub = `${dir}${e.name}/`;
-  return SKIP.has(e.name) || UNPUBLISHED.test(sub) ? [] : walk(sub);
-});
-const PAGES = walk().filter(f => f.endsWith('.html') && !/^google[0-9a-f]+\.html$/.test(f)).sort();
+// Repository files come from tests/files.mjs, which skips gitignored local
+// files (such as mobile-preview.html) that never reach the deploy. The held
+// portal is checked too, in case it is ever published again.
+const PAGES = REPO_FILES.filter(f => f.endsWith('.html') && !/^(docs|edge|tools|tests|\.github)\//.test(f)
+  && !/^google[0-9a-f]+\.html$/.test(f)).sort();
 
 // ---- reading a page: its tags in order, with attributes ---------------------
 // Script, style and similar bodies are kept as raw text, as the browser reads them.
