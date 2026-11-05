@@ -51,6 +51,10 @@ jobs:
         with:
           persist-credentials: false
 
+      # 'portal/' has no leading slash, so rsync leaves out every folder named
+      # portal: portal/ and es/portal/, the held "Build your portal" pages,
+      # whose pricing is a draft the owner has not approved. The check below
+      # also stops the deploy if either folder reaches the artifact.
       - name: Stage public files only (strip internal docs, scripts, and tests)
         run: |
           mkdir -p _site
@@ -65,13 +69,14 @@ jobs:
             --exclude='edge/' \
             --exclude='tools/' \
             --exclude='tests/' \
+            --exclude='portal/' \
             ./ _site/
 
       # A second line of defence behind the excludes above: stop the deploy if
       # an internal file, or a link to a file on someone's computer, would ship.
       - name: Check the artifact holds no internal files or local links
         run: |
-          for p in AGENTS.md README.md docs edge tools tests .github .gitignore demos/README.md logos/SOURCES.md; do
+          for p in AGENTS.md README.md docs edge tools tests portal es/portal .github .gitignore demos/README.md logos/SOURCES.md; do
             if [ -e "_site/$p" ]; then
               echo "::error::Internal path in the Pages artifact: $p"
               exit 1

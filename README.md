@@ -10,7 +10,7 @@ The current site went live on 2026-10-26 (it was built as the trial under `conce
 - `about/`, `solution-design/`, `contact/`, `security/`, `privacy/`, and their `es/` pages: content pages (`page.css`, paged by `pager.js`; Privacy scrolls)
 - `self-assessment/`: the 15-question assessment, its email form (posts to `C.leads`) and the PDF download
 - `thank-you/`, `404.html`: utility pages (noindex)
-- `portal/`, `es/portal/`: Build your portal, held back (noindex, not linked)
+- `portal/`, `es/portal/`: Build your portal, held back (noindex, not linked, and left out of the Pages deploy because its pricing is a draft)
 - `demos/support/`: the Khipu Support miniature. Client miniatures and screenshots wait for each client's permission (see `demos/README.md`)
 - `shared/`: content, fonts, images and the Meta Pixel consent script
 - `audit/`, `es/audit/`, `work/`, `es/work/`, `blog/`, `privacy.html`, `self_assessment.html`, `thank-you.html`: forwarding pages for the old addresses
@@ -38,3 +38,10 @@ Meta Pixel uses dataset `1112143148017821` through `shared/meta-pixel.js`. It lo
 Production deploys automatically from `main` through GitHub Pages. Do not push unreviewed work directly to `main`. The custom domain is configured by `CNAME`.
 
 The Pages workflow runs `node --test tests/*.test.mjs` first; if any test fails, nothing is deployed. The same tests run on every pull request (`.github/workflows/tests.yml`). `tests/security.test.mjs` blocks client names anywhere in the repository (listed as hashes in `tests/confidential.mjs`), links to local files in anything that ships, and non-https links in published PDFs.
+
+## Security upkeep
+
+- **Content Security Policy.** Every page carries a `Content-Security-Policy` meta tag on the line after `<meta charset="utf-8">`. It lists the only places the page may load scripts, frames and connections from, and allows each inline `<script>` by its SHA-256 hash. If you edit an inline script, `node --test tests/csp.test.mjs` fails and prints the new hash to put in that page's policy. If you add a third-party tool, add its hosts to the policy of each page that uses it. Never add `'unsafe-inline'` or `'unsafe-eval'` to `script-src`.
+- **security.txt.** `.well-known/security.txt` names the address for security reports. Renew its `Expires` date before it passes (less than a year ahead); once it expires, the tests fail and nothing deploys.
+- **Dependabot** opens pull requests for new versions of the workflow actions. Review them like any other change.
+- **The leads script** in `edge/leads/Code.gs` is a copy. Changes take effect only after it is pasted into the Apps Script editor and redeployed (`edge/leads/README.md`).
