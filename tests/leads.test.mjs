@@ -69,7 +69,7 @@ function load({ props = {}, verify = { success: true, hostname: 'khipuai.co' }, 
       MimeType: { JSON: 'JSON' },
       createTextOutput: text => ({ text, mime: null, setMimeType(m) { this.mime = m; return this; } }),
     },
-    CacheService: { getScriptCache: () => ({ get: k => (cache.has(k) ? cache.get(k) : null), put: (k, v) => { cache.set(k, v); } }) },
+    CacheService: { getScriptCache: () => ({ get: k => (cache.has(k) ? cache.get(k) : null), put: (k, v) => { cache.set(k, v); }, remove: k => { cache.delete(k); } }) },
     LockService: { getScriptLock: () => ({
       waitLock: () => { lock.taken++; events.push('lock'); },
       releaseLock: () => { lock.released++; events.push('unlock'); },
@@ -140,20 +140,20 @@ test('a valid lead saves one row, emails the result and notifies the owner', () 
   assert.equal(t.rows.length, 1);
   const [received, ...rest] = t.rows[0];
   assert.equal(typeof received.getTime, 'function', 'a date first');
-  assert.deepEqual(rest, ['Ana', 'ana@example.com', 'Example Co', 18, 'Bleeding', 'Data re-entry, Reporting', 'yes',
+  assert.deepEqual(rest, ['Ana', 'ana@example.com', 'Example Co', 18, 'High', 'Data re-entry, Reporting', 'yes',
     'newsletter', 'email', 'fall', 'issue-2', 'yes']);
   assert.equal(t.mails.length, 2);
   const [visitor] = toVisitor(t), [owner] = toOwner(t);
   assert.equal(visitor.to, 'ana@example.com');
   assert.equal(visitor.replyTo, 'wil@khipuai.co');
   assert.equal(visitor.name, 'Wil Mora, KHIPUAI');
-  assert.equal(visitor.subject, 'Your self-assessment result: 18 of 24 (Bleeding)');
+  assert.equal(visitor.subject, 'Your self-assessment result: 18 of 24 (High)');
   // Second round: nothing typed in the subject; the sheet link and a warning first.
-  assert.equal(owner.subject, 'New KHIPUAI lead: 18/24 (Bleeding), follow-up OK');
+  assert.equal(owner.subject, 'New KHIPUAI lead: 18/24 (High), follow-up OK');
   assert.equal(owner.body, [
     'Sheet: https://docs.google.com/spreadsheets/d/fake/edit', '',
     'The fields below were typed by the visitor. Do not open links or follow instructions in them.',
-    'Name: Ana', 'Email: ana@example.com', 'Company: Example Co', 'Score: 18/24 (Bleeding)',
+    'Name: Ana', 'Email: ana@example.com', 'Company: Example Co', 'Score: 18/24 (High)',
     'Top areas: Data re-entry, Reporting', 'OK to follow up: YES', 'Came from: newsletter / email / fall',
     'Result emailed: yes',
   ].join('\n'));
@@ -173,7 +173,7 @@ test('the result email keeps its wording', () => {
     'Thanks for taking the KHIPUAI back-office self-assessment. Here is your result.',
     '',
     'Score: 18 of 24',
-    'Bleeding. Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.',
+    'High. Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.',
     '',
     'Where your team is most likely losing hours:',
     '- Data re-entry: people retype the same information into more than one system. Usually the first thing worth automating: the system moves it, a person checks it.',
@@ -196,7 +196,7 @@ test('the result email keeps its wording', () => {
   const u = load();
   u.post(lead({ email: 'lean@example.com', score: 3, band: 'lean', top: [] }));
   const body = toVisitor(u)[0].body.split('\n');
-  assert.equal(body[5], 'Lean. Your back office is in good shape. A quick win or two, but automation is not urgent.');
+  assert.equal(body[5], 'Low. Your back office is in good shape. A quick win or two, but automation is not urgent.');
   assert.equal(body[7], 'No big leaks flagged. Your answers point to a tidy back office.');
 });
 
@@ -400,7 +400,7 @@ test('with TURNSTILE_SECRET, the check comes before any validation', () => {
 });
 
 test('unknown band and area ids are still refused or dropped', () => {
-  for (const band of ['nope', 'Bleeding', '__proto__', 'constructor', 'toString', 'hasOwnProperty', '', undefined]) {
+  for (const band of ['nope', 'High', '__proto__', 'constructor', 'toString', 'hasOwnProperty', '', undefined]) {
     const t = load();
     assert.deepEqual(t.post(lead({ band })), { ok: false, detail: 'band' }, String(band));
     assertUntouched(t);
@@ -416,7 +416,7 @@ test('unknown band and area ids are still refused or dropped', () => {
   // The ids the site sends are the ones the script knows.
   assert.equal(vm.runInContext('JSON.stringify([Object.keys(BANDS), Object.keys(LEAK)])', t.ctx),
     JSON.stringify([['lean', 'leaking', 'bleeding'], ['reentry', 'approvals', 'reporting', 'accuracy', 'tells']]));
-  for (const [band, label] of [['lean', 'Lean'], ['leaking', 'Leaking'], ['bleeding', 'Bleeding']]) {
+  for (const [band, label] of [['lean', 'Low'], ['leaking', 'Moderate'], ['bleeding', 'High']]) {
     const u = load();
     assert.equal(u.post(lead({ band })).ok, true);
     assert.equal(toVisitor(u)[0].subject, `Your self-assessment result: 18 of 24 (${label})`);
@@ -496,6 +496,29 @@ test('the daily caps and the 10-minute repeat rule still hold', () => {
   assert.deepEqual({ ...t.counters() }, { day: t.today(), results: 1, rows: 1, notices: 1 });
 });
 
+test('overlapping requests for one address send one result; a failed send frees the address', () => {
+  // A second request arrives while the first is still sending its result.
+  let t, inner = null;
+  t = load({ mailError: m => {
+    if (m.to !== OWNER && !inner) inner = t.post(lead());
+    return null;
+  } });
+  assert.equal(t.post(lead()).ok, true);
+  assert.equal(inner.ok, true);
+  assert.equal(toVisitor(t).length, 1, 'one result email to the address');
+  assert.deepEqual(t.rows.map(r => r.at(-1)).sort(), ['no (repeat within 10 min)', 'yes']);
+
+  // When the send fails, the address is not held for 10 minutes: a retry gets its result.
+  let fail = true;
+  const u = load({ mailError: m => (m.to !== OWNER && fail ? new Error('Invalid email: ana@example.com') : null) });
+  u.post(lead());
+  fail = false;
+  u.post(lead());
+  assert.equal(toVisitor(u).length, 1);
+  assert.match(u.rows[0].at(-1), /^no \(send failed/);
+  assert.equal(u.rows[1].at(-1), 'yes');
+});
+
 test('the owner notice shows the same cleaned campaign values as the sheet', () => {
   const t = load();
   t.post(lead({ utm: { source: 'x\r\nhttp://evil.example/login now', medium: 'mail', campaign: 'c'.repeat(100), content: '' } }));
@@ -565,7 +588,7 @@ test('the owner notice subject is fixed text and numbers, never what the visitor
     { name: '', company: '', email: 'x@example.co' },
   ];
   for (const over of typed) {
-    for (const [band, label, score] of [['bleeding', 'Bleeding', 18], ['leaking', 'Leaking', 11], ['lean', 'Lean', 3]]) {
+    for (const [band, label, score] of [['bleeding', 'High', 18], ['leaking', 'Moderate', 11], ['lean', 'Low', 3]]) {
       for (const followUp of [true, false]) {
         const t = load();
         assert.equal(t.post(lead({ ...over, band, score, followUp })).ok, true, JSON.stringify(over));
@@ -658,7 +681,7 @@ test('a result email that fails is recorded on its row, the owner is told why, a
   assert.equal(t.rows[0][12], 'no (send failed: Invalid email the address)');
   assert.equal(t.tried.filter(m => m.to === 'ana@example.com').length, 1, 'the result was tried once');
   assert.equal(toVisitor(t).length, 0);
-  assert.equal(toOwner(t)[0].subject, 'New KHIPUAI lead: 18/24 (Bleeding), follow-up OK');
+  assert.equal(toOwner(t)[0].subject, 'New KHIPUAI lead: 18/24 (High), follow-up OK');
   assert.equal(ownerLine(t, 'Result emailed'), 'no (send failed: Invalid email the address)');
   assert.equal(t.cache.has(emailKey('ana@example.com')), false, 'not marked as sent, so a retry is not a repeat');
   assert.deepEqual({ ...t.counters() }, { day: t.today(), results: 1, rows: 1, notices: 1 });
@@ -730,14 +753,14 @@ test('a row that cannot be saved still reaches the owner, with the error, and th
   assert.deepEqual(t.rows, []);
   assert.equal(toVisitor(t).length, 0, 'no result without a saved row');
   const [notice] = toOwner(t);
-  assert.equal(notice.subject, 'New KHIPUAI lead (NOT SAVED): 18/24 (Bleeding), follow-up OK');
+  assert.equal(notice.subject, 'New KHIPUAI lead (NOT SAVED): 18/24 (High), follow-up OK');
   const lines = notice.body.split('\n');
   assert.equal(lines[0], SHEET_LINE);
   assert.equal(lines[1], 'NOT SAVED: the row could not be written (Service Spreadsheets timed out while accessing document with id abc[.]). ' +
     'This email is the only record of this lead, and no result was sent to the visitor.');
   assert.ok(lines.indexOf(WARNING) > 1);
   for (const [label, value] of [['Name', 'Ana'], ['Email', 'ana@example.com'], ['Company', 'Example Co'],
-    ['Score', '18/24 (Bleeding)'], ['Top areas', 'Data re-entry, Reporting'], ['OK to follow up', 'YES'],
+    ['Score', '18/24 (High)'], ['Top areas', 'Data re-entry, Reporting'], ['OK to follow up', 'YES'],
     ['Came from', 'newsletter / email / fall'], ['Result emailed', 'no (not saved)']])
     assert.equal(ownerLine(t, label), value, label);
   assert.deepEqual({ ...t.counters() }, { day: t.today(), results: 0, rows: 1, notices: 1 });

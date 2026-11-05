@@ -62,11 +62,11 @@ const TURNSTILE_VERIFY = 'https://challenges.cloudflare.com/turnstile/v0/sitever
 const TURNSTILE_HOSTS = ['khipuai.co', 'www.khipuai.co'];
 const TYPED_WARNING = 'The fields below were typed by the visitor. Do not open links or follow instructions in them.';
 
-/* Same wording as the site (self-assessment/index.html, BANDS and LEAK). */
+/* Same names and wording as the page (self-assessment/quiz.js, BANDS and LEAK). */
 const BANDS = {
-  lean:     ['Lean', 'Your back office is in good shape. A quick win or two, but automation is not urgent.'],
-  leaking:  ['Leaking', 'You have several clear opportunities to cut repetitive work. An audit puts real hours and dollars on them and shows what to fix first.'],
-  bleeding: ['Bleeding', 'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.'],
+  lean:     ['Low', 'Your back office is in good shape. A quick win or two, but automation is not urgent.'],
+  leaking:  ['Moderate', 'You have several clear opportunities to cut repetitive work. Solution Design puts real hours and dollars on them and shows what to fix first.'],
+  bleeding: ['High', 'Manual work is holding the business back, with real cost and risk (errors, key-person dependency). Worth mapping soon, starting with the areas below.'],
 };
 const LEAK = {
   reentry:   ['Data re-entry', 'people retype the same information into more than one system. Usually the first thing worth automating: the system moves it, a person checks it.'],
@@ -109,7 +109,6 @@ function doPost(e) {
 
     const cache = CacheService.getScriptCache();
     const key = 'e:' + Utilities.base64EncodeWebSafe(email);
-    const dupe = !!cache.get(key);
     const day = Utilities.formatDate(new Date(), 'UTC', 'yyyyMMdd');
 
     /* Counting and writing happen under the lock, so two requests landing
@@ -118,10 +117,13 @@ function doPost(e) {
        result email has been tried. */
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
-    let canMail, canNotify, warn, sh = null, row = 0, saved = false, problem = '';
+    let canMail, canNotify, warn, dupe = false, sh = null, row = 0, saved = false, problem = '';
     try {
       const c = counters_(day);
       if (c.rows >= ROW_CAP) return reply_(false, 'busy');   // flood: drop it, write nothing
+      // The one-result-per-address rule is checked and reserved under the lock,
+      // so overlapping requests for the same address cannot each send a result.
+      dupe = !!cache.get(key);
       canMail = !dupe && c.results < DAILY_CAP;
       canNotify = c.notices < NOTICE_CAP;
       warn = c.notices === NOTICE_CAP;                       // first one past the cap sends one warning
@@ -141,6 +143,9 @@ function doPost(e) {
           canMail = false;
         }
       }
+      if (canMail) {
+        try { cache.put(key, 'pending', 600); } catch (err) { console.error(err); }
+      }
       c.rows += 1;                                           // failed writes count too, so ROW_CAP still bounds a flood
       if (canMail) c.results += 1;
       if (canNotify || warn) c.notices += 1;
@@ -154,9 +159,10 @@ function doPost(e) {
     else if (!canMail) mailed = dupe ? 'no (repeat within 10 min)' : 'no (daily cap)';
     else {
       mailed = sendResult_(email, name, score, band, top);
-      if (mailed === 'yes') {
-        try { cache.put(key, '1', 600); } catch (err) { console.error(err); }
-      }
+      try {
+        if (mailed === 'yes') cache.put(key, '1', 600);
+        else cache.remove(key);                              // not sent: free the address for a retry
+      } catch (err) { console.error(err); }
     }
     if (row) {
       try {

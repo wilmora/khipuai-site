@@ -47,7 +47,7 @@ read every changed line. Paste only a version from the `main` branch.
 5. Test submission: from the live page, send your own result to your own
    address. Check all three: the result email arrives; the row appears with
    **Result emailed** set to `yes`; and the owner notice arrives, with a
-   subject like `New KHIPUAI lead: 18/24 (Bleeding)` and `Sheet:` as its
+   subject like `New KHIPUAI lead: 18/24 (High)` and `Sheet:` as its
    first line. If one is missing, open **Executions** in the Apps Script
    editor and read the error for `doPost`.
 
@@ -192,7 +192,7 @@ logged.
   the first name, which keeps only letters, spaces, apostrophes and hyphens.
 - The owner notice comes from your own account, so mail filters trust it.
   Its subject is fixed text and numbers only, for example
-  `New KHIPUAI lead: 18/24 (Bleeding), follow-up OK`. Its body starts with
+  `New KHIPUAI lead: 18/24 (High), follow-up OK`. Its body starts with
   the `Sheet:` link and a warning. Below the warning, the company and the
   campaign values (and an address holding a slash) show every dot as `[.]`,
   with slashes, colons and `@` removed, so none of them is a working link.
