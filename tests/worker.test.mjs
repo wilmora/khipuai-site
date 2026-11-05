@@ -333,7 +333,7 @@ const EXPECTED_CSP = "default-src 'self'; "
   + "font-src 'self' data: https://assets.calendly.com; "
   + "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.facebook.com https://connect.facebook.net https://calendly.com https://challenges.cloudflare.com; "
   + "frame-src 'self' https://calendly.com https://challenges.cloudflare.com; "
-  + "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests";
+  + "object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests";
 const parseCsp = value => new Map(value.split(';').map(d => d.trim().split(/\s+/)).filter(([n]) => n).map(([n, ...v]) => [n.toLowerCase(), v]));
 
 test('HSTS is on HTML, Markdown, other files and 404s: one year, includeSubDomains, no preload', async () => {
@@ -363,7 +363,8 @@ test('the HTML policy blocks framing, upgrades http, and allows Google Analytics
   assert.deepEqual(csp.get('default-src'), ["'self'"]);
   assert.deepEqual(csp.get('object-src'), ["'none'"]);
   assert.deepEqual(csp.get('base-uri'), ["'self'"]);
-  assert.deepEqual(csp.get('form-action'), ["'self'"]);
+  // No native form posts: every form on the site is handled by script.
+  assert.deepEqual(csp.get('form-action'), ["'none'"]);
   // GA4: gtag.js comes from googletagmanager.com hosts, and hits go to
   // regional google-analytics.com and analytics.google.com hosts.
   assert.ok(csp.get('script-src').includes('https://*.googletagmanager.com'));
@@ -435,7 +436,10 @@ test('the header policy allows everything each page\'s own policy allows', async
       if (headerList === null) continue;
       if (pageList === null) { problems.push(`${f}: the page sets no limit for ${kind}, but the header does`); continue; }
       for (const s of pageList)
-        if (!headerCovers(headerList, s)) problems.push(`${f}: its policy allows ${s} for ${kind}; add it to the CSP in edge/worker.js`);
+        if (!headerCovers(headerList, s)) problems.push(kind === 'form-action'
+          // Not a source to add to the header: no page may post a form natively (tests/csp.test.mjs).
+          ? `${f}: its policy allows ${s} for form-action; set the page's form-action to 'none' instead`
+          : `${f}: its policy allows ${s} for ${kind}; add it to the CSP in edge/worker.js`);
     }
   }
   assert.ok(checked > 0, 'no page carries a CSP meta tag to compare with');

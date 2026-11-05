@@ -117,8 +117,12 @@ export function isPrivatePath(pathname) {
    tests/worker.test.mjs checks this. The hosts are Google Analytics 4
    (gtag.js and its collection endpoints), the Meta Pixel, Calendly,
    Cloudflare Turnstile and the Google Apps Script endpoint behind the
-   self-assessment form. upgrade-insecure-requests makes the browser fetch
-   any http:// address a page uses over https instead. */
+   self-assessment form. form-action 'none' refuses every native form
+   submit: no page needs one (the self-assessment email form is sent by
+   fetch), and a submit made before the page script runs would put the
+   visitor's name, work email and company in the URL. upgrade-insecure-requests
+   makes the browser fetch any http:// address a page uses over https
+   instead. */
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://connect.facebook.net https://assets.calendly.com https://challenges.cloudflare.com",
@@ -129,7 +133,7 @@ const CSP = [
   "frame-src 'self' https://calendly.com https://challenges.cloudflare.com",
   "object-src 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  "form-action 'none'",
   "frame-ancestors 'self'",
   'upgrade-insecure-requests',
 ].join('; ');

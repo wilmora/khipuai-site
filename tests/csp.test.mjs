@@ -189,7 +189,7 @@ test('every inline script is allowed by its hash, and no listed hash is stale', 
   assert.deepEqual(problems, []);
 });
 
-test('script sources are strict; object-src, base-uri and form-action are locked down', () => {
+test('script sources are strict; object-src and base-uri are locked down', () => {
   const problems = [];
   for (const p of PARSED.filter(p => p.metas.length === 1)) {
     for (const d of p.dup) problems.push(`${p.f}: ${d} appears twice (the browser ignores the second)`);
@@ -206,8 +206,25 @@ test('script sources are strict; object-src, base-uri and form-action are locked
     if ((p.dirs.get('object-src') ?? []).join(' ') !== "'none'") problems.push(`${p.f}: object-src must be 'none'`);
     const base = p.dirs.get('base-uri') ?? [];
     if (!base.length || base.some(s => !["'self'", "'none'"].includes(s))) problems.push(`${p.f}: base-uri must be 'self' or 'none'`);
-    const form = p.dirs.get('form-action') ?? [];
-    if (!form.length || form.some(s => !/^('self'|'none'|https:\/\/[a-z0-9.-]+\.[a-z]+(\/\S*)?)$/i.test(s))) problems.push(`${p.f}: form-action must be 'self', 'none' or https addresses`);
+  }
+  assert.deepEqual(problems, []);
+});
+
+// No page posts a form natively. The self-assessment email form (#leadform)
+// is sent by self-assessment/quiz.js with fetch, and the support demo builds
+// its forms in JavaScript. Before quiz.js runs (a slow network, an older
+// browser, a script error), pressing Enter in that form would submit it as a
+// GET to the same page: the visitor's name, work email and company would land
+// in the address bar, the browser history and Google Analytics' page_location.
+// form-action 'none' makes the browser refuse every native submit. A page left
+// without form-action allows them all: it does not fall back to default-src.
+test("form-action is 'none' on every page, so no form is ever submitted natively", () => {
+  const problems = [];
+  for (const p of PARSED.filter(p => p.metas.length === 1)) {
+    const form = p.dirs.get('form-action');
+    if ((form ?? []).join(' ') !== "'none'")
+      problems.push(`${p.f}: form-action is ${form ? form.join(' ') || '(empty)' : 'missing'}; it must be 'none'. No page needs a native form post, and one `
+        + 'sent before the page script runs would put what the visitor typed (name, work email, company) in the URL, the browser history and analytics');
   }
   assert.deepEqual(problems, []);
 });
