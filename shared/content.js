@@ -10,6 +10,10 @@ export const C = {
   // Google Apps Script web app that stores self-assessment leads and emails
   // the visitor their result (edge/leads/). Empty = the form stays hidden.
   leads: 'https://script.google.com/macros/s/AKfycbxNF3Rt-NzcxrTMmYtZtVBgGMxO-0fc8hTgLnASUK0UeVUNBHWQvDNCBMqnBWErRLvM/exec',
+  // Cloudflare Turnstile site key for the self-assessment email form. Empty
+  // means off. The secret goes in the Apps Script's script properties as
+  // TURNSTILE_SECRET (see edge/leads/README.md).
+  turnstile: '',
 
   hero: {
     eyebrow: 'AI automation for recurring-service operations',

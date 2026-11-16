@@ -1,0 +1,13 @@
+# Dependabot opens a pull request when a newer version of an action used in
+# .github/workflows/ is released, so the deploy keeps getting security fixes.
+# The site tests run on each of these pull requests; review them before
+# merging. Before merging a new major version of
+# actions/upload-pages-artifact, read the failing test's message in
+# tests/security.test.mjs: it asks you to confirm that the new version still
+# publishes .well-known/security.txt.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

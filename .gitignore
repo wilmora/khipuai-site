@@ -3,6 +3,28 @@
 # These are working tools, not part of the site, and must stay out of git.
 mobile-preview.html
 
+# The local list of client names and billing codes for the client-name check
+# (tests/confidential.mjs). The repository is public: never commit this file.
+# In GitHub Actions the same list comes from the CONFIDENTIAL_TERMS secret.
+tests/.confidential-terms
+
+# Secrets and local settings
+.env
+.env.*
+.dev.vars
+.wrangler/
+.claude/settings.local.json
+*.pem
+*.key
+*.p12
+
+# Dependencies, build output and test reports
+node_modules/
+_site/
+test-results/
+playwright-report/
+*.log
+
 # OS and editor noise
 .DS_Store
 Thumbs.db

@@ -36,7 +36,11 @@ for (const [path, lang] of PAGES) {
     // Google Analytics and the opt-in Meta Pixel, as before the switch (Alex, 2026-10-26); none on the held portal.
     const tracked = /googletagmanager\.com\/gtag\/js\?id=G-8M0ENQ1NBS/.test(html) && /<script defer src="\/shared\/meta-pixel\.js"><\/script>/.test(html);
     assert.equal(tracked, !/portal\//.test(path), 'analytics');
-    assert.doesNotMatch(html, /fbq\(|script\.google|fetch\(|sendBeacon/, 'nothing sent from the page itself');
+    // The Content-Security-Policy meta lists the hosts a page may contact (the
+    // self-assessment form may post to script.google.com). That is a permission
+    // list, not code that sends anything, so it is left out of this check.
+    const code = html.replace(/<meta http-equiv="Content-Security-Policy" content="[^"]*">/, '');
+    assert.doesNotMatch(code, /fbq\(|script\.google|fetch\(|sendBeacon/, 'nothing sent from the page itself');
     assert.ok(!html.includes('—'), 'no em dash');
   });
 }

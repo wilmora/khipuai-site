@@ -34,6 +34,8 @@ function startPixel() {
   s.parentNode.insertBefore(t,s)}(window,document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
 
+  // Off before init, or the Pixel sends button clicks and page data on its own (on the self-assessment, the answers).
+  window.fbq('set', 'autoConfig', false, PIXEL_ID);
   window.fbq('init', PIXEL_ID);
   pixelStarted = true;
   window.fbq('track', 'PageView');
@@ -92,23 +94,29 @@ window.KHIPUAIMeta = {
     scoreViewed = true;
     if (pixelStarted) window.fbq('trackCustom', 'AssessmentScoreViewed');
   },
-  /* The visitor asked for their result by email. Counted as a Lead, like a booking. */
-  lead() {
-    if (pixelStarted) window.fbq('track', 'Lead');
-  },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', event => {
     const link = event.target.closest?.('a[href]');
+    // Clicks left to the browser here (modifier keys, middle click, target=_blank)
+    // open the plain href, without the self-assessment result below. That is fine.
     if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || link.target === '_blank') return;
     const url = new URL(link.href);
     if (url.origin !== 'https://calendly.com' || url.pathname !== '/wmorapal/30min') return;
 
+    // The self-assessment keeps the visitor's result in data-utm-content and
+    // data-a1, not in the href, where tools that record link addresses could
+    // read it. It joins the address only here, for Calendly, as the privacy
+    // policy says. URLSearchParams encodes the values.
+    const { utmContent, a1 } = link.dataset;
+    if (utmContent) url.searchParams.set('utm_content', utmContent);
+    if (a1) url.searchParams.set('a1', a1);
+
     event.preventDefault();
     loadCalendly()
-      .then(() => window.Calendly.initPopupWidget({ url: link.href }))
-      .catch(() => { location.href = link.href; });
+      .then(() => window.Calendly.initPopupWidget({ url: url.href }))
+      .catch(() => { location.href = url.href; });
   });
 
   window.addEventListener('message', event => {

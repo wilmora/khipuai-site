@@ -1,8 +1,11 @@
 /* The self-assessment, one question at a time. The questions, weights,
    bands, area notes and wording are the earlier live page's, unchanged, with
    one question per card and Back, Next and Start over. The email form posts
-   to the same leads endpoint (C.leads) as before, and the score view and the
-   lead are counted the same way (Meta only with consent, Google Analytics). */
+   to the same leads endpoint (C.leads) as before. A viewed score is counted
+   by the Meta Pixel (only with the visitor's consent); a request for the
+   result by email is counted by Google Analytics only, never sent to Meta.
+   With a site key in C.turnstile, the form also carries a Cloudflare
+   Turnstile check, which the leads script verifies (edge/leads/Code.gs). */
 
 const PARTS = [
   { id:'reentry', kick:'Part one', head:'Data re-entry, <em>the silent hours.</em>', q:[
@@ -47,6 +50,68 @@ const LEAK = {
 };
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+/* The email check, the same rule as the leads script (edge/leads/Code.gs):
+   no spaces or <>"(),;: before the @, a domain of letters, digits and
+   hyphens with a suffix of two or more letters, and no dot at the start,
+   two dots in a row or a dot right before the @. Gmail refuses those, and
+   the lead would be lost. No lookbehind: older Safari cannot parse it, and
+   a syntax error would stop this whole module. */
+export function validEmail(s) {
+  return /^[^\s@<>"(),;:]+@(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(s) && !/^\.|\.\.|\.@/.test(s);
+}
+
+/* Optional Cloudflare Turnstile check on the email form. siteKey is
+   C.turnstile; empty or missing means off, so nothing loads and the form is
+   unchanged. Cloudflare's script loads the first time someone uses the form
+   (focus, tap or submit), so a visitor who never asks for the result by
+   email never reaches Cloudflare. The widget goes in a new box just before
+   the submit button. A token works once: reset() asks for a fresh one. */
+const TURNSTILE_JS = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+function turnstileCheck(siteKey, form, btn) {
+  if (typeof siteKey !== 'string' || !siteKey.trim()) return null;
+  let token = '', widget, loading = false;
+  const load = () => {
+    if (loading) return;
+    loading = true;
+    const script = document.createElement('script');
+    script.src = TURNSTILE_JS;
+    script.async = true;
+    script.addEventListener('load', () => {
+      const box = document.createElement('div');
+      box.id = 'lf-check';
+      btn.before(box);
+      try {
+        widget = window.turnstile.render(box, {
+          sitekey: siteKey.trim(),
+          theme: 'light',
+          callback: t => { token = t; },
+          'expired-callback': () => { token = ''; },
+          'error-callback': () => { token = ''; },
+          'timeout-callback': () => { token = ''; },
+        });
+      } catch (err) {
+        console.warn('The Turnstile check could not start.', err);
+      }
+    });
+    document.head.append(script);
+  };
+  for (const type of ['focusin', 'pointerdown']) form.addEventListener(type, load, { once: true });
+  return {
+    load,
+    token: () => token,
+    reset() { token = ''; if (widget !== undefined) window.turnstile.reset(widget); },
+  };
+}
+
+// The worksheet link the status line offers when an email may not arrive.
+function worksheetLink() {
+  const a = document.createElement('a');
+  a.href = '/self-assessment.pdf';
+  a.download = '';
+  a.textContent = 'download the worksheet';
+  return a;
+}
 
 // Flat list of the 15 questions: { part, w, t }.
 const QS = PARTS.flatMap(p => p.q.map(([w, t]) => ({ part: p, w, t })));
@@ -124,16 +189,20 @@ export function mountQuiz(C) {
     result.scrollIntoView({ block: 'start' });
   }
 
-  /* The call link carries the result, as on the live page. */
-  function bookingUrl(sc, band, top) {
+  /* The call link: the booking address with the campaign's UTM values only.
+     The result (score, band, largest gaps) goes in data-utm-content and
+     data-a1, not in the href, so tools that record link addresses never see
+     it. shared/meta-pixel.js adds both to the address it opens in Calendly. */
+  function bookingLink(sc, band, top) {
+    const link = $('bookbtn');
     const u = new URL(C.booking);
     const here = new URLSearchParams(location.search);
     u.searchParams.set('utm_source', here.get('utm_source') || 'khipuai_site');
     u.searchParams.set('utm_medium', here.get('utm_medium') || 'self_assessment');
     u.searchParams.set('utm_campaign', here.get('utm_campaign') || 'self_assessment');
-    u.searchParams.set('utm_content', `score-${sc}-${band.toLowerCase()}${top.length ? '-' + top.join('-') : ''}`);
-    u.searchParams.set('a1', `Self-assessment: ${sc}/${TOTAL} (${band}). Largest gaps: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`);
-    return u.toString();
+    link.href = u.toString();
+    link.dataset.utmContent = `score-${sc}-${band.toLowerCase()}${top.length ? '-' + top.join('-') : ''}`;
+    link.dataset.a1 = `Self-assessment: ${sc}/${TOTAL} (${band}). Largest gaps: ${top.length ? top.map(id => PARTNAME[id]).join(', ') : 'none flagged'}.`;
   }
 
   function render() {
@@ -143,6 +212,8 @@ export function mountQuiz(C) {
     $('scorenum').textContent = sc;
     if (done < QS.length) {
       lastResult = null;
+      delete $('bookbtn').dataset.utmContent;   // no result, so the hidden call link carries none
+      delete $('bookbtn').dataset.a1;
       $('resband').textContent = 'Answer all 15 questions to see your result.';
       $('leaks').hidden = true;
       $('rescta').hidden = true;
@@ -164,7 +235,7 @@ export function mountQuiz(C) {
       : `<li><b>No major gaps identified.</b> Your answers indicate a well-organized back office.</li>`;
     $('leaks').hidden = false;
     $('rescta').hidden = false;
-    $('bookbtn').href = bookingUrl(sc, band.name, top);
+    bookingLink(sc, band.name, top);
     // The leads script knows the bands by these ids (edge/leads/Code.gs BANDS),
     // not by the names shown on the page.
     lastResult = { score: sc, band: band.id, top };
@@ -195,20 +266,50 @@ export function mountQuiz(C) {
   });
   render();
 
+  /* The result still reaches Calendly when shared/meta-pixel.js (which opens
+     the popup with it) did not load, for example under a content blocker, and
+     when the visitor opens the call link in a new tab or window. The full
+     address is built here at click time, so the href never holds the result.
+     A plain click with meta-pixel.js running is left to it (the popup). */
+  const bookFull = () => {
+    const link = $('bookbtn'), u = new URL(link.href);
+    if (link.dataset.utmContent) u.searchParams.set('utm_content', link.dataset.utmContent);
+    if (link.dataset.a1) u.searchParams.set('a1', link.dataset.a1);
+    return u.href;
+  };
+  const openFull = (event, newTab) => {
+    event.preventDefault();
+    if (newTab) window.open(bookFull(), '_blank', 'noopener');
+    else location.href = bookFull();
+  };
+  $('bookbtn').addEventListener('click', event => {
+    if (event.button !== 0 || event.altKey) return;
+    if (event.ctrlKey || event.metaKey || event.shiftKey) openFull(event, true);
+    else if (!window.KHIPUAIMeta) openFull(event, false);
+  });
+  $('bookbtn').addEventListener('auxclick', event => { if (event.button === 1) openFull(event, true); });
+
   /* ---- result by email -------------------------------------------------
-     Same fields, checks and payload as the earlier live page. The script
-     behind C.leads builds the email from ids only. Without C.leads the form
-     is hidden and the PDF download shows instead. */
+     Same fields and payload as the earlier live page, with a stricter
+     address check (validEmail). The script behind C.leads builds the email
+     from ids only. Without C.leads the form is hidden and the PDF download
+     shows instead. */
   const form = $('leadform');
   const msg = $('lf-msg');
   if (!C.leads) { form.hidden = true; $('pdfonly').hidden = false; return; }
   const btn = form.querySelector('button[type="submit"]');
   const label = btn.textContent;
+  const check = turnstileCheck(C.turnstile, form, btn);   // null when C.turnstile is empty
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const email = form.email.value.trim();
     if (!lastResult) { msg.textContent = 'Answer all 15 questions first, then your result can be sent.'; return; }
-    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { msg.textContent = 'Please check the email address.'; form.email.focus(); return; }
+    if (!validEmail(email)) { msg.textContent = 'Please check the email address.'; form.email.focus(); return; }
+    if (check && !check.token()) {
+      check.load();
+      msg.replaceChildren('Please complete the security check above the button, then try again. If no check appears, you can ', worksheetLink(), ' instead.');
+      return;
+    }
     const here = new URLSearchParams(location.search);
     const body = JSON.stringify({
       name: form.name.value.trim(), email, company: form.company.value.trim(),
@@ -216,18 +317,25 @@ export function mountQuiz(C) {
       ...lastResult,
       utm: { source: here.get('utm_source') || '', medium: here.get('utm_medium') || '',
              campaign: here.get('utm_campaign') || '', content: here.get('utm_content') || '' },
+      ...(check ? { cf: check.token() } : {}),
     });
     btn.disabled = true; btn.textContent = 'Sending...';
     try {
       await fetch(C.leads, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
       form.querySelectorAll('input').forEach(i => { i.disabled = true; });
       btn.textContent = 'Sent';
-      msg.textContent = `Your result is on its way to ${email}. If it has not arrived in a few minutes, please check your spam folder.`;
-      window.KHIPUAIMeta?.lead();
+      // The page cannot read the script's reply (no-cors), and a request a
+      // daily cap or the check drops looks the same as one that was sent, so
+      // the worksheet is offered too. Text nodes only: the address is shown
+      // as typed, never parsed as HTML.
+      msg.replaceChildren(`Your result is on its way to ${email}. If it has not arrived in a few minutes, please check your spam folder or `, worksheetLink(), '.');
+      // Google Analytics only: the Meta consent banner does not cover email requests.
       if (typeof gtag === 'function') gtag('event', 'generate_lead', { method: 'self_assessment_email' });
     } catch {
       btn.disabled = false; btn.textContent = label;
       msg.textContent = 'The request did not go through. Please try again, or email alexp@khipuai.co.';
+    } finally {
+      check?.reset();
     }
   });
 }
